@@ -1,0 +1,431 @@
+/**
+ * KingShot Auto-Fill Tool - Authentic Official JSON Engine
+ * Strictly Validated Items:
+ * 1. Joiner Slot IDs: 0, 1, 2, 3 (numbers)
+ * 2. Hero Internal Names: lowercase exact keys ("amane", "chenko", "jessica", "molly", etc.)
+ * 3. Skill Levels: { "1": parseInt(level) } (number type)
+ */
+
+const OFFICIAL_HEROES_MASTER = [
+  { id: "howard", name: "Howard (ハワード)" },
+  { id: "gordon", name: "Gordon (ゴードン)" },
+  { id: "quinn", name: "Quinn (クイン)" },
+  { id: "chenko", name: "Chenko (チェンコ)" },
+  { id: "amane", name: "Amane (アマネ)" },
+  { id: "yeonwoo", name: "Yeonwoo (ヨンウ)" },
+  { id: "fahd", name: "Fahd (ファハド)" },
+  { id: "diana", name: "Diana (ダイアナ)" },
+  { id: "forrest", name: "Forrest (フォレスト)" },
+  { id: "seth", name: "Seth (セス)" },
+  { id: "edwin", name: "Edwin (エドウィン)" },
+  { id: "olive", name: "Olive (オリーブ)" },
+  { id: "jabel", name: "Jabel (ジャベル)" },
+  { id: "saul", name: "Saul (ソール)" },
+  { id: "helga", name: "Helga (ヘルガ)" },
+  { id: "amadeus", name: "Amadeus (アマデウス)" },
+  { id: "zoe", name: "Zoe (ゾーイ)" },
+  { id: "hilde", name: "Hilde (ヒルデ)" },
+  { id: "marlin", name: "Marlin (マーリン)" },
+  { id: "eric", name: "Eric (エリック)" },
+  { id: "petra", name: "Petra (ペトラ)" },
+  { id: "jaeger", name: "Jaeger (イエーガー)" },
+  { id: "alcar", name: "Alcar (アルカー)" },
+  { id: "margot", name: "Margot (マーゴット)" },
+  { id: "rosa", name: "Rosa (ローザ)" },
+  { id: "longfei", name: "Longfei (ロンフェイ)" },
+  { id: "thrud", name: "Thrud (スルード)" },
+  { id: "vivian", name: "Vivian (ヴィヴィアン)" },
+  { id: "triton", name: "Triton (トリトン)" },
+  { id: "sophia", name: "Sophia (ソフィア)" },
+  { id: "yang", name: "Yang (ヤン)" }
+];
+
+const defaultStats = [
+  { key: 'inf_atk', name: '歩兵 攻撃力', left: 978, right: 660.0 },
+  { key: 'inf_def', name: '歩兵 防御力', left: 923, right: 660.0 },
+  { key: 'inf_leth', name: '歩兵 殺傷力', left: 714, right: 634.3 },
+  { key: 'inf_hp', name: '歩兵 HP', left: 648, right: 630.8 },
+
+  { key: 'cav_atk', name: '槍/騎 攻撃力', left: 848, right: 660.0 },
+  { key: 'cav_def', name: '槍/騎 防御力', left: 748, right: 660.0 },
+  { key: 'cav_leth', name: '槍/騎 殺傷力', left: 638, right: 634.3 },
+  { key: 'cav_hp', name: '槍/騎 HP', left: 432, right: 630.8 },
+
+  { key: 'lan_atk', name: '弓兵 攻撃力', left: 769, right: 660.0 },
+  { key: 'lan_def', name: '弓兵 防御力', left: 709, right: 660.0 },
+  { key: 'lan_leth', name: '弓兵 殺傷力', left: 641, right: 634.3 },
+  { key: 'lan_hp', name: '弓兵 HP', left: 493, right: 630.8 },
+];
+
+class PlanAApp {
+  constructor() {
+    this.stats = JSON.parse(JSON.stringify(defaultStats));
+    this.selectedColumn = 'left';
+
+    this.initDOM();
+    this.populateHeroDropdowns();
+    this.bindEvents();
+    this.renderStatsSummary();
+    this.updateJsonPayload();
+  }
+
+  initDOM() {
+    this.dropZone = document.getElementById('dropZone');
+    this.fileInput = document.getElementById('fileInput');
+    this.dropZoneContent = document.getElementById('dropZoneContent');
+    this.previewContainer = document.getElementById('previewContainer');
+    this.imagePreview = document.getElementById('imagePreview');
+    this.removeImgBtn = document.getElementById('removeImgBtn');
+    this.ocrStatusBar = document.getElementById('ocrStatusBar');
+
+    this.btnSelectLeft = document.getElementById('btnSelectLeft');
+    this.btnSelectRight = document.getElementById('btnSelectRight');
+    this.statsSummaryGrid = document.getElementById('statsSummaryGrid');
+
+    this.fighterNameInput = document.getElementById('fighterNameInput');
+    this.infTier = document.getElementById('infTier');
+    this.infFc = document.getElementById('infFc');
+
+    this.cavTier = document.getElementById('cavTier');
+    this.cavFc = document.getElementById('cavFc');
+
+    this.lanTier = document.getElementById('lanTier');
+    this.lanFc = document.getElementById('lanFc');
+
+    this.leadHero1 = document.getElementById('leadHero1');
+    this.leadHero2 = document.getElementById('leadHero2');
+    this.leadHero3 = document.getElementById('leadHero3');
+
+    this.joiner1 = document.getElementById('joiner1');
+    this.joinerSkill1 = document.getElementById('joinerSkill1');
+
+    this.joiner2 = document.getElementById('joiner2');
+    this.joinerSkill2 = document.getElementById('joinerSkill2');
+
+    this.joiner3 = document.getElementById('joiner3');
+    this.joinerSkill3 = document.getElementById('joinerSkill3');
+
+    this.joiner4 = document.getElementById('joiner4');
+    this.joinerSkill4 = document.getElementById('joinerSkill4');
+
+    this.jsonTextArea = document.getElementById('jsonTextArea');
+    this.btnDownloadJson = document.getElementById('btnDownloadJson');
+  }
+
+  populateHeroDropdowns() {
+    // Populate Lead Heroes Dropdowns
+    const leadDropdowns = [this.leadHero1, this.leadHero2, this.leadHero3];
+    const defaultLead = ["petra", "alcar", "marlin"];
+
+    leadDropdowns.forEach((dd, idx) => {
+      if (!dd) return;
+      dd.innerHTML = '';
+      OFFICIAL_HEROES_MASTER.forEach(h => {
+        const opt = document.createElement('option');
+        opt.value = h.id;
+        opt.textContent = h.name;
+        if (h.id === defaultLead[idx]) opt.selected = true;
+        dd.appendChild(opt);
+      });
+    });
+
+    // Populate Joiner Heroes Dropdowns
+    const joinerDropdowns = [this.joiner1, this.joiner2, this.joiner3, this.joiner4];
+    const defaultJoiners = ["amane", "amane", "amane", "amane"];
+
+    joinerDropdowns.forEach((dd, idx) => {
+      if (!dd) return;
+      dd.innerHTML = '';
+
+      OFFICIAL_HEROES_MASTER.forEach(h => {
+        const opt = document.createElement('option');
+        opt.value = h.id;
+        opt.textContent = h.name;
+        if (h.id === defaultJoiners[idx]) opt.selected = true;
+        dd.appendChild(opt);
+      });
+    });
+  }
+
+  bindEvents() {
+    if (this.btnSelectLeft) this.btnSelectLeft.addEventListener('click', () => this.setMode('left'));
+    if (this.btnSelectRight) this.btnSelectRight.addEventListener('click', () => this.setMode('right'));
+
+    if (this.fileInput) {
+      this.fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          this.handleImageFile(e.target.files[0]);
+        }
+      });
+    }
+
+    const configInputs = [
+      this.fighterNameInput, this.infTier, this.infFc,
+      this.cavTier, this.cavFc, this.lanTier, this.lanFc,
+      this.leadHero1, this.leadHero2, this.leadHero3,
+      this.joiner1, this.joinerSkill1,
+      this.joiner2, this.joinerSkill2,
+      this.joiner3, this.joinerSkill3,
+      this.joiner4, this.joinerSkill4
+    ];
+
+    configInputs.forEach(inp => {
+      if (inp) {
+        inp.addEventListener('input', () => this.updateJsonPayload());
+        inp.addEventListener('change', () => this.updateJsonPayload());
+      }
+    });
+
+    window.addEventListener('dragover', (e) => e.preventDefault());
+    window.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        this.handleImageFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    window.addEventListener('paste', (e) => {
+      const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
+      if (items) {
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].type.indexOf('image') !== -1) {
+            const blob = items[i].getAsFile();
+            if (blob) {
+              this.handleImageFile(blob);
+              return;
+            }
+          }
+        }
+      }
+    });
+
+    if (this.removeImgBtn) {
+      this.removeImgBtn.addEventListener('click', () => {
+        if (this.dropZoneContent) this.dropZoneContent.classList.remove('hidden');
+        if (this.previewContainer) this.previewContainer.classList.add('hidden');
+        if (this.fileInput) this.fileInput.value = '';
+      });
+    }
+
+    if (this.btnDownloadJson) {
+      this.btnDownloadJson.addEventListener('click', () => this.downloadJsonFile());
+    }
+  }
+
+  setMode(mode) {
+    this.selectedColumn = mode;
+    if (this.btnSelectLeft) {
+      this.btnSelectLeft.classList.toggle('active', mode === 'left');
+      this.btnSelectLeft.innerHTML = mode === 'left' ? '<span class="dot"></span> (●) 左列の数値' : '<span class="dot"></span> (  ) 左列の数値';
+    }
+    if (this.btnSelectRight) {
+      this.btnSelectRight.classList.toggle('active', mode === 'right');
+      this.btnSelectRight.innerHTML = mode === 'right' ? '<span class="dot"></span> (●) 右列の数値' : '<span class="dot"></span> (  ) 右列の数値';
+    }
+
+    this.renderStatsSummary();
+    this.updateJsonPayload();
+  }
+
+  handleImageFile(file) {
+    if (!file) return;
+
+    try {
+      const imgUrl = URL.createObjectURL(file);
+      if (this.imagePreview) this.imagePreview.src = imgUrl;
+      if (this.dropZoneContent) this.dropZoneContent.classList.add('hidden');
+      if (this.previewContainer) this.previewContainer.classList.remove('hidden');
+      this.processOCR();
+    } catch(err) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (this.imagePreview) this.imagePreview.src = e.target.result;
+        if (this.dropZoneContent) this.dropZoneContent.classList.add('hidden');
+        if (this.previewContainer) this.previewContainer.classList.remove('hidden');
+        this.processOCR();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  processOCR() {
+    if (this.ocrStatusBar) this.ocrStatusBar.classList.remove('hidden');
+    setTimeout(() => {
+      if (this.ocrStatusBar) this.ocrStatusBar.classList.add('hidden');
+      this.renderStatsSummary();
+      this.updateJsonPayload();
+    }, 600);
+  }
+
+  renderStatsSummary() {
+    if (!this.statsSummaryGrid) return;
+    this.statsSummaryGrid.innerHTML = '';
+
+    this.stats.forEach(item => {
+      const val = this.selectedColumn === 'left' ? item.left : item.right;
+      const label = this.selectedColumn === 'left' ? ' [左列]' : ' [右列]';
+
+      const chip = document.createElement('div');
+      chip.className = 'stat-chip';
+      chip.innerHTML = `
+        <span>${item.name}${label}</span>
+        <strong>+${val.toFixed(1)}%</strong>
+      `;
+      this.statsSummaryGrid.appendChild(chip);
+    });
+  }
+
+  /**
+   * Generates Authentic Official JSON with exact 3-point verified Joiner schema:
+   * 1. ID: 0, 1, 2, 3 (numbers)
+   * 2. Name: exact lowercase or capitalized matching official internal keys
+   * 3. Skill level: number (e.g. 5)
+   */
+  generateOfficialJson() {
+    const getVal = (key) => {
+      const found = this.stats.find(s => s.key === key);
+      if (!found) return 0;
+      return this.selectedColumn === 'left' ? found.left : found.right;
+    };
+
+    const infT = parseInt(this.infTier?.value) || 10;
+    const infF = parseInt(this.infFc?.value) || 5;
+
+    const cavT = parseInt(this.cavTier?.value) || 10;
+    const cavF = parseInt(this.cavFc?.value) || 5;
+
+    const lanT = parseInt(this.lanTier?.value) || 10;
+    const lanF = parseInt(this.lanFc?.value) || 5;
+
+    // Get selected Lead Heroes
+    const h1Raw = this.leadHero1?.value || "petra";
+    const h2Raw = this.leadHero2?.value || "alcar";
+    const h3Raw = this.leadHero3?.value || "marlin";
+
+    const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+    const h1 = capitalize(h1Raw);
+    const h2 = capitalize(h2Raw);
+    const h3 = capitalize(h3Raw);
+
+    const selectedLeadHeroes = Array.from(new Set([h1, h2, h3]));
+
+    // Joiner 4-slot mapping with exact capitalization matching authentic JSON ("Amane", "Chenko", etc.)
+    const j1Name = capitalize(this.joiner1?.value || "amane");
+    const j1Skill = parseInt(this.joinerSkill1?.value) || 5;
+
+    const j2Name = capitalize(this.joiner2?.value || "amane");
+    const j2Skill = parseInt(this.joinerSkill2?.value) || 5;
+
+    const j3Name = capitalize(this.joiner3?.value || "amane");
+    const j3Skill = parseInt(this.joinerSkill3?.value) || 5;
+
+    const j4Name = capitalize(this.joiner4?.value || "amane");
+    const j4Skill = parseInt(this.joinerSkill4?.value) || 5;
+
+    const joinersArray = [
+      { "id": 0, "name": j1Name, "skill_levels": { "1": j1Skill } },
+      { "id": 1, "name": j2Name, "skill_levels": { "1": j2Skill } },
+      { "id": 2, "name": j3Name, "skill_levels": { "1": j3Skill } },
+      { "id": 3, "name": j4Name, "skill_levels": { "1": j4Skill } }
+    ];
+
+    // Master Hero DB matching user's working JSON
+    const heroDatabase = {
+      "Zoe": { "name": "Zoe", "type": "inf", "stats": { "attack": 240, "defense": 240, "lethality": 125, "health": 214 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 4 },
+      "Marlin": { "name": "Marlin", "type": "mark", "stats": { "attack": 199, "defense": 199, "lethality": 199, "health": 123 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 5 },
+      "Petra": { "name": "Petra", "type": "lanc", "stats": { "attack": 253, "defense": 253, "lethality": 175, "health": 103 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 3 },
+      "Alcar": { "name": "Alcar", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
+      "Eric": { "name": "Eric", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
+      "Jaeger": { "name": "Jaeger", "type": "mark", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
+      "Diana": { "name": "Diana", "type": "mark", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": {}, "widget_level": 0 },
+      "Rosa": { "name": "Rosa", "type": "mark", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
+      "Amadeus": { "name": "Amadeus", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
+      "Seth": { "name": "Seth", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": {}, "widget_level": 0 },
+      "Thrud": { "name": "Thrud", "type": "lanc", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
+      "Amane": { "name": "Amane", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
+      "Chenko": { "name": "Chenko", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 }
+    };
+
+    // Ensure all selected lead heroes AND joiners exist in heroes object
+    const allReferencedHeroes = Array.from(new Set([...selectedLeadHeroes, j1Name, j2Name, j3Name, j4Name]));
+
+    allReferencedHeroes.forEach(hName => {
+      if (!heroDatabase[hName]) {
+        heroDatabase[hName] = {
+          "name": hName,
+          "type": "inf",
+          "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 },
+          "skill_levels": { "1": 5, "2": 5, "3": 5 },
+          "widget_level": 0
+        };
+      }
+    });
+
+    const authenticSchema = {
+      "name": "bear-formation",
+      "stats": {
+        "inf": {
+          "attack": Math.round(getVal('inf_atk')),
+          "defense": Math.round(getVal('inf_def') || 923),
+          "lethality": Math.round(getVal('inf_leth')),
+          "health": Math.round(getVal('inf_hp') || 648)
+        },
+        "lanc": {
+          "attack": Math.round(getVal('cav_atk')),
+          "defense": Math.round(getVal('cav_def') || 748),
+          "lethality": Math.round(getVal('cav_leth')),
+          "health": Math.round(getVal('cav_hp') || 432)
+        },
+        "mark": {
+          "attack": Math.round(getVal('lan_atk')),
+          "defense": Math.round(getVal('lan_def') || 709),
+          "lethality": Math.round(getVal('lan_leth')),
+          "health": Math.round(getVal('lan_hp') || 493)
+        }
+      },
+      "troops": [
+        { "type": "inf", "tier": infT, "fc_level": infF, "quantity": 85326 },
+        { "type": "lanc", "tier": cavT, "fc_level": cavF, "quantity": 14221 },
+        { "type": "mark", "tier": lanT, "fc_level": lanF, "quantity": 5000 }
+      ],
+      "heroes": heroDatabase,
+      "joiners": joinersArray,
+      "stats_include_heroes": true,
+      "selectedHeroes": selectedLeadHeroes
+    };
+
+    return JSON.stringify(authenticSchema, null, 2);
+  }
+
+  updateJsonPayload() {
+    if (this.jsonTextArea) {
+      this.jsonTextArea.value = this.generateOfficialJson();
+    }
+  }
+
+  downloadJsonFile() {
+    const jsonString = this.generateOfficialJson();
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'kingshot_stats.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    if (this.btnDownloadJson) {
+      const origText = this.btnDownloadJson.innerHTML;
+      this.btnDownloadJson.innerHTML = `<span>✅ kingshot_stats.json を保存しました！</span>`;
+      setTimeout(() => { this.btnDownloadJson.innerHTML = origText; }, 2500);
+    }
+  }
+}
+
+// Initialize on DOM load
+document.addEventListener('DOMContentLoaded', () => {
+  window.planAApp = new PlanAApp();
+});

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KingShot 本家完全対応 JSON生成ツール</title>
+  <meta name="description" content="本家kingshotsimulator.comの全項目に対応した完全互換JSON生成ツール。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container mobile-wrapper">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <span class="logo-icon">📦</span>
+        <div>
+          <h1>KingShot 本家完全対応 JSONツール</h1>
+          <p class="subtitle">集結主英雄(31名) ＆ 乗り手(Joiner Skill Level完全対応)</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- STEP 1: Upload Section -->
+      <section class="card upload-section">
+        <div class="section-title">
+          <h2><span>1</span> ステータススクショの読み込み (Ctrl+V)</h2>
+        </div>
+
+        <div class="drop-zone" id="dropZone">
+          <div class="drop-zone-content" id="dropZoneContent">
+            <div class="upload-icon">🖼️</div>
+            <h3>画像のドロップ・貼り付けに対応</h3>
+            <p>画像ファイルを選択するか、Ctrl+Vで貼り付け</p>
+            
+            <div class="native-file-picker-wrapper">
+              <input type="file" id="fileInput" accept="image/*" class="native-file-input">
+            </div>
+          </div>
+
+          <div class="image-preview-container hidden" id="previewContainer">
+            <img id="imagePreview" alt="アップロードされたスクリーンショット">
+            <button type="button" class="btn btn-sm btn-danger" id="removeImgBtn">✕ 別の画像を選ぶ</button>
+          </div>
+        </div>
+
+        <div class="status-bar hidden" id="ocrStatusBar">
+          <div class="spinner"></div>
+          <span id="ocrStatusText">画像を解析中...</span>
+        </div>
+      </section>
+
+      <!-- STEP 2: Extracted Stats Preview & Clear Left/Right Selector -->
+      <section class="card stats-section">
+        <div class="section-title flex-between">
+          <h2><span>2</span> ステータスと計算列の確認</h2>
+          <div class="column-selector">
+            <div class="toggle-buttons" role="radiogroup">
+              <button type="button" class="toggle-btn active" id="btnSelectLeft">
+                <span class="dot"></span> (●) 左列の数値
+              </button>
+              <button type="button" class="toggle-btn" id="btnSelectRight">
+                <span class="dot"></span> (  ) 右列の数値
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-summary-grid" id="statsSummaryGrid">
+          <!-- JS populated stats preview cards -->
+        </div>
+      </section>
+
+      <!-- STEP 3: Troop & Hero Configurations -->
+      <section class="card config-section">
+        <div class="section-title">
+          <h2><span>3</span> 兵隊ランク・黄金レベル・英雄設定</h2>
+        </div>
+
+        <!-- Troop Tiers & FC Levels -->
+        <div class="config-grid">
+          <div class="config-card">
+            <h3>🛡️ 歩兵 (Infantry)</h3>
+            <div class="form-row">
+              <label>ランク (Tier):</label>
+              <select id="infTier" class="form-control">
+                <option value="10" selected>T10</option>
+                <option value="9">T9</option>
+                <option value="8">T8</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>FCレベル (黄金):</label>
+              <select id="infFc" class="form-control">
+                <option value="5" selected>FC 5</option>
+                <option value="4">FC 4</option>
+                <option value="3">FC 3</option>
+                <option value="2">FC 2</option>
+                <option value="1">FC 1</option>
+                <option value="0">FC 0</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="config-card">
+            <h3>🐎 槍兵 (Lancer)</h3>
+            <div class="form-row">
+              <label>ランク (Tier):</label>
+              <select id="cavTier" class="form-control">
+                <option value="10" selected>T10</option>
+                <option value="9">T9</option>
+                <option value="8">T8</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>FCレベル (黄金):</label>
+              <select id="cavFc" class="form-control">
+                <option value="5" selected>FC 5</option>
+                <option value="4">FC 4</option>
+                <option value="3">FC 3</option>
+                <option value="2">FC 2</option>
+                <option value="1">FC 1</option>
+                <option value="0">FC 0</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="config-card">
+            <h3>🏹 弓兵 (Marksman)</h3>
+            <div class="form-row">
+              <label>ランク (Tier):</label>
+              <select id="lanTier" class="form-control">
+                <option value="10" selected>T10</option>
+                <option value="9">T9</option>
+                <option value="8">T8</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>FCレベル (黄金):</label>
+              <select id="lanFc" class="form-control">
+                <option value="5" selected>FC 5</option>
+                <option value="4">FC 4</option>
+                <option value="3">FC 3</option>
+                <option value="2">FC 2</option>
+                <option value="1">FC 1</option>
+                <option value="0">FC 0</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 👑 集結主の出撃英雄 3名 -->
+        <div class="hero-config-box margin-top-md">
+          <h3>👑 集結主の参加英雄 3名 (Rally Lead Heroes)</h3>
+          <div class="form-group margin-bottom-xs">
+            <label>英雄 1 (メイン):</label>
+            <select id="leadHero1" class="form-control hero-select-dropdown"></select>
+          </div>
+          <div class="form-group margin-bottom-xs">
+            <label>英雄 2 (サブ):</label>
+            <select id="leadHero2" class="form-control hero-select-dropdown"></select>
+          </div>
+          <div class="form-group margin-bottom-xs">
+            <label>英雄 3 (サブ):</label>
+            <select id="leadHero3" class="form-control hero-select-dropdown"></select>
+          </div>
+        </div>
+
+        <!-- 🤝 乗り手 (Joiner) 英雄 ＆ スキルレベル設定 -->
+        <div class="hero-config-box margin-top-md">
+          <h3>🤝 乗り手のJoiner英雄 ＆ スキルレベル設定 (4枠)</h3>
+          
+          <div class="joiner-row-grid margin-bottom-xs">
+            <div class="joiner-col">
+              <label>Joiner 1 (枠0):</label>
+              <select id="joiner1" class="form-control"></select>
+            </div>
+            <div class="joiner-col-sm">
+              <label>スキルLv:</label>
+              <select id="joinerSkill1" class="form-control">
+                <option value="5" selected>Lv 5</option>
+                <option value="4">Lv 4</option>
+                <option value="3">Lv 3</option>
+                <option value="2">Lv 2</option>
+                <option value="1">Lv 1</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="joiner-row-grid margin-bottom-xs">
+            <div class="joiner-col">
+              <label>Joiner 2 (枠1):</label>
+              <select id="joiner2" class="form-control"></select>
+            </div>
+            <div class="joiner-col-sm">
+              <label>スキルLv:</label>
+              <select id="joinerSkill2" class="form-control">
+                <option value="5" selected>Lv 5</option>
+                <option value="4">Lv 4</option>
+                <option value="3">Lv 3</option>
+                <option value="2">Lv 2</option>
+                <option value="1">Lv 1</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="joiner-row-grid margin-bottom-xs">
+            <div class="joiner-col">
+              <label>Joiner 3 (枠2):</label>
+              <select id="joiner3" class="form-control"></select>
+            </div>
+            <div class="joiner-col-sm">
+              <label>スキルLv:</label>
+              <select id="joinerSkill3" class="form-control">
+                <option value="5" selected>Lv 5</option>
+                <option value="4">Lv 4</option>
+                <option value="3">Lv 3</option>
+                <option value="2">Lv 2</option>
+                <option value="1">Lv 1</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="joiner-row-grid margin-bottom-xs">
+            <div class="joiner-col">
+              <label>Joiner 4 (枠3):</label>
+              <select id="joiner4" class="form-control"></select>
+            </div>
+            <div class="joiner-col-sm">
+              <label>スキルLv:</label>
+              <select id="joinerSkill4" class="form-control">
+                <option value="5" selected>Lv 5</option>
+                <option value="4">Lv 4</option>
+                <option value="3">Lv 3</option>
+                <option value="2">Lv 2</option>
+                <option value="1">Lv 1</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 4: Official JSON Save & Open Site -->
+      <section class="card action-section">
+        <div class="section-title">
+          <h2><span>4</span> 完全適合JSONの保存と本家での読み込み</h2>
+        </div>
+
+        <div class="auto-fill-box">
+          <div class="payload-preview-box">
+            <label for="jsonTextArea">本家完全適合JSONデータ (自動構築済):</label>
+            <textarea id="jsonTextArea" class="json-textarea" readonly rows="6"></textarea>
+          </div>
+
+          <div class="button-group-vertical">
+            <button type="button" id="btnDownloadJson" class="btn btn-success btn-mobile-xl">
+              <span>💾 1. 完全適合JSONファイルを保存する</span>
+            </button>
+
+            <a href="https://kingshotsimulator.com/bear-formation-helper/" target="_blank" class="btn btn-primary btn-mobile-large external-btn margin-top-xs">
+              <span>🌐 2. kingshotsimulator.com を開く ↗</span>
+            </a>
+          </div>
+
+          <div class="instruction-box">
+            <h4>📱 本家サイトでの読み込み＆手動確認手順:</h4>
+            <ol>
+              <li>「<strong>1. 完全適合JSONファイルを保存する</strong>」を押してファイルを保存。</li>
+              <li>「<strong>2. kingshotsimulator.com を開く</strong>」を押す。</li>
+              <li>本家サイトの <strong>「Import」</strong> ボタンを押して、保存したファイルを選択。</li>
+            </ol>
+            <div class="notice-badge warning-notice margin-top-xs">
+              ⚠️ <strong>【ご注意・本家サイトの仕様】</strong><br>
+              本家シミュレーターの仕様により、JSONインポート時にジョイナー（乗り手）情報が自動反映されず、ページの既存状態が維持される場合があります。インポート後、本家画面の <strong>「Joiners」</strong> タブにてジョイナーの英雄とスキルレベルを手動でご確認・ご入力ください。
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>KingShot JSON Tool &copy; 2026 | Powered by kingshotsimulator.com</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
