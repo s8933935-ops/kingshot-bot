@@ -233,8 +233,30 @@ class PlanAApp {
     if (this.dropZoneContent) this.dropZoneContent.classList.remove('hidden');
     if (this.previewContainer) this.previewContainer.classList.add('hidden');
     if (this.fileInput) this.fileInput.value = '';
+    
     localStorage.removeItem('kingshot_stats');
     this.stats = JSON.parse(JSON.stringify(defaultStats));
+
+    // Clear all DOM inputs physically for PC browsers
+    if (this.fighterNameInput) this.fighterNameInput.value = "";
+    
+    const defaultLead = ["petra", "alcar", "marlin"];
+    if (this.leadHero1) this.leadHero1.value = defaultLead[0];
+    if (this.leadHero2) this.leadHero2.value = defaultLead[1];
+    if (this.leadHero3) this.leadHero3.value = defaultLead[2];
+
+    const joinerDropdowns = [this.joiner1, this.joiner2, this.joiner3, this.joiner4];
+    joinerDropdowns.forEach(dd => { if (dd) dd.value = "amane"; });
+
+    const skillInputs = [this.joinerSkill1, this.joinerSkill2, this.joinerSkill3, this.joinerSkill4];
+    skillInputs.forEach(inp => { if (inp) inp.value = "5"; });
+
+    const tierInputs = [this.infTier, this.cavTier, this.lanTier];
+    tierInputs.forEach(inp => { if (inp) inp.value = "10"; });
+
+    const fcInputs = [this.infFc, this.cavFc, this.lanFc];
+    fcInputs.forEach(inp => { if (inp) inp.value = "5"; });
+
     this.renderStatsSummary();
     this.updateJsonPayload();
   }
@@ -275,37 +297,62 @@ class PlanAApp {
     }
   }
 
-  processOCR(file) {
+  async processOCR(file) {
     if (this.ocrStatusBar) this.ocrStatusBar.classList.remove('hidden');
-    
-    setTimeout(() => {
-      if (this.ocrStatusBar) this.ocrStatusBar.classList.add('hidden');
+
+    try {
+      const imgUrl = URL.createObjectURL(file);
+      const img = new Image();
       
-      if (file) {
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = imgUrl;
+      });
+
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imgData.data;
+      for (let i = 0; i < data.length; i += 4) {
+        const avg = (data[i] + data[i+1] + data[i+2]) / 3;
+        const val = avg > 120 ? 255 : 0;
+        data[i] = data[i+1] = data[i+2] = val;
+      }
+      ctx.putImageData(imgData, 0, 0);
+      const processedDataUrl = canvas.toDataURL('image/png');
+
+      if (typeof Tesseract !== 'undefined') {
+        const result = await Tesseract.recognize(processedDataUrl, 'eng');
+        this.parseOcrTextToStats(result.data.text);
+      } else {
+        console.warn('Tesseract.js is not loaded. Fallback processing...');
         this.generateStatsFromFile(file);
       }
-      
+    } catch(err) {
+      console.error('OCR Error:', err);
+    } finally {
+      if (this.ocrStatusBar) this.ocrStatusBar.classList.add('hidden');
       this.renderStatsSummary();
       this.updateJsonPayload();
-    }, 600);
+    }
   }
 
-  generateStatsFromFile(file) {
-    const hashString = file.name + file.size + (file.lastModified || '');
-    let hash = 0;
-    for (let i = 0; i < hashString.length; i++) {
-      hash = ((hash << 5) - hash) + hashString.charCodeAt(i);
-      hash |= 0;
-    }
-    const pseudoRandom = Math.abs(hash);
+  parseOcrTextToStats(text) {
+    const matches = text.match(/\d+(\.\d+)?/g);
+    if (!matches) return;
 
-    this.stats = defaultStats.map((stat, index) => {
-       const leftVariance = (pseudoRandom % (index * 7 + 13)) * 2.5;
-       const rightVariance = (pseudoRandom % (index * 5 + 11)) * 1.8;
+    let numbers = matches.map(Number).filter(n => n > 0 && n < 10000);
+    
+    this.stats = this.stats.map((stat, idx) => {
        return {
          ...stat,
-         left: parseFloat((stat.left + leftVariance).toFixed(1)),
-         right: parseFloat((stat.right + rightVariance).toFixed(1))
+         left: numbers.length > idx * 2 ? parseFloat(numbers[idx * 2].toFixed(1)) : stat.left,
+         right: numbers.length > (idx * 2 + 1) ? parseFloat(numbers[idx * 2 + 1].toFixed(1)) : stat.right
        };
     });
     
