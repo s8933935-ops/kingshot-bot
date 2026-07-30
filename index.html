@@ -43,7 +43,10 @@
 
           <div class="image-preview-container hidden" id="previewContainer">
             <img id="imagePreview" alt="アップロードされたスクリーンショット">
-            <button type="button" class="btn btn-sm btn-danger" id="removeImgBtn">✕ 別の画像を選ぶ</button>
+            <div class="button-group-row margin-top-xs">
+              <button type="button" class="btn btn-sm btn-danger" id="removeImgBtn">✕ 別の画像を選ぶ (クリア)</button>
+              <button type="button" class="btn btn-sm btn-warning" id="resetAllBtn">🔄 全データを完全リセット</button>
+            </div>
           </div>
         </div>
 
@@ -56,7 +59,7 @@
       <!-- STEP 2: Extracted Stats Preview & Clear Left/Right Selector -->
       <section class="card stats-section">
         <div class="section-title flex-between">
-          <h2><span>2</span> ステータスと計算列の確認</h2>
+          <h2><span>2</span> ステータス確認・直接数値入力</h2>
           <div class="column-selector">
             <div class="toggle-buttons" role="radiogroup">
               <button type="button" class="toggle-btn active" id="btnSelectLeft">
@@ -68,6 +71,7 @@
             </div>
           </div>
         </div>
+        <p class="notice-bar">※解析数値はボックス内で直接手動で修正・打ち替えが可能です。</p>
 
         <div class="stats-summary-grid" id="statsSummaryGrid">
           <!-- JS populated stats preview cards -->
@@ -103,6 +107,10 @@
                 <option value="0">FC 0</option>
               </select>
             </div>
+            <div class="form-row">
+              <label>出撃兵数 (数量):</label>
+              <input type="number" id="infQty" class="form-control" value="85326" min="0" placeholder="85326">
+            </div>
           </div>
 
           <div class="config-card">
@@ -126,6 +134,10 @@
                 <option value="0">FC 0</option>
               </select>
             </div>
+            <div class="form-row">
+              <label>出撃兵数 (数量):</label>
+              <input type="number" id="cavQty" class="form-control" value="14221" min="0" placeholder="14221">
+            </div>
           </div>
 
           <div class="config-card">
@@ -148,6 +160,10 @@
                 <option value="1">FC 1</option>
                 <option value="0">FC 0</option>
               </select>
+            </div>
+            <div class="form-row">
+              <label>出撃兵数 (数量):</label>
+              <input type="number" id="lanQty" class="form-control" value="5000" min="0" placeholder="5000">
             </div>
           </div>
         </div>

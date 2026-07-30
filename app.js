@@ -127,6 +127,7 @@ class PlanAApp {
 
     this.jsonTextArea = document.getElementById('jsonTextArea');
     this.btnDownloadJson = document.getElementById('btnDownloadJson');
+    this.resetAllBtn = document.getElementById('resetAllBtn');
   }
 
   populateHeroDropdowns() {
@@ -216,20 +217,26 @@ class PlanAApp {
     });
 
     if (this.removeImgBtn) {
-      this.removeImgBtn.addEventListener('click', () => {
-        if (this.dropZoneContent) this.dropZoneContent.classList.remove('hidden');
-        if (this.previewContainer) this.previewContainer.classList.add('hidden');
-        if (this.fileInput) this.fileInput.value = '';
-        this.stats = JSON.parse(JSON.stringify(defaultStats));
-        this.saveState();
-        this.renderStatsSummary();
-        this.updateJsonPayload();
-      });
+      this.removeImgBtn.addEventListener('click', () => this.resetAllData());
+    }
+
+    if (this.resetAllBtn) {
+      this.resetAllBtn.addEventListener('click', () => this.resetAllData());
     }
 
     if (this.btnDownloadJson) {
       this.btnDownloadJson.addEventListener('click', () => this.downloadJsonFile());
     }
+  }
+
+  resetAllData() {
+    if (this.dropZoneContent) this.dropZoneContent.classList.remove('hidden');
+    if (this.previewContainer) this.previewContainer.classList.add('hidden');
+    if (this.fileInput) this.fileInput.value = '';
+    localStorage.removeItem('kingshot_stats');
+    this.stats = JSON.parse(JSON.stringify(defaultStats));
+    this.renderStatsSummary();
+    this.updateJsonPayload();
   }
 
   setMode(mode) {
@@ -309,7 +316,7 @@ class PlanAApp {
     if (!this.statsSummaryGrid) return;
     this.statsSummaryGrid.innerHTML = '';
 
-    this.stats.forEach(item => {
+    this.stats.forEach((item, index) => {
       const val = this.selectedColumn === 'left' ? item.left : item.right;
       const label = this.selectedColumn === 'left' ? ' [左列]' : ' [右列]';
 
@@ -317,9 +324,26 @@ class PlanAApp {
       chip.className = 'stat-chip';
       chip.innerHTML = `
         <span>${item.name}${label}</span>
-        <strong>+${val.toFixed(1)}%</strong>
+        <div style="display:flex; align-items:center; gap:4px;">
+          <input type="number" step="0.1" class="form-control stat-edit-input" data-index="${index}" value="${val}" style="width: 80px; text-align: right; padding: 2px 6px; font-weight: bold; color: var(--accent-gold);"> %
+        </div>
       `;
       this.statsSummaryGrid.appendChild(chip);
+    });
+
+    const editInputs = this.statsSummaryGrid.querySelectorAll('.stat-edit-input');
+    editInputs.forEach(input => {
+      input.addEventListener('input', (e) => {
+        const idx = parseInt(e.target.getAttribute('data-index'));
+        const newNum = parseFloat(e.target.value) || 0;
+        if (this.selectedColumn === 'left') {
+          this.stats[idx].left = newNum;
+        } else {
+          this.stats[idx].right = newNum;
+        }
+        this.saveState();
+        this.updateJsonPayload();
+      });
     });
   }
 
