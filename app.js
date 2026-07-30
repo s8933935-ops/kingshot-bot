@@ -41,20 +41,20 @@ const OFFICIAL_HEROES_MASTER = [
 ];
 
 const defaultStats = [
-  { key: 'inf_atk', name: '歩兵 攻撃力', left: 978, right: 660.0 },
-  { key: 'inf_def', name: '歩兵 防御力', left: 923, right: 660.0 },
-  { key: 'inf_leth', name: '歩兵 殺傷力', left: 714, right: 634.3 },
-  { key: 'inf_hp', name: '歩兵 HP', left: 648, right: 630.8 },
+  { key: 'inf_atk', name: '歩兵 攻撃力', left: 0, right: 0 },
+  { key: 'inf_def', name: '歩兵 防御力', left: 0, right: 0 },
+  { key: 'inf_leth', name: '歩兵 殺傷力', left: 0, right: 0 },
+  { key: 'inf_hp', name: '歩兵 HP', left: 0, right: 0 },
 
-  { key: 'cav_atk', name: '槍/騎 攻撃力', left: 848, right: 660.0 },
-  { key: 'cav_def', name: '槍/騎 防御力', left: 748, right: 660.0 },
-  { key: 'cav_leth', name: '槍/騎 殺傷力', left: 638, right: 634.3 },
-  { key: 'cav_hp', name: '槍/騎 HP', left: 432, right: 630.8 },
+  { key: 'cav_atk', name: '槍/騎 攻撃力', left: 0, right: 0 },
+  { key: 'cav_def', name: '槍/騎 防御力', left: 0, right: 0 },
+  { key: 'cav_leth', name: '槍/騎 殺傷力', left: 0, right: 0 },
+  { key: 'cav_hp', name: '槍/騎 HP', left: 0, right: 0 },
 
-  { key: 'lan_atk', name: '弓兵 攻撃力', left: 769, right: 660.0 },
-  { key: 'lan_def', name: '弓兵 防御力', left: 709, right: 660.0 },
-  { key: 'lan_leth', name: '弓兵 殺傷力', left: 641, right: 634.3 },
-  { key: 'lan_hp', name: '弓兵 HP', left: 493, right: 630.8 },
+  { key: 'lan_atk', name: '弓兵 攻撃力', left: 0, right: 0 },
+  { key: 'lan_def', name: '弓兵 防御力', left: 0, right: 0 },
+  { key: 'lan_leth', name: '弓兵 殺傷力', left: 0, right: 0 },
+  { key: 'lan_hp', name: '弓兵 HP', left: 0, right: 0 },
 ];
 
 class PlanAApp {
