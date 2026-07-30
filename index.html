@@ -266,15 +266,22 @@
           </div>
 
           <div class="instruction-box">
-            <h4>📱 本家サイトでの読み込み＆手動確認手順:</h4>
+            <h4>🔰 初めての方へ：本家サイト（kingshotsimulator）での操作ガイド</h4>
             <ol>
               <li>「<strong>1. 完全適合JSONファイルを保存する</strong>」を押してファイルを保存。</li>
               <li>「<strong>2. kingshotsimulator.com を開く</strong>」を押す。</li>
-              <li>本家サイトの <strong>「Import」</strong> ボタンを押して、保存したファイルを選択。</li>
+              <li>本家サイト右上にある <strong>「Import/Export」</strong> ボタンを押して <strong>「Import」</strong> を選び、保存した「kingshot_stats.json」を選択します。</li>
             </ol>
+
             <div class="notice-badge warning-notice margin-top-xs">
-              ⚠️ <strong>【ご注意・本家サイトの仕様】</strong><br>
-              本家シミュレーターの仕様により、JSONインポート時にジョイナー（乗り手）情報が自動反映されず、ページの既存状態が維持される場合があります。インポート後、本家画面の <strong>「Joiners」</strong> タブにてジョイナーの英雄とスキルレベルを手動でご確認・ご入力ください。
+              ⚠️ <strong>【超重要！ Heroes Stats are included here ? スイッチについて】</strong><br>
+              インポート後、本家画面の「Heroes Stats are included here ?」スイッチが<strong>灰色のオフに見える場合がありますが、絶対にスイッチをクリックしてON（青色）に切り替えないでください！</strong><br>
+              <small style="display:block; margin-top:4px; opacity:0.9;">※JSONを読み込んだ時点で、内部データとしては「英雄込み(true)」として正しく計算されています。手動でスイッチをONに切り替えると、英雄ステータスが二重加算されて計算結果が狂ってしまいます。</small>
+            </div>
+
+            <div class="notice-badge warning-notice margin-top-xs" style="background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.4); color: #93c5fd;">
+              🤝 <strong>【Joiner（乗り手）に関するご注意】</strong><br>
+              本家シミュレーターの仕様上、JSONインポート時にジョイナー情報が画面に反映されない場合があります。インポート後、本家画面の <strong>「Joiners」</strong> タブにてジョイナーの英雄とスキルレベルを手動でご確認・ご入力ください。
             </div>
           </div>
         </div>
