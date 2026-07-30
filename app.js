@@ -476,21 +476,21 @@ class PlanAApp {
       "stats": {
         "inf": {
           "attack": Math.round(getVal('inf_atk')),
-          "defense": Math.round(getVal('inf_def') || 923),
+          "defense": Math.round(getVal('inf_def')),
           "lethality": Math.round(getVal('inf_leth')),
-          "health": Math.round(getVal('inf_hp') || 648)
+          "health": Math.round(getVal('inf_hp'))
         },
         "lanc": {
           "attack": Math.round(getVal('cav_atk')),
-          "defense": Math.round(getVal('cav_def') || 748),
+          "defense": Math.round(getVal('cav_def')),
           "lethality": Math.round(getVal('cav_leth')),
-          "health": Math.round(getVal('cav_hp') || 432)
+          "health": Math.round(getVal('cav_hp'))
         },
         "mark": {
           "attack": Math.round(getVal('lan_atk')),
-          "defense": Math.round(getVal('lan_def') || 709),
+          "defense": Math.round(getVal('lan_def')),
           "lethality": Math.round(getVal('lan_leth')),
-          "health": Math.round(getVal('lan_hp') || 493)
+          "health": Math.round(getVal('lan_hp'))
         }
       },
       "troops": [
