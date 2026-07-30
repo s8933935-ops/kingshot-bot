@@ -310,20 +310,13 @@ class PlanAApp {
         img.src = imgUrl;
       });
 
+      // Maintain original image colors for Tesseract without aggressive binarization
       const canvas = document.createElement('canvas');
       canvas.width = img.width;
       canvas.height = img.height;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0);
 
-      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imgData.data;
-      for (let i = 0; i < data.length; i += 4) {
-        const avg = (data[i] + data[i+1] + data[i+2]) / 3;
-        const val = avg > 120 ? 255 : 0;
-        data[i] = data[i+1] = data[i+2] = val;
-      }
-      ctx.putImageData(imgData, 0, 0);
       const processedDataUrl = canvas.toDataURL('image/png');
 
       if (typeof Tesseract !== 'undefined') {
@@ -343,20 +336,42 @@ class PlanAApp {
   }
 
   parseOcrTextToStats(text) {
-    const matches = text.match(/\d+(\.\d+)?/g);
-    if (!matches) return;
+    if (!text) return;
 
-    let numbers = matches.map(Number).filter(n => n > 0 && n < 10000);
-    
-    this.stats = this.stats.map((stat, idx) => {
-       return {
-         ...stat,
-         left: numbers.length > idx * 2 ? parseFloat(numbers[idx * 2].toFixed(1)) : stat.left,
-         right: numbers.length > (idx * 2 + 1) ? parseFloat(numbers[idx * 2 + 1].toFixed(1)) : stat.right
-       };
+    // Strict percentage pattern matching (+978.0% or 660.0%)
+    const statPatterns = /[+＋]?\s*(\d{2,4}(?:\.\d)?)\s*[%％]?/g;
+    const lines = text.split('\n');
+    let extractedNumbers = [];
+
+    lines.forEach(line => {
+      let match;
+      while ((match = statPatterns.exec(line)) !== null) {
+        const num = parseFloat(match[1]);
+        if (num >= 50 && num <= 3000) {
+          extractedNumbers.push(num);
+        }
+      }
     });
-    
-    this.saveState();
+
+    if (extractedNumbers.length === 0) {
+      const fallbackMatches = text.match(/\d+(\.\d+)?/g);
+      if (fallbackMatches) {
+        extractedNumbers = fallbackMatches.map(Number).filter(n => n >= 50 && n <= 3000);
+      }
+    }
+
+    if (extractedNumbers.length > 0) {
+      this.stats = this.stats.map((stat, idx) => {
+         const leftVal = extractedNumbers.length > idx * 2 ? parseFloat(extractedNumbers[idx * 2].toFixed(1)) : stat.left;
+         const rightVal = extractedNumbers.length > (idx * 2 + 1) ? parseFloat(extractedNumbers[idx * 2 + 1].toFixed(1)) : stat.right;
+         return {
+           ...stat,
+           left: leftVal,
+           right: rightVal
+         };
+      });
+      this.saveState();
+    }
   }
 
   renderStatsSummary() {
