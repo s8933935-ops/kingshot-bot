@@ -310,15 +310,13 @@ class PlanAApp {
         img.src = imgUrl;
       });
 
-      // 1. 2.5x Canvas Upscaling & Contrast for Low DPI Screenshots
-      const scale = 2.5;
+      // Fix: Draw image into scaled canvas bounds without offset clipping
+      const scale = 2.0;
       const canvas = document.createElement('canvas');
       canvas.width = img.width * scale;
       canvas.height = img.height * scale;
       const ctx = canvas.getContext('2d');
-      ctx.filter = 'grayscale(100%) contrast(180%)';
-      ctx.scale(scale, scale);
-      ctx.drawImage(img, 0, 0);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
       const processedDataUrl = canvas.toDataURL('image/png');
 
@@ -341,77 +339,44 @@ class PlanAApp {
   parseOcrTextToStats(text) {
     if (!text) return;
 
-    // Keyword Anchors for Japanese and English UI labels
     const anchors = [
-      { key: 'inf_atk', regex: /(歩兵|Infantry).*(攻撃|Attack)/i },
-      { key: 'inf_def', regex: /(歩兵|Infantry).*(防御|Defense)/i },
-      { key: 'inf_leth', regex: /(歩兵|Infantry).*(殺傷|Lethality)/i },
-      { key: 'inf_hp', regex: /(歩兵|Infantry).*(HP|Health)/i },
+      { key: 'inf_atk', regex: /(歩兵|Infantry)[\s\S]{0,40}(攻撃|Attack)/i },
+      { key: 'inf_def', regex: /(歩兵|Infantry)[\s\S]{0,40}(防御|Defense)/i },
+      { key: 'inf_leth', regex: /(歩兵|Infantry)[\s\S]{0,40}(殺傷|Lethality)/i },
+      { key: 'inf_hp', regex: /(歩兵|Infantry)[\s\S]{0,40}(HP|Health)/i },
       
-      { key: 'cav_atk', regex: /(槍|騎|Cavalry|Lancer).*(攻撃|Attack)/i },
-      { key: 'cav_def', regex: /(槍|騎|Cavalry|Lancer).*(防御|Defense)/i },
-      { key: 'cav_leth', regex: /(槍|騎|Cavalry|Lancer).*(殺傷|Lethality)/i },
-      { key: 'cav_hp', regex: /(槍|騎|Cavalry|Lancer).*(HP|Health)/i },
+      { key: 'cav_atk', regex: /(槍|騎|Cavalry|Lancer)[\s\S]{0,40}(攻撃|Attack)/i },
+      { key: 'cav_def', regex: /(槍|騎|Cavalry|Lancer)[\s\S]{0,40}(防御|Defense)/i },
+      { key: 'cav_leth', regex: /(槍|騎|Cavalry|Lancer)[\s\S]{0,40}(殺傷|Lethality)/i },
+      { key: 'cav_hp', regex: /(槍|騎|Cavalry|Lancer)[\s\S]{0,40}(HP|Health)/i },
       
-      { key: 'lan_atk', regex: /(弓|Marksman|Archer).*(攻撃|Attack)/i },
-      { key: 'lan_def', regex: /(弓|Marksman|Archer).*(防御|Defense)/i },
-      { key: 'lan_leth', regex: /(弓|Marksman|Archer).*(殺傷|Lethality)/i },
-      { key: 'lan_hp', regex: /(弓|Marksman|Archer).*(HP|Health)/i }
+      { key: 'lan_atk', regex: /(弓|Marksman|Archer)[\s\S]{0,40}(攻撃|Attack)/i },
+      { key: 'lan_def', regex: /(弓|Marksman|Archer)[\s\S]{0,40}(防御|Defense)/i },
+      { key: 'lan_leth', regex: /(弓|Marksman|Archer)[\s\S]{0,40}(殺傷|Lethality)/i },
+      { key: 'lan_hp', regex: /(弓|Marksman|Archer)[\s\S]{0,40}(HP|Health)/i }
     ];
 
-    const lines = text.split('\n');
     const statPatterns = /[+＋]?\s*(\d{2,4}(?:\.\d)?)\s*[%％]?/g;
-    let updated = false;
+    let extractedNumbers = [];
+    let match;
 
-    anchors.forEach(anchor => {
-      const matchedLine = lines.find(line => anchor.regex.test(line));
-      if (matchedLine) {
-        let extractedNumbers = [];
-        let match;
-        while ((match = statPatterns.exec(matchedLine)) !== null) {
-          const num = parseFloat(match[1]);
-          if (num >= 50 && num <= 3000) {
-            extractedNumbers.push(num);
-          }
-        }
-        
-        const statIndex = this.stats.findIndex(s => s.key === anchor.key);
-        if (statIndex !== -1 && extractedNumbers.length > 0) {
-          updated = true;
-          if (extractedNumbers.length >= 2) {
-            this.stats[statIndex].left = extractedNumbers[0];
-            this.stats[statIndex].right = extractedNumbers[1];
-          } else {
-            this.stats[statIndex][this.selectedColumn] = extractedNumbers[0];
-          }
-        }
+    while ((match = statPatterns.exec(text)) !== null) {
+      const num = parseFloat(match[1]);
+      if (num >= 50 && num <= 3000) {
+        extractedNumbers.push(num);
       }
-    });
+    }
 
-    // Fallback if keyword anchors are not triggered (e.g. cropped values-only screenshot)
-    if (!updated) {
-      let extractedNumbers = [];
-      lines.forEach(line => {
-        let match;
-        while ((match = statPatterns.exec(line)) !== null) {
-          const num = parseFloat(match[1]);
-          if (num >= 50 && num <= 3000) {
-            extractedNumbers.push(num);
-          }
-        }
+    if (extractedNumbers.length > 0) {
+      this.stats = this.stats.map((stat, idx) => {
+         const leftVal = extractedNumbers.length > idx * 2 ? parseFloat(extractedNumbers[idx * 2].toFixed(1)) : stat.left;
+         const rightVal = extractedNumbers.length > (idx * 2 + 1) ? parseFloat(extractedNumbers[idx * 2 + 1].toFixed(1)) : stat.right;
+         return {
+           ...stat,
+           left: leftVal,
+           right: rightVal
+         };
       });
-
-      if (extractedNumbers.length > 0) {
-        this.stats = this.stats.map((stat, idx) => {
-           const leftVal = extractedNumbers.length > idx * 2 ? parseFloat(extractedNumbers[idx * 2].toFixed(1)) : stat.left;
-           const rightVal = extractedNumbers.length > (idx * 2 + 1) ? parseFloat(extractedNumbers[idx * 2 + 1].toFixed(1)) : stat.right;
-           return {
-             ...stat,
-             left: leftVal,
-             right: rightVal
-           };
-        });
-      }
     }
 
     this.saveState();
