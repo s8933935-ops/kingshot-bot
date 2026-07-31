@@ -57,21 +57,23 @@
           <span id="ocrStatusText">画像を解析中...</span>
         </div>
 
-        <!-- OCR Debug View: Processed Image & Raw Text Feedback -->
-        <div class="ocr-debug-box margin-top-xs p-3" id="ocrDebugSection" style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--accent-blue); border-radius: 8px; margin-top: 12px;">
-          <h4 style="color: var(--accent-gold); margin-bottom: 8px;">👁️ OCRが実際に認識した画像 ＆ テキストのフィードバック</h4>
-          <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 8px;">※画像前処理（ノイズ除去・二値化・拡大）によってOCRエンジンの目にどのように映っているかを表示します。</p>
+        <!-- OCR Debug View: Processed Image & Raw Text Feedback (Always Visible) -->
+        <div class="ocr-debug-box p-3" id="ocrDebugSection" style="background: #0f172a; border: 2px solid #38bdf8; border-radius: 8px; margin-top: 16px; padding: 12px;">
+          <h3 style="color: #f59e0b; margin-bottom: 6px; font-size: 1.05rem; display: flex; align-items: center; gap: 6px;">
+            <span>👁️ OCR視覚フィードバック（AIが見ている加工画像 ＆ テキスト）</span>
+          </h3>
+          <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 10px;">画像を読み込むと、ここにAIが認識した加工画像と生のテキスト結果がリアルタイム表示されます。</p>
           <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px;">
-              <label style="font-size: 0.8rem; color: var(--accent-blue);">【AIが見ている加工後画像】</label>
-              <div style="max-height: 200px; overflow: auto; background: #000; border: 1px solid #334155; text-align: center; border-radius: 4px; padding: 4px;">
+            <div style="flex: 1; min-width: 240px;">
+              <label style="font-size: 0.85rem; color: #38bdf8; font-weight: bold; display: block; margin-bottom: 4px;">【AIが見ている加工後画像】</label>
+              <div style="min-height: 140px; max-height: 220px; overflow: auto; background: #000; border: 1px solid #475569; text-align: center; border-radius: 6px; padding: 6px;">
                 <canvas id="ocrDebugCanvas" style="max-width: 100%; height: auto; display: none;"></canvas>
-                <img id="ocrDebugImg" alt="OCR加工後画像" style="max-width: 100%; height: auto;">
+                <img id="ocrDebugImg" alt="画像アップロード後に表示されます" style="max-width: 100%; height: auto; border: 1px dashed #64748b;">
               </div>
             </div>
-            <div style="flex: 1; min-width: 250px;">
-              <label style="font-size: 0.8rem; color: var(--accent-blue);">【AIが読み取った生のテキスト全文】</label>
-              <textarea id="ocrRawTextOutput" readonly rows="8" style="width: 100%; font-family: monospace; font-size: 0.8rem; background: #090d16; color: #38bdf8; border: 1px solid #334155; border-radius: 4px; padding: 6px;" placeholder="画像をアップロードすると、OCRが実際に読み取った生テキストが表示されます..."></textarea>
+            <div style="flex: 1; min-width: 240px;">
+              <label style="font-size: 0.85rem; color: #38bdf8; font-weight: bold; display: block; margin-bottom: 4px;">【AIが読み取った生のテキスト全文】</label>
+              <textarea id="ocrRawTextOutput" readonly rows="8" style="width: 100%; font-family: monospace; font-size: 0.8rem; background: #020617; color: #38bdf8; border: 1px solid #475569; border-radius: 6px; padding: 8px;" placeholder="画像をアップロードすると、OCRが実際に読み取った生テキストが表示されます..."></textarea>
             </div>
           </div>
         </div>
