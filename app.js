@@ -128,6 +128,9 @@ class PlanAApp {
     this.jsonTextArea = document.getElementById('jsonTextArea');
     this.btnDownloadJson = document.getElementById('btnDownloadJson');
     this.resetAllBtn = document.getElementById('resetAllBtn');
+
+    this.ocrDebugImg = document.getElementById('ocrDebugImg');
+    this.ocrRawTextOutput = document.getElementById('ocrRawTextOutput');
   }
 
   populateHeroDropdowns() {
@@ -363,9 +366,15 @@ class PlanAApp {
       ctx.putImageData(sharpData, 0, 0);
 
       const processedDataUrl = canvas.toDataURL('image/png');
+      if (this.ocrDebugImg) {
+        this.ocrDebugImg.src = processedDataUrl;
+      }
 
       if (typeof Tesseract !== 'undefined') {
-        const result = await Tesseract.recognize(processedDataUrl, 'eng');
+        const result = await Tesseract.recognize(processedDataUrl, 'eng+jpn');
+        if (this.ocrRawTextOutput) {
+          this.ocrRawTextOutput.value = result.data.text || "(認識されたテキストはありません)";
+        }
         this.parseOcrTextToStats(result.data.text);
       } else {
         console.warn('Tesseract.js is not loaded. Fallback processing...');
