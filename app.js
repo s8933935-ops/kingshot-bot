@@ -329,12 +329,13 @@ class PlanAApp {
         const r = d[i], g = d[i+1], b = d[i+2];
         const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
         
-        // High contrast boost: make text dark/sharp and background bright white
-        if (luminance > 140) {
-          d[i] = d[i+1] = d[i+2] = 255;
-        } else {
-          d[i] = d[i+1] = d[i+2] = 0;
-        }
+        // 自動コントラスト補正と反転（黒文字・白背景化）
+        // 過去の失敗（過度な二値化で金文字破壊）を防ぐため、階調を残しつつ背景を白に飛ばす
+        let contrastLuma = (luminance - 60) * 2.0;
+        contrastLuma = Math.min(Math.max(contrastLuma, 0), 255);
+        
+        const finalVal = 255 - contrastLuma;
+        d[i] = d[i+1] = d[i+2] = finalVal;
       }
       ctx.putImageData(imgData, 0, 0);
 
@@ -392,24 +393,31 @@ class PlanAApp {
   parseOcrTextToStats(text) {
     if (!text) return;
 
-    // Strategic Rule: Remove decimal points completely and parse CLEAN INTEGERS ONLY (e.g. 978, 660, 714)
-    const cleanText = text.replace(/\.\d+/g, '');
-    const integerPattern = /\b([5-9]\d{2}|[1-2]\d{3})\b/g;
+    // 数字の正規化、'O'->'0', 'I'->'1', 'l'->'1', 'S'->'5', 'B'->'8' 等の置換フィルタ
+    let normalizedText = text.replace(/[Oo]/g, '0')
+                             .replace(/[Il|]/g, '1')
+                             .replace(/[S]/g, '5')
+                             .replace(/[B]/g, '8')
+                             .replace(/[Z]/g, '2');
+
+    // Strictルール: パーセント記号付きパターン
+    const statPattern = /[+＋]?\s*(\d{2,4}(?:\.\d)?)\s*[%％]?/g;
     
-    let extractedIntegers = [];
+    let extractedFloats = [];
     let match;
 
-    while ((match = integerPattern.exec(cleanText)) !== null) {
-      const num = parseInt(match[1], 10);
-      if (num >= 100 && num <= 3000) {
-        extractedIntegers.push(num);
+    while ((match = statPattern.exec(normalizedText)) !== null) {
+      const num = parseFloat(match[1]);
+      // Strictルール: 50.0 〜 3000.0 の有効範囲フィルタ
+      if (num >= 50.0 && num <= 3000.0) {
+        extractedFloats.push(num);
       }
     }
 
-    if (extractedIntegers.length > 0) {
+    if (extractedFloats.length > 0) {
       this.stats = this.stats.map((stat, idx) => {
-         const leftVal = extractedIntegers.length > idx * 2 ? Math.round(extractedIntegers[idx * 2]) : stat.left;
-         const rightVal = extractedIntegers.length > (idx * 2 + 1) ? Math.round(extractedIntegers[idx * 2 + 1]) : stat.right;
+         const leftVal = extractedFloats.length > idx * 2 ? Math.round(extractedFloats[idx * 2]) : stat.left;
+         const rightVal = extractedFloats.length > (idx * 2 + 1) ? Math.round(extractedFloats[idx * 2 + 1]) : stat.right;
          return {
            ...stat,
            left: leftVal,
