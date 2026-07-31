@@ -335,6 +335,33 @@ class PlanAApp {
       }
       ctx.putImageData(imgData, 0, 0);
 
+      // Sharpening Convolution Filter for Crisp Letter Edges
+      const w = canvas.width;
+      const h = canvas.height;
+      const sharpData = ctx.getImageData(0, 0, w, h);
+      const sData = sharpData.data;
+      const copy = new Uint8ClampedArray(sData);
+      const kernel = [0, -1, 0, -1, 5, -1, 0, -1, 0];
+      for (let y = 1; y < h - 1; y++) {
+        for (let x = 1; x < w - 1; x++) {
+          const idx = (y * w + x) * 4;
+          let r = 0, g = 0, b = 0;
+          for (let ky = -1; ky <= 1; ky++) {
+            for (let kx = -1; kx <= 1; kx++) {
+              const kIdx = ((y + ky) * w + (x + kx)) * 4;
+              const weight = kernel[(ky + 1) * 3 + (kx + 1)];
+              r += copy[kIdx] * weight;
+              g += copy[kIdx + 1] * weight;
+              b += copy[kIdx + 2] * weight;
+            }
+          }
+          sData[idx] = Math.min(Math.max(r, 0), 255);
+          sData[idx+1] = Math.min(Math.max(g, 0), 255);
+          sData[idx+2] = Math.min(Math.max(b, 0), 255);
+        }
+      }
+      ctx.putImageData(sharpData, 0, 0);
+
       const processedDataUrl = canvas.toDataURL('image/png');
 
       if (typeof Tesseract !== 'undefined') {
@@ -372,8 +399,8 @@ class PlanAApp {
 
     if (extractedIntegers.length > 0) {
       this.stats = this.stats.map((stat, idx) => {
-         const leftVal = extractedIntegers.length > idx * 2 ? extractedIntegers[idx * 2] : stat.left;
-         const rightVal = extractedIntegers.length > (idx * 2 + 1) ? extractedIntegers[idx * 2 + 1] : stat.right;
+         const leftVal = extractedIntegers.length > idx * 2 ? Math.round(extractedIntegers[idx * 2]) : stat.left;
+         const rightVal = extractedIntegers.length > (idx * 2 + 1) ? Math.round(extractedIntegers[idx * 2 + 1]) : stat.right;
          return {
            ...stat,
            left: leftVal,
@@ -397,7 +424,7 @@ class PlanAApp {
       chip.innerHTML = `
         <span>${item.name}${label}</span>
         <div style="display:flex; align-items:center; gap:4px;">
-          <input type="number" step="0.1" class="form-control stat-edit-input" data-index="${index}" value="${val}" style="width: 80px; text-align: right; padding: 2px 6px; font-weight: bold; color: var(--accent-gold);"> %
+          <input type="number" step="1" class="form-control stat-edit-input" data-index="${index}" value="${Math.round(val)}" style="width: 80px; text-align: right; padding: 2px 6px; font-weight: bold; color: var(--accent-gold);"> %
         </div>
       `;
       this.statsSummaryGrid.appendChild(chip);
@@ -407,7 +434,7 @@ class PlanAApp {
     editInputs.forEach(input => {
       input.addEventListener('input', (e) => {
         const idx = parseInt(e.target.getAttribute('data-index'));
-        const newNum = parseFloat(e.target.value) || 0;
+        const newNum = parseInt(e.target.value, 10) || 0;
         if (this.selectedColumn === 'left') {
           this.stats[idx].left = newNum;
         } else {
