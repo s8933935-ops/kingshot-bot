@@ -329,23 +329,25 @@ class PlanAApp {
         const r = d[i], g = d[i+1], b = d[i+2];
         const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
         
-        // 自動コントラスト補正と反転（黒文字・白背景化）
-        // 過去の失敗（過度な二値化で金文字破壊）を防ぐため、階調を残しつつ背景を白に飛ばす
-        let contrastLuma = (luminance - 60) * 2.0;
+        // 強いコントラスト調整と二値化によるグラデーションノイズ除去
+        // 白文字（高輝度）を黒に、背景（低・中輝度）を白に飛ばす
+        let contrastLuma = (luminance - 128) * 4.0 + 128;
         contrastLuma = Math.min(Math.max(contrastLuma, 0), 255);
         
+        // 黒文字化 (Invert)
         const finalVal = 255 - contrastLuma;
         d[i] = d[i+1] = d[i+2] = finalVal;
       }
       ctx.putImageData(imgData, 0, 0);
 
-      // Sharpening Convolution Filter for Crisp Letter Edges
+      // Edge Enhancement (Strong Sharpening Kernel)
       const w = canvas.width;
       const h = canvas.height;
       const sharpData = ctx.getImageData(0, 0, w, h);
       const sData = sharpData.data;
       const copy = new Uint8ClampedArray(sData);
-      const kernel = [0, -1, 0, -1, 5, -1, 0, -1, 0];
+      // より強力なエッジ強調カーネル
+      const kernel = [-1, -1, -1, -1, 9, -1, -1, -1, -1];
       for (let y = 1; y < h - 1; y++) {
         for (let x = 1; x < w - 1; x++) {
           const idx = (y * w + x) * 4;
@@ -400,32 +402,56 @@ class PlanAApp {
                              .replace(/[B]/g, '8')
                              .replace(/[Z]/g, '2');
 
-    // Strictルール: パーセント記号付きパターン
-    const statPattern = /[+＋]?\s*(\d{2,4}(?:\.\d)?)\s*[%％]?/g;
-    
-    let extractedFloats = [];
-    let match;
+    const lines = normalizedText.split('\n');
+    let updatedStats = [...this.stats];
 
-    while ((match = statPattern.exec(normalizedText)) !== null) {
-      const num = parseFloat(match[1]);
-      // Strictルール: 50.0 〜 3000.0 の有効範囲フィルタ
-      if (num >= 50.0 && num <= 3000.0) {
-        extractedFloats.push(num);
+    lines.forEach(line => {
+      // 空白を除去してキーワード判定しやすくする
+      let nLine = line.replace(/\s+/g, '');
+      
+      let type = null;
+      if (nLine.includes('歩兵')) type = 'inf';
+      else if (nLine.includes('槍') || nLine.includes('騎')) type = 'cav';
+      else if (nLine.includes('弓兵')) type = 'lan';
+
+      let stat = null;
+      if (nLine.includes('攻撃力')) stat = 'atk';
+      else if (nLine.includes('防御力')) stat = 'def';
+      else if (nLine.includes('殺傷力')) stat = 'leth';
+      else if (nLine.includes('HP') || nLine.includes('ＨＰ')) stat = 'hp';
+
+      if (type && stat) {
+        const key = `${type}_${stat}`;
+        
+        // カンマを含む数値、+や%を含むパターン
+        const numPattern = /[+＋]?\s*([\d,]+(?:\.\d+)?)\s*[%％]?/g;
+        let matches = [];
+        let m;
+        while ((m = numPattern.exec(line)) !== null) {
+          // カンマを除去してパース
+          let numStr = m[1].replace(/,/g, '');
+          let val = parseFloat(numStr);
+          // 50.0未満の強制破棄ルールは廃止、有効な数値として受け入れる
+          if (!isNaN(val)) {
+            matches.push(val);
+          }
+        }
+
+        if (matches.length > 0) {
+          const statIndex = updatedStats.findIndex(s => s.key === key);
+          if (statIndex !== -1) {
+            // 最初の数値を左列、次の数値を右列として割り当て
+            updatedStats[statIndex].left = Math.round(matches[0]);
+            if (matches.length > 1) {
+              updatedStats[statIndex].right = Math.round(matches[1]);
+            }
+          }
+        }
       }
-    }
+    });
 
-    if (extractedFloats.length > 0) {
-      this.stats = this.stats.map((stat, idx) => {
-         const leftVal = extractedFloats.length > idx * 2 ? Math.round(extractedFloats[idx * 2]) : stat.left;
-         const rightVal = extractedFloats.length > (idx * 2 + 1) ? Math.round(extractedFloats[idx * 2 + 1]) : stat.right;
-         return {
-           ...stat,
-           left: leftVal,
-           right: rightVal
-         };
-      });
-      this.saveState();
-    }
+    this.stats = updatedStats;
+    this.saveState();
   }
 
   renderStatsSummary() {
