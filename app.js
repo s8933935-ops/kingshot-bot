@@ -310,17 +310,20 @@ class PlanAApp {
         img.src = imgUrl;
       });
 
-      // Maintain original image colors for Tesseract without aggressive binarization
+      // 1. 2.5x Canvas Upscaling for Low DPI Mobile Screenshots
+      const scale = 2.5;
       const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
       const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
       const processedDataUrl = canvas.toDataURL('image/png');
 
       if (typeof Tesseract !== 'undefined') {
-        const result = await Tesseract.recognize(processedDataUrl, 'eng');
+        const result = await Tesseract.recognize(processedDataUrl, 'eng+jpn');
         this.parseOcrTextToStats(result.data.text);
       } else {
         console.warn('Tesseract.js is not loaded. Fallback processing...');
@@ -361,6 +364,7 @@ class PlanAApp {
     }
 
     if (extractedNumbers.length > 0) {
+      // De-duplicate array indices and fill stats left & right columns sequentially
       this.stats = this.stats.map((stat, idx) => {
          const leftVal = extractedNumbers.length > idx * 2 ? parseFloat(extractedNumbers[idx * 2].toFixed(1)) : stat.left;
          const rightVal = extractedNumbers.length > (idx * 2 + 1) ? parseFloat(extractedNumbers[idx * 2 + 1].toFixed(1)) : stat.right;
