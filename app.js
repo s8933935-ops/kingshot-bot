@@ -310,7 +310,7 @@ class PlanAApp {
         img.src = imgUrl;
       });
 
-      // Fix: Draw image into scaled canvas bounds without offset clipping
+      // Preserve full image colors without contrast filter destroying gold/yellow text on light background
       const scale = 2.0;
       const canvas = document.createElement('canvas');
       canvas.width = img.width * scale;
@@ -339,24 +339,8 @@ class PlanAApp {
   parseOcrTextToStats(text) {
     if (!text) return;
 
-    const anchors = [
-      { key: 'inf_atk', regex: /(歩兵|Infantry)[\s\S]{0,40}(攻撃|Attack)/i },
-      { key: 'inf_def', regex: /(歩兵|Infantry)[\s\S]{0,40}(防御|Defense)/i },
-      { key: 'inf_leth', regex: /(歩兵|Infantry)[\s\S]{0,40}(殺傷|Lethality)/i },
-      { key: 'inf_hp', regex: /(歩兵|Infantry)[\s\S]{0,40}(HP|Health)/i },
-      
-      { key: 'cav_atk', regex: /(槍|騎|Cavalry|Lancer)[\s\S]{0,40}(攻撃|Attack)/i },
-      { key: 'cav_def', regex: /(槍|騎|Cavalry|Lancer)[\s\S]{0,40}(防御|Defense)/i },
-      { key: 'cav_leth', regex: /(槍|騎|Cavalry|Lancer)[\s\S]{0,40}(殺傷|Lethality)/i },
-      { key: 'cav_hp', regex: /(槍|騎|Cavalry|Lancer)[\s\S]{0,40}(HP|Health)/i },
-      
-      { key: 'lan_atk', regex: /(弓|Marksman|Archer)[\s\S]{0,40}(攻撃|Attack)/i },
-      { key: 'lan_def', regex: /(弓|Marksman|Archer)[\s\S]{0,40}(防御|Defense)/i },
-      { key: 'lan_leth', regex: /(弓|Marksman|Archer)[\s\S]{0,40}(殺傷|Lethality)/i },
-      { key: 'lan_hp', regex: /(弓|Marksman|Archer)[\s\S]{0,40}(HP|Health)/i }
-    ];
-
-    const statPatterns = /[+＋]?\s*(\d{2,4}(?:\.\d)?)\s*[%％]?/g;
+    // External QA Compliant Regex: Flexible digit counts (1-5) and Japanese/OCR OCR misrecognition handling (+, 十, -)
+    const statPatterns = /[+＋十\-]?\s*(\d{1,5}(?:\.\d+)?)\s*[%％]?/g;
     let extractedNumbers = [];
     let match;
 
