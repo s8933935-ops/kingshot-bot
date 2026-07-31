@@ -310,18 +310,35 @@ class PlanAApp {
         img.src = imgUrl;
       });
 
-      // Preserve full image colors without contrast filter destroying gold/yellow text on light background
+      // 1. Adaptive Canvas Sharpening & High-Contrast Integer Preprocessing
       const scale = 2.0;
       const canvas = document.createElement('canvas');
       canvas.width = img.width * scale;
       canvas.height = img.height * scale;
       const ctx = canvas.getContext('2d');
+      
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      // Enhance text pixels for OCR clarity (remove background noise, boost text contrast)
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const d = imgData.data;
+      for (let i = 0; i < d.length; i += 4) {
+        const r = d[i], g = d[i+1], b = d[i+2];
+        const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+        
+        // High contrast boost: make text dark/sharp and background bright white
+        if (luminance > 140) {
+          d[i] = d[i+1] = d[i+2] = 255;
+        } else {
+          d[i] = d[i+1] = d[i+2] = 0;
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
 
       const processedDataUrl = canvas.toDataURL('image/png');
 
       if (typeof Tesseract !== 'undefined') {
-        const result = await Tesseract.recognize(processedDataUrl, 'eng+jpn');
+        const result = await Tesseract.recognize(processedDataUrl, 'eng');
         this.parseOcrTextToStats(result.data.text);
       } else {
         console.warn('Tesseract.js is not loaded. Fallback processing...');
@@ -339,31 +356,32 @@ class PlanAApp {
   parseOcrTextToStats(text) {
     if (!text) return;
 
-    // External QA Compliant Regex: Flexible digit counts (1-5) and Japanese/OCR OCR misrecognition handling (+, 十, -)
-    const statPatterns = /[+＋十\-]?\s*(\d{1,5}(?:\.\d+)?)\s*[%％]?/g;
-    let extractedNumbers = [];
+    // Strategic Rule: Remove decimal points completely and parse CLEAN INTEGERS ONLY (e.g. 978, 660, 714)
+    const cleanText = text.replace(/\.\d+/g, '');
+    const integerPattern = /\b([5-9]\d{2}|[1-2]\d{3})\b/g;
+    
+    let extractedIntegers = [];
     let match;
 
-    while ((match = statPatterns.exec(text)) !== null) {
-      const num = parseFloat(match[1]);
-      if (num >= 50 && num <= 3000) {
-        extractedNumbers.push(num);
+    while ((match = integerPattern.exec(cleanText)) !== null) {
+      const num = parseInt(match[1], 10);
+      if (num >= 100 && num <= 3000) {
+        extractedIntegers.push(num);
       }
     }
 
-    if (extractedNumbers.length > 0) {
+    if (extractedIntegers.length > 0) {
       this.stats = this.stats.map((stat, idx) => {
-         const leftVal = extractedNumbers.length > idx * 2 ? parseFloat(extractedNumbers[idx * 2].toFixed(1)) : stat.left;
-         const rightVal = extractedNumbers.length > (idx * 2 + 1) ? parseFloat(extractedNumbers[idx * 2 + 1].toFixed(1)) : stat.right;
+         const leftVal = extractedIntegers.length > idx * 2 ? extractedIntegers[idx * 2] : stat.left;
+         const rightVal = extractedIntegers.length > (idx * 2 + 1) ? extractedIntegers[idx * 2 + 1] : stat.right;
          return {
            ...stat,
            left: leftVal,
            right: rightVal
          };
       });
+      this.saveState();
     }
-
-    this.saveState();
   }
 
   renderStatsSummary() {
