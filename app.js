@@ -64,7 +64,9 @@ class PlanAApp {
 
     this.initDOM();
     this.populateHeroDropdowns();
+    this.initHeroesDatabase();
     this.bindEvents();
+    this.bindHeroDbEvents();
     this.renderStatsSummary();
     this.updateJsonPayload();
   }
@@ -182,7 +184,6 @@ class PlanAApp {
       this.fighterNameInput, this.infTier, this.infFc,
       this.cavTier, this.cavFc,
       this.lanTier, this.lanFc,
-      this.leadHero1, this.leadHero2, this.leadHero3,
       this.joiner1, this.joinerSkill1,
       this.joiner2, this.joinerSkill2,
       this.joiner3, this.joinerSkill3,
@@ -195,6 +196,30 @@ class PlanAApp {
         inp.addEventListener('change', () => this.updateJsonPayload());
       }
     });
+
+    const selectChangeHandler = () => {
+      this.recalculateFinalStats();
+      this.renderStatsSummary();
+      this.updateJsonPayload();
+    };
+
+    if (this.leadHero1) this.leadHero1.addEventListener('change', selectChangeHandler);
+    if (this.leadHero2) this.leadHero2.addEventListener('change', selectChangeHandler);
+    if (this.leadHero3) this.leadHero3.addEventListener('change', selectChangeHandler);
+
+    const widgetDropdowns = [
+      document.getElementById('leadHeroWidget1'),
+      document.getElementById('leadHeroWidget2'),
+      document.getElementById('leadHeroWidget3')
+    ];
+    widgetDropdowns.forEach(dd => { if (dd) dd.addEventListener('change', selectChangeHandler); });
+
+    const rallyDropdowns = [
+      document.getElementById('leadHeroRally1'),
+      document.getElementById('leadHeroRally2'),
+      document.getElementById('leadHeroRally3')
+    ];
+    rallyDropdowns.forEach(dd => { if (dd) dd.addEventListener('change', selectChangeHandler); });
 
     window.addEventListener('dragover', (e) => e.preventDefault());
     window.addEventListener('drop', (e) => {
@@ -247,6 +272,22 @@ class PlanAApp {
     if (this.leadHero1) this.leadHero1.value = defaultLead[0];
     if (this.leadHero2) this.leadHero2.value = defaultLead[1];
     if (this.leadHero3) this.leadHero3.value = defaultLead[2];
+
+    const widgetDropdowns = [
+      document.getElementById('leadHeroWidget1'),
+      document.getElementById('leadHeroWidget2'),
+      document.getElementById('leadHeroWidget3')
+    ];
+    widgetDropdowns.forEach(dd => { if (dd) dd.value = "0"; });
+
+    const rallyDropdowns = [
+      document.getElementById('leadHeroRally1'),
+      document.getElementById('leadHeroRally2'),
+      document.getElementById('leadHeroRally3')
+    ];
+    rallyDropdowns.forEach(dd => { if (dd) dd.value = "0"; });
+
+    this.updateBaseStatsFromFinal();
 
     const joinerDropdowns = [this.joiner1, this.joiner2, this.joiner3, this.joiner4];
     joinerDropdowns.forEach(dd => { if (dd) dd.value = "amane"; });
@@ -451,6 +492,7 @@ class PlanAApp {
     });
 
     this.stats = updatedStats;
+    this.updateBaseStatsFromFinal();
     this.saveState();
   }
 
@@ -477,12 +519,24 @@ class PlanAApp {
     editInputs.forEach(input => {
       input.addEventListener('input', (e) => {
         const idx = parseInt(e.target.getAttribute('data-index'));
-        const newNum = parseInt(e.target.value, 10) || 0;
+        const newNum = parseFloat(e.target.value) || 0;
         if (this.selectedColumn === 'left') {
           this.stats[idx].left = newNum;
         } else {
           this.stats[idx].right = newNum;
         }
+
+        // Back-calculate base stat immediately
+        const selections = this.getCurrentSelections();
+        const item = this.stats[idx];
+        const buffs = this.getBuffsForStat(item.key, selections);
+
+        if (this.selectedColumn === 'left') {
+          this.baseStats[idx].left = Math.max(0, (newNum / (buffs.widgetMult * buffs.rallyMult)) - buffs.baseBuff);
+        } else {
+          this.baseStats[idx].right = Math.max(0, (newNum / (buffs.widgetMult * buffs.rallyMult)) - buffs.baseBuff);
+        }
+
         this.saveState();
         this.updateJsonPayload();
       });
@@ -510,60 +564,40 @@ class PlanAApp {
     const h3Raw = this.leadHero3?.value || "marlin";
 
     const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-
     const h1 = capitalize(h1Raw);
     const h2 = capitalize(h2Raw);
     const h3 = capitalize(h3Raw);
 
     const selectedLeadHeroes = Array.from(new Set([h1, h2, h3]));
-
-    const j1Name = capitalize(this.joiner1?.value || "amane");
-    const j1Skill = parseInt(this.joinerSkill1?.value) || 5;
-
-    const j2Name = capitalize(this.joiner2?.value || "amane");
-    const j2Skill = parseInt(this.joinerSkill2?.value) || 5;
-
-    const j3Name = capitalize(this.joiner3?.value || "amane");
-    const j3Skill = parseInt(this.joinerSkill3?.value) || 5;
-
-    const j4Name = capitalize(this.joiner4?.value || "amane");
-    const j4Skill = parseInt(this.joinerSkill4?.value) || 5;
-
-    const joinersArray = [
-      { "id": 0, "name": j1Name, "skill_levels": { "1": j1Skill } },
-      { "id": 1, "name": j2Name, "skill_levels": { "1": j2Skill } },
-      { "id": 2, "name": j3Name, "skill_levels": { "1": j3Skill } },
-      { "id": 3, "name": j4Name, "skill_levels": { "1": j4Skill } }
-    ];
-
-    const heroDatabase = {
-      "Zoe": { "name": "Zoe", "type": "inf", "stats": { "attack": 240, "defense": 240, "lethality": 125, "health": 214 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 4 },
-      "Marlin": { "name": "Marlin", "type": "mark", "stats": { "attack": 199, "defense": 199, "lethality": 199, "health": 123 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 5 },
-      "Petra": { "name": "Petra", "type": "lanc", "stats": { "attack": 253, "defense": 253, "lethality": 175, "health": 103 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 3 },
-      "Alcar": { "name": "Alcar", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
-      "Eric": { "name": "Eric", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
-      "Jaeger": { "name": "Jaeger", "type": "mark", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
-      "Diana": { "name": "Diana", "type": "mark", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": {}, "widget_level": 0 },
-      "Rosa": { "name": "Rosa", "type": "mark", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
-      "Amadeus": { "name": "Amadeus", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
-      "Seth": { "name": "Seth", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": {}, "widget_level": 0 },
-      "Thrud": { "name": "Thrud", "type": "lanc", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
-      "Amane": { "name": "Amane", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 },
-      "Chenko": { "name": "Chenko", "type": "inf", "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 }, "skill_levels": { "1": 5, "2": 5, "3": 5 }, "widget_level": 0 }
-    };
-
+    const heroDatabase = {};
     const allReferencedHeroes = Array.from(new Set([...selectedLeadHeroes, j1Name, j2Name, j3Name, j4Name]));
 
+    const widget1 = parseInt(document.getElementById('leadHeroWidget1')?.value, 10) || 0;
+    const widget2 = parseInt(document.getElementById('leadHeroWidget2')?.value, 10) || 0;
+    const widget3 = parseInt(document.getElementById('leadHeroWidget3')?.value, 10) || 0;
+
+    const widgetMap = {};
+    widgetMap[h1Raw] = widget1;
+    widgetMap[h2Raw] = widget2;
+    widgetMap[h3Raw] = widget3;
+
     allReferencedHeroes.forEach(hName => {
-      if (!heroDatabase[hName]) {
-        heroDatabase[hName] = {
-          "name": hName,
-          "type": "inf",
-          "stats": { "attack": 0, "defense": 0, "lethality": 0, "health": 0 },
-          "skill_levels": { "1": 5, "2": 5, "3": 5 },
-          "widget_level": 0
-        };
-      }
+      const dbKey = hName.toLowerCase();
+      const dbHero = this.heroesDb[dbKey] || { name: hName, type: "inf", attack: 0, defense: 0, lethality: 0, health: 0 };
+      const simType = dbHero.type === 'lan' ? 'mark' : dbHero.type === 'cav' ? 'lanc' : dbHero.type === 'inf' ? 'inf' : 'lanc';
+
+      heroDatabase[hName] = {
+        "name": hName,
+        "type": simType,
+        "stats": {
+          "attack": dbHero.attack,
+          "defense": dbHero.defense,
+          "lethality": dbHero.lethality,
+          "health": dbHero.health
+        },
+        "skill_levels": { "1": 5, "2": 5, "3": 5 },
+        "widget_level": widgetMap[dbKey] || 0
+      };
     });
 
     const authenticSchema = {
@@ -625,6 +659,215 @@ class PlanAApp {
       const origText = this.btnDownloadJson.innerHTML;
       this.btnDownloadJson.innerHTML = `<span>✅ kingshot_stats.json を保存しました！</span>`;
       setTimeout(() => { this.btnDownloadJson.innerHTML = origText; }, 2500);
+    }
+  }
+
+  initHeroesDatabase() {
+    const savedDb = localStorage.getItem('kingshot_custom_heroes_db');
+    if (savedDb) {
+      try {
+        this.heroesDb = JSON.parse(savedDb);
+      } catch (e) {
+        this.heroesDb = { ...window.HEROES_DATABASE };
+      }
+    } else {
+      this.heroesDb = { ...window.HEROES_DATABASE };
+    }
+
+    this.updateBaseStatsFromFinal();
+  }
+
+  getCurrentSelections() {
+    const h1 = this.leadHero1?.value || "petra";
+    const h2 = this.leadHero2?.value || "alcar";
+    const h3 = this.leadHero3?.value || "marlin";
+
+    const w1 = parseInt(document.getElementById('leadHeroWidget1')?.value, 10) || 0;
+    const w2 = parseInt(document.getElementById('leadHeroWidget2')?.value, 10) || 0;
+    const w3 = parseInt(document.getElementById('leadHeroWidget3')?.value, 10) || 0;
+
+    const r1 = parseInt(document.getElementById('leadHeroRally1')?.value, 10) || 0;
+    const r2 = parseInt(document.getElementById('leadHeroRally2')?.value, 10) || 0;
+    const r3 = parseInt(document.getElementById('leadHeroRally3')?.value, 10) || 0;
+
+    return {
+      heroes: [h1, h2, h3],
+      widgets: [w1, w2, w3],
+      rallies: [r1, r2, r3]
+    };
+  }
+
+  getBuffsForStat(key, selections) {
+    const parts = key.split('_');
+    const type = parts[0]; 
+    const stat = parts[1]; 
+
+    let baseBuff = 0;
+    let widgetBuff = 0;
+    let rallyBuff = 0;
+
+    for (let i = 0; i < 3; i++) {
+      const heroId = selections.heroes[i];
+      const hero = this.heroesDb[heroId];
+      if (!hero) continue;
+
+      // 1. Additive buffs (Only for Attack and Defense)
+      if (hero.type === type) {
+        if (stat === 'atk') baseBuff += hero.attack;
+        if (stat === 'def') baseBuff += hero.defense;
+      }
+
+      // 2. Widget multiplier (Lethality and HP, only for hero's troop type)
+      if (hero.type === type) {
+        const widgetLevel = selections.widgets[i]; 
+        const maxLeth = hero.widget_leth || 0;
+        const maxHp = hero.widget_hp || 0;
+
+        if (stat === 'leth') {
+          widgetBuff += maxLeth * (widgetLevel / 10);
+        }
+        if (stat === 'hp') {
+          widgetBuff += maxHp * (widgetLevel / 10);
+        }
+      }
+
+      // 3. Rally multiplier (Applies to all troop types and stats)
+      const rallyLevel = selections.rallies[i]; 
+      const maxRally = hero.rally_bonus || 0;
+      rallyBuff += maxRally * (rallyLevel / 5);
+    }
+
+    return {
+      baseBuff,
+      widgetMult: 1 + (widgetBuff / 100),
+      rallyMult: 1 + (rallyBuff / 100)
+    };
+  }
+
+  updateBaseStatsFromFinal() {
+    const selections = this.getCurrentSelections();
+    this.baseStats = this.stats.map(item => {
+      const buffs = this.getBuffsForStat(item.key, selections);
+      return {
+        key: item.key,
+        left: Math.max(0, (item.left / (buffs.widgetMult * buffs.rallyMult)) - buffs.baseBuff),
+        right: Math.max(0, (item.right / (buffs.widgetMult * buffs.rallyMult)) - buffs.baseBuff)
+      };
+    });
+  }
+
+  recalculateFinalStats() {
+    const selections = this.getCurrentSelections();
+    this.stats.forEach((item, idx) => {
+      const buffs = this.getBuffsForStat(item.key, selections);
+
+      const baseLeft = this.baseStats[idx].left;
+      const finalLeft = (baseLeft + buffs.baseBuff) * buffs.widgetMult * buffs.rallyMult;
+      item.left = Math.max(0, Math.round(finalLeft * 10) / 10);
+
+      const baseRight = this.baseStats[idx].right;
+      const finalRight = (baseRight + buffs.baseBuff) * buffs.widgetMult * buffs.rallyMult;
+      item.right = Math.max(0, Math.round(finalRight * 10) / 10);
+    });
+
+    this.saveState();
+  }
+
+  bindHeroDbEvents() {
+    const toggleBtn = document.getElementById('toggleHeroDbSettings');
+    const content = document.getElementById('heroDbSettingsContent');
+    const arrow = document.getElementById('heroDbArrow');
+
+    if (toggleBtn && content) {
+      toggleBtn.addEventListener('click', () => {
+        const isHidden = content.classList.toggle('hidden');
+        if (arrow) {
+          arrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+      });
+    }
+
+    const dbHeroSelect = document.getElementById('dbHeroSelect');
+    const dbHeroAtk = document.getElementById('dbHeroAtk');
+    const dbHeroDef = document.getElementById('dbHeroDef');
+    const dbHeroLeth = document.getElementById('dbHeroLeth');
+    const dbHeroHp = document.getElementById('dbHeroHp');
+    const dbHeroWidgetLeth = document.getElementById('dbHeroWidgetLeth');
+    const dbHeroWidgetHp = document.getElementById('dbHeroWidgetHp');
+    const dbHeroRally = document.getElementById('dbHeroRally');
+
+    if (dbHeroSelect) {
+      dbHeroSelect.innerHTML = '';
+      OFFICIAL_HEROES_MASTER.forEach(h => {
+        const opt = document.createElement('option');
+        opt.value = h.id;
+        opt.textContent = `${h.name} [${h.id.toUpperCase()}]`;
+        dbHeroSelect.appendChild(opt);
+      });
+
+      dbHeroSelect.addEventListener('change', () => {
+        this.updateHeroDbInputs();
+      });
+
+      const dbInputs = [dbHeroAtk, dbHeroDef, dbHeroLeth, dbHeroHp, dbHeroWidgetLeth, dbHeroWidgetHp, dbHeroRally];
+      dbInputs.forEach(inp => {
+        if (inp) {
+          inp.addEventListener('input', () => {
+            this.saveHeroDbFromInputs();
+          });
+        }
+      });
+
+      this.updateHeroDbInputs();
+    }
+  }
+
+  updateHeroDbInputs() {
+    const dbHeroSelect = document.getElementById('dbHeroSelect');
+    const dbHeroAtk = document.getElementById('dbHeroAtk');
+    const dbHeroDef = document.getElementById('dbHeroDef');
+    const dbHeroLeth = document.getElementById('dbHeroLeth');
+    const dbHeroHp = document.getElementById('dbHeroHp');
+    const dbHeroWidgetLeth = document.getElementById('dbHeroWidgetLeth');
+    const dbHeroWidgetHp = document.getElementById('dbHeroWidgetHp');
+    const dbHeroRally = document.getElementById('dbHeroRally');
+
+    if (!dbHeroSelect) return;
+    const heroId = dbHeroSelect.value;
+    const hero = this.heroesDb[heroId];
+
+    if (hero) {
+      if (dbHeroAtk) dbHeroAtk.value = hero.attack;
+      if (dbHeroDef) dbHeroDef.value = hero.defense;
+      if (dbHeroLeth) dbHeroLeth.value = hero.lethality;
+      if (dbHeroHp) dbHeroHp.value = hero.health;
+      if (dbHeroWidgetLeth) dbHeroWidgetLeth.value = hero.widget_leth || 0;
+      if (dbHeroWidgetHp) dbHeroWidgetHp.value = hero.widget_hp || 0;
+      if (dbHeroRally) dbHeroRally.value = hero.rally_bonus || 0;
+    }
+  }
+
+  saveHeroDbFromInputs() {
+    const dbHeroSelect = document.getElementById('dbHeroSelect');
+    const dbHeroAtk = document.getElementById('dbHeroAtk');
+    const dbHeroDef = document.getElementById('dbHeroDef');
+    const dbHeroLeth = document.getElementById('dbHeroLeth');
+    const dbHeroHp = document.getElementById('dbHeroHp');
+    const dbHeroWidgetLeth = document.getElementById('dbHeroWidgetLeth');
+    const dbHeroWidgetHp = document.getElementById('dbHeroWidgetHp');
+    const dbHeroRally = document.getElementById('dbHeroRally');
+
+    if (!dbHeroSelect) return;
+    const heroId = dbHeroSelect.value;
+
+    if (this.heroesDb[heroId]) {
+      this.heroesDb[heroId].attack = parseInt(dbHeroAtk?.value, 10) || 0;
+      this.heroesDb[heroId].defense = parseInt(dbHeroDef?.value, 10) || 0;
+      this.heroesDb[heroId].lethality = parseInt(dbHeroLeth?.value, 10) || 0;
+      this.heroesDb[heroId].health = parseInt(dbHeroHp?.value, 10) || 0;
+
+      localStorage.setItem('kingshot_custom_heroes_db', JSON.stringify(this.heroesDb));
+      this.updateJsonPayload();
     }
   }
 }

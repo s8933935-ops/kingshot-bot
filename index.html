@@ -181,18 +181,96 @@
 
         <!-- 👑 集結主の出撃英雄 3名 -->
         <div class="hero-config-box margin-top-md">
-          <h3>👑 集結主の参加英雄 3名 (Rally Lead Heroes)</h3>
-          <div class="form-group margin-bottom-xs">
-            <label>英雄 1 (メイン):</label>
-            <select id="leadHero1" class="form-control hero-select-dropdown"></select>
+          <h3>👑 集結主の参加英雄 3名 ＆ 専用装備・集結スキル設定</h3>
+          
+          <!-- Hero 1 -->
+          <div class="lead-hero-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 8px; align-items: flex-end;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.85rem; font-weight: bold;">英雄 1 (メイン):</label>
+              <select id="leadHero1" class="form-control hero-select-dropdown" style="width: 100%;"></select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.85rem;">専用装備:</label>
+              <select id="leadHeroWidget1" class="form-control" style="width: 100%;">
+                <option value="0">Lv 0 (0%)</option>
+                <option value="2">Lv 2 (20%)</option>
+                <option value="4">Lv 4 (40%)</option>
+                <option value="6">Lv 6 (60%)</option>
+                <option value="8">Lv 8 (80%)</option>
+                <option value="10" selected>Lv 10 (100% Max)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.85rem;">集結スキル:</label>
+              <select id="leadHeroRally1" class="form-control" style="width: 100%;">
+                <option value="0">Lv 0 (0%)</option>
+                <option value="1">Lv 1 (20%)</option>
+                <option value="2">Lv 2 (40%)</option>
+                <option value="3">Lv 3 (60%)</option>
+                <option value="4">Lv 4 (80%)</option>
+                <option value="5" selected>Lv 5 (100% Max)</option>
+              </select>
+            </div>
           </div>
-          <div class="form-group margin-bottom-xs">
-            <label>英雄 2 (サブ):</label>
-            <select id="leadHero2" class="form-control hero-select-dropdown"></select>
+
+          <!-- Hero 2 -->
+          <div class="lead-hero-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 8px; align-items: flex-end;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.85rem; font-weight: bold;">英雄 2 (サブ):</label>
+              <select id="leadHero2" class="form-control hero-select-dropdown" style="width: 100%;"></select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.85rem;">専用装備:</label>
+              <select id="leadHeroWidget2" class="form-control" style="width: 100%;">
+                <option value="0">Lv 0 (0%)</option>
+                <option value="2">Lv 2 (20%)</option>
+                <option value="4">Lv 4 (40%)</option>
+                <option value="6">Lv 6 (60%)</option>
+                <option value="8">Lv 8 (80%)</option>
+                <option value="10" selected>Lv 10 (100% Max)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.85rem;">集結スキル:</label>
+              <select id="leadHeroRally2" class="form-control" style="width: 100%;">
+                <option value="0">Lv 0 (0%)</option>
+                <option value="1">Lv 1 (20%)</option>
+                <option value="2">Lv 2 (40%)</option>
+                <option value="3">Lv 3 (60%)</option>
+                <option value="4">Lv 4 (80%)</option>
+                <option value="5" selected>Lv 5 (100% Max)</option>
+              </select>
+            </div>
           </div>
-          <div class="form-group margin-bottom-xs">
-            <label>英雄 3 (サブ):</label>
-            <select id="leadHero3" class="form-control hero-select-dropdown"></select>
+
+          <!-- Hero 3 -->
+          <div class="lead-hero-row" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 8px; align-items: flex-end;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.85rem; font-weight: bold;">英雄 3 (サブ):</label>
+              <select id="leadHero3" class="form-control hero-select-dropdown" style="width: 100%;"></select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.85rem;">専用装備:</label>
+              <select id="leadHeroWidget3" class="form-control" style="width: 100%;">
+                <option value="0">Lv 0 (0%)</option>
+                <option value="2">Lv 2 (20%)</option>
+                <option value="4">Lv 4 (40%)</option>
+                <option value="6">Lv 6 (60%)</option>
+                <option value="8">Lv 8 (80%)</option>
+                <option value="10" selected>Lv 10 (100% Max)</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label style="font-size: 0.85rem;">集結スキル:</label>
+              <select id="leadHeroRally3" class="form-control" style="width: 100%;">
+                <option value="0">Lv 0 (0%)</option>
+                <option value="1">Lv 1 (20%)</option>
+                <option value="2">Lv 2 (40%)</option>
+                <option value="3">Lv 3 (60%)</option>
+                <option value="4">Lv 4 (80%)</option>
+                <option value="5" selected>Lv 5 (100% Max)</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -266,6 +344,68 @@
                 <option value="1">Lv 1</option>
               </select>
             </div>
+        </div>
+      </section>
+
+      <!-- 🛠️ HERO DATABASE CUSTOMIZATION PANEL -->
+      <section class="card hero-db-settings-section" style="margin-bottom: 16px;">
+        <div class="section-title flex-between" style="cursor: pointer; user-select: none;" id="toggleHeroDbSettings">
+          <h2 style="display: flex; align-items: center; gap: 8px;">
+            <span>🛠️</span> 英雄別バフ数値調整 (データベース)
+          </h2>
+          <span id="heroDbArrow" style="font-size: 1.2rem; transform: rotate(0deg); transition: transform 0.2s;">▼</span>
+        </div>
+        <div id="heroDbSettingsContent" class="hidden" style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px;">
+          <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 12px;">
+            各英雄の遠征バフ数値（攻撃・防御・殺傷・HP）を調整します。ここで設定された数値は、「ステップ3」で英雄を変更した際、自動的に「ステップ2」のステータスに加減算されます。
+          </p>
+          <div class="form-group margin-bottom-sm">
+            <label for="dbHeroSelect" style="color: var(--accent-gold); font-weight: bold; display: block; margin-bottom: 4px;">調整する英雄を選択:</label>
+            <select id="dbHeroSelect" class="form-control" style="width: 100%;"></select>
+          </div>
+          <div class="stats-summary-grid" style="grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin-bottom: 12px;">
+            <div class="stat-chip" style="flex-direction: column; align-items: flex-start; gap: 4px; padding: 8px 12px;">
+              <span style="font-size: 0.75rem; color: #94a3b8;">攻撃力バフ</span>
+              <div style="display:flex; align-items:center; gap:4px; width: 100%;">
+                <input type="number" id="dbHeroAtk" class="form-control" style="width: 100%; text-align: right; font-weight: bold; color: var(--accent-gold); padding: 2px 6px;" min="0" value="0"> %
+              </div>
+            </div>
+            <div class="stat-chip" style="flex-direction: column; align-items: flex-start; gap: 4px; padding: 8px 12px;">
+              <span style="font-size: 0.75rem; color: #94a3b8;">防御力バフ</span>
+              <div style="display:flex; align-items:center; gap:4px; width: 100%;">
+                <input type="number" id="dbHeroDef" class="form-control" style="width: 100%; text-align: right; font-weight: bold; color: var(--accent-gold); padding: 2px 6px;" min="0" value="0"> %
+              </div>
+            </div>
+            <div class="stat-chip" style="flex-direction: column; align-items: flex-start; gap: 4px; padding: 8px 12px;">
+              <span style="font-size: 0.75rem; color: #94a3b8;">殺傷力バフ</span>
+              <div style="display:flex; align-items:center; gap:4px; width: 100%;">
+                <input type="number" id="dbHeroLeth" class="form-control" style="width: 100%; text-align: right; font-weight: bold; color: var(--accent-gold); padding: 2px 6px;" min="0" value="0"> %
+              </div>
+            </div>
+            <div class="stat-chip" style="flex-direction: column; align-items: flex-start; gap: 4px; padding: 8px 12px;">
+              <span style="font-size: 0.75rem; color: #94a3b8;">HPバフ</span>
+              <div style="display:flex; align-items:center; gap:4px; width: 100%;">
+                <input type="number" id="dbHeroHp" class="form-control" style="width: 100%; text-align: right; font-weight: bold; color: var(--accent-gold); padding: 2px 6px;" min="0" value="0"> %
+              </div>
+            </div>
+            <div class="stat-chip" style="flex-direction: column; align-items: flex-start; gap: 4px; padding: 8px 12px;">
+              <span style="font-size: 0.75rem; color: #94a3b8;">専用装備・殺傷</span>
+              <div style="display:flex; align-items:center; gap:4px; width: 100%;">
+                <input type="number" id="dbHeroWidgetLeth" class="form-control" style="width: 100%; text-align: right; font-weight: bold; color: var(--accent-gold); padding: 2px 6px;" min="0" value="0"> %
+              </div>
+            </div>
+            <div class="stat-chip" style="flex-direction: column; align-items: flex-start; gap: 4px; padding: 8px 12px;">
+              <span style="font-size: 0.75rem; color: #94a3b8;">専用装備・HP</span>
+              <div style="display:flex; align-items:center; gap:4px; width: 100%;">
+                <input type="number" id="dbHeroWidgetHp" class="form-control" style="width: 100%; text-align: right; font-weight: bold; color: var(--accent-gold); padding: 2px 6px;" min="0" value="0"> %
+              </div>
+            </div>
+            <div class="stat-chip" style="flex-direction: column; align-items: flex-start; gap: 4px; padding: 8px 12px;">
+              <span style="font-size: 0.75rem; color: #94a3b8;">集結スキルバフ</span>
+              <div style="display:flex; align-items:center; gap:4px; width: 100%;">
+                <input type="number" id="dbHeroRally" class="form-control" style="width: 100%; text-align: right; font-weight: bold; color: var(--accent-gold); padding: 2px 6px;" min="0" value="0"> %
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -320,6 +460,7 @@
     </footer>
   </div>
 
+  <script src="heroes_db.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
