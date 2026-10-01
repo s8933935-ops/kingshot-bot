@@ -1,0 +1,72 @@
+[
+  {
+    "strategy": "scalping",
+    "name": "スキャルピング (秒〜分・超短期高頻度)",
+    "total_trades": 172,
+    "win_rate_pct": 75.58,
+    "payout_rate_pct": 107.14,
+    "total_return_pct": 7.14,
+    "total_pnl": 713522.0,
+    "profit_factor": 3.36,
+    "risk_reward_ratio": 1.08,
+    "max_drawdown_pct": 4.77,
+    "avg_holding_bars": 1.0,
+    "final_equity": 10713522.0
+  },
+  {
+    "strategy": "day_trade",
+    "name": "デイトレード (日中短期・波乗り)",
+    "total_trades": 158,
+    "win_rate_pct": 62.03,
+    "payout_rate_pct": 113.01,
+    "total_return_pct": 13.01,
+    "total_pnl": 1301225.0,
+    "profit_factor": 2.48,
+    "risk_reward_ratio": 1.52,
+    "max_drawdown_pct": 1.47,
+    "avg_holding_bars": 1.0,
+    "final_equity": 11301225.0
+  },
+  {
+    "strategy": "swing",
+    "name": "スイングトレード (数日〜数週間・中期波乗り)",
+    "total_trades": 82,
+    "win_rate_pct": 58.54,
+    "payout_rate_pct": 114.59,
+    "total_return_pct": 14.59,
+    "total_pnl": 1456363.0,
+    "profit_factor": 2.31,
+    "risk_reward_ratio": 1.64,
+    "max_drawdown_pct": 1.47,
+    "avg_holding_bars": 2.1,
+    "final_equity": 11458606.0
+  },
+  {
+    "strategy": "medium_term",
+    "name": "中期トレンド (数週間〜数ヶ月・マクロ重視)",
+    "total_trades": 40,
+    "win_rate_pct": 75.0,
+    "payout_rate_pct": 114.49,
+    "total_return_pct": 14.49,
+    "total_pnl": 1446792.0,
+    "profit_factor": 3.3,
+    "risk_reward_ratio": 1.1,
+    "max_drawdown_pct": 1.31,
+    "avg_holding_bars": 5.1,
+    "final_equity": 11448809.0
+  },
+  {
+    "strategy": "long_term",
+    "name": "長期投資 (数ヶ月〜数年・資産形成・ハーフケリー)",
+    "total_trades": 21,
+    "win_rate_pct": 90.48,
+    "payout_rate_pct": 112.97,
+    "total_return_pct": 12.97,
+    "total_pnl": 1317102.0,
+    "profit_factor": 8.23,
+    "risk_reward_ratio": 0.87,
+    "max_drawdown_pct": 2.05,
+    "avg_holding_bars": 10.0,
+    "final_equity": 11296633.0
+  }
+]

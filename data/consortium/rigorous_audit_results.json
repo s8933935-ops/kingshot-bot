@@ -1,0 +1,57 @@
+[
+  {
+    "strategy": "scalping",
+    "name": "スキャルピング (秒〜分・超短期高頻度)",
+    "total_trades": 233,
+    "win_rate_pct": 29.61,
+    "payout_rate_pct": 91.0,
+    "total_return_pct": -9.0,
+    "profit_factor": 0.28,
+    "risk_reward_ratio": 0.67,
+    "max_drawdown_pct": 9.59
+  },
+  {
+    "strategy": "day_trade",
+    "name": "デイトレード (日中短期・波乗り)",
+    "total_trades": 178,
+    "win_rate_pct": 25.84,
+    "payout_rate_pct": 90.37,
+    "total_return_pct": -9.63,
+    "profit_factor": 0.46,
+    "risk_reward_ratio": 1.31,
+    "max_drawdown_pct": 9.99
+  },
+  {
+    "strategy": "swing",
+    "name": "スイングトレード (数日〜数週間・中期波乗り)",
+    "total_trades": 79,
+    "win_rate_pct": 29.11,
+    "payout_rate_pct": 93.72,
+    "total_return_pct": -6.28,
+    "profit_factor": 0.6,
+    "risk_reward_ratio": 1.45,
+    "max_drawdown_pct": 7.64
+  },
+  {
+    "strategy": "medium_term",
+    "name": "中期トレンド (数週間〜数ヶ月・マクロ重視)",
+    "total_trades": 27,
+    "win_rate_pct": 29.63,
+    "payout_rate_pct": 93.58,
+    "total_return_pct": -6.42,
+    "profit_factor": 0.4,
+    "risk_reward_ratio": 0.95,
+    "max_drawdown_pct": 8.43
+  },
+  {
+    "strategy": "long_term",
+    "name": "長期投資 (数ヶ月〜数年・資産形成・ハーフケリー)",
+    "total_trades": 9,
+    "win_rate_pct": 55.56,
+    "payout_rate_pct": 100.0,
+    "total_return_pct": 0.0,
+    "profit_factor": 1.0,
+    "risk_reward_ratio": 0.8,
+    "max_drawdown_pct": 4.55
+  }
+]

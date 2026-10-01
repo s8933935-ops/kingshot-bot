@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuantTrade - 操作マニュアル＆クオンツモデル仕様書</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { background-color: #0b0e14; color: #e2e8f0; font-family: 'Inter', 'Noto Sans JP', sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#0b0e14]">
+
+  <!-- ヘッダー -->
+  <header class="border-b border-[#232936] bg-[#121620] sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-2 text-blue-400 hover:text-blue-300 font-bold text-xs transition">
+        <span>⬅️ 取引ダッシュボードに戻る</span>
+      </a>
+      <span class="text-xs bg-blue-500/10 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-full font-mono">
+        QuantTrade Official Manual v2.0
+      </span>
+    </div>
+  </header>
+
+  <!-- ガイド本文 -->
+  <main class="max-w-4xl mx-auto px-4 py-8 flex-1 space-y-8 font-sans">
+
+    <!-- タイトル -->
+    <div class="text-center space-y-2 py-2">
+      <h1 class="text-2xl sm:text-3xl font-black text-white">
+        QuantTrade <span class="text-blue-500">プラットフォーム利用マニュアル</span>
+      </h1>
+      <p class="text-xs text-slate-400 max-w-xl mx-auto">
+        AIクオンツ予測シグナルの見方、TradingViewチャートの活用法、および仮想投資シミュレーションのルールを解説します。
+      </p>
+    </div>
+
+    <!-- 1. クイックスタート -->
+    <section class="bg-[#151924] border border-[#232936] rounded-xl p-6 shadow-xl space-y-4">
+      <h2 class="text-sm font-bold text-white flex items-center gap-2 border-b border-[#232936] pb-2">
+        <span>🚀</span> 1. クイックスタート（3ステップ）
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+        <div class="bg-[#0e1118] border border-[#232936] p-4 rounded-lg space-y-1.5">
+          <b class="text-blue-400 block font-mono">STEP 1. 銘柄＆チャート確認</b>
+          <p class="text-slate-400 leading-relaxed">
+            上部の銘柄タブ（金先物、ビットコイン、NVDA、ドル円）から対象を選択。ローソク足チャートとAI予測シグナル（STRONG BUY等）を確認します。
+          </p>
+        </div>
+        <div class="bg-[#0e1118] border border-[#232936] p-4 rounded-lg space-y-1.5">
+          <b class="text-blue-400 block font-mono">STEP 2. 成行注文でエントリー</b>
+          <p class="text-slate-400 leading-relaxed">
+            初期資金1,000万円（仮想マネー）から、数量とレバレッジを設定し「成行買い (BUY)」または「成行売り (SELL)」を実行します。
+          </p>
+        </div>
+        <div class="bg-[#0e1118] border border-[#232936] p-4 rounded-lg space-y-1.5">
+          <b class="text-blue-400 block font-mono">STEP 3. 決済＆回収率ランキング</b>
+          <p class="text-slate-400 leading-relaxed">
+            保有ポジションの含み益を確認し「決済」ボタンで確定。回収率と勝率を上げて公式AIや他プレイヤーとランキングを競います。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. AIクオンツレーティング解説 -->
+    <section class="bg-[#151924] border border-[#232936] rounded-xl p-6 shadow-xl space-y-4">
+      <h2 class="text-sm font-bold text-white flex items-center gap-2 border-b border-[#232936] pb-2">
+        <span>🧠</span> 2. AIクオンツ予測レーティング定義 (5段階)
+      </h2>
+      <div class="space-y-2.5 text-xs">
+        <div class="bg-[#0e1118] p-3 rounded-lg border border-emerald-500/30 flex items-start justify-between">
+          <div>
+            <b class="text-emerald-400 font-mono text-sm">STRONG BUY (積極買い推奨)</b>
+            <p class="text-slate-400 mt-1">翌日上昇期待確率 65%以上。移動平均線反発や出来高急増など複数のクオンツ指標が好転。</p>
+          </div>
+          <span class="text-[10px] bg-emerald-500/20 text-emerald-400 font-mono px-2 py-0.5 rounded">確率 ≥ 65%</span>
+        </div>
+
+        <div class="bg-[#0e1118] p-3 rounded-lg border border-[#232936] flex items-start justify-between">
+          <div>
+            <b class="text-emerald-300 font-mono text-sm">BUY (押し目買い推奨)</b>
+            <p class="text-slate-400 mt-1">上昇期待確率 55%〜65%。健全な上昇モメンタムを維持しており、押し目での買い増しが有効。</p>
+          </div>
+          <span class="text-[10px] bg-[#1a202c] text-slate-300 font-mono px-2 py-0.5 rounded">55% - 65%</span>
+        </div>
+
+        <div class="bg-[#0e1118] p-3 rounded-lg border border-[#232936] flex items-start justify-between">
+          <div>
+            <b class="text-amber-400 font-mono text-sm">NEUTRAL (中立・様子見)</b>
+            <p class="text-slate-400 mt-1">方向感が交錯するレンジ相場。無理なポジションを持たずブレイクアウトを待つことを推奨。</p>
+          </div>
+          <span class="text-[10px] bg-[#1a202c] text-slate-300 font-mono px-2 py-0.5 rounded">45% - 55%</span>
+        </div>
+
+        <div class="bg-[#0e1118] p-3 rounded-lg border border-rose-500/30 flex items-start justify-between">
+          <div>
+            <b class="text-rose-400 font-mono text-sm">STRONG SELL (強気売り / ヘッジ推奨)</b>
+            <p class="text-slate-400 mt-1">下落リスク極大。上値重く下落モメンタムが点灯。ショート（空売り）または買い玉の決済を推奨。</p>
+          </div>
+          <span class="text-[10px] bg-rose-500/20 text-rose-400 font-mono px-2 py-0.5 rounded">下落率 ≥ 65%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. バックテスト指標解説 -->
+    <section class="bg-[#151924] border border-[#232936] rounded-xl p-6 shadow-xl space-y-3 text-xs">
+      <h2 class="text-sm font-bold text-white flex items-center gap-2 border-b border-[#232936] pb-2">
+        <span>📊</span> 3. プロの投資家が重視する4大指標
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-300">
+        <div class="bg-[#0e1118] p-3 rounded-lg border border-[#232936]">
+          <b class="text-white block mb-1">プロフィットファクター (PF)</b>
+          総利益 ÷ 総損失。1.0以上で黒字、1.5以上で非常に優秀なトレーダーと認定されます。
+        </div>
+        <div class="bg-[#0e1118] p-3 rounded-lg border border-[#232936]">
+          <b class="text-white block mb-1">シャープレシオ (Sharpe Ratio)</b>
+          価格変動（リスク）に対してどれだけ効率よくリターンを得られたかを示す運用効率指標。
+        </div>
+        <div class="bg-[#0e1118] p-3 rounded-lg border border-[#232936]">
+          <b class="text-white block mb-1">最大ドローダウン (MDD)</b>
+          過去最高資産から一番底までの最大下落率。資金管理・リスク耐久性の証明となります。
+        </div>
+        <div class="bg-[#0e1118] p-3 rounded-lg border border-[#232936]">
+          <b class="text-white block mb-1">ソーシャルトレーディング</b>
+          ランキング上位者のポートフォリオを公開閲覧し、プロの戦略を参考にできる機能です。
+        </div>
+      </div>
+    </section>
+
+    <div class="text-center pt-2">
+      <a href="/" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-2.5 rounded-lg text-xs transition">
+        取引ダッシュボードへ戻る
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="border-t border-[#232936] py-4 text-center text-[10px] text-slate-500 bg-[#0e1118]">
+    <p>QuantTrade © 2026 | ※当プラットフォームは完全な学習・教育・エンタメ用のペーパートレードシミュレーションであり、投資助言業務を行うものではありません。</p>
+  </footer>
+
+</body>
+</html>

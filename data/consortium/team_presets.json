@@ -1,0 +1,172 @@
+{
+  "version": "1.0.0",
+  "updated_at": "2026-09-30",
+  "presets": {
+    "keiba-quant-two-tier": {
+      "name": "競馬クオンツ二段構え開発チーム (Two-Tier Sonnet->Opus with Subagent Support)",
+      "description": "全上級モデルに専属サブエージェント（前処理・テスト量産）を配置し、難関局面・不可逆監査時はSonnetからOpusへ自動昇格する最強の二段構えチーム体制",
+      "pipeline": [
+        {
+          "step": 1,
+          "role": "Spec & Product Designer",
+          "provider": "openai",
+          "model": "sol",
+          "subagent_support": {
+            "provider": "google",
+            "model": "gemini-3.8-flash",
+            "role": "Market & Web Research Buddy"
+          },
+          "output_type": "spec_markdown"
+        },
+        {
+          "step": 2,
+          "role": "Lead Architect & Engine Coder",
+          "provider": "claude",
+          "model": "sonnet",
+          "escalation_tier": {
+            "provider": "claude",
+            "model": "opus",
+            "role": "Final Extreme Reasoning & Mathematical Auditor",
+            "condition": "on_critical_security_or_two_failures"
+          },
+          "subagent_support": {
+            "provider": "local",
+            "model": "qwen2.5-coder:14b",
+            "role": "Pre-processing & Boilerplate Buddy"
+          },
+          "output_type": "code"
+        },
+        {
+          "step": 3,
+          "role": "Test Factory ($0 Low Latency)",
+          "provider": "local",
+          "model": "qwen2.5-coder:14b",
+          "output_type": "unit_tests"
+        },
+        {
+          "step": 4,
+          "role": "CI/CD Gatekeeper & Integrator",
+          "provider": "antigravity",
+          "model": "gemini-3.8-flash",
+          "action": "execute_test_and_merge"
+        }
+      ]
+    },
+    "consortium-standard": {
+      "name": "3社合同標準開発チーム (Tri-Vendor Standard)",
+      "description": "OpenAIが仕様・数理策定 ➔ Claudeが精密実装・監査 ➔ Local Qwenがテスト量産 ➔ Antigravityが実機検証する標準コンソーシアム体制",
+      "pipeline": [
+        {
+          "step": 1,
+          "role": "Spec & Math Designer",
+          "provider": "openai",
+          "model": "sol",
+          "output_type": "spec_markdown"
+        },
+        {
+          "step": 2,
+          "role": "Lead Architect & Implementer",
+          "provider": "claude",
+          "model": "sonnet",
+          "use_team_pipeline": true,
+          "output_type": "code"
+        },
+        {
+          "step": 3,
+          "role": "Test Factory",
+          "provider": "local",
+          "model": "qwen2.5-coder:14b",
+          "output_type": "unit_tests"
+        },
+        {
+          "step": 4,
+          "role": "Integration & CI/CD Gate",
+          "provider": "antigravity",
+          "model": "gemini-3.8-flash",
+          "action": "execute_test_and_merge"
+        }
+      ]
+    },
+    "math-logic-heavy": {
+      "name": "超深層数理・最適化特化チーム (Deep Math & Logic)",
+      "description": "o3-miniの深層推論による数理証明 ➔ Claude Sonnetによる実装 ➔ Antigravityによる確定ソルバー突合検証",
+      "pipeline": [
+        {
+          "step": 1,
+          "role": "Mathematical Logic & Proof",
+          "provider": "openai",
+          "model": "o3-mini",
+          "output_type": "math_proof"
+        },
+        {
+          "step": 2,
+          "role": "Deterministic Solver Coder",
+          "provider": "claude",
+          "model": "sonnet",
+          "output_type": "code"
+        },
+        {
+          "step": 3,
+          "role": "SSOT Cross-Validation",
+          "provider": "antigravity",
+          "model": "gemini-3.8-flash",
+          "action": "run_deterministic_validator"
+        }
+      ]
+    },
+    "security-critical": {
+      "name": "セキュリティ・不可逆監査特化チーム (Security & Red Team)",
+      "description": "Claude Red Team (Haiku) が攻撃シナリオ抽出 ➔ Sonnetが防壁実装 ➔ Opusが最終監査判定",
+      "pipeline": [
+        {
+          "step": 1,
+          "role": "Red Team Vulnerability Analyst",
+          "provider": "claude",
+          "model": "haiku",
+          "output_type": "threat_model"
+        },
+        {
+          "step": 2,
+          "role": "Hardened Security Implementer",
+          "provider": "claude",
+          "model": "sonnet",
+          "output_type": "code"
+        },
+        {
+          "step": 3,
+          "role": "Final Security Auditor",
+          "provider": "claude",
+          "model": "opus",
+          "output_type": "audit_verdict"
+        }
+      ]
+    },
+    "rapid-eco": {
+      "name": "高速エコ開発チーム (Fast & Free $0 Draft)",
+      "description": "Local Qwenが$0でドラフト先行作成 ➔ Claude Haikuが差分修正 ➔ Antigravityがテスト検証",
+      "pipeline": [
+        {
+          "step": 1,
+          "role": "Rapid Draft Generator",
+          "provider": "local",
+          "model": "qwen2.5-coder:14b",
+          "output_type": "code_draft"
+        },
+        {
+          "step": 2,
+          "role": "Light Refiner",
+          "provider": "claude",
+          "model": "haiku",
+          "output_type": "code"
+        },
+        {
+          "step": 3,
+          "role": "Local Test Verifier",
+          "provider": "antigravity",
+          "model": "gemini-3.8-flash",
+          "action": "execute_test_and_merge"
+        }
+      ]
+    }
+  }
+}

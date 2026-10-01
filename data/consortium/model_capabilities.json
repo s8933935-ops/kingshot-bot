@@ -1,0 +1,213 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-09-30T04:38:05.851Z",
+  "models": {
+    "google": {
+      "gemini-3.8-flash": {
+        "tier": "Tier 1",
+        "role_category": "Command & Orchestration / CI/CD Gate",
+        "strengths": [
+          "超低遅延かつ巨大コンテキストの高速探索",
+          "ファイルシステム操作、コマンド実行、プロセス管理の完全自律性",
+          "テスト実行、ビルド、型チェックの自動検証（CI/CDゲートキーパー）",
+          "Generative UIやリアルタイムWebリサーチ"
+        ],
+        "weaknesses": [
+          "単独での極度に難解な非同期競合・不可逆暗号ロジックの一発生成",
+          "超長大な思考チェーンにおけるステップ飛び"
+        ],
+        "best_for": [
+          "司令塔・タスク分解・CI/CDゲート",
+          "環境探索・ログ調査・ファイル編集",
+          "最終テスト検証と自動修復ループ"
+        ],
+        "cost_efficiency": "極めて高（標準枠内）",
+        "score": 95,
+        "learnings": [
+          "CI/CDゲートとして単体テストの実行・構文エラーの自律修正に最適。ClaudeとQwenの間を埋める接着剤として機能する。"
+        ]
+      }
+    },
+    "anthropic": {
+      "claude-sonnet-5.5": {
+        "tier": "Tier 3",
+        "alias": ["sonnet", "claude-sonnet", "sonnet-5.5"],
+        "role_category": "Architecture & Production Coding / Red Teaming",
+        "strengths": [
+          "極めて堅牢で工業製品品質のオブジェクト指向・型安全コード生成",
+          "前世代を凌駕する実行速度と卓越したアルゴリズム・例外設計の完全網羅",
+          "AI Councilでの批判的レビュー（Red Teaming）による設計欠陥の事前摘出"
+        ],
+        "weaknesses": [
+          "超長文（800行超）の一括生成時に240秒タイムアウトに達しやすい",
+          "定型的な作業に使うとトークン消費コストが大きくなる"
+        ],
+        "best_for": [
+          "コアアーキテクチャ設計・高難度モジュール実装",
+          "Red Teaming批判的レビュー",
+          "不具合の根本原因特定と構造的リファクタリング"
+        ],
+        "cost_efficiency": "高（高速化により費用対効果向上）",
+        "score": 99,
+        "learnings": [
+          "前処理（Haiku/Sol）で論点を絞った状態で単独一発生成させると、最高品質のコードをタイムアウトなしで安定出力できる。",
+          "タスク TASK-20260930-68DP で700行超のモジュールを一括設計・実装成功。例外設計とCLIが完備された堅牢性を実証。"
+        ]
+      },
+      "claude-opus-5.5": {
+        "tier": "Tier 4",
+        "alias": ["opus", "claude-opus", "opus-5.5"],
+        "role_category": "Extreme Long-Horizon Reasoning & Critical Security Audit",
+        "strengths": [
+          "世界最高峰の深層推論と1Mトークンコンテキスト対応の長大な自律エージェント思考",
+          "不可逆セキュリティ（認証・決済・暗号）、数理最適化の最終監査"
+        ],
+        "weaknesses": [
+          "高コストかつ高遅延",
+          "定型実装や単体テストに使ってはならない（ガードレール必須）"
+        ],
+        "best_for": [
+          "重大セキュリティ設計の最終ゲート",
+          "Sonnetでも解決不能な並行デッドロック・未踏領域アーキテクチャの解明"
+        ],
+        "cost_efficiency": "低（要所限定・ガードレール付き）",
+        "score": 99,
+        "learnings": [
+          "1タスク最大1回、最大2,000トークンの設計方針・監査講評のみに限定することで最大の費用対効果を発揮する。"
+        ]
+      },
+      "claude-haiku-4.5": {
+        "tier": "Tier 2",
+        "alias": ["haiku", "claude-haiku", "haiku-4.5"],
+        "role_category": "High-Volume Fast Risk Extraction & Pre-processing",
+        "strengths": [
+          "超高速かつ低コストでの論点・リスク・エッジケースの事前抽出",
+          "Sonnetへの入力トークンを圧縮する前処理バディ"
+        ],
+        "weaknesses": [
+          "複雑な状態機械や大規模モジュールの完全実装には不向き"
+        ],
+        "best_for": [
+          "実装前のリスク・境界値抽出",
+          "差分パッチの軽量レビュー"
+        ],
+        "cost_efficiency": "極めて高",
+        "score": 90,
+        "learnings": [
+          "Sonnetの直前に挟むことで、Sonnetの出力品質を底上げしつつ思考迷走を防ぐ効果がある。"
+        ]
+      }
+    },
+    "openai": {
+      "gpt-6-astra": {
+        "tier": "Tier 3〜4相当",
+        "role_category": "Autonomous Strategic Agent & Flagship Reasoning",
+        "strengths": [
+          "最新フラッグシップによる極限推論・自律エージェント思考",
+          "複雑な多目的最適化問題やエンドツーエンドの自律問題解決"
+        ],
+        "weaknesses": [
+          "推論時間が長く、コストが高い",
+          "単純なタスクでは過剰スペック"
+        ],
+        "best_for": [
+          "難関ドメインのグランドデザイン",
+          "戦略的トレードオフの裁定"
+        ],
+        "cost_efficiency": "中（高難易度タスク特化）",
+        "score": 97,
+        "learnings": [
+          "OpenAI陣営の最高峰推論として、Claude Opus/Sonnetと対等の視点で合同レビューを行う際に絶大な効果を発揮する。"
+        ]
+      },
+      "gpt-6-sol": {
+        "tier": "Tier 2〜3相当",
+        "role_category": "Workhorse Specification & API Schema Architect",
+        "strengths": [
+          "抜け漏れのない要件定義書（spec）・JSONスキーマの網羅的策定",
+          "論理的一貫性と構造化出力（Structured Outputs）の完全準拠",
+          "高知能と安定したレスポンス速度・コストのベストバランス"
+        ],
+        "weaknesses": [
+          "長文Pythonコードの低レイヤ非同期制御ではClaude Sonnetに一歩譲る場合がある"
+        ],
+        "best_for": [
+          "合同開発のStep 1（要件定義・インターフェース仕様策定）",
+          "API設計、データモデル定義、境界条件の網羅"
+        ],
+        "cost_efficiency": "極めて高（実働主力）",
+        "score": 95,
+        "learnings": [
+          "仕様策定フェーズでSolにJSONスキーマと物理制約を厳格定義させると、後続のClaude/Qwenの実装精度が劇的に向上する。",
+          "タスク TASK-20260930-68DP で厳密なJSONスキーマと物理制約仕様を策定。後続工程の不整合をゼロ化。"
+        ]
+      },
+      "gpt-6-luna": {
+        "tier": "Tier 2相当",
+        "role_category": "Budget High-Speed Transformer & Sanitizer",
+        "strengths": [
+          "超低コスト・超高速のJSON成形、要約、ログ前処理",
+          "大量リクエストのバッチ処理"
+        ],
+        "weaknesses": [
+          "高度なアルゴリズム設計や推論には不向き"
+        ],
+        "best_for": [
+          "巨大スタックトレースの圧縮・整形",
+          "データ形式変換・定型ドキュメント整形"
+        ],
+        "cost_efficiency": "最高峰（超低コスト）",
+        "score": 88,
+        "learnings": [
+          "コンテキスト肥大化防止（Anti-Context-Bloat）の下処理役としてトークン消費を90%カットできる。"
+        ]
+      },
+      "o3-mini": {
+        "tier": "Tier 3相当",
+        "role_category": "Math & Algorithmic Logic Specialist",
+        "strengths": [
+          "思考プロセス（Hidden CoT）による数学・数式・パズル的推論の厳密性",
+          "小型ながら数理・競技プログラミング系問題で高い正解率"
+        ],
+        "weaknesses": [
+          "思考時間が変動しやすく、タイムアウト管理が必要"
+        ],
+        "best_for": [
+          "数理計算モデル・物理演算の論理監査",
+          "アルゴリズムの正当性証明"
+        ],
+        "cost_efficiency": "高",
+        "score": 93,
+        "learnings": [
+          "計算ロジックや物理制約の監査役に配属すると、計算式の破綻を鋭く指摘できる。"
+        ]
+      }
+    },
+    "local": {
+      "qwen2.5-coder:14b": {
+        "tier": "Tier 0",
+        "role_category": "Ultra-Fast Local Implementation & Test Mass-Production",
+        "strengths": [
+          "完全無料（$0）、APIクォータ消費ゼロ",
+          "RTX 5080 による超低遅延（秒単位）のコード・テスト生成",
+          "ユニットテストコード、CRUD雛形、正規表現の高速量産"
+        ],
+        "weaknesses": [
+          "外部ライブラリのimport宣言漏れや、微小な型・アサーションの不整合が発生することがある",
+          "2回以上の自己修復失敗時は上位モデルへのエスカレーションが必要"
+        ],
+        "best_for": [
+          "単体テストコードの大量生成（Step 3）",
+          "定型関数のボイラープレート生成",
+          "初期ドラフトの実装"
+        ],
+        "cost_efficiency": "無限（完全無料 $0）",
+        "score": 93,
+        "learnings": [
+          "テスト生成時にモジュールインポートのテンプレートを明示的に注入することで、インポート漏れを未然に防止できる。",
+          "タスク TASK-20260930-68DP で11件の単体テストを瞬時に生成。インポート文の補正ルールを適用することで100%パス達成。"
+        ]
+      }
+    }
+  }
+}
