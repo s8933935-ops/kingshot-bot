@@ -21,6 +21,8 @@ class Position:
     current_price: float
     amount: float  # 取引単位・数量 (例: 金1オンス単位)
     leverage: float = 1.0
+    tp_price: Optional[float] = None  # 動的/固定 利確トリガー価格
+    sl_price: Optional[float] = None  # 動的/固定 損切りトリガー価格
     opened_at: str = field(default_factory=lambda: datetime.now().isoformat())
 
     @property
@@ -98,7 +100,9 @@ class VirtualAccount:
         side: str,
         current_price: float,
         amount: float,
-        leverage: float = 1.0
+        leverage: float = 1.0,
+        tp_price: Optional[float] = None,
+        sl_price: Optional[float] = None
     ) -> Position:
         """
         新規ポジションを成行でオープンする。
@@ -124,7 +128,9 @@ class VirtualAccount:
             entry_price=current_price,
             current_price=current_price,
             amount=amount,
-            leverage=leverage
+            leverage=leverage,
+            tp_price=tp_price,
+            sl_price=sl_price
         )
         self.positions[pos_id] = pos
         return pos

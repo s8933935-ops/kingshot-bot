@@ -187,7 +187,8 @@ class InvestmentGameManager:
             import logging
             logger = logging.getLogger(__name__)
 
-            meta_model_path = Path("data/invest_models/meta_lgbm_model.txt")
+            project_root = Path(__file__).resolve().parent.parent.parent
+            meta_model_path = project_root / "data" / "invest_models" / "meta_lgbm_model.txt"
             if meta_model_path.exists():
                 from .meta_model import MetaLabelingEngine, compute_bet_size
                 from .macro_loader import generate_macro_features
@@ -229,6 +230,9 @@ class InvestmentGameManager:
             logging.getLogger(__name__).warning("メタモデル推論で例外発生: %s。ロット0%%でフェイルセーフ保護します。", e)
             comment += " 【マクロ総合判定】推論エラーのためロット0% (見送り推奨)。"
 
+        regime_state = str(latest_row.get("regime_state", "NORMAL"))
+        htf_trend = float(latest_row.get("htf_daily_trend", 0.0))
+
         card_res = {
             "symbol": symbol,
             "target_date": str(clean_df.index[-1].date()),
@@ -241,6 +245,10 @@ class InvestmentGameManager:
             "paddock_comment": comment,
             "rsi_14": round(float(latest_row.get("rsi_14", 50.0)), 1),
             "macd": round(float(latest_row.get("macd", 0.0)), 2),
+            "current_atr": round(float(latest_row.get("atr_14", 0.0)), 2),
+            "atr_pct": round(float(latest_row.get("atr_pct", 0.0)) * 100, 2),
+            "regime_state": regime_state,
+            "htf_daily_trend": htf_trend,
             "return_1d_pct": round(float(latest_row.get("return_1d", 0.0)) * 100, 2),
             "meta_bet_size_pct": meta_bet_size_pct,
             "meta_confidence": meta_confidence

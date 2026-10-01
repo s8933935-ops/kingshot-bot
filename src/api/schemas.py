@@ -50,6 +50,10 @@ class RaceCardResponse(BaseModel):
     rsi_14: float
     macd: float
     return_1d_pct: float
+    current_atr: float = 0.0
+    atr_pct: float = 0.0
+    regime_state: str = "NORMAL"
+    htf_daily_trend: float = 0.0
     meta_bet_size_pct: float = 100.0
     meta_confidence: str = "NORMAL"
 

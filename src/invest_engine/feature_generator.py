@@ -116,6 +116,21 @@ def generate_features(
     # 11. 上位足（HTF）特徴量の結合（Point-in-Time 物理整合性担保）
     if htf_df is not None:
         data = merge_htf_trend_features(data, htf_df, htf_name="daily")
+    else:
+        # 日足データ自身の場合、前日確定値基準 (shift(1)) で日足トレンド指標を自己補完
+        if "htf_daily_trend" not in data.columns:
+            sma20 = data["Close"].rolling(20, min_periods=5).mean()
+            sma50 = data["Close"].rolling(50, min_periods=5).mean()
+            sma20_slope = (sma20 - sma20.shift(2)).fillna(0) / (sma20.shift(2).replace(0, 1e-6) + 1e-8)
+            trend = np.where(
+                (data["Close"] > sma20) & (sma20_slope > 0),
+                1.0,
+                np.where((data["Close"] < sma20) & (sma20_slope < 0), -1.0, 0.0)
+            )
+            data["htf_daily_trend"] = pd.Series(trend, index=data.index).shift(1).bfill().ffill()
+            data["htf_daily_dist_sma20"] = ((data["Close"] - sma20) / (sma20 + 1e-8)).shift(1).bfill().ffill()
+            data["htf_daily_dist_sma50"] = ((data["Close"] - sma50) / (sma50 + 1e-8)).shift(1).bfill().ffill()
+            data["htf_daily_slope"] = sma20_slope.shift(1).bfill().ffill()
 
     # ================= 予測ターゲットの生成 =================
     if use_triple_barrier:

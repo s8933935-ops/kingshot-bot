@@ -385,12 +385,20 @@
       <!-- 🧠 AIオートパイロット 思考・判断ログ -->
       <div class="bg-[#151924] border border-[#232936] rounded-xl p-4 shadow-xl">
         <div class="flex items-center justify-between border-b border-[#232936] pb-2 mb-2">
-          <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
-            <span>🧠</span> AI思考・判断ログ (リアルタイム思考可視化)
-          </h3>
+          <div class="flex items-center gap-2">
+            <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
+              <span>🧠</span> AI思考・判断ログ (リアルタイム思考可視化)
+            </h3>
+            <!-- 3大防御ゲート稼働バッジ -->
+            <div class="hidden sm:flex items-center gap-1.5 text-[9px] font-mono">
+              <span class="px-1.5 py-0.5 rounded bg-amber-950/70 text-amber-300 border border-amber-500/40" title="もみ合い相場でのダマシ・往復ビンタを遮断">🛡️ レジーム防御</span>
+              <span class="px-1.5 py-0.5 rounded bg-cyan-950/70 text-cyan-300 border border-cyan-500/40" title="上位足(日足)トレンド逆行トレードを遮断">🧭 HTF順張り防御</span>
+              <span class="px-1.5 py-0.5 rounded bg-rose-950/70 text-rose-300 border border-rose-500/40" title="往復摩擦0.16%控除後の期待値負けを遮断">⚖️ EV摩擦防御</span>
+            </div>
+          </div>
           <span id="ap-active-indicator" class="text-[10px] text-emerald-400 font-mono animate-pulse">● 監視中</span>
         </div>
-        <div id="autopilot-logs-container" class="space-y-1.5 max-h-40 overflow-y-auto custom-scrollbar font-mono text-[11px] text-slate-300">
+        <div id="autopilot-logs-container" class="space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar font-mono text-[11px] text-slate-300">
           <div class="text-xs text-slate-500 py-3 text-center font-sans">思考ログ待機中...</div>
         </div>
       </div>
@@ -875,16 +883,72 @@
             logsContainer.innerHTML = '<div class="text-xs text-slate-500 py-3 text-center font-sans">思考ログ待機中...</div>';
           } else {
             logsContainer.innerHTML = data.recent_logs.map(l => {
-              let badgeCls = 'bg-slate-800 text-slate-400';
-              if (l.action.includes('BUY')) badgeCls = 'bg-emerald-950 text-emerald-300 border border-emerald-700';
-              else if (l.action.includes('SELL')) badgeCls = 'bg-rose-950 text-rose-300 border border-rose-700';
-              else if (l.action.includes('CLOSE')) badgeCls = 'bg-amber-950 text-amber-300 border border-amber-700';
-              else if (l.action.includes('SKIP')) badgeCls = 'bg-purple-950 text-purple-300 border border-purple-700';
+              let badgeCls = 'bg-slate-800 text-slate-400 border border-slate-700';
+              let badgeLabel = l.action;
+              let borderCard = 'border-[#1f2636] bg-[#0e1118]';
+
+              if (l.action === 'SKIP_CHOPPY_REGIME') {
+                badgeCls = 'bg-amber-950 text-amber-300 border border-amber-500/70 shadow-sm shadow-amber-950';
+                badgeLabel = '🛡️ レンジ相場遮断';
+                borderCard = 'border-amber-700/50 bg-gradient-to-r from-[#1c150c] to-[#0e1118]';
+              } else if (l.action === 'SKIP_HTF_ALIGNMENT') {
+                badgeCls = 'bg-cyan-950 text-cyan-300 border border-cyan-500/70 shadow-sm shadow-cyan-950';
+                badgeLabel = '🧭 上位足逆行遮断';
+                borderCard = 'border-cyan-700/50 bg-gradient-to-r from-[#0c181d] to-[#0e1118]';
+              } else if (l.action === 'SKIP_NEGATIVE_EXPECTANCY') {
+                badgeCls = 'bg-rose-950 text-rose-300 border border-rose-500/70 shadow-sm shadow-rose-950';
+                badgeLabel = '⚖️ 期待値マイナス遮断';
+                borderCard = 'border-rose-700/50 bg-gradient-to-r from-[#1c0c12] to-[#0e1118]';
+              } else if (l.action === 'SKIP_MACRO_RISK') {
+                badgeCls = 'bg-purple-950 text-purple-300 border border-purple-500/70 shadow-sm shadow-purple-950';
+                badgeLabel = '🌪️ マクロリスク遮断';
+                borderCard = 'border-purple-700/50 bg-gradient-to-r from-[#160c1c] to-[#0e1118]';
+              } else if (l.action.includes('BUY')) {
+                badgeCls = 'bg-emerald-950 text-emerald-300 border border-emerald-500/70 shadow-sm shadow-emerald-950';
+                badgeLabel = '📈 買いエントリー';
+                borderCard = 'border-emerald-700/50 bg-[#0e1118]';
+              } else if (l.action.includes('SELL')) {
+                badgeCls = 'bg-rose-950 text-rose-300 border border-rose-500/70 shadow-sm shadow-rose-950';
+                badgeLabel = '📉 売りエントリー';
+                borderCard = 'border-rose-700/50 bg-[#0e1118]';
+              } else if (l.action.includes('CLOSE')) {
+                badgeCls = 'bg-amber-950 text-amber-300 border border-amber-500/70';
+                badgeLabel = '🎯 決済執行';
+                borderCard = 'border-amber-700/50 bg-[#0e1118]';
+              } else if (l.action.includes('KILL_SWITCH')) {
+                badgeCls = 'bg-red-950 text-red-200 border border-red-500 animate-pulse';
+                badgeLabel = '🚨 日次損失リミット発動';
+                borderCard = 'border-red-600/70 bg-red-950/30';
+              } else if (l.action.includes('EMERGENCY_STOP')) {
+                badgeCls = 'bg-red-950 text-red-300 border border-red-700';
+                badgeLabel = '🛑 緊急全停止';
+                borderCard = 'border-red-700/50 bg-[#0e1118]';
+              } else if (l.action.includes('AI_ENABLED')) {
+                badgeCls = 'bg-blue-950 text-blue-300 border border-blue-600';
+                badgeLabel = '⚡ AI起動';
+                borderCard = 'border-blue-900/40 bg-[#0e1118]';
+              } else if (l.action.includes('AI_DISABLED')) {
+                badgeCls = 'bg-slate-800 text-slate-400 border border-slate-600';
+                badgeLabel = '⏸️ AI停止';
+                borderCard = 'border-slate-800 bg-[#0e1118]';
+              } else if (l.action.includes('SKIP')) {
+                badgeCls = 'bg-purple-950 text-purple-300 border border-purple-700';
+                badgeLabel = '⏸️ 見送り';
+                borderCard = 'border-purple-800/40 bg-[#0e1118]';
+              }
+
+              // 防御ゲートによる損失回避バッジ
+              const isDefenseSkip = l.action.startsWith('SKIP_');
+              const defenseTag = isDefenseSkip 
+                ? '<span class="ml-auto px-1.5 py-0.5 rounded text-[8px] font-bold bg-emerald-950/90 text-emerald-400 border border-emerald-500/50 shrink-0">🛡️ 損失回避</span>' 
+                : '';
+
               return `
-                <div class="flex items-start gap-2 bg-[#0e1118] p-1.5 rounded border border-[#1f2636]">
-                  <span class="text-[10px] text-slate-500 shrink-0 font-mono">${l.timestamp}</span>
-                  <span class="px-1.5 py-0.2 rounded text-[9px] font-bold shrink-0 ${badgeCls}">${l.action}</span>
-                  <span class="text-slate-300 text-[11px] leading-tight break-all font-sans">${l.reason}</span>
+                <div class="flex items-start gap-2 p-1.5 rounded border ${borderCard} transition hover:brightness-110">
+                  <span class="text-[10px] text-slate-500 shrink-0 font-mono mt-0.5">${l.timestamp}</span>
+                  <span class="px-1.5 py-0.5 rounded text-[9px] font-bold shrink-0 ${badgeCls}">${badgeLabel}</span>
+                  <span class="text-slate-300 text-[11px] leading-relaxed break-all font-sans">${l.reason}</span>
+                  ${defenseTag}
                 </div>
               `;
             }).join('');
@@ -1042,20 +1106,23 @@
         // 戦術結果テーブル
         const stratList = document.getElementById('audit-strategies-body');
         stratList.innerHTML = Object.entries(data.strategies).map(([k, s]) => {
-          const isPass = s.is_statistically_significant;
+          const res = s.dynamic_atr_results || s;
+          const isPass = res.is_statistically_significant;
           const statusBadge = isPass
             ? '<span class="px-1.5 py-0.5 text-[9px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/50 rounded">PASS (有意)</span>'
             : '<span class="px-1.5 py-0.5 text-[9px] font-bold bg-rose-950 text-rose-300 border border-rose-500/50 rounded">REJECT (過学習)</span>';
           
-          const retColor = s.total_return_pct >= 0 ? 'text-emerald-400' : 'text-rose-400';
+          const ret = res.total_return_pct ?? 0;
+          const retColor = ret >= 0 ? 'text-emerald-400' : 'text-rose-400';
+          const tfLabel = s.interval ? `<span class="ml-1 text-[9px] text-cyan-400 font-mono">(${s.interval})</span>` : '';
           return `
             <tr class="border-b border-[#2d3748]/50 hover:bg-[#1a202c]">
-              <td class="p-2 font-bold text-white">${s.style_name}</td>
-              <td class="p-2 text-right font-mono">${s.total_trades}</td>
-              <td class="p-2 text-right font-mono font-bold">${s.win_rate_pct.toFixed(1)}%</td>
-              <td class="p-2 text-right font-mono">${s.profit_factor.toFixed(2)}</td>
-              <td class="p-2 text-right font-mono font-bold ${retColor}">${s.total_return_pct > 0 ? '+' : ''}${s.total_return_pct.toFixed(1)}%</td>
-              <td class="p-2 text-right font-mono text-[10px] text-slate-400">p=${s.p_value.toFixed(2)}</td>
+              <td class="p-2 font-bold text-white">${s.style_name}${tfLabel}</td>
+              <td class="p-2 text-right font-mono">${res.total_trades}</td>
+              <td class="p-2 text-right font-mono font-bold">${res.win_rate_pct.toFixed(1)}%</td>
+              <td class="p-2 text-right font-mono">${res.profit_factor.toFixed(2)}</td>
+              <td class="p-2 text-right font-mono font-bold ${retColor}">${ret > 0 ? '+' : ''}${ret.toFixed(1)}%</td>
+              <td class="p-2 text-right font-mono text-[10px] text-slate-400">p=${res.p_value.toFixed(2)}</td>
               <td class="p-2 text-center">${statusBadge}</td>
             </tr>
           `;

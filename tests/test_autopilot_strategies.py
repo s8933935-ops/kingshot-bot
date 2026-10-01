@@ -70,7 +70,7 @@ class TestAutopilotStrategies(unittest.TestCase):
         self.assertEqual(action, "SKIP_MACRO_RISK")
         self.assertEqual(len(self.account.positions), 0)
         self.assertEqual(len(self.autopilot.logs), 2)  # ENABLE + SKIP
-        self.assertEqual(self.autopilot.logs[0].action, "SKIP")
+        self.assertEqual(self.autopilot.logs[0].action, "SKIP_MACRO_RISK")
 
     def test_meta_bet_size_scales_position_amount(self):
         """メタ推奨比率(50%)に応じて建玉数量が半減スケールされることを検証"""

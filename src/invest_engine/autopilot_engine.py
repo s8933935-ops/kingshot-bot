@@ -297,7 +297,7 @@ class AutopilotEngine:
         if not has_symbol_pos:
             # メタラベリング判定: ロット0%ならマクロ危険水域として見送り
             if meta_bet_size <= 0.0:
-                self._log_decision(symbol, "SKIP", f"[{profile['name']}] エントリー機会を検出も、マクロ危険水域 ({meta_conf}) のためロット0%で見送り。", current_price)
+                self._log_decision(symbol, "SKIP_MACRO_RISK", f"[{profile['name']}] エントリー機会を検出も、マクロ危険水域 ({meta_conf}) のためロット0%で見送り。", current_price)
                 return "SKIP_MACRO_RISK"
 
             # 戦術とハーフケリー基準に連動したポジションサイジング
@@ -309,7 +309,7 @@ class AutopilotEngine:
             # レジーム判定ゲート: 高頻度戦術(スキャルピング/デイトレ)におけるレンジ相場でのダマシ回避
             regime = race_card.get("regime_state", "NORMAL")
             if self.config.strategy_style in ["scalping", "day_trade"] and regime == "CHOPPY_RANGE":
-                self._log_decision(symbol, "SKIP", f"[{profile['name']}] もみ合いレンジ相場 (CHOPPY_RANGE) のため、ブレイクアウトのダマシ回避で見送り。", current_price)
+                self._log_decision(symbol, "SKIP_CHOPPY_REGIME", f"[{profile['name']}] もみ合いレンジ相場 (CHOPPY_RANGE) のため、ブレイクアウトのダマシ回避で見送り。", current_price)
                 return "SKIP_CHOPPY_REGIME"
 
             # 上位足(HTF)トレンド整合ゲート
@@ -321,7 +321,7 @@ class AutopilotEngine:
             if prob_up >= profile["buy_threshold"]:
                 # 上位足が明確な下落トレンドの場合は順張り原則に基づき買い見送り
                 if htf_trend < 0:
-                    self._log_decision(symbol, "SKIP", f"[{profile['name']}] BUYシグナル検出も、上位足(日足)下降トレンド逆行のため見送り。", current_price)
+                    self._log_decision(symbol, "SKIP_HTF_ALIGNMENT", f"[{profile['name']}] BUYシグナル検出も、上位足(日足)下降トレンド逆行のため見送り。", current_price)
                     return "SKIP_HTF_ALIGNMENT"
 
                 barriers = compute_strategy_barriers(current_price, current_atr, profile, position=1)
@@ -331,7 +331,7 @@ class AutopilotEngine:
 
                 # 期待値フィルター: 摩擦控除後の期待値が正でない場合は見送り
                 if expected_val <= 0:
-                    self._log_decision(symbol, "SKIP", f"[{profile['name']}] BUY期待値が取引摩擦負け水準 (EV={expected_val*100:+.2f}%) のため見送り。", current_price)
+                    self._log_decision(symbol, "SKIP_NEGATIVE_EXPECTANCY", f"[{profile['name']}] BUY期待値が取引摩擦負け水準 (EV={expected_val*100:+.2f}%) のため見送り。", current_price)
                     return "SKIP_NEGATIVE_EXPECTANCY"
 
                 self.account.open_position(
@@ -344,7 +344,7 @@ class AutopilotEngine:
             elif prob_up <= profile["sell_threshold"]:
                 # 上位足が明確な上昇トレンドの場合は順張り原則に基づき売り見送り
                 if htf_trend > 0:
-                    self._log_decision(symbol, "SKIP", f"[{profile['name']}] SELLシグナル検出も、上位足(日足)上昇トレンド逆行のため見送り。", current_price)
+                    self._log_decision(symbol, "SKIP_HTF_ALIGNMENT", f"[{profile['name']}] SELLシグナル検出も、上位足(日足)上昇トレンド逆行のため見送り。", current_price)
                     return "SKIP_HTF_ALIGNMENT"
 
                 prob_down = 1.0 - prob_up
@@ -355,7 +355,7 @@ class AutopilotEngine:
 
                 # 期待値フィルター: 摩擦控除後の期待値が正でない場合は見送り
                 if expected_val <= 0:
-                    self._log_decision(symbol, "SKIP", f"[{profile['name']}] SELL期待値が取引摩擦負け水準 (EV={expected_val*100:+.2f}%) のため見送り。", current_price)
+                    self._log_decision(symbol, "SKIP_NEGATIVE_EXPECTANCY", f"[{profile['name']}] SELL期待値が取引摩擦負け水準 (EV={expected_val*100:+.2f}%) のため見送り。", current_price)
                     return "SKIP_NEGATIVE_EXPECTANCY"
 
                 self.account.open_position(
