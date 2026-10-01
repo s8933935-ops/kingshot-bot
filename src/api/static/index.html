@@ -78,6 +78,9 @@
 
       <!-- 口座ステータス ＆ 操作系 -->
       <div class="flex items-center space-x-3">
+        <button onclick="openAcademyModal()" class="text-xs px-2.5 py-1 bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/50 text-indigo-300 font-bold rounded flex items-center gap-1.5 transition shadow-sm shadow-indigo-950">
+          <span>🎓 理論コラム</span>
+        </button>
         <button onclick="openZeroLeakageModal()" class="text-xs px-2.5 py-1 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-600/50 text-emerald-300 font-bold rounded flex items-center gap-1.5 transition shadow-sm">
           <span>🛡️ 過学習ゼロ監査</span>
         </button>
@@ -131,6 +134,26 @@
 
     <!-- 左3カラム: チャート ＆ トレードパネル -->
     <div class="xl:col-span-3 space-y-4">
+
+      <!-- 🎓 クオンツ投資アルゴリズム理論コラム クイックバナー -->
+      <div onclick="openAcademyModal()" class="cursor-pointer bg-gradient-to-r from-indigo-950/80 via-blue-950/50 to-[#151924] border border-indigo-500/40 hover:border-indigo-400 rounded-xl p-3 shadow-lg flex items-center justify-between transition group">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-indigo-600/30 border border-indigo-400/40 flex items-center justify-center text-lg shadow-inner group-hover:scale-105 transition">
+            🎓
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-white group-hover:text-indigo-300 transition">【特別公開コラム】なぜこのAIは相場で生き残れるのか？ 〜 クオンツ投資の数学と鉄則 〜</span>
+              <span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-mono">全5講 集中連載</span>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-0.5">先読みリーク遮断・トリプルバリア法・メタラベリング＆ハーフケリー・3大防御ゲート・DSR過学習検定をコラム形式で徹底解説</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1 text-xs text-indigo-400 font-bold group-hover:translate-x-1 transition pr-2">
+          <span>今すぐ読む</span>
+          <span>→</span>
+        </div>
+      </div>
 
       <!-- TradingView ローソク足チャートコンテナ -->
       <div class="bg-[#151924] border border-[#232936] rounded-xl p-4 shadow-xl relative">
@@ -1137,6 +1160,141 @@
     function closeZeroLeakageModal() {
       document.getElementById('zero-leakage-modal').classList.add('hidden');
     }
+
+    // =========================================================================
+    // 🎓 クオンツ投資アカデミー（アルゴリズム理論コラム）
+    // =========================================================================
+    let academyColumnsCache = null;
+    let activeAcademyColIndex = 0;
+
+    async function openAcademyModal(targetColId = null) {
+      try {
+        if (!academyColumnsCache) {
+          const res = await fetch('/api/academy/columns');
+          if (!res.ok) throw new Error('コラムデータの取得に失敗しました');
+          const data = await res.json();
+          academyColumnsCache = data.columns || [];
+        }
+
+        if (academyColumnsCache.length === 0) return;
+
+        // 指定IDがあればそのインデックスを選択
+        if (targetColId) {
+          const idx = academyColumnsCache.findIndex(c => c.id === targetColId);
+          if (idx !== -1) activeAcademyColIndex = idx;
+        }
+
+        renderAcademySidebar();
+        renderAcademyContent();
+
+        document.getElementById('academy-modal').classList.remove('hidden');
+      } catch (err) {
+        console.error('Academy modal error:', err);
+      }
+    }
+
+    function closeAcademyModal() {
+      document.getElementById('academy-modal').classList.add('hidden');
+    }
+
+    function renderAcademySidebar() {
+      const listContainer = document.getElementById('academy-columns-list');
+      if (!listContainer || !academyColumnsCache) return;
+
+      listContainer.innerHTML = academyColumnsCache.map((col, idx) => {
+        const isActive = idx === activeAcademyColIndex;
+        const activeCls = isActive
+          ? 'bg-gradient-to-r from-indigo-950 to-[#1a2035] border-indigo-500/80 shadow-md shadow-indigo-950/50'
+          : 'bg-[#151924] border-[#232936] hover:bg-[#1a202c] hover:border-slate-700';
+        const numColor = isActive ? 'text-indigo-400 font-bold' : 'text-slate-500';
+        const titleColor = isActive ? 'text-white font-bold' : 'text-slate-300';
+
+        return `
+          <div onclick="switchAcademyColumn(${idx})" class="p-3 rounded-xl border ${activeCls} cursor-pointer transition flex items-start gap-2.5">
+            <span class="text-xl shrink-0 mt-0.5">${col.icon}</span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between text-[10px]">
+                <span class="${numColor} font-mono">${col.lesson_num}</span>
+                <span class="text-slate-500 font-mono text-[9px]">${col.read_time}</span>
+              </div>
+              <div class="${titleColor} text-xs leading-snug truncate mt-0.5">${col.title}</div>
+              <div class="text-[10px] text-slate-400 truncate mt-0.5">${col.subtitle}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function switchAcademyColumn(idx) {
+      if (!academyColumnsCache || idx < 0 || idx >= academyColumnsCache.length) return;
+      activeAcademyColIndex = idx;
+      renderAcademySidebar();
+      renderAcademyContent();
+      // 右ペインを最上部にスクロール
+      const contentEl = document.getElementById('academy-content-pane');
+      if (contentEl) contentEl.scrollTop = 0;
+    }
+
+    function renderAcademyContent() {
+      const col = academyColumnsCache[activeAcademyColIndex];
+      if (!col) return;
+
+      document.getElementById('academy-col-tag').innerText = `${col.lesson_num} ・ ${col.category}`;
+      document.getElementById('academy-col-title').innerText = col.title;
+      document.getElementById('academy-col-subtitle').innerText = col.subtitle;
+
+      // 3行要点
+      const summaryList = document.getElementById('academy-col-summary');
+      if (summaryList) {
+        summaryList.innerHTML = col.summary.map(s => `
+          <li class="flex items-start gap-2 text-xs text-slate-300">
+            <span class="text-indigo-400 font-bold">✓</span>
+            <span>${s}</span>
+          </li>
+        `).join('');
+      }
+
+      // 本文 (Markdown簡易HTML変換)
+      const bodyEl = document.getElementById('academy-col-body');
+      if (bodyEl) {
+        let html = col.content_markdown
+          .replace(/### (.*?)\n/g, '<h4 class="text-sm font-bold text-white mt-4 mb-2 pb-1 border-b border-[#2d3748]">$1</h4>')
+          .replace(/#### (.*?)\n/g, '<h5 class="text-xs font-bold text-indigo-300 mt-3 mb-1.5">$1</h5>')
+          .replace(/```text([\s\S]*?)```/g, '<pre class="bg-[#0b0e14] border border-[#232936] rounded-lg p-3 my-2 font-mono text-[11px] text-emerald-400 overflow-x-auto">$1</pre>')
+          .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+          .replace(/\n\n/g, '</p><p class="text-xs text-slate-300 leading-relaxed mb-3">');
+        
+        bodyEl.innerHTML = `<p class="text-xs text-slate-300 leading-relaxed mb-3">${html}</p>`;
+      }
+
+      // 数理フォーミュラ
+      const mathEl = document.getElementById('academy-col-math');
+      if (mathEl) {
+        mathEl.innerText = col.math_formula || '';
+      }
+
+      // 実装コード参照
+      const codeEl = document.getElementById('academy-col-code');
+      if (codeEl && col.code_reference) {
+        codeEl.innerHTML = `
+          <div class="flex items-center gap-1.5 text-xs text-indigo-300 font-bold font-mono">
+            <span>💻</span> <span>${col.code_reference.file}</span>
+            <span class="text-slate-400 font-sans font-normal">→ ${col.code_reference.function}</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-1">${col.code_reference.line_desc}</p>
+        `;
+      }
+
+      // ページ送りボタン状態
+      const prevBtn = document.getElementById('academy-prev-btn');
+      const nextBtn = document.getElementById('academy-next-btn');
+      if (prevBtn) prevBtn.disabled = (activeAcademyColIndex === 0);
+      if (nextBtn) nextBtn.disabled = (activeAcademyColIndex === academyColumnsCache.length - 1);
+    }
+
+    function nextAcademyColumn(offset) {
+      switchAcademyColumn(activeAcademyColIndex + offset);
+    }
   </script>
 
   <!-- 過学習ゼロ監査モーダル -->
@@ -1203,6 +1361,109 @@
         <button onclick="closeZeroLeakageModal()" class="px-4 py-1.5 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded text-xs transition">
           閉じる
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎓 クオンツ投資アカデミー（アルゴリズム理論コラム）モーダル -->
+  <div id="academy-modal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 md:p-6">
+    <div class="bg-[#121622] border border-indigo-500/40 rounded-2xl max-w-5xl w-full p-5 md:p-6 shadow-2xl flex flex-col max-h-[92vh] text-slate-200">
+      
+      <!-- モーダルヘッダー -->
+      <div class="flex justify-between items-center border-b border-[#232936] pb-3 shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-indigo-600/30 border border-indigo-400/50 flex items-center justify-center text-xl shadow-inner">
+            🎓
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-base md:text-lg flex items-center gap-2">
+              クオンツ投資アカデミー <span class="text-xs font-normal text-indigo-400 bg-indigo-950/80 px-2 py-0.5 rounded border border-indigo-600/40">アルゴリズム理論コラム</span>
+            </h3>
+            <p class="text-[11px] text-slate-400">マルコス・ロペス・デ・プラド教授の金融機械学習と、本AIに実装された5大アルゴリズムの徹底解剖</p>
+          </div>
+        </div>
+        <button onclick="closeAcademyModal()" class="w-8 h-8 rounded-lg bg-[#1a202c] hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-lg transition">
+          &times;
+        </button>
+      </div>
+
+      <!-- メイングリッド (2カラム: 目次 + 記事本文) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 flex-1 overflow-hidden min-h-0 pt-4">
+        
+        <!-- 左1カラム: 講義目次ナビゲーション -->
+        <div class="col-span-1 flex flex-col space-y-2 overflow-y-auto custom-scrollbar pr-1">
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-1">全5講 連載目次</div>
+          <div id="academy-columns-list" class="space-y-2 flex-1">
+            <!-- JSで動的レンダリング -->
+          </div>
+        </div>
+
+        <!-- 右2カラム: 記事本文ビューア -->
+        <div class="col-span-2 flex flex-col overflow-hidden bg-[#0d1017] rounded-xl border border-[#232936] p-4 md:p-5">
+          
+          <div id="academy-content-pane" class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-4">
+            <!-- カテゴリ・講義番号 -->
+            <div class="flex items-center gap-2">
+              <span id="academy-col-tag" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-950 text-indigo-300 border border-indigo-700/60">
+                第1講 ・ データ基盤
+              </span>
+            </div>
+
+            <!-- タイトル & サブタイトル -->
+            <div>
+              <h2 id="academy-col-title" class="text-base md:text-xl font-bold text-white tracking-tight"></h2>
+              <p id="academy-col-subtitle" class="text-xs text-indigo-300/90 mt-1 font-medium"></p>
+            </div>
+
+            <!-- 💡 3行でわかる要点 -->
+            <div class="bg-indigo-950/30 border border-indigo-500/40 rounded-xl p-3.5 space-y-1.5 shadow-sm">
+              <div class="text-[11px] font-bold text-indigo-300 flex items-center gap-1.5">
+                <span>💡</span> 3行でわかる本講のポイント
+              </div>
+              <ul id="academy-col-summary" class="space-y-1 pl-1">
+                <!-- JSで動的挿入 -->
+              </ul>
+            </div>
+
+            <!-- 本文解説 -->
+            <div id="academy-col-body" class="prose text-xs text-slate-300 leading-relaxed font-sans space-y-2">
+              <!-- JSで動的挿入 -->
+            </div>
+
+            <!-- 📐 数理フォーミュラ -->
+            <div class="bg-[#121620] border border-blue-900/50 rounded-xl p-3.5 space-y-1.5">
+              <div class="text-[11px] font-bold text-blue-300 flex items-center gap-1.5">
+                <span>📐</span> 数学・アルゴリズムの定義式
+              </div>
+              <div id="academy-col-math" class="font-mono text-xs text-emerald-400 bg-[#090b0f] p-2.5 rounded-lg border border-[#1f2636] overflow-x-auto">
+                <!-- JSで動的挿入 -->
+              </div>
+            </div>
+
+            <!-- 💻 本システムでの実装箇所案内 -->
+            <div class="bg-[#161a26] border border-[#2d3748] rounded-xl p-3.5">
+              <div class="text-[11px] font-bold text-slate-300 mb-1.5 flex items-center gap-1">
+                <span>⚙️</span> 本システム（実稼働コード）での該当実装
+              </div>
+              <div id="academy-col-code">
+                <!-- JSで動的挿入 -->
+              </div>
+            </div>
+          </div>
+
+          <!-- フッター送りナビゲーション -->
+          <div class="border-t border-[#232936] pt-3 mt-3 flex justify-between items-center shrink-0">
+            <button id="academy-prev-btn" onclick="nextAcademyColumn(-1)" class="px-3 py-1.5 bg-[#1a202c] hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none text-slate-200 font-bold rounded-lg text-xs transition flex items-center gap-1">
+              <span>←</span> 前の講義
+            </button>
+            <button onclick="closeAcademyModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium rounded-lg text-xs transition">
+              閉じる
+            </button>
+            <button id="academy-next-btn" onclick="nextAcademyColumn(1)" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-30 disabled:pointer-events-none text-white font-bold rounded-lg text-xs transition flex items-center gap-1 shadow-md shadow-indigo-900/40">
+              次の講義 <span>→</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

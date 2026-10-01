@@ -397,6 +397,23 @@ def get_zero_leakage_audit():
     }
 
 
+@app.get("/api/academy/columns", tags=["クオンツアカデミー"])
+def get_academy_columns():
+    """クオンツ投資アルゴリズム理論コラム（全5講）の一覧と詳細を取得"""
+    from src.invest_engine.academy_columns import get_all_columns
+    return {"columns": get_all_columns()}
+
+
+@app.get("/api/academy/columns/{column_id}", tags=["クオンツアカデミー"])
+def get_academy_column_detail(column_id: str):
+    """指定されたIDのクオンツコラム詳細を取得"""
+    from src.invest_engine.academy_columns import get_column_by_id
+    col = get_column_by_id(column_id)
+    if not col:
+        raise HTTPException(status_code=404, detail="指定されたコラムが見つかりません。")
+    return col
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("src.api.main:app", host="127.0.0.1", port=8000, reload=True)
