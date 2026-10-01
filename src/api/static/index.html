@@ -157,13 +157,24 @@
 
       <!-- TradingView ローソク足チャートコンテナ -->
       <div class="bg-[#151924] border border-[#232936] rounded-xl p-4 shadow-xl relative">
-        <div class="flex items-center justify-between mb-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
           <div class="flex items-center space-x-2">
-            <span class="text-xs font-bold text-slate-300">📊 ヒストリカル・ローソク足チャート (日足)</span>
+            <span class="text-xs font-bold text-slate-300">📊 ローソク足チャート</span>
+            <span id="chart-interval-label" class="text-[10px] text-blue-400 font-mono font-bold bg-blue-950/60 px-1.5 py-0.5 rounded border border-blue-800">日足 (1D)</span>
             <span class="text-[10px] text-slate-500 font-mono">TradingView Lightweight v4.1</span>
           </div>
-          <div class="flex items-center space-x-2 text-xs">
-            <span class="inline-flex items-center gap-1 text-[11px] text-slate-400">
+          
+          <div class="flex items-center gap-3">
+            <!-- デイトレ・スキャルピング用 足種切り替えボタングループ -->
+            <div class="bg-[#0e1118] border border-[#232936] rounded-lg p-0.5 flex items-center gap-0.5 text-xs font-mono shadow-inner">
+              <button onclick="changeInterval('1m')" id="btn-interval-1m" title="1分足（超短期スキャルピング）" class="interval-btn px-2.5 py-1 rounded text-[11px] font-semibold text-slate-400 hover:text-white transition">1分</button>
+              <button onclick="changeInterval('5m')" id="btn-interval-5m" title="5分足（デイトレード王道）" class="interval-btn px-2.5 py-1 rounded text-[11px] font-semibold text-slate-400 hover:text-white transition">5分</button>
+              <button onclick="changeInterval('15m')" id="btn-interval-15m" title="15分足（デイトレ環境認識）" class="interval-btn px-2.5 py-1 rounded text-[11px] font-semibold text-slate-400 hover:text-white transition">15分</button>
+              <button onclick="changeInterval('1h')" id="btn-interval-1h" title="1時間足（スイング・中期トレンド）" class="interval-btn px-2.5 py-1 rounded text-[11px] font-semibold text-slate-400 hover:text-white transition">1時間</button>
+              <button onclick="changeInterval('1d')" id="btn-interval-1d" title="日足（大局環境認識）" class="interval-btn px-2.5 py-1 rounded text-[11px] font-semibold bg-blue-600 text-white shadow transition">日足</button>
+            </div>
+
+            <span class="hidden sm:inline-flex items-center gap-1 text-[11px] text-slate-400">
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> 上昇
               <span class="w-2.5 h-2.5 rounded-full bg-rose-500 ml-1.5"></span> 下落
             </span>
@@ -621,6 +632,46 @@
       }
     }
 
+    let currentInterval = '1d';
+
+    const INTERVAL_LABELS = {
+      '1m': '1分足 (1m - デイトレ/スキャル)',
+      '5m': '5分足 (5m - デイトレ定番)',
+      '15m': '15分足 (15m - デイトレ中期)',
+      '1h': '1時間足 (1H - スイング/デイトレ)',
+      '1d': '日足 (1D - メジャー日足)'
+    };
+
+    // 足種（タイムフレーム）切り替え
+    function changeInterval(interval) {
+      currentInterval = interval;
+
+      // ラベル更新
+      const lbl = document.getElementById('chart-interval-label');
+      if (lbl) lbl.innerText = INTERVAL_LABELS[interval] || interval;
+
+      // ボタンスタイル更新
+      document.querySelectorAll('.interval-btn').forEach(btn => {
+        btn.className = 'interval-btn px-2.5 py-1 rounded text-[11px] font-semibold text-slate-400 hover:text-white transition';
+      });
+      const activeBtn = document.getElementById('btn-interval-' + interval);
+      if (activeBtn) {
+        activeBtn.className = 'interval-btn px-2.5 py-1 rounded text-[11px] font-semibold bg-blue-600 text-white shadow transition';
+      }
+
+      // チャートの時間軸スケール設定 (分足なら時刻表示ON、日足なら時刻表示OFF)
+      if (chartInstance) {
+        chartInstance.applyOptions({
+          timeScale: {
+            timeVisible: interval !== '1d',
+            secondsVisible: false
+          }
+        });
+      }
+
+      loadMarketData(currentSymbol, currentInterval);
+    }
+
     // 銘柄切り替え
     function changeSymbol(symbol, name) {
       currentSymbol = symbol;
@@ -632,20 +683,27 @@
       });
       document.getElementById('nav-' + symbol).className = 'symbol-btn px-3 py-1 rounded text-xs font-semibold bg-blue-600 text-white transition';
 
-      loadMarketData(symbol);
+      loadMarketData(symbol, currentInterval);
     }
 
     // チャートデータ ＆ AIシグナル取得
-    async function loadMarketData(symbol) {
+    async function loadMarketData(symbol, interval = currentInterval) {
       try {
-        // 1. チャート時系列データ取得
-        const chartRes = await fetch(`/api/chart/${symbol}?period=1y&interval=1d`);
+        const loader = document.getElementById('chart-loader');
+        if (loader && (!candleSeries || candleSeries.data().length === 0)) {
+          loader.style.display = 'flex';
+        }
+
+        // 1. チャート時系列データ取得 (分足/時間足/日足)
+        const chartRes = await fetch(`/api/chart/${symbol}?interval=${interval}`);
         const chartData = await chartRes.json();
 
         if (chartData.candles && chartData.candles.length > 0) {
           candleSeries.setData(chartData.candles);
           volumeSeries.setData(chartData.volumes);
           chartInstance.timeScale().fitContent();
+
+          if (loader) loader.style.display = 'none';
 
           const latest = chartData.latest_close;
           const prev = chartData.prev_close;

@@ -99,20 +99,42 @@ def get_all_races():
     return game_manager.get_all_races()
 
 
-ALLOWED_CHART_PERIODS = {"1mo", "3mo", "6mo", "1y", "2y", "5y", "max"}
+ALLOWED_CHART_PERIODS = {"1d", "5d", "7d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "max"}
 ALLOWED_CHART_INTERVALS = {"1m", "5m", "15m", "1h", "1d"}
+
+# 各足種における最適・安全なデフォルト期間 (yfinance制限対応)
+DEFAULT_INTERVAL_PERIODS = {
+    "1m": "1d",
+    "5m": "5d",
+    "15m": "1mo",
+    "1h": "1mo",
+    "1d": "1y"
+}
 
 
 @app.get("/api/chart/{symbol}", tags=["チャート"])
-def get_chart_data(symbol: str = "GC=F", period: str = "1y", interval: str = "1d"):
+def get_chart_data(symbol: str = "GC=F", period: Optional[str] = None, interval: str = "1d"):
     """
     ローソク足チャート（OHLCV時系列データ）を取得します。
-    TradingView / Lightweight Charts 互換フォーマット (time: YYYY-MM-DD or unix, open, high, low, close, volume)
+    - 日足 (1d): time = 'YYYY-MM-DD'
+    - 分足・時間足 (1m, 5m, 15m, 1h): time = UNIXタイムスタンプ(秒)
+    TradingView / Lightweight Charts 互換フォーマット
     """
-    if period not in ALLOWED_CHART_PERIODS:
-        raise HTTPException(status_code=400, detail=f"無効な period です。指定可能: {sorted(list(ALLOWED_CHART_PERIODS))}")
     if interval not in ALLOWED_CHART_INTERVALS:
         raise HTTPException(status_code=400, detail=f"無効な interval です。指定可能: {sorted(list(ALLOWED_CHART_INTERVALS))}")
+
+    if period is not None and period not in ALLOWED_CHART_PERIODS:
+        raise HTTPException(status_code=400, detail=f"無効な period です。指定可能: {sorted(list(ALLOWED_CHART_PERIODS))}")
+
+    # period 未指定時は interval に応じた最適期間を自動補完
+    if not period:
+        period = DEFAULT_INTERVAL_PERIODS.get(interval, "1y")
+
+    # 1分足はyfinance制限により最大7日以内、5分/15分は60日以内
+    if interval == "1m" and period not in {"1d", "5d", "7d"}:
+        period = "1d"
+    elif interval in {"5m", "15m"} and period in {"6mo", "1y", "2y", "5y", "max"}:
+        period = "1mo"
 
     from src.invest_engine.data_loader import fetch_historical_data
     try:
@@ -120,24 +142,48 @@ def get_chart_data(symbol: str = "GC=F", period: str = "1y", interval: str = "1d
         if df is None or len(df) == 0:
             raise HTTPException(status_code=404, detail=f"銘柄 '{symbol}' のチャートデータが見つかりません。")
 
+        is_intraday = interval in {"1m", "5m", "15m", "1h"}
         candles = []
         volumes = []
+        seen_times = set()
+
         for idx, row in df.iterrows():
-            date_str = str(idx.date())
+            if is_intraday:
+                # 分足・時間足は秒単位のUNIXタイムスタンプ
+                candle_time = int(idx.timestamp())
+            else:
+                # 日足は日付文字列
+                candle_time = str(idx.date())
+
+            # タイムスタンプ重複を安全に除外
+            if candle_time in seen_times:
+                continue
+            seen_times.add(candle_time)
+
+            open_val = round(float(row["Open"]), 2)
+            high_val = round(float(row["High"]), 2)
+            low_val = round(float(row["Low"]), 2)
+            close_val = round(float(row["Close"]), 2)
+            vol_val = round(float(row.get("Volume", 0)), 2)
+
             candles.append({
-                "time": date_str,
-                "open": round(float(row["Open"]), 2),
-                "high": round(float(row["High"]), 2),
-                "low": round(float(row["Low"]), 2),
-                "close": round(float(row["Close"]), 2)
+                "time": candle_time,
+                "open": open_val,
+                "high": high_val,
+                "low": low_val,
+                "close": close_val
             })
             volumes.append({
-                "time": date_str,
-                "value": round(float(row.get("Volume", 0)), 2),
-                "color": "#10b981" if row["Close"] >= row["Open"] else "#ef4444"
+                "time": candle_time,
+                "value": vol_val,
+                "color": "#10b981" if close_val >= open_val else "#ef4444"
             })
+
         return {
             "symbol": symbol,
+            "interval": interval,
+            "period": period,
+            "is_intraday": is_intraday,
             "candles": candles,
             "volumes": volumes,
             "latest_close": round(float(df["Close"].iloc[-1]), 2),

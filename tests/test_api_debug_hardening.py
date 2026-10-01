@@ -52,6 +52,24 @@ class TestApiDebugHardening(unittest.TestCase):
         self.assertIn("action_taken", data)
         self.assertIn("status", data)
 
+    def test_chart_intraday_intervals(self):
+        # 5分足取得テスト
+        res5m = self.client.get("/api/chart/GC=F?interval=5m")
+        self.assertEqual(res5m.status_code, 200)
+        data5m = res5m.json()
+        self.assertTrue(data5m["is_intraday"])
+        self.assertEqual(data5m["interval"], "5m")
+        self.assertGreater(len(data5m["candles"]), 0)
+        # UNIXタイムスタンプ（整数型）であること
+        self.assertIsInstance(data5m["candles"][-1]["time"], int)
+
+        # 1分足取得テスト
+        res1m = self.client.get("/api/chart/GC=F?interval=1m")
+        self.assertEqual(res1m.status_code, 200)
+        data1m = res1m.json()
+        self.assertTrue(data1m["is_intraday"])
+        self.assertIsInstance(data1m["candles"][-1]["time"], int)
+
 
 if __name__ == "__main__":
     unittest.main()
