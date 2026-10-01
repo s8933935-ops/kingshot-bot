@@ -206,7 +206,7 @@ class VirtualAccount:
         pf = (total_gain / total_loss) if total_loss > 0 else (99.0 if total_gain > 0 else 1.0)
 
         # 累積回収率 (現在の有効証拠金 ÷ 初期資金 × 100)
-        payout_rate = (self.equity / self.initial_cash) * 100.0
+        payout_rate = (self.equity / self.initial_cash * 100.0) if self.initial_cash > 0 else 100.0
 
         # AI作戦会議で採択された「グランプリ総合スコア (GP Score)」
         # 単純な大勝ちだけでなく、勝率・PF・ドローダウン耐性を掛け合わせた真の実力指標

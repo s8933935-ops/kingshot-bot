@@ -236,14 +236,18 @@ class AutopilotEngine:
             return None
 
         profile = STRATEGY_PROFILES.get(self.config.strategy_style, STRATEGY_PROFILES["day_trade"])
-        current_price = race_card["current_price"]
-        prob_up = race_card["prob_up_pct"] / 100.0
+        current_price = float(race_card.get("current_price", 0.0))
+        if current_price <= 0.0:
+            return None  # 価格不正時は即時見送り
+
+        prob_up = float(race_card.get("prob_up_pct", 50.0)) / 100.0
         meta_bet_size = float(race_card.get("meta_bet_size_pct", 100.0))
         meta_conf = race_card.get("meta_confidence", "NORMAL")
 
         # 1. 安全装置チェック: 日次最大損失リミット
         current_eq = self.account.equity
-        loss_pct = ((current_eq - self.config.base_equity_today) / self.config.base_equity_today) * 100.0
+        base_eq = self.config.base_equity_today
+        loss_pct = ((current_eq - base_eq) / base_eq * 100.0) if base_eq > 0 else 0.0
         if loss_pct <= -abs(self.config.daily_max_loss_pct):
             self.is_halted_by_killswitch = True
             self.config.is_active = False

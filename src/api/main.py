@@ -99,15 +99,27 @@ def get_all_races():
     return game_manager.get_all_races()
 
 
+ALLOWED_CHART_PERIODS = {"1mo", "3mo", "6mo", "1y", "2y", "5y", "max"}
+ALLOWED_CHART_INTERVALS = {"1m", "5m", "15m", "1h", "1d"}
+
+
 @app.get("/api/chart/{symbol}", tags=["チャート"])
 def get_chart_data(symbol: str = "GC=F", period: str = "1y", interval: str = "1d"):
     """
     ローソク足チャート（OHLCV時系列データ）を取得します。
     TradingView / Lightweight Charts 互換フォーマット (time: YYYY-MM-DD or unix, open, high, low, close, volume)
     """
+    if period not in ALLOWED_CHART_PERIODS:
+        raise HTTPException(status_code=400, detail=f"無効な period です。指定可能: {sorted(list(ALLOWED_CHART_PERIODS))}")
+    if interval not in ALLOWED_CHART_INTERVALS:
+        raise HTTPException(status_code=400, detail=f"無効な interval です。指定可能: {sorted(list(ALLOWED_CHART_INTERVALS))}")
+
     from src.invest_engine.data_loader import fetch_historical_data
     try:
         df = fetch_historical_data(symbol=symbol, period=period, interval=interval)
+        if df is None or len(df) == 0:
+            raise HTTPException(status_code=404, detail=f"銘柄 '{symbol}' のチャートデータが見つかりません。")
+
         candles = []
         volumes = []
         for idx, row in df.iterrows():
@@ -131,6 +143,8 @@ def get_chart_data(symbol: str = "GC=F", period: str = "1y", interval: str = "1d
             "latest_close": round(float(df["Close"].iloc[-1]), 2),
             "prev_close": round(float(df["Close"].iloc[-2]), 2) if len(df) > 1 else round(float(df["Close"].iloc[-1]), 2)
         }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"チャートデータ取得失敗: {str(e)}")
 
@@ -352,15 +366,18 @@ def execute_autopilot_tick(user_id: str, symbol: str = "GC=F"):
     if not ap:
         raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
 
-    # 市場全体を1ティック進行
-    tick_res = game_manager.tick_market()
-    race_card = game_manager.generate_race_card(symbol=symbol)
-    action = ap.evaluate_and_execute(symbol=symbol, race_card=race_card)
-    return {
-        "action_taken": action,
-        "tick_actions": tick_res.get("actions", []),
-        "status": ap.get_status()
-    }
+    try:
+        # 市場全体を1ティック進行
+        tick_res = game_manager.tick_market()
+        race_card = game_manager.generate_race_card(symbol=symbol)
+        action = ap.evaluate_and_execute(symbol=symbol, race_card=race_card)
+        return {
+            "action_taken": action,
+            "tick_actions": tick_res.get("actions", []),
+            "status": ap.get_status()
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"オートパイロット実行時エラー: {str(e)}")
 
 
 def asdict_trade(t) -> Dict[str, Any]:
@@ -379,11 +396,16 @@ def asdict_trade(t) -> Dict[str, Any]:
 @app.get("/api/audit/zero-leakage", tags=["クオンツ監査"])
 def get_zero_leakage_audit():
     """5大鉄壁防壁による過学習ゼロ・厳格監査レポートを取得"""
-    audit_file = Path("data/consortium/zero_leakage_audit_results.json")
+    project_root = Path(__file__).resolve().parent.parent.parent
+    audit_file = project_root / "data" / "consortium" / "zero_leakage_audit_results.json"
     if not audit_file.exists():
         raise HTTPException(status_code=404, detail="監査データが存在しません。")
-    with open(audit_file, "r", encoding="utf-8") as f:
-        data = json.load(f)
+    try:
+        with open(audit_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"監査データの読み込みに失敗しました: {str(e)}")
+
     return {
         "title": "Zero-Leakage & Anti-Overfit System 監査証明書",
         "invariants": [

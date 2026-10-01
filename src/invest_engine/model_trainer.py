@@ -98,11 +98,13 @@ class GoldPredictorModel:
             X_val, y_val = X[val_idx], y[val_idx]
 
             clf = lgb.LGBMClassifier(**lgb_params)
-            clf.fit(
-                X_train, y_train,
-                eval_set=[(X_val, y_val)],
-                callbacks=[lgb.early_stopping(stopping_rounds=20, verbose=False)]
-            )
+            with warnings.catch_warnings():
+                warnings.filterwarnings("ignore", category=UserWarning)
+                clf.fit(
+                    X_train, y_train,
+                    eval_set=[(X_val, y_val)],
+                    callbacks=[lgb.early_stopping(stopping_rounds=20, verbose=False)]
+                )
 
             preds_prob = clf.predict_proba(X_val)[:, 1]
             preds_class = (preds_prob >= 0.5).astype(int)

@@ -326,7 +326,9 @@ def purged_cross_val_score(
 
         scores.append(score)
 
-    return np.array(scores)
+    if len(scores) == 0:
+        return np.array([np.nan], dtype=float)
+    return np.array(scores, dtype=float)
 
 
 if __name__ == "__main__":

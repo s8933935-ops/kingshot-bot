@@ -91,9 +91,12 @@ def run_backtest(
     benchmark_cagr = float((1.0 + total_return_benchmark) ** (1.0 / years) - 1.0) if total_return_benchmark > -1.0 else -1.0
 
     # シャープレシオ (リスクフリーレート 0% 前提の年率換算)
-    daily_mean = df["strategy_return"].mean()
-    daily_std = df["strategy_return"].std()
-    sharpe_ratio = float((daily_mean / (daily_std + 1e-8)) * np.sqrt(252))
+    daily_mean = float(df["strategy_return"].mean()) if len(df) > 0 else 0.0
+    daily_std = float(df["strategy_return"].std()) if len(df) > 1 else 0.0
+    if np.isnan(daily_std) or daily_std == 0.0:
+        sharpe_ratio = 0.0
+    else:
+        sharpe_ratio = float((daily_mean / (daily_std + 1e-8)) * np.sqrt(252))
 
     # カルマーレシオ (年率リターン ÷ 最大ドローダウン)
     # プロがドローダウンに耐える価値があるか測る最重要指標

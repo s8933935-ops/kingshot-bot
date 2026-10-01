@@ -529,8 +529,17 @@
       loadAutopilotStatus();
       onStrategyChange();
 
-      // 定期更新 (3秒ごとに高速ポーリング ＆ 自動売買Tick進行)
-      setInterval(async () => {
+      // 安全な直列ポーリング (スタッキング・滞留防止)
+      startPollingCycle();
+    });
+
+    let pollTimer = null;
+    let isPollingBusy = false;
+
+    async function pollMarketCycle() {
+      if (isPollingBusy) return;
+      isPollingBusy = true;
+      try {
         if (isAutopilotRunning) {
           try {
             await fetch(`/api/autopilot/tick?user_id=${currentUser}&symbol=${currentSymbol}`, {method: 'POST'});
@@ -539,8 +548,20 @@
         await loadAccount();
         await refreshLeaderboard();
         await loadAutopilotStatus();
-      }, 3000);
-    });
+      } catch (err) {
+        console.warn('ポーリングサイクル例外:', err);
+      } finally {
+        isPollingBusy = false;
+        pollTimer = setTimeout(pollMarketCycle, 3000);
+      }
+    }
+
+    function startPollingCycle() {
+      if (pollTimer) clearTimeout(pollTimer);
+      pollTimer = setTimeout(pollMarketCycle, 3000);
+    }
+
+    let isResizeAttached = false;
 
     // TradingView Lightweight Charts の初期化
     function initChart() {
@@ -586,13 +607,18 @@
         scaleMargins: { top: 0.8, bottom: 0 }
       });
 
-      // リサイズハンドラ
-      window.addEventListener('resize', () => {
-        chartInstance.applyOptions({
-          width: container.clientWidth,
-          height: container.clientHeight
+      // リサイズハンドラ (重複登録防止)
+      if (!isResizeAttached) {
+        window.addEventListener('resize', () => {
+          if (chartInstance && container) {
+            chartInstance.applyOptions({
+              width: container.clientWidth,
+              height: container.clientHeight
+            });
+          }
         });
-      });
+        isResizeAttached = true;
+      }
     }
 
     // 銘柄切り替え
@@ -632,7 +658,9 @@
 
         // 2. AI予測シグナル取得
         const signalRes = await fetch(`/api/race-card?symbol=${symbol}`);
+        if (!signalRes.ok) return;
         const sig = await signalRes.json();
+        if (!sig || !sig.ai_mark) return;
 
         const badge = document.getElementById('signal-badge');
         badge.innerText = sig.ai_mark;
@@ -644,15 +672,15 @@
           badge.className = 'px-3 py-1 rounded-md text-xs font-bold font-mono bg-amber-500/20 text-amber-400 border border-amber-500/40';
         }
 
-        document.getElementById('confidence-val').innerText = sig.confidence;
-        document.getElementById('prob-up-text').innerText = sig.prob_up_pct + '%';
-        document.getElementById('prob-down-text').innerText = sig.prob_down_pct + '%';
-        document.getElementById('prob-bar-green').style.width = sig.prob_up_pct + '%';
-        document.getElementById('prob-bar-red').style.width = sig.prob_down_pct + '%';
-        document.getElementById('analysis-reason').innerText = sig.paddock_comment;
-        document.getElementById('val-rsi').innerText = sig.rsi_14;
-        document.getElementById('val-macd').innerText = sig.macd;
-        document.getElementById('val-ret').innerText = (sig.return_1d_pct >= 0 ? '+' : '') + sig.return_1d_pct + '%';
+        document.getElementById('confidence-val').innerText = sig.confidence || 'NORMAL';
+        document.getElementById('prob-up-text').innerText = (sig.prob_up_pct ?? 50) + '%';
+        document.getElementById('prob-down-text').innerText = (sig.prob_down_pct ?? 50) + '%';
+        document.getElementById('prob-bar-green').style.width = (sig.prob_up_pct ?? 50) + '%';
+        document.getElementById('prob-bar-red').style.width = (sig.prob_down_pct ?? 50) + '%';
+        document.getElementById('analysis-reason').innerText = sig.paddock_comment || '解析中...';
+        document.getElementById('val-rsi').innerText = sig.rsi_14 ?? '--';
+        document.getElementById('val-macd').innerText = sig.macd ?? '--';
+        document.getElementById('val-ret').innerText = sig.return_1d_pct !== undefined ? ((sig.return_1d_pct >= 0 ? '+' : '') + sig.return_1d_pct + '%') : '--';
 
         // メタラベリング (ハーフケリー) 更新
         if (sig.meta_bet_size_pct !== undefined) {
@@ -723,16 +751,18 @@
         const res = await fetch(`/api/account/${currentUser}`);
         if (!res.ok) return;
         const data = await res.json();
-        document.getElementById('user-equity').innerText = Math.round(data.stats.equity).toLocaleString();
+        if (!data || !data.stats) return;
+        document.getElementById('user-equity').innerText = Math.round(data.stats.equity || 0).toLocaleString();
 
         // 1. 保有ポジション一覧
         const tbody = document.getElementById('positions-list');
-        document.getElementById('pos-count').innerText = data.positions.length;
+        const positions = data.positions || [];
+        document.getElementById('pos-count').innerText = positions.length;
 
-        if (data.positions.length === 0) {
+        if (positions.length === 0) {
           tbody.innerHTML = '<tr><td colspan="7" class="py-6 text-center text-slate-500 font-sans text-xs">保有ポジションはありません。</td></tr>';
         } else {
-          tbody.innerHTML = data.positions.map(p => {
+          tbody.innerHTML = positions.map(p => {
             const isPlus = p.unrealized_pnl >= 0;
             const pnlColor = isPlus ? 'text-emerald-400' : 'text-rose-400';
             const pnlSign = isPlus ? '+' : '';
@@ -795,7 +825,9 @@
     async function refreshLeaderboard() {
       try {
         const res = await fetch('/api/leaderboard?sort_by=payout_rate_pct');
+        if (!res.ok) return;
         const list = await res.json();
+        if (!Array.isArray(list)) return;
         const container = document.getElementById('leaderboard-items');
 
         container.innerHTML = list.map((item, idx) => {

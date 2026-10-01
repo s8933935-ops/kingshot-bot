@@ -96,9 +96,17 @@ class PointInTimeAuditor:
                 if col not in df.columns:
                     continue
                 feat_series = df[col].loc[target_series.index]
-                if feat_series.std() == 0 or target_series.std() == 0:
+                valid_mask = feat_series.notna() & target_series.notna()
+                if valid_mask.sum() < 3:
                     continue
-                corr = float(np.corrcoef(feat_series, target_series)[0, 1])
+                v_feat = feat_series[valid_mask]
+                v_target = target_series[valid_mask]
+                if v_feat.std() == 0 or v_target.std() == 0 or pd.isna(v_feat.std()) or pd.isna(v_target.std()):
+                    continue
+                corr_mat = np.corrcoef(v_feat, v_target)
+                if np.isnan(corr_mat[0, 1]):
+                    continue
+                corr = float(corr_mat[0, 1])
                 correlations[col] = corr
                 if abs(corr) >= max_allowed_correlation:
                     violations.append({
