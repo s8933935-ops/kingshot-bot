@@ -278,6 +278,12 @@ class InvestmentGameManager:
                     if pos.symbol == sym:
                         pos.current_price = new_price
 
+            # 全ユーザー（手動発注・AI問わず）の待機中指値注文を市場価格と突き合わせ自動約定検査
+            for user in self.users.values():
+                filled = user.check_and_match_limit_orders(self.live_prices)
+                for f_pos in filled:
+                    actions.append({"user_id": user.user_id, "symbol": f_pos.symbol, "action": "LIMIT_FILLED", "price": f_pos.entry_price})
+
             # 出走表（キャッシュ利用で高速）
             try:
                 card = self.generate_race_card(sym)

@@ -401,12 +401,33 @@ def place_limit_order(order: LimitOrderRequest):
             tp_price=order.tp_price,
             sl_price=order.sl_price
         )
+        # 現在価格で即時マッチング検査（すでに指値到達していれば即座に約定）
+        cur_price = game_manager.live_prices.get(order.symbol)
+        if not cur_price or cur_price <= 0:
+            try:
+                card = game_manager.generate_race_card(order.symbol)
+                cur_price = card["current_price"]
+            except Exception:
+                cur_price = order.target_price
+
+        filled = acc.check_and_match_limit_orders({order.symbol: cur_price})
+        if filled:
+            return {
+                "status": "LIMIT_ORDER_FILLED",
+                "message": f"{order.side} 指値注文を発注し、市場価格到達により即時約定しました！（約定価格: {filled[0].entry_price}）",
+                "order_id": limit_order.order_id,
+                "target_price": limit_order.target_price,
+                "amount": limit_order.amount,
+                "is_filled": True
+            }
+
         return {
             "status": "LIMIT_ORDER_PLACED",
-            "message": f"{order.side} 指値注文を登録しました（指定価格: {order.target_price}）。",
+            "message": f"{order.side} 指値注文を登録しました（指定価格: {order.target_price}）。市場価格到達で自動約定します。",
             "order_id": limit_order.order_id,
             "target_price": limit_order.target_price,
-            "amount": limit_order.amount
+            "amount": limit_order.amount,
+            "is_filled": False
         }
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

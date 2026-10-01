@@ -845,6 +845,11 @@
             alert(data.detail || '指値発注エラー');
             return;
           }
+          if (data.immediate_fill) {
+            alert(`⚡ 即時約定！\n指値価格 ($${targetPrice.toFixed(2)}) に既に達していたため、直ちにポジションが成立しました。`);
+          } else {
+            alert(`✅ 指値注文を受け付けました！\n指値価格: $${targetPrice.toFixed(2)}\n数量: ${qty} / レバレッジ: ${lev}x\n「待機中指値一覧」に登録されました。市場価格到達時に自動約定します。`);
+          }
           await loadAccount();
         } catch (err) {
           alert('指値注文通信エラー');

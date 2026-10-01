@@ -22,10 +22,12 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
         "stop_loss_pct": -0.2,
         "buy_threshold": 0.55,
         "sell_threshold": 0.45,
-        "reversal_buy_exit": 0.35,  # 強い下落シグナル時のみ反転決済（ノイズ往復ビンタ防止）
+        "reversal_buy_exit": 0.35,
         "reversal_sell_exit": 0.65,
         "base_capital_ratio": 0.15,
         "max_leverage": 5.0,
+        "cooldown_ticks": 1,        # 決済後も即座に次のサヤを狙う高頻度
+        "allow_reversal_exit": True,
     },
     "day_trade": {
         "name": "デイトレード (日中短期・波乗り)",
@@ -42,6 +44,8 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
         "reversal_sell_exit": 0.65,
         "base_capital_ratio": 0.20,
         "max_leverage": 3.0,
+        "cooldown_ticks": 6,        # 決済後、次のバー確定まで一定時間待機
+        "allow_reversal_exit": True,
     },
     "swing": {
         "name": "スイングトレード (数日〜数週間・中期波乗り)",
@@ -58,6 +62,8 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
         "reversal_sell_exit": 0.70,
         "base_capital_ratio": 0.25,
         "max_leverage": 2.0,
+        "cooldown_ticks": 20,       # 決済後、一定期間じっくり構える
+        "allow_reversal_exit": False,  # 小波のブレでは逃げずホールド
     },
     "medium_term": {
         "name": "中期トレンド (数週間〜数ヶ月・マクロ重視)",
@@ -74,6 +80,8 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
         "reversal_sell_exit": 0.75,
         "base_capital_ratio": 0.30,
         "max_leverage": 1.5,
+        "cooldown_ticks": 40,       # 長期的な環境認識を待つ
+        "allow_reversal_exit": False,
     },
     "long_term": {
         "name": "長期投資 (数ヶ月〜数年・資産形成・ハーフケリー)",
@@ -90,6 +98,8 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
         "reversal_sell_exit": 0.80,
         "base_capital_ratio": 0.40,
         "max_leverage": 1.0,
+        "cooldown_ticks": 60,       # 長期投資は小まめに売買せずじっくり待機
+        "allow_reversal_exit": False,  # 小波のノイズによる早期手仕舞いを完全遮断
     }
 }
 
@@ -199,6 +209,8 @@ class AutopilotEngine:
         self.logs: List[DecisionLog] = []
         self.daily_pnl_today: float = 0.0
         self.is_halted_by_killswitch: bool = False
+        self.last_exit_tick: Dict[str, int] = {}
+        self.current_tick_count: int = 0
 
         # 4大主要銘柄のデフォルト個別設定を初期化
         default_symbols = ["GC=F", "USDJPY=X", "BTC-USD", "NVDA"]
@@ -296,6 +308,7 @@ class AutopilotEngine:
         市場シグナルと口座状態を検証し、選択された戦術ルールに合致した場合のみ自動売買を実行。
         指値マッチング、銘柄別設定、AIスマート指値注文に対応。
         """
+        self.current_tick_count += 1
         current_price = float(race_card.get("current_price", 0.0))
         if current_price <= 0.0:
             return None  # 価格不正時は即時見送り
@@ -357,29 +370,40 @@ class AutopilotEngine:
                 # 損切り最優先（Pessimistic Priority）
                 if hit_sl:
                     self.account.close_position(pos_id, current_price)
+                    self.last_exit_tick[symbol] = self.current_tick_count
                     sl_desc = f"{pos.sl_price:.2f}" if pos.sl_price else f"{profile['stop_loss_pct']}%"
                     self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 損切り到達 (現在値: {current_price:.2f}, SL: {sl_desc})。防衛的ロスカット。(¥{pos.unrealized_pnl:,.0f})", current_price)
                     return "CLOSE_STOP_LOSS"
                 elif hit_tp:
                     self.account.close_position(pos_id, current_price)
+                    self.last_exit_tick[symbol] = self.current_tick_count
                     tp_desc = f"{pos.tp_price:.2f}" if pos.tp_price else f"{profile['take_profit_pct']}%"
                     self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 目標利確到達 (現在値: {current_price:.2f}, TP: {tp_desc})。利益確定決済。(+¥{pos.unrealized_pnl:,.0f})", current_price)
                     return "CLOSE_TAKE_PROFIT"
-                # 反転シグナル手仕舞い
-                elif pos.side == "BUY" and prob_up < profile["reversal_buy_exit"]:
-                    self.account.close_position(pos_id, current_price)
-                    self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 上昇期待反落 ({prob_up*100:.1f}%)。買いポジションを反転手仕舞い。(損益: {unrealized:+.1f}%)", current_price)
-                    return "CLOSE_REVERSAL"
-                elif pos.side == "SELL" and prob_up > profile["reversal_sell_exit"]:
-                    self.account.close_position(pos_id, current_price)
-                    self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 下落期待反落 ({prob_up*100:.1f}%)。売りポジションを反転手仕舞い。(損益: {unrealized:+.1f}%)", current_price)
-                    return "CLOSE_REVERSAL"
+                # 反転シグナル手仕舞い（スキャルピング/デイトレのみ許可。スイング・長期は小波で逃げずホールド）
+                elif profile.get("allow_reversal_exit", False):
+                    if pos.side == "BUY" and prob_up < profile["reversal_buy_exit"]:
+                        self.account.close_position(pos_id, current_price)
+                        self.last_exit_tick[symbol] = self.current_tick_count
+                        self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 上昇期待反落 ({prob_up*100:.1f}%)。買いポジションを反転手仕舞い。(損益: {unrealized:+.1f}%)", current_price)
+                        return "CLOSE_REVERSAL"
+                    elif pos.side == "SELL" and prob_up > profile["reversal_sell_exit"]:
+                        self.account.close_position(pos_id, current_price)
+                        self.last_exit_tick[symbol] = self.current_tick_count
+                        self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 下落期待反落 ({prob_up*100:.1f}%)。売りポジションを反転手仕舞い。(損益: {unrealized:+.1f}%)", current_price)
+                        return "CLOSE_REVERSAL"
 
         # 3. 新規エントリー判定（ポジションおよび未約定AI指値が無い場合のみ）
         has_symbol_pos = any(p.symbol == symbol for p in self.account.positions.values())
         has_pending_ai_order = any(o.symbol == symbol and o.status == "PENDING" and o.source == "AI" for o in self.account.limit_orders.values())
 
         if not has_symbol_pos and not has_pending_ai_order:
+            # 戦略別再エントリークールダウン（長期投資等のマシンガン売買を遮断）
+            last_exit = self.last_exit_tick.get(symbol, -9999)
+            cooldown_req = profile.get("cooldown_ticks", 2)
+            if (self.current_tick_count - last_exit) < cooldown_req:
+                return "COOLDOWN_WAIT"
+
             # メタラベリング判定: ロット0%ならマクロ危険水域として見送り
             if meta_bet_size <= 0.0:
                 self._log_decision(symbol, "SKIP_MACRO_RISK", f"[{profile['name']}] エントリー機会を検出も、マクロ危険水域 ({meta_conf}) のためロット0%で見送り。", current_price)
