@@ -327,7 +327,7 @@ def calculate_deflated_sharpe_ratio(
     sk = float(skew(r))
     kt = float(kurtosis(r, fisher=False))  # Pearson kurtosis (正規分布=3.0)
 
-    # Lopez de Prado: 多重試行補正の期待最大シャープレシオ SR*
+    # Lopez de Prado (2014): 多重試行補正の期待最大シャープレシオ SR*
     # E[max(SR_N)] ~= (1 - euler_gamma) * Z^-1(1 - 1/N) + euler_gamma * Z^-1(1 - 1/(N * e))
     euler_gamma = 0.57721566490153286
     if num_trials > 1:
@@ -339,13 +339,14 @@ def calculate_deflated_sharpe_ratio(
     else:
         expected_max_sr = benchmark_sr
 
-    # 非正規性シャープレシオ分散補正
+    # 非正規性シャープレシオ分散補正 (Mertens 2002 / Lo 2002)
     # V[SR] = (1 - sk * sr + ((kt - 1) / 4) * sr^2) / (n - 1)
     sr_var = (1.0 - sk * sr + ((kt - 1.0) / 4.0) * (sr ** 2)) / max(1, n - 1)
     sr_std = np.sqrt(max(1e-9, sr_var))
 
-    # PSR / DSR 統計量
-    dsr_z = (sr - expected_max_sr) / sr_std
+    # 年率スケールでの一貫した PSR / DSR 統計量算出
+    ann_std = sr_std * np.sqrt(annualization_factor)
+    dsr_z = (annualized_sr - expected_max_sr) / ann_std
     p_value = 1.0 - float(norm.cdf(dsr_z))
     dsr_score = float(norm.cdf(dsr_z))
 
@@ -359,7 +360,7 @@ def calculate_deflated_sharpe_ratio(
         "is_statistically_significant": is_significant,
         "skewness": sk,
         "kurtosis": kt,
-        "expected_max_sr": float(expected_max_sr * np.sqrt(annualization_factor)),
+        "expected_max_sr": float(expected_max_sr),
         "n_samples": n,
         "num_trials_penalized": num_trials
     }
@@ -411,6 +412,17 @@ class ZeroLeakageGuard:
             results["deflated_sharpe_analysis"] = dsr_report
             results["zero_leakage_certified"] = dsr_report["is_statistically_significant"]
         else:
+            results["deflated_sharpe_analysis"] = {
+                "sharpe_ratio": 0.0,
+                "deflated_sharpe_ratio": 0.0,
+                "p_value": 1.0,
+                "is_statistically_significant": False,
+                "skewness": 0.0,
+                "kurtosis": 3.0,
+                "expected_max_sr": 0.0,
+                "n_samples": 0,
+                "num_trials_penalized": self.num_trials
+            }
             results["zero_leakage_certified"] = False
 
         return results

@@ -9,14 +9,19 @@ from dataclasses import dataclass, field, asdict
 from .virtual_broker import VirtualAccount
 
 
-# 戦術（トレードスタイル）プロファイル定義
+# 戦術（トレードスタイル）プロファイル定義（動的ATRトリプルバリア対応）
 STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
     "scalping": {
         "name": "スキャルピング (秒〜分・超短期高頻度)",
+        "barrier_type": "dynamic",
+        "pt_factor": 2.0,           # 2.0 * ATR
+        "sl_factor": 1.0,           # 1.0 * ATR
+        "default_interval": "5m",
+        "max_holding_bars": 12,     # 5m x 12 = 1時間
         "take_profit_pct": 0.4,
         "stop_loss_pct": -0.2,
-        "buy_threshold": 0.56,
-        "sell_threshold": 0.44,
+        "buy_threshold": 0.55,
+        "sell_threshold": 0.45,
         "reversal_buy_exit": 0.50,
         "reversal_sell_exit": 0.50,
         "base_capital_ratio": 0.15,
@@ -24,10 +29,15 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
     },
     "day_trade": {
         "name": "デイトレード (日中短期・波乗り)",
+        "barrier_type": "dynamic",
+        "pt_factor": 2.5,           # 2.5 * ATR
+        "sl_factor": 1.2,           # 1.2 * ATR
+        "default_interval": "15m",
+        "max_holding_bars": 16,     # 15m x 16 = 4時間
         "take_profit_pct": 1.2,
         "stop_loss_pct": -0.6,
-        "buy_threshold": 0.60,
-        "sell_threshold": 0.40,
+        "buy_threshold": 0.58,
+        "sell_threshold": 0.42,
         "reversal_buy_exit": 0.48,
         "reversal_sell_exit": 0.52,
         "base_capital_ratio": 0.20,
@@ -35,10 +45,15 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
     },
     "swing": {
         "name": "スイングトレード (数日〜数週間・中期波乗り)",
+        "barrier_type": "dynamic",
+        "pt_factor": 3.0,           # 3.0 * ATR
+        "sl_factor": 1.5,           # 1.5 * ATR
+        "default_interval": "1h",
+        "max_holding_bars": 40,     # 1h x 40 ≈ 5-7営業日
         "take_profit_pct": 3.5,
         "stop_loss_pct": -1.8,
-        "buy_threshold": 0.65,
-        "sell_threshold": 0.35,
+        "buy_threshold": 0.62,
+        "sell_threshold": 0.38,
         "reversal_buy_exit": 0.45,
         "reversal_sell_exit": 0.55,
         "base_capital_ratio": 0.25,
@@ -46,10 +61,15 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
     },
     "medium_term": {
         "name": "中期トレンド (数週間〜数ヶ月・マクロ重視)",
+        "barrier_type": "dynamic",
+        "pt_factor": 3.5,           # 3.5 * ATR
+        "sl_factor": 1.8,           # 1.8 * ATR
+        "default_interval": "1d",
+        "max_holding_bars": 30,     # 30営業日 ≈ 1.5ヶ月
         "take_profit_pct": 8.0,
         "stop_loss_pct": -3.5,
-        "buy_threshold": 0.68,
-        "sell_threshold": 0.32,
+        "buy_threshold": 0.65,
+        "sell_threshold": 0.35,
         "reversal_buy_exit": 0.42,
         "reversal_sell_exit": 0.58,
         "base_capital_ratio": 0.30,
@@ -57,16 +77,80 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
     },
     "long_term": {
         "name": "長期投資 (数ヶ月〜数年・資産形成・ハーフケリー)",
+        "barrier_type": "dynamic",
+        "pt_factor": 4.0,           # 4.0 * ATR
+        "sl_factor": 2.0,           # 2.0 * ATR
+        "default_interval": "1d",
+        "max_holding_bars": 90,     # 90営業日
         "take_profit_pct": 20.0,
         "stop_loss_pct": -8.0,
-        "buy_threshold": 0.70,
-        "sell_threshold": 0.30,
+        "buy_threshold": 0.68,
+        "sell_threshold": 0.32,
         "reversal_buy_exit": 0.40,
         "reversal_sell_exit": 0.60,
         "base_capital_ratio": 0.40,
         "max_leverage": 1.0,
     }
 }
+
+
+def compute_strategy_barriers(
+    entry_price: float,
+    current_atr: float,
+    profile_or_pt: Any,
+    sl_factor_or_pct: Optional[float] = None,
+    position: int = 1,
+    barrier_type: Optional[str] = None
+) -> Dict[str, float]:
+    """
+    動的ATRトリプルバリアまたは固定%に基づいて利確・損切りのトリガー価格を計算する。
+
+    Parameters:
+    - entry_price: エントリー価格
+    - current_atr: 現在のATR（価格単位）
+    - profile_or_pt: 戦術辞書プロファイル、または直接のpt_factor / take_profit_pct
+    - sl_factor_or_pct: 直接指定時のsl_factor / stop_loss_pct
+    - position: 1 (LONG) または -1 (SHORT)
+    - barrier_type: 'dynamic' または 'fixed' (指定時はプロファイルより優先)
+
+    Returns:
+    - Dict[str, float]: {"take_profit": tp_price, "stop_loss": sl_price}
+    """
+    if isinstance(profile_or_pt, dict):
+        prof = profile_or_pt
+        b_type = barrier_type or prof.get("barrier_type", "dynamic")
+        pt_factor = float(prof.get("pt_factor", 2.0))
+        sl_factor = float(prof.get("sl_factor", 1.0))
+        tp_pct = abs(float(prof.get("take_profit_pct", 1.0)))
+        sl_pct = abs(float(prof.get("stop_loss_pct", 0.5)))
+        ratio_tp = tp_pct / 100.0
+        ratio_sl = sl_pct / 100.0
+    else:
+        b_type = barrier_type or ("dynamic" if current_atr > 0 else "fixed")
+        pt_factor = float(profile_or_pt)
+        sl_factor = float(sl_factor_or_pct) if sl_factor_or_pct is not None else 1.0
+        tp_pct = float(profile_or_pt)
+        sl_pct = float(sl_factor_or_pct) if sl_factor_or_pct is not None else 0.5
+        # 0.1以上なら百分率 (例: 0.4% -> 0.004, 2.0% -> 0.02)
+        ratio_tp = (tp_pct / 100.0) if tp_pct >= 0.1 else tp_pct
+        ratio_sl = (sl_pct / 100.0) if sl_pct >= 0.1 else sl_pct
+
+    if b_type == "dynamic" and current_atr > 0:
+        if position == 1:
+            tp = entry_price + (pt_factor * current_atr)
+            sl = entry_price - (sl_factor * current_atr)
+        else:
+            tp = entry_price - (pt_factor * current_atr)
+            sl = entry_price + (sl_factor * current_atr)
+    else:
+        if position == 1:
+            tp = entry_price * (1.0 + ratio_tp)
+            sl = entry_price * (1.0 - ratio_sl)
+        else:
+            tp = entry_price * (1.0 - ratio_tp)
+            sl = entry_price * (1.0 + ratio_sl)
+
+    return {"take_profit": round(float(tp), 4), "stop_loss": round(float(sl), 4)}
 
 
 @dataclass
@@ -168,20 +252,36 @@ class AutopilotEngine:
             self._log_decision(symbol, "KILL_SWITCH", f"日次最大許容損失リミット (-{self.config.daily_max_loss_pct}%) に到達したため、全決済して本日の自動売買を強制停止しました。", current_price)
             return "KILL_SWITCH_TRIGGERED"
 
-        # 2. 既存ポジションのエグジット判定 (戦術ごとの利確・損切り・反転)
+        # 2. 既存ポジションのエグジット判定 (動的ATRバリアまたは固定%利確・損切り・反転)
         for pos_id, pos in list(self.account.positions.items()):
             if pos.symbol == symbol:
                 unrealized = pos.unrealized_return_pct
-                # 利確トリガー
-                if unrealized >= profile["take_profit_pct"]:
+
+                # 動的バリア (tp_price, sl_price) が設定されている場合を優先チェック
+                hit_tp = False
+                hit_sl = False
+                if pos.tp_price is not None and pos.sl_price is not None:
+                    if pos.side == "BUY":
+                        hit_tp = current_price >= pos.tp_price
+                        hit_sl = current_price <= pos.sl_price
+                    else:
+                        hit_tp = current_price <= pos.tp_price
+                        hit_sl = current_price >= pos.sl_price
+                else:
+                    hit_tp = unrealized >= profile["take_profit_pct"]
+                    hit_sl = unrealized <= profile["stop_loss_pct"]
+
+                # 損切り最優先（Pessimistic Priority）
+                if hit_sl:
                     self.account.close_position(pos_id, current_price)
-                    self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 目標利確に到達 (+{unrealized:.2f}% >= +{profile['take_profit_pct']}%)。利益確定決済。(+¥{pos.unrealized_pnl:,.0f})", current_price)
-                    return "CLOSE_TAKE_PROFIT"
-                # 損切りトリガー
-                elif unrealized <= profile["stop_loss_pct"]:
-                    self.account.close_position(pos_id, current_price)
-                    self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 損切りライン到達 ({unrealized:.2f}% <= {profile['stop_loss_pct']}%)。防衛的ロスカット。(¥{pos.unrealized_pnl:,.0f})", current_price)
+                    sl_desc = f"{pos.sl_price:.2f}" if pos.sl_price else f"{profile['stop_loss_pct']}%"
+                    self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 損切り到達 (現在値: {current_price:.2f}, SL: {sl_desc})。防衛的ロスカット。(¥{pos.unrealized_pnl:,.0f})", current_price)
                     return "CLOSE_STOP_LOSS"
+                elif hit_tp:
+                    self.account.close_position(pos_id, current_price)
+                    tp_desc = f"{pos.tp_price:.2f}" if pos.tp_price else f"{profile['take_profit_pct']}%"
+                    self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 目標利確到達 (現在値: {current_price:.2f}, TP: {tp_desc})。利益確定決済。(+¥{pos.unrealized_pnl:,.0f})", current_price)
+                    return "CLOSE_TAKE_PROFIT"
                 # 反転シグナル手仕舞い
                 elif pos.side == "BUY" and prob_up < profile["reversal_buy_exit"]:
                     self.account.close_position(pos_id, current_price)
@@ -205,14 +305,64 @@ class AutopilotEngine:
             trade_value = self.config.allocated_capital * profile["base_capital_ratio"] * size_multiplier
             amount = max(0.01, trade_value / current_price)
             lev = profile["max_leverage"]
+            current_atr = float(race_card.get("current_atr", race_card.get("atr_14", 0.0)))
+            # レジーム判定ゲート: 高頻度戦術(スキャルピング/デイトレ)におけるレンジ相場でのダマシ回避
+            regime = race_card.get("regime_state", "NORMAL")
+            if self.config.strategy_style in ["scalping", "day_trade"] and regime == "CHOPPY_RANGE":
+                self._log_decision(symbol, "SKIP", f"[{profile['name']}] もみ合いレンジ相場 (CHOPPY_RANGE) のため、ブレイクアウトのダマシ回避で見送り。", current_price)
+                return "SKIP_CHOPPY_REGIME"
+
+            # 上位足(HTF)トレンド整合ゲート
+            htf_trend = float(race_card.get("htf_daily_trend", 0.0))
+
+            # 取引摩擦（往復手数料0.06% + スリッページ0.10% = 0.16%）
+            friction = 0.0016
 
             if prob_up >= profile["buy_threshold"]:
-                self.account.open_position(symbol, "BUY", current_price, amount=round(amount, 2), leverage=lev)
-                self._log_decision(symbol, "BUY", f"[{profile['name']}] BUYシグナル検出 ({prob_up*100:.1f}%)。ケリー推奨配分 {meta_bet_size:.1f}% で買いエントリー。", current_price)
+                # 上位足が明確な下落トレンドの場合は順張り原則に基づき買い見送り
+                if htf_trend < 0:
+                    self._log_decision(symbol, "SKIP", f"[{profile['name']}] BUYシグナル検出も、上位足(日足)下降トレンド逆行のため見送り。", current_price)
+                    return "SKIP_HTF_ALIGNMENT"
+
+                barriers = compute_strategy_barriers(current_price, current_atr, profile, position=1)
+                tp_dist = (barriers["take_profit"] - current_price) / current_price
+                sl_dist = (current_price - barriers["stop_loss"]) / current_price
+                expected_val = prob_up * tp_dist - (1.0 - prob_up) * sl_dist - friction
+
+                # 期待値フィルター: 摩擦控除後の期待値が正でない場合は見送り
+                if expected_val <= 0:
+                    self._log_decision(symbol, "SKIP", f"[{profile['name']}] BUY期待値が取引摩擦負け水準 (EV={expected_val*100:+.2f}%) のため見送り。", current_price)
+                    return "SKIP_NEGATIVE_EXPECTANCY"
+
+                self.account.open_position(
+                    symbol, "BUY", current_price, amount=round(amount, 2), leverage=lev,
+                    tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
+                )
+                self._log_decision(symbol, "BUY", f"[{profile['name']}] BUYシグナル検出 ({prob_up*100:.1f}%, EV={expected_val*100:+.2f}%)。TP: {barriers['take_profit']:.2f} / SL: {barriers['stop_loss']:.2f}。ケリー推奨配分 {meta_bet_size:.1f}% で買いエントリー。", current_price)
                 return "ORDER_BUY"
+
             elif prob_up <= profile["sell_threshold"]:
-                self.account.open_position(symbol, "SELL", current_price, amount=round(amount, 2), leverage=lev)
-                self._log_decision(symbol, "SELL", f"[{profile['name']}] SELLシグナル検出 (下落リスク {(1-prob_up)*100:.1f}%)。ケリー推奨配分 {meta_bet_size:.1f}% で売りエントリー。", current_price)
+                # 上位足が明確な上昇トレンドの場合は順張り原則に基づき売り見送り
+                if htf_trend > 0:
+                    self._log_decision(symbol, "SKIP", f"[{profile['name']}] SELLシグナル検出も、上位足(日足)上昇トレンド逆行のため見送り。", current_price)
+                    return "SKIP_HTF_ALIGNMENT"
+
+                prob_down = 1.0 - prob_up
+                barriers = compute_strategy_barriers(current_price, current_atr, profile, position=-1)
+                tp_dist = (current_price - barriers["take_profit"]) / current_price
+                sl_dist = (barriers["stop_loss"] - current_price) / current_price
+                expected_val = prob_down * tp_dist - (1.0 - prob_down) * sl_dist - friction
+
+                # 期待値フィルター: 摩擦控除後の期待値が正でない場合は見送り
+                if expected_val <= 0:
+                    self._log_decision(symbol, "SKIP", f"[{profile['name']}] SELL期待値が取引摩擦負け水準 (EV={expected_val*100:+.2f}%) のため見送り。", current_price)
+                    return "SKIP_NEGATIVE_EXPECTANCY"
+
+                self.account.open_position(
+                    symbol, "SELL", current_price, amount=round(amount, 2), leverage=lev,
+                    tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
+                )
+                self._log_decision(symbol, "SELL", f"[{profile['name']}] SELLシグナル検出 (下落確率 {prob_down*100:.1f}%, EV={expected_val*100:+.2f}%)。TP: {barriers['take_profit']:.2f} / SL: {barriers['stop_loss']:.2f}。ケリー推奨配分 {meta_bet_size:.1f}% で売りエントリー。", current_price)
                 return "ORDER_SELL"
 
         return "HOLD"

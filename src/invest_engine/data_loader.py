@@ -32,12 +32,14 @@ def fetch_historical_data(
     - pd.DataFrame: 日付インデックスを持つOHLCVデータフレーム
     """
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    cache_path = CACHE_DIR / f"{symbol.replace('^', '').replace('=', '_')}_{period}_{interval}.parquet"
+    cache_path = CACHE_DIR / f"{symbol.replace('^', '').replace('=', '_')}_{period}_{interval}.csv"
 
     if use_cache and cache_path.exists():
         try:
-            df = pd.read_parquet(cache_path)
-            if not df.empty:
+            df = pd.read_csv(cache_path, index_col=0, parse_dates=True)
+            if not df.empty and len(df) > 5:
+                if df.index.tz is not None:
+                    df.index = df.index.tz_localize(None)
                 return df
         except Exception:
             pass  # キャッシュ読み込み失敗時は再取得
@@ -66,11 +68,15 @@ def fetch_historical_data(
     df = df.sort_index()
     df = df.ffill().dropna()
 
-    # キャッシュ保存
+    # 基本的なデータ整合性フィルタ (High >= Low >= 0)
+    invalid_mask = (df["High"] < df["Low"]) | (df["Low"] <= 0)
+    if invalid_mask.any():
+        df = df[~invalid_mask].copy()
+
+    # キャッシュ保存 (CSV形式で完全な可搬性と高速アクセスを保証)
     try:
-        df.to_parquet(cache_path)
+        df.to_csv(cache_path)
     except Exception:
-        # パケット保存できない場合はスルー
         pass
 
     return df

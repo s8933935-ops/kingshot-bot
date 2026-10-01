@@ -4,10 +4,12 @@ OHLCVデータから、金融時系列予測に特化したテクニカル指標
 未来データの漏洩（Lookahead bias）を厳格に防ぐため、当日終値までの確定値のみを使用します。
 """
 
+from typing import Optional, Tuple, List
 import numpy as np
 import pandas as pd
 from src.invest_engine.labeling import apply_triple_barrier
 from src.invest_engine.regime_detector import detect_market_regime
+from src.invest_engine.data_cleaner import clean_outliers_and_bad_ticks, add_session_features, merge_htf_trend_features
 
 
 def generate_features(
@@ -17,20 +19,23 @@ def generate_features(
     use_triple_barrier: bool = True,
     pt_factor: float = 2.0,
     sl_factor: float = 1.0,
-    max_holding_days: int = 5
-) -> pd.DataFrame:
+    max_holding_days: int = 5,
+    htf_df: Optional[pd.DataFrame] = None
+) -> Tuple[pd.DataFrame, list]:
     """
     OHLCVデータから予測用特徴量とターゲットラベルを生成する。
 
     Parameters:
-    - df: 日足OHLCV DataFrame ('Open', 'High', 'Low', 'Close', 'Volume')
-    - target_horizon: 何日先を予測するか（デフォルト 1日先）
+    - df: OHLCV DataFrame ('Open', 'High', 'Low', 'Close', 'Volume')
+    - target_horizon: 何足先を予測するか（デフォルト 1足先）
     - threshold_pct: 上昇/下落とみなす最小変動幅（例: 0.001 = 0.1%）
+    - htf_df: 上位足DataFrame（オプション: 5m/15m足に日足トレンドを結合）
 
     Returns:
-    - pd.DataFrame: 特徴量 + ターゲットを含むデータフレーム（NaN行は削除済み）
+    - Tuple[pd.DataFrame, list]: (特徴量 + ターゲットを含むデータフレーム, 特徴量名リスト)
     """
-    data = df.copy()
+    # 0. データ品質クリーニング（異常値・Bad Ticksの自動除去）
+    data = clean_outliers_and_bad_ticks(df)
 
     # 1. リターン指標
     data["return_1d"] = data["Close"].pct_change(1)
@@ -97,8 +102,20 @@ def generate_features(
     data["minus_di"] = regime_res["minus_di"]
     data["ema_fast_slope"] = regime_res["ema_fast_slope"]
     data["ema_spread_pct"] = regime_res["ema_spread_pct"]
-    data["bb_bandwidth_pct"] = regime_res["bb_bandwidth_pct"]
     data["regime_state"] = regime_res["regime"]
+    data["regime_encoded"] = data["regime_state"].map({
+        "BULL_TREND": 1.0,
+        "BEAR_TREND": -1.0,
+        "CHOPPY_RANGE": 0.0,
+        "HIGH_VOL_BREAKOUT": 2.0
+    }).fillna(0.0)
+
+    # 10. セッション特徴量（NY/ロンドン、アジア、オフアワー）
+    data = add_session_features(data)
+
+    # 11. 上位足（HTF）特徴量の結合（Point-in-Time 物理整合性担保）
+    if htf_df is not None:
+        data = merge_htf_trend_features(data, htf_df, htf_name="daily")
 
     # ================= 予測ターゲットの生成 =================
     if use_triple_barrier:
@@ -114,6 +131,7 @@ def generate_features(
         data["target_binary"] = tb_events["label"]
         data["target_future_return"] = tb_events["ret"]
         data["target_holding_days"] = tb_events["holding_days"]
+        data["touch_time"] = tb_events["touch_time"]
     else:
         # 従来の固定時間リターン
         future_return = data["Close"].shift(-target_horizon) / data["Close"] - 1.0
@@ -126,7 +144,7 @@ def generate_features(
         "Stock Splits", "Capital Gains", "Dividends",
         "target_future_return", "target_binary", "target_holding_days",
         "entry_price", "vol", "upper_barrier", "lower_barrier",
-        "vertical_barrier_time", "touch_time"
+        "vertical_barrier_time", "touch_time", "regime_state"
     ]
     feature_cols = [c for c in data.columns if c not in exclude_cols]
 
