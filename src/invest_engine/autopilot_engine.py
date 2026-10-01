@@ -22,8 +22,8 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
         "stop_loss_pct": -0.2,
         "buy_threshold": 0.55,
         "sell_threshold": 0.45,
-        "reversal_buy_exit": 0.50,
-        "reversal_sell_exit": 0.50,
+        "reversal_buy_exit": 0.35,  # 強い下落シグナル時のみ反転決済（ノイズ往復ビンタ防止）
+        "reversal_sell_exit": 0.65,
         "base_capital_ratio": 0.15,
         "max_leverage": 5.0,
     },
@@ -38,8 +38,8 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
         "stop_loss_pct": -0.6,
         "buy_threshold": 0.58,
         "sell_threshold": 0.42,
-        "reversal_buy_exit": 0.48,
-        "reversal_sell_exit": 0.52,
+        "reversal_buy_exit": 0.35,
+        "reversal_sell_exit": 0.65,
         "base_capital_ratio": 0.20,
         "max_leverage": 3.0,
     },
@@ -54,8 +54,8 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
         "stop_loss_pct": -1.8,
         "buy_threshold": 0.62,
         "sell_threshold": 0.38,
-        "reversal_buy_exit": 0.45,
-        "reversal_sell_exit": 0.55,
+        "reversal_buy_exit": 0.30,
+        "reversal_sell_exit": 0.70,
         "base_capital_ratio": 0.25,
         "max_leverage": 2.0,
     },
@@ -70,8 +70,8 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
         "stop_loss_pct": -3.5,
         "buy_threshold": 0.65,
         "sell_threshold": 0.35,
-        "reversal_buy_exit": 0.42,
-        "reversal_sell_exit": 0.58,
+        "reversal_buy_exit": 0.25,
+        "reversal_sell_exit": 0.75,
         "base_capital_ratio": 0.30,
         "max_leverage": 1.5,
     },
@@ -86,8 +86,8 @@ STRATEGY_PROFILES: Dict[str, Dict[str, Any]] = {
         "stop_loss_pct": -8.0,
         "buy_threshold": 0.68,
         "sell_threshold": 0.32,
-        "reversal_buy_exit": 0.40,
-        "reversal_sell_exit": 0.60,
+        "reversal_buy_exit": 0.20,
+        "reversal_sell_exit": 0.80,
         "base_capital_ratio": 0.40,
         "max_leverage": 1.0,
     }
@@ -154,14 +154,27 @@ def compute_strategy_barriers(
 
 
 @dataclass
+class SymbolAutopilotConfig:
+    """銘柄別個別AIオートパイロット設定"""
+    symbol: str
+    is_active: bool = False
+    strategy_style: str = "day_trade"
+    allocated_capital: float = 1_000_000.0
+    use_limit_orders: bool = False  # 指値注文を活用してスリッページを削減するか (デフォルト成行)
+    limit_offset_pct: float = 0.15  # 押し目/戻りの指値オフセット (%)
+
+
+@dataclass
 class AutopilotConfig:
     """AIオートパイロット設定"""
     is_active: bool = False
-    allocated_capital: float = 3_000_000.0  # オートパイロット運用割当資金 (例: 300万円)
+    allocated_capital: float = 3_000_000.0  # 全体またはデフォルト割当資金 (例: 300万円)
     daily_max_loss_pct: float = 3.0         # 1日の最大許容損失率 (3%で強制停止)
     max_leverage: float = 3.0               # 安全レバレッジ上限 (最大3〜5倍固定)
     strategy_style: str = "day_trade"       # 'scalping', 'day_trade', 'swing', 'medium_term', 'long_term'
     base_equity_today: float = 3_000_000.0  # 当日の開始有効証拠金
+    use_limit_orders: bool = False          # 全体デフォルト指値フラグ (デフォルト成行)
+    symbol_configs: Dict[str, SymbolAutopilotConfig] = field(default_factory=dict)
 
 
 @dataclass
@@ -169,7 +182,7 @@ class DecisionLog:
     """AI意思決定ログ（思考の可視化）"""
     timestamp: str
     symbol: str
-    action: str  # 'BUY', 'SELL', 'CLOSE', 'HOLD', 'SKIP', 'EMERGENCY_STOP', 'KILL_SWITCH'
+    action: str  # 'BUY', 'SELL', 'CLOSE', 'HOLD', 'SKIP', 'EMERGENCY_STOP', 'KILL_SWITCH', 'LIMIT_BUY', 'LIMIT_SELL', 'LIMIT_FILLED'
     reason: str
     price: float
     detail: Dict[str, Any] = field(default_factory=dict)
@@ -187,23 +200,73 @@ class AutopilotEngine:
         self.daily_pnl_today: float = 0.0
         self.is_halted_by_killswitch: bool = False
 
-    def toggle(self, is_active: bool, allocated_capital: float = 3_000_000.0, daily_max_loss_pct: float = 3.0, strategy_style: str = "day_trade") -> Dict[str, Any]:
-        """オートパイロットのON/OFF切り替えおよび戦術設定"""
+        # 4大主要銘柄のデフォルト個別設定を初期化
+        default_symbols = ["GC=F", "USDJPY=X", "BTC-USD", "NVDA"]
+        for sym in default_symbols:
+            self.config.symbol_configs[sym] = SymbolAutopilotConfig(
+                symbol=sym,
+                is_active=False,
+                strategy_style="day_trade",
+                allocated_capital=1_000_000.0,
+                use_limit_orders=False
+            )
+
+    def update_symbol_config(
+        self,
+        symbol: str,
+        is_active: bool,
+        strategy_style: str = "day_trade",
+        allocated_capital: float = 1_000_000.0,
+        use_limit_orders: bool = False
+    ) -> SymbolAutopilotConfig:
+        """特定銘柄のオートパイロット個別設定を更新"""
+        if symbol not in self.config.symbol_configs:
+            self.config.symbol_configs[symbol] = SymbolAutopilotConfig(symbol=symbol)
+
+        cfg = self.config.symbol_configs[symbol]
+        cfg.is_active = is_active
+        cfg.strategy_style = strategy_style if strategy_style in STRATEGY_PROFILES else "day_trade"
+        cfg.allocated_capital = min(allocated_capital, self.account.equity)
+        cfg.use_limit_orders = use_limit_orders
+
+        # もし1つでも個別銘柄がアクティブなら全体もアクティブとみなす
+        if any(c.is_active for c in self.config.symbol_configs.values()):
+            self.config.is_active = True
+
+        state_str = "ON (自動稼働)" if is_active else "OFF (待機)"
+        limit_str = "指値運用" if use_limit_orders else "成行"
+        self._log_decision(symbol, "CONFIG_UPDATE", f"[{symbol}] 個別AI設定更新: {state_str} (戦術: {cfg.strategy_style}, 割当: ¥{cfg.allocated_capital:,.0f}, {limit_str})", 0.0)
+        return cfg
+
+    def toggle(self, is_active: bool, allocated_capital: float = 3_000_000.0, daily_max_loss_pct: float = 3.0, strategy_style: str = "day_trade", use_limit_orders: bool = False) -> Dict[str, Any]:
+        """全銘柄一括オートパイロットのON/OFF切り替えおよび戦術設定"""
         if is_active:
             self.config.is_active = True
             self.config.allocated_capital = min(allocated_capital, self.account.equity)
             self.config.daily_max_loss_pct = daily_max_loss_pct
             self.config.base_equity_today = self.config.allocated_capital
+            self.config.use_limit_orders = use_limit_orders
             if strategy_style in STRATEGY_PROFILES:
                 self.config.strategy_style = strategy_style
                 profile = STRATEGY_PROFILES[strategy_style]
                 self.config.max_leverage = profile["max_leverage"]
             self.is_halted_by_killswitch = False
+
+            # 個別銘柄も一括で有効化
+            for sym_cfg in self.config.symbol_configs.values():
+                sym_cfg.is_active = True
+                sym_cfg.strategy_style = self.config.strategy_style
+                sym_cfg.allocated_capital = self.config.allocated_capital
+                sym_cfg.use_limit_orders = use_limit_orders
+
             strat_name = STRATEGY_PROFILES.get(self.config.strategy_style, {}).get("name", self.config.strategy_style)
-            self._log_decision("SYSTEM", "AI_ENABLED", f"AIオートパイロット起動 [{strat_name}] (割当: ¥{self.config.allocated_capital:,.0f}, 日次損失上限: -{daily_max_loss_pct}%)", 0.0)
+            limit_desc = "AI指値注文有効 (スリッページゼロ)" if use_limit_orders else "成行注文"
+            self._log_decision("SYSTEM", "AI_ENABLED", f"AIオートパイロット全銘柄一括起動 [{strat_name}] (割当: ¥{self.config.allocated_capital:,.0f}, 日次損失上限: -{daily_max_loss_pct}%, {limit_desc})", 0.0)
         else:
             self.config.is_active = False
-            self._log_decision("SYSTEM", "AI_DISABLED", "ユーザー操作によりAIオートパイロットを停止しました。", 0.0)
+            for sym_cfg in self.config.symbol_configs.values():
+                sym_cfg.is_active = False
+            self._log_decision("SYSTEM", "AI_DISABLED", "ユーザー操作によりAIオートパイロットを全銘柄停止しました。", 0.0)
 
         return self.get_status()
 
@@ -231,14 +294,28 @@ class AutopilotEngine:
     def evaluate_and_execute(self, symbol: str, race_card: Dict[str, Any]) -> Optional[str]:
         """
         市場シグナルと口座状態を検証し、選択された戦術ルールに合致した場合のみ自動売買を実行。
+        指値マッチング、銘柄別設定、AIスマート指値注文に対応。
         """
-        if not self.config.is_active or self.is_halted_by_killswitch:
-            return None
-
-        profile = STRATEGY_PROFILES.get(self.config.strategy_style, STRATEGY_PROFILES["day_trade"])
         current_price = float(race_card.get("current_price", 0.0))
         if current_price <= 0.0:
             return None  # 価格不正時は即時見送り
+
+        # 0. 待機中指値注文のマッチング判定（約定検査）
+        matched_positions = self.account.check_and_match_limit_orders({symbol: current_price})
+        for mp in matched_positions:
+            self._log_decision(symbol, "LIMIT_FILLED", f"待機中指値が市場価格に到達し約定完了。(約定値: {mp.entry_price:.2f}, 数量: {mp.amount}, メイカー優遇手数料適用)", mp.entry_price)
+
+        # 銘柄別の稼働判定
+        sym_cfg = self.config.symbol_configs.get(symbol)
+        is_sym_active = (sym_cfg.is_active if sym_cfg else False) or self.config.is_active
+        if not is_sym_active or self.is_halted_by_killswitch:
+            return None
+
+        active_strat = sym_cfg.strategy_style if sym_cfg else self.config.strategy_style
+        profile = STRATEGY_PROFILES.get(active_strat, STRATEGY_PROFILES["day_trade"])
+        allocated_cap = sym_cfg.allocated_capital if sym_cfg else self.config.allocated_capital
+        use_limit = sym_cfg.use_limit_orders if sym_cfg else self.config.use_limit_orders
+        offset_pct = sym_cfg.limit_offset_pct if sym_cfg else 0.15
 
         prob_up = float(race_card.get("prob_up_pct", 50.0)) / 100.0
         meta_bet_size = float(race_card.get("meta_bet_size_pct", 100.0))
@@ -251,6 +328,8 @@ class AutopilotEngine:
         if loss_pct <= -abs(self.config.daily_max_loss_pct):
             self.is_halted_by_killswitch = True
             self.config.is_active = False
+            for s_cfg in self.config.symbol_configs.values():
+                s_cfg.is_active = False
             for pos_id, pos in list(self.account.positions.items()):
                 self.account.close_position(pos_id, current_price)
             self._log_decision(symbol, "KILL_SWITCH", f"日次最大許容損失リミット (-{self.config.daily_max_loss_pct}%) に到達したため、全決済して本日の自動売買を強制停止しました。", current_price)
@@ -296,9 +375,11 @@ class AutopilotEngine:
                     self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 下落期待反落 ({prob_up*100:.1f}%)。売りポジションを反転手仕舞い。(損益: {unrealized:+.1f}%)", current_price)
                     return "CLOSE_REVERSAL"
 
-        # 3. 新規エントリー判定（ポジションが無い場合のみ）
+        # 3. 新規エントリー判定（ポジションおよび未約定AI指値が無い場合のみ）
         has_symbol_pos = any(p.symbol == symbol for p in self.account.positions.values())
-        if not has_symbol_pos:
+        has_pending_ai_order = any(o.symbol == symbol and o.status == "PENDING" and o.source == "AI" for o in self.account.limit_orders.values())
+
+        if not has_symbol_pos and not has_pending_ai_order:
             # メタラベリング判定: ロット0%ならマクロ危険水域として見送り
             if meta_bet_size <= 0.0:
                 self._log_decision(symbol, "SKIP_MACRO_RISK", f"[{profile['name']}] エントリー機会を検出も、マクロ危険水域 ({meta_conf}) のためロット0%で見送り。", current_price)
@@ -306,21 +387,22 @@ class AutopilotEngine:
 
             # 戦術とハーフケリー基準に連動したポジションサイジング
             size_multiplier = meta_bet_size / 100.0
-            trade_value = self.config.allocated_capital * profile["base_capital_ratio"] * size_multiplier
+            trade_value = allocated_cap * profile["base_capital_ratio"] * size_multiplier
             amount = max(0.01, trade_value / current_price)
             lev = profile["max_leverage"]
             current_atr = float(race_card.get("current_atr", race_card.get("atr_14", 0.0)))
+
             # レジーム判定ゲート: 高頻度戦術(スキャルピング/デイトレ)におけるレンジ相場でのダマシ回避
             regime = race_card.get("regime_state", "NORMAL")
-            if self.config.strategy_style in ["scalping", "day_trade"] and regime == "CHOPPY_RANGE":
+            if active_strat in ["scalping", "day_trade"] and regime == "CHOPPY_RANGE":
                 self._log_decision(symbol, "SKIP_CHOPPY_REGIME", f"[{profile['name']}] もみ合いレンジ相場 (CHOPPY_RANGE) のため、ブレイクアウトのダマシ回避で見送り。", current_price)
                 return "SKIP_CHOPPY_REGIME"
 
             # 上位足(HTF)トレンド整合ゲート
             htf_trend = float(race_card.get("htf_daily_trend", 0.0))
 
-            # 取引摩擦（往復手数料0.06% + スリッページ0.10% = 0.16%）
-            friction = 0.0016
+            # 取引摩擦（往復手数料0.06% + スリッページ0.10% = 0.16%、指値なら0.02%）
+            friction = 0.0002 if use_limit else 0.0016
 
             if prob_up >= profile["buy_threshold"]:
                 # 上位足が明確な下落トレンドの場合は順張り原則に基づき買い見送り
@@ -338,12 +420,22 @@ class AutopilotEngine:
                     self._log_decision(symbol, "SKIP_NEGATIVE_EXPECTANCY", f"[{profile['name']}] BUY期待値が取引摩擦負け水準 (EV={expected_val*100:+.2f}%) のため見送り。", current_price)
                     return "SKIP_NEGATIVE_EXPECTANCY"
 
-                self.account.open_position(
-                    symbol, "BUY", current_price, amount=round(amount, 2), leverage=lev,
-                    tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
-                )
-                self._log_decision(symbol, "BUY", f"[{profile['name']}] BUYシグナル検出 ({prob_up*100:.1f}%, EV={expected_val*100:+.2f}%)。TP: {barriers['take_profit']:.2f} / SL: {barriers['stop_loss']:.2f}。ケリー推奨配分 {meta_bet_size:.1f}% で買いエントリー。", current_price)
-                return "ORDER_BUY"
+                if use_limit:
+                    # AIスマート指値（押し目買い指値: 現在値よりoffset_pct安い価格で指す）
+                    limit_target = round(current_price * (1.0 - offset_pct / 100.0), 2)
+                    self.account.place_limit_order(
+                        symbol, "BUY", limit_target, amount=round(amount, 2), leverage=lev,
+                        source="AI", tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
+                    )
+                    self._log_decision(symbol, "LIMIT_BUY", f"[{profile['name']}] BUYシグナル検出 ({prob_up*100:.1f}%)。有利な押し目指値を発注 (指値: {limit_target:.2f} / 現在値: {current_price:.2f}, スリッページゼロ戦略)。", limit_target)
+                    return "ORDER_LIMIT_BUY"
+                else:
+                    self.account.open_position(
+                        symbol, "BUY", current_price, amount=round(amount, 2), leverage=lev,
+                        tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
+                    )
+                    self._log_decision(symbol, "BUY", f"[{profile['name']}] BUYシグナル検出 ({prob_up*100:.1f}%, EV={expected_val*100:+.2f}%)。TP: {barriers['take_profit']:.2f} / SL: {barriers['stop_loss']:.2f}。ケリー推奨配分 {meta_bet_size:.1f}% で成行買いエントリー。", current_price)
+                    return "ORDER_BUY"
 
             elif prob_up <= profile["sell_threshold"]:
                 # 上位足が明確な上昇トレンドの場合は順張り原則に基づき売り見送り
@@ -362,20 +454,76 @@ class AutopilotEngine:
                     self._log_decision(symbol, "SKIP_NEGATIVE_EXPECTANCY", f"[{profile['name']}] SELL期待値が取引摩擦負け水準 (EV={expected_val*100:+.2f}%) のため見送り。", current_price)
                     return "SKIP_NEGATIVE_EXPECTANCY"
 
-                self.account.open_position(
-                    symbol, "SELL", current_price, amount=round(amount, 2), leverage=lev,
-                    tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
-                )
-                self._log_decision(symbol, "SELL", f"[{profile['name']}] SELLシグナル検出 (下落確率 {prob_down*100:.1f}%, EV={expected_val*100:+.2f}%)。TP: {barriers['take_profit']:.2f} / SL: {barriers['stop_loss']:.2f}。ケリー推奨配分 {meta_bet_size:.1f}% で売りエントリー。", current_price)
-                return "ORDER_SELL"
+                if use_limit:
+                    # AIスマート指値（戻り売り指値: 現在値よりoffset_pct高い価格で指す）
+                    limit_target = round(current_price * (1.0 + offset_pct / 100.0), 2)
+                    self.account.place_limit_order(
+                        symbol, "SELL", limit_target, amount=round(amount, 2), leverage=lev,
+                        source="AI", tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
+                    )
+                    self._log_decision(symbol, "LIMIT_SELL", f"[{profile['name']}] SELLシグナル検出 (下落確率 {prob_down*100:.1f}%)。有利な戻り売り指値を発注 (指値: {limit_target:.2f} / 現在値: {current_price:.2f}, スリッページゼロ戦略)。", limit_target)
+                    return "ORDER_LIMIT_SELL"
+                else:
+                    self.account.open_position(
+                        symbol, "SELL", current_price, amount=round(amount, 2), leverage=lev,
+                        tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
+                    )
+                    self._log_decision(symbol, "SELL", f"[{profile['name']}] SELLシグナル検出 (下落確率 {prob_down*100:.1f}%, EV={expected_val*100:+.2f}%)。TP: {barriers['take_profit']:.2f} / SL: {barriers['stop_loss']:.2f}。ケリー推奨配分 {meta_bet_size:.1f}% で成行売りエントリー。", current_price)
+                    return "ORDER_SELL"
 
         return "HOLD"
 
-    def _log_decision(self, symbol: str, action: str, reason: str, price: float):
+    def _log_decision(
+        self,
+        symbol: str,
+        action: str,
+        reason: str,
+        price: float,
+        prob_up: Optional[float] = None,
+        regime: Optional[str] = None,
+        htf_trend: Optional[float] = None,
+        meta_bet_size: Optional[float] = None,
+        features: Optional[Dict[str, Any]] = None
+    ):
         now_time = datetime.now().strftime("%H:%M:%S")
         self.logs.insert(0, DecisionLog(timestamp=now_time, symbol=symbol, action=action, reason=reason, price=price))
         if len(self.logs) > 30:
             self.logs = self.logs[:30]
+
+        # SQLiteへ自動永続化保存（自己学習・メタラベリング再学習用データセット蓄積）
+        try:
+            from .history_db import save_ai_decision
+            save_ai_decision(
+                user_id=self.account.user_id,
+                symbol=symbol,
+                action=action,
+                reason=reason,
+                price=price,
+                prob_up=prob_up,
+                regime=regime,
+                htf_trend=htf_trend,
+                meta_bet_size=meta_bet_size,
+                features=features
+            )
+        except Exception:
+            pass
+
+    def set_strategy(self, strategy_style: str):
+        """全体のデフォルト戦略スタイルを即時更新"""
+        if strategy_style in STRATEGY_PROFILES:
+            self.config.strategy_style = strategy_style
+            prof = STRATEGY_PROFILES[strategy_style]
+            self.config.max_leverage = prof["max_leverage"]
+            # 個別設定のうちアクティブでないものも同期
+            for s_cfg in self.config.symbol_configs.values():
+                if not s_cfg.is_active:
+                    s_cfg.strategy_style = strategy_style
+
+    def reset(self):
+        """オートパイロットのキルスイッチ・日次損益・ログを完全リセット"""
+        self.daily_pnl_today = 0.0
+        self.is_halted_by_killswitch = False
+        self.logs.clear()
 
     def get_status(self) -> Dict[str, Any]:
         """オートパイロットの状態サマリー"""
@@ -389,6 +537,9 @@ class AutopilotEngine:
             "allocated_capital": round(self.config.allocated_capital, 2),
             "daily_max_loss_pct": self.config.daily_max_loss_pct,
             "max_leverage": self.config.max_leverage,
+            "use_limit_orders": self.config.use_limit_orders,
             "is_halted_by_killswitch": self.is_halted_by_killswitch,
-            "recent_logs": [asdict(l) for l in self.logs[:10]]
+            "symbol_configs": {s: asdict(c) for s, c in self.config.symbol_configs.items()},
+            "pending_limit_orders": [asdict(o) for o in self.account.limit_orders.values() if o.status == "PENDING"],
+            "recent_logs": [asdict(l) for l in self.logs[:15]]
         }

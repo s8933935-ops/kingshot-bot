@@ -27,9 +27,9 @@ class Position:
 
     @property
     def unrealized_pnl(self) -> float:
-        """含み損益 (円/ドル)"""
+        """含み損益 (価格差 * 数量)"""
         multiplier = 1.0 if self.side == "BUY" else -1.0
-        return (self.current_price - self.entry_price) * self.amount * multiplier * self.leverage
+        return (self.current_price - self.entry_price) * self.amount * multiplier
 
     @property
     def unrealized_return_pct(self) -> float:
@@ -38,6 +38,23 @@ class Position:
             return 0.0
         multiplier = 1.0 if self.side == "BUY" else -1.0
         return ((self.current_price - self.entry_price) / self.entry_price) * multiplier * self.leverage * 100.0
+
+
+@dataclass
+class LimitOrder:
+    """指値（リミット）注文"""
+    order_id: str
+    user_id: str
+    symbol: str
+    side: str  # 'BUY' or 'SELL'
+    target_price: float
+    amount: float
+    leverage: float = 1.0
+    source: str = "MANUAL"  # 'MANUAL' (手動発注) or 'AI' (AIオートパイロット)
+    tp_price: Optional[float] = None
+    sl_price: Optional[float] = None
+    created_at: str = field(default_factory=lambda: datetime.now().isoformat())
+    status: str = "PENDING"  # 'PENDING', 'FILLED', 'CANCELLED'
 
 
 @dataclass
@@ -69,8 +86,10 @@ class VirtualAccount:
         self.initial_cash = initial_cash
         self.cash = initial_cash  # 利用可能現金残高
         self.positions: Dict[str, Position] = {}
+        self.limit_orders: Dict[str, LimitOrder] = {}  # 待機中・約定済み指値注文
         self.trade_history: List[TradeRecord] = []
-        self.fee_rate = 0.0003  # 片道取引手数料・スプレッド (0.03%)
+        self.fee_rate = 0.0003  # 片道成行手数料・スプレッド (0.03%)
+        self.maker_fee_rate = 0.0001  # 指値（メイカー）優遇手数料 (0.01% - スリッページゼロ＆低手数料)
         self.equity_peak = initial_cash
         self.max_drawdown = 0.0
 
@@ -135,6 +154,110 @@ class VirtualAccount:
         self.positions[pos_id] = pos
         return pos
 
+    def place_limit_order(
+        self,
+        symbol: str,
+        side: str,
+        target_price: float,
+        amount: float,
+        leverage: float = 1.0,
+        source: str = "MANUAL",
+        tp_price: Optional[float] = None,
+        sl_price: Optional[float] = None
+    ) -> LimitOrder:
+        """
+        新規の指値（リミット）注文を発注・待機リストに登録する。
+        """
+        side = side.upper()
+        if side not in ["BUY", "SELL"]:
+            raise ValueError(f"Invalid side: {side}. Must be 'BUY' or 'SELL'.")
+        if target_price <= 0 or amount <= 0:
+            raise ValueError("Target price and amount must be positive.")
+
+        required_margin = (target_price * amount) / leverage
+        fee = (target_price * amount) * self.maker_fee_rate
+
+        if self.cash < (required_margin + fee):
+            raise ValueError(f"資金不足: 必要証拠金+手数料 {required_margin + fee:.1f} に対して残高 {self.cash:.1f}")
+
+        order_id = str(uuid.uuid4())[:8]
+        order = LimitOrder(
+            order_id=order_id,
+            user_id=self.user_id,
+            symbol=symbol,
+            side=side,
+            target_price=target_price,
+            amount=amount,
+            leverage=leverage,
+            source=source,
+            tp_price=tp_price,
+            sl_price=sl_price,
+            status="PENDING"
+        )
+        self.limit_orders[order_id] = order
+        return order
+
+    def cancel_limit_order(self, order_id: str) -> bool:
+        """
+        待機中の指値注文を取り消す。
+        """
+        if order_id in self.limit_orders and self.limit_orders[order_id].status == "PENDING":
+            self.limit_orders[order_id].status = "CANCELLED"
+            return True
+        return False
+
+    def check_and_match_limit_orders(self, current_prices: Dict[str, float]) -> List[Position]:
+        """
+        現在市場価格と突き合わせ、約定条件を満たした指値注文を約定（ポジション化）する。
+        BUY指値: 現在値 <= target_price
+        SELL指値: 現在値 >= target_price
+        """
+        filled_positions: List[Position] = []
+
+        for order_id, order in list(self.limit_orders.items()):
+            if order.status != "PENDING":
+                continue
+
+            current_price = current_prices.get(order.symbol)
+            if not current_price or current_price <= 0:
+                continue
+
+            matched = False
+            fill_price = order.target_price
+
+            if order.side == "BUY" and current_price <= order.target_price:
+                matched = True
+                fill_price = min(order.target_price, current_price)
+            elif order.side == "SELL" and current_price >= order.target_price:
+                matched = True
+                fill_price = max(order.target_price, current_price)
+
+            if matched:
+                required_margin = (fill_price * order.amount) / order.leverage
+                fee = (fill_price * order.amount) * self.maker_fee_rate
+
+                if self.cash >= (required_margin + fee):
+                    self.cash -= fee
+                    pos_id = str(uuid.uuid4())[:8]
+                    pos = Position(
+                        position_id=pos_id,
+                        symbol=order.symbol,
+                        side=order.side,
+                        entry_price=fill_price,
+                        current_price=current_price,
+                        amount=order.amount,
+                        leverage=order.leverage,
+                        tp_price=order.tp_price,
+                        sl_price=order.sl_price
+                    )
+                    self.positions[pos_id] = pos
+                    order.status = "FILLED"
+                    filled_positions.append(pos)
+                else:
+                    order.status = "CANCELLED"
+
+        return filled_positions
+
     def close_position(self, position_id: str, current_price: float) -> TradeRecord:
         """
         保有ポジションを決済（エグジット）する。
@@ -146,7 +269,7 @@ class VirtualAccount:
         pos.current_price = current_price
 
         multiplier = 1.0 if pos.side == "BUY" else -1.0
-        gross_pnl = (current_price - pos.entry_price) * pos.amount * multiplier * pos.leverage
+        gross_pnl = (current_price - pos.entry_price) * pos.amount * multiplier
         exit_fee = (current_price * pos.amount) * self.fee_rate
         net_pnl = gross_pnl - exit_fee
 
@@ -169,6 +292,17 @@ class VirtualAccount:
             closed_at=datetime.now().isoformat()
         )
         self.trade_history.append(trade_record)
+
+        # DBへ自動永続化（自己学習用データ蓄積）
+        try:
+            from .history_db import save_trade_record
+            save_trade_record(
+                user_id=self.user_id,
+                trade=asdict(trade_record),
+                source="AUTOPILOT" if "ai_" in self.user_id or "AI" in self.user_name else "USER"
+            )
+        except Exception:
+            pass
 
         # ドローダウン再計算
         self.update_market_price(pos.symbol, current_price)
@@ -242,3 +376,15 @@ class VirtualAccount:
             "grand_prix_score": round(gp_score, 2),
             "certified_rank": certified_rank
         }
+
+    def reset(self, initial_cash: Optional[float] = None):
+        """口座を初期状態に完全リセット（残高復元、ポジション・待機注文・履歴クリア）"""
+        if initial_cash is not None:
+            self.initial_cash = initial_cash
+        self.cash = self.initial_cash
+        self.positions.clear()
+        self.limit_orders.clear()
+        self.trade_history.clear()
+        self.equity_peak = self.initial_cash
+        self.max_drawdown = 0.0
+

@@ -22,6 +22,37 @@ class CloseOrderRequest(BaseModel):
     position_id: str = Field(..., min_length=1, description="決済するポジションID")
 
 
+class LimitOrderRequest(BaseModel):
+    """指値注文リクエスト"""
+    user_id: str = Field(..., min_length=1, max_length=50, description="ユーザーID")
+    symbol: str = Field(default="GC=F", min_length=1, max_length=20, description="銘柄コード")
+    side: Literal["BUY", "SELL"] = Field(..., description="'BUY' または 'SELL'")
+    target_price: float = Field(..., gt=0, description="指値価格")
+    amount: float = Field(..., gt=0, description="取引数量")
+    leverage: float = Field(default=1.0, ge=1.0, le=25.0, description="レバレッジ倍率")
+    tp_price: Optional[float] = Field(default=None, description="目標利確価格")
+    sl_price: Optional[float] = Field(default=None, description="損切り価格")
+
+
+class CancelLimitOrderRequest(BaseModel):
+    """指値注文取消リクエスト"""
+    user_id: str = Field(..., min_length=1, max_length=50, description="ユーザーID")
+    order_id: str = Field(..., min_length=1, description="取消対象の注文ID")
+
+
+class SymbolAutopilotConfigRequest(BaseModel):
+    """個別銘柄AIオートパイロット設定リクエスト"""
+    user_id: str = Field(..., min_length=1, max_length=50, description="ユーザーID")
+    symbol: str = Field(..., min_length=1, max_length=20, description="銘柄コード")
+    is_active: bool = Field(..., description="個別AI稼働フラグ")
+    strategy_style: Literal["scalping", "day_trade", "swing", "medium_term", "long_term"] = Field(
+        default="day_trade",
+        description="戦術スタイル"
+    )
+    allocated_capital: float = Field(default=1_000_000.0, gt=0, description="銘柄別割当資金 (円)")
+    use_limit_orders: bool = Field(default=True, description="AI指値注文を活用するか (スリッページゼロ戦略)")
+
+
 class AutopilotToggleRequest(BaseModel):
     """オートパイロットON/OFFリクエスト"""
     user_id: str = Field(..., min_length=1, max_length=50, description="ユーザーID")
@@ -32,6 +63,7 @@ class AutopilotToggleRequest(BaseModel):
         default="day_trade",
         description="戦術スタイル ('scalping', 'day_trade', 'swing', 'medium_term', 'long_term')"
     )
+    use_limit_orders: bool = Field(default=True, description="全銘柄一括指値戦略フラグ")
 
 
 class PanicStopRequest(BaseModel):
@@ -79,3 +111,16 @@ class UserStatsResponse(BaseModel):
 class LeaderboardItem(UserStatsResponse):
     """ランキング一覧用アイテム"""
     rank: int
+
+
+class ResetAccountRequest(BaseModel):
+    """口座リセットリクエスト"""
+    user_id: str = "trader_1"
+    initial_cash: float = 10_000_000.0
+
+
+class SetStrategyRequest(BaseModel):
+    """AI戦略変更リクエスト"""
+    user_id: str = "trader_1"
+    strategy_style: str = "day_trade"
+

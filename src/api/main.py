@@ -13,9 +13,14 @@ from src.invest_engine.game_manager import InvestmentGameManager
 from src.invest_engine.autopilot_engine import STRATEGY_PROFILES
 from src.api.schemas import (
     OrderRequest,
+    LimitOrderRequest,
+    CancelLimitOrderRequest,
     CloseOrderRequest,
+    SymbolAutopilotConfigRequest,
     AutopilotToggleRequest,
     PanicStopRequest,
+    ResetAccountRequest,
+    SetStrategyRequest,
     RaceCardResponse,
     UserStatsResponse,
     LeaderboardItem
@@ -24,7 +29,9 @@ from src.api.schemas import (
 # シングルトン ゲームマネージャー
 game_manager = InvestmentGameManager()
 
-# 初期テストユーザーの登録 (リアルな売買実績がプリロードされる)
+# 訪問者デフォルト口座 (完全初期状態: 保有ポジション0、自動売買OFF、実資金ゼロの安全クリーン口座)
+game_manager.register_user("guest", "あなた (個人口座)", preload_samples=False)
+# デモ・ランキング対決用ユーザー
 game_manager.register_user("tanaka", "競馬ファン田中", preload_samples=True)
 game_manager.register_user("suzuki", "穴党スズキ", preload_samples=True)
 
@@ -148,12 +155,8 @@ def get_chart_data(symbol: str = "GC=F", period: Optional[str] = None, interval:
         seen_times = set()
 
         for idx, row in df.iterrows():
-            if is_intraday:
-                # 分足・時間足は秒単位のUNIXタイムスタンプ
-                candle_time = int(idx.timestamp())
-            else:
-                # 日足は日付文字列
-                candle_time = str(idx.date())
+            # 全足種（分足・時間足・日足）を秒単位のUNIXタイムスタンプに統一（型混在による更新無視を完全防止）
+            candle_time = int(idx.timestamp())
 
             # タイムスタンプ重複を安全に除外
             if candle_time in seen_times:
@@ -281,11 +284,38 @@ def get_account_details(user_id: str):
         }
         for p in acc.positions.values()
     ]
+    from dataclasses import asdict
+    pending_limits = [asdict(o) for o in acc.limit_orders.values() if o.status == "PENDING"]
     return {
         "stats": stats,
         "positions": positions,
+        "pending_limit_orders": pending_limits,
         "recent_trades": [asdict_trade(t) for t in acc.trade_history[-5:]]
     }
+
+
+@app.post("/api/account/reset", tags=["ユーザー口座"])
+def reset_account(req: ResetAccountRequest):
+    """
+    口座を初期状態（資金1,000万円、保有ポジション・待機指値・取引履歴クリア）に完全初期化リセットします。
+    """
+    acc = game_manager.get_user(req.user_id)
+    if not acc:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
+
+    acc.reset(initial_cash=req.initial_cash)
+    # オートパイロットもリセット
+    ap = game_manager.get_autopilot(req.user_id)
+    if ap:
+        ap.reset()
+
+    return {
+        "status": "ACCOUNT_RESET_SUCCESS",
+        "message": f"口座を初期資金（¥{int(req.initial_cash):,}）に完全リセットしました。",
+        "cash": acc.cash,
+        "equity": acc.equity
+    }
+
 
 
 @app.post("/api/order", tags=["仮想取引"])
@@ -350,6 +380,144 @@ def close_order(close_req: CloseOrderRequest):
     }
 
 
+@app.post("/api/limit-order", tags=["仮想取引"])
+def place_limit_order(order: LimitOrderRequest):
+    """
+    新規の指値（リミット）注文を発注し、待機リストに登録します。
+    指定価格に市場価格が到達すると、スリッページゼロ＆低手数料で自動約定します。
+    """
+    acc = game_manager.get_user(order.user_id)
+    if not acc:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
+
+    try:
+        limit_order = acc.place_limit_order(
+            symbol=order.symbol,
+            side=order.side,
+            target_price=order.target_price,
+            amount=order.amount,
+            leverage=order.leverage,
+            source="MANUAL",
+            tp_price=order.tp_price,
+            sl_price=order.sl_price
+        )
+        return {
+            "status": "LIMIT_ORDER_PLACED",
+            "message": f"{order.side} 指値注文を登録しました（指定価格: {order.target_price}）。",
+            "order_id": limit_order.order_id,
+            "target_price": limit_order.target_price,
+            "amount": limit_order.amount
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.post("/api/cancel-limit-order", tags=["仮想取引"])
+def cancel_limit_order(req: CancelLimitOrderRequest):
+    """
+    待機中の指値注文を取り消します。
+    """
+    acc = game_manager.get_user(req.user_id)
+    if not acc:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
+
+    success = acc.cancel_limit_order(req.order_id)
+    if not success:
+        raise HTTPException(status_code=400, detail="指定の指値注文が存在しないか、既に約定・取消済みです。")
+
+    return {
+        "status": "LIMIT_ORDER_CANCELLED",
+        "message": f"指値注文 {req.order_id} を取り消しました。"
+    }
+
+
+@app.get("/api/limit-orders/{user_id}", tags=["仮想取引"])
+def get_limit_orders(user_id: str):
+    """
+    ユーザーの待機中指値注文一覧を取得します。
+    """
+    acc = game_manager.get_user(user_id)
+    if not acc:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
+
+    from dataclasses import asdict
+    pending = [asdict(o) for o in acc.limit_orders.values() if o.status == "PENDING"]
+    return {"orders": pending}
+
+
+@app.get("/api/lot-specs/{symbol}", tags=["仮想取引"])
+def get_lot_specs(symbol: str):
+    """
+    銘柄ごとの1ロット（1単位）仕様および現在価格に基づく円換算想定代金を返却します。
+    """
+    from src.invest_engine.data_loader import fetch_latest_price
+    live_price = fetch_latest_price(symbol)
+    usd_jpy = fetch_latest_price("USDJPY=X") or 157.59
+
+    specs = {
+        "GC=F": {
+            "name": "Gold Futures (金先物)",
+            "unit_name": "1 oz (オンス)",
+            "currency": "USD",
+            "jpy_multiplier": usd_jpy,
+            "lot_size": 1.0,
+            "min_amount": 1,
+            "step": 1,
+            "price": live_price,
+            "price_jpy": round(live_price * usd_jpy),
+            "desc": "1ロット = 1トロイオンス (約31.1g)"
+        },
+        "USDJPY=X": {
+            "name": "USD/JPY (米ドル/円)",
+            "unit_name": "1,000 ドル",
+            "currency": "JPY",
+            "jpy_multiplier": 1.0,
+            "lot_size": 1000.0,
+            "min_amount": 1,
+            "step": 1,
+            "price": live_price,
+            "price_jpy": round(live_price * 1000),
+            "desc": "1ロット = 1,000通貨 (米ドル)"
+        },
+        "BTC-USD": {
+            "name": "Bitcoin (ビットコイン)",
+            "unit_name": "0.1 BTC",
+            "currency": "USD",
+            "jpy_multiplier": usd_jpy,
+            "lot_size": 0.1,
+            "min_amount": 0.1,
+            "step": 0.1,
+            "price": live_price,
+            "price_jpy": round(live_price * 0.1 * usd_jpy),
+            "desc": "1ロット = 0.1 BTC (暗号資産)"
+        },
+        "NVDA": {
+            "name": "NVIDIA (エヌビディア)",
+            "unit_name": "1 株",
+            "currency": "USD",
+            "jpy_multiplier": usd_jpy,
+            "lot_size": 1.0,
+            "min_amount": 1,
+            "step": 1,
+            "price": live_price,
+            "price_jpy": round(live_price * usd_jpy),
+            "desc": "1ロット = 1株 (米国株式)"
+        }
+    }
+    return specs.get(symbol, {
+        "name": symbol,
+        "unit_name": "1 単位",
+        "currency": "USD",
+        "jpy_multiplier": usd_jpy,
+        "lot_size": 1.0,
+        "min_amount": 1,
+        "step": 1,
+        "price": live_price,
+        "price_jpy": round(live_price * usd_jpy),
+        "desc": "1ロット = 1単位"
+    })
+
+
 # =========================================================================
 # AIオートパイロット（自動お任せ運用）＆フェイルセーフ安全制御 API
 # =========================================================================
@@ -383,7 +551,7 @@ def get_autopilot_status(user_id: str):
 
 @app.post("/api/autopilot/toggle", tags=["AIオートパイロット"])
 def toggle_autopilot(req: AutopilotToggleRequest):
-    """AIオートパイロットの起動・停止切り替え（戦術指定付き）"""
+    """AIオートパイロットの全銘柄一括起動・停止切り替え（戦術指定・指値戦略付き）"""
     ap = game_manager.get_autopilot(req.user_id)
     if not ap:
         raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
@@ -391,8 +559,31 @@ def toggle_autopilot(req: AutopilotToggleRequest):
         is_active=req.is_active,
         allocated_capital=req.allocated_capital,
         daily_max_loss_pct=req.daily_max_loss_pct,
-        strategy_style=req.strategy_style
+        strategy_style=req.strategy_style,
+        use_limit_orders=req.use_limit_orders
     )
+
+
+@app.post("/api/autopilot/symbol-config", tags=["AIオートパイロット"])
+def update_symbol_autopilot_config(req: SymbolAutopilotConfigRequest):
+    """特定銘柄（金・為替・BTC・株式）の個別AI自動運用設定を更新"""
+    ap = game_manager.get_autopilot(req.user_id)
+    if not ap:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
+
+    from dataclasses import asdict
+    cfg = ap.update_symbol_config(
+        symbol=req.symbol,
+        is_active=req.is_active,
+        strategy_style=req.strategy_style,
+        allocated_capital=req.allocated_capital,
+        use_limit_orders=req.use_limit_orders
+    )
+    return {
+        "status": "SYMBOL_CONFIG_UPDATED",
+        "config": asdict(cfg),
+        "autopilot_status": ap.get_status()
+    }
 
 
 @app.post("/api/autopilot/panic-stop", tags=["AIオートパイロット"])
@@ -426,11 +617,54 @@ def execute_autopilot_tick(user_id: str, symbol: str = "GC=F"):
         raise HTTPException(status_code=500, detail=f"オートパイロット実行時エラー: {str(e)}")
 
 
+@app.post("/api/autopilot/set-strategy", tags=["AIオートパイロット"])
+def set_autopilot_strategy(req: SetStrategyRequest):
+    """
+    AIオートパイロットの戦略スタイル（スキャルピング/デイトレ等）を即時保存・反映します。
+    ユーザーがドロップダウンを変更した瞬間に永続化され、勝手な上書きを防止します。
+    """
+    ap = game_manager.get_autopilot(req.user_id)
+    if not ap:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
+
+    ap.set_strategy(req.strategy_style)
+    return {
+        "status": "STRATEGY_SET_SUCCESS",
+        "strategy_style": ap.config.strategy_style,
+        "max_leverage": ap.config.max_leverage,
+        "strategy_profile": STRATEGY_PROFILES.get(req.strategy_style, {})
+    }
+
+
+@app.post("/api/retrain-from-history", tags=["自己学習"])
+def retrain_from_history():
+    """
+    蓄積されたAI売買・約定ログおよび意思決定特徴量から自己学習データセット（X, y）を抽出し、
+    次世代メタモデル（Meta-Labeling）の学習適性を評価します。
+    """
+    try:
+        from ..invest_engine.history_db import export_learning_dataset
+        dataset = export_learning_dataset()
+        return {
+            "status": "RETRAIN_EVALUATED",
+            "total_samples": dataset["total_samples"],
+            "win_count": dataset["win_count"],
+            "loss_count": dataset["loss_count"],
+            "win_rate_pct": dataset["win_rate_pct"],
+            "message": f"実運用トレードログから {dataset['total_samples']} 件の自己学習サンプル（特徴量＋成否ラベル）を抽出しました。"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"自己学習データセット抽出エラー: {str(e)}")
+
+
+
 def asdict_trade(t) -> Dict[str, Any]:
     return {
         "trade_id": t.trade_id,
         "symbol": t.symbol,
         "side": t.side,
+        "amount": round(float(getattr(t, "amount", 10.0)), 2),
+        "fee": round(float(getattr(t, "fee", 0.0)), 2),
         "entry_price": t.entry_price,
         "exit_price": t.exit_price,
         "net_pnl": t.net_pnl,

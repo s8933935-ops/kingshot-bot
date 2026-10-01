@@ -53,6 +53,49 @@ def init_db(db_path: Path = DB_PATH):
     )
     """)
 
+    # 実約定・トレード履歴永続化テーブル（自己学習の教師データ）
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS trades (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        trade_id TEXT UNIQUE NOT NULL,
+        user_id TEXT NOT NULL,
+        symbol TEXT NOT NULL,
+        side TEXT NOT NULL,
+        entry_price REAL NOT NULL,
+        exit_price REAL NOT NULL,
+        amount REAL NOT NULL,
+        leverage REAL NOT NULL,
+        gross_pnl REAL NOT NULL,
+        fee REAL NOT NULL,
+        net_pnl REAL NOT NULL,
+        return_pct REAL NOT NULL,
+        is_win INTEGER NOT NULL,  -- 1: 勝ち(利確), 0: 負け(損切/同値)
+        source TEXT NOT NULL,     -- 'AUTOPILOT' または 'USER'
+        opened_at TEXT NOT NULL,
+        closed_at TEXT NOT NULL,
+        created_at TEXT NOT NULL
+    )
+    """)
+
+    # AI意思決定・特徴量スナップショットテーブル（メタラベリング再学習用）
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS ai_decisions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        symbol TEXT NOT NULL,
+        action TEXT NOT NULL,
+        reason TEXT NOT NULL,
+        price REAL NOT NULL,
+        prob_up REAL,
+        regime TEXT,
+        htf_trend REAL,
+        meta_bet_size REAL,
+        features_json TEXT,  -- 当時の特徴量ベクトル (JSON)
+        timestamp TEXT NOT NULL,
+        created_at TEXT NOT NULL
+    )
+    """)
+
     conn.commit()
     conn.close()
 
@@ -184,3 +227,216 @@ def get_ai_prediction_stats(symbol: str = "GC=F", limit: int = 30, db_path: Path
         "hit_rate_pct": round(hit_rate, 1),
         "recent_history": history
     }
+
+
+def save_trade_record(user_id: str, trade: Dict[str, Any], source: str = "AUTOPILOT", db_path: Path = DB_PATH):
+    """
+    約定完了したトレード（利確・損切実績）をDBに永続化保存する。
+    機械学習（メタラベリング再学習）の正解ラベル（is_win）として機能します。
+    """
+    init_db(db_path)
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    now_iso = datetime.now().isoformat()
+    net_pnl = float(trade.get("net_pnl", 0.0))
+    is_win = 1 if net_pnl > 0 else 0
+
+    cursor.execute("""
+    INSERT OR REPLACE INTO trades (
+        trade_id, user_id, symbol, side, entry_price, exit_price,
+        amount, leverage, gross_pnl, fee, net_pnl, return_pct,
+        is_win, source, opened_at, closed_at, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        trade.get("trade_id", str(datetime.now().timestamp())),
+        user_id,
+        trade.get("symbol", ""),
+        trade.get("side", ""),
+        float(trade.get("entry_price", 0.0)),
+        float(trade.get("exit_price", 0.0)),
+        float(trade.get("amount", 0.0)),
+        float(trade.get("leverage", 1.0)),
+        float(trade.get("gross_pnl", 0.0)),
+        float(trade.get("fee", 0.0)),
+        net_pnl,
+        float(trade.get("return_pct", 0.0)),
+        is_win,
+        source,
+        trade.get("opened_at", now_iso),
+        trade.get("closed_at", now_iso),
+        now_iso
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def save_ai_decision(
+    user_id: str,
+    symbol: str,
+    action: str,
+    reason: str,
+    price: float,
+    prob_up: Optional[float] = None,
+    regime: Optional[str] = None,
+    htf_trend: Optional[float] = None,
+    meta_bet_size: Optional[float] = None,
+    features: Optional[Dict[str, Any]] = None,
+    db_path: Path = DB_PATH
+):
+    """
+    AIの思考・意思決定と、その瞬間の市場特徴量をDBに永続化保存する。
+    """
+    init_db(db_path)
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    now_iso = datetime.now().isoformat()
+    now_time = datetime.now().strftime("%H:%M:%S")
+    feat_json = json.dumps(features, ensure_ascii=False) if features else "{}"
+
+    cursor.execute("""
+    INSERT INTO ai_decisions (
+        user_id, symbol, action, reason, price,
+        prob_up, regime, htf_trend, meta_bet_size,
+        features_json, timestamp, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        user_id, symbol, action, reason, price,
+        prob_up, regime, htf_trend, meta_bet_size,
+        feat_json, now_time, now_iso
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def get_completed_trades(
+    user_id: Optional[str] = None,
+    symbol: Optional[str] = None,
+    source: Optional[str] = None,
+    limit: int = 100,
+    db_path: Path = DB_PATH
+) -> List[Dict[str, Any]]:
+    """保存された約定履歴を取得"""
+    init_db(db_path)
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    query = "SELECT trade_id, user_id, symbol, side, entry_price, exit_price, amount, leverage, fee, net_pnl, return_pct, is_win, source, opened_at, closed_at FROM trades WHERE 1=1"
+    params = []
+
+    if user_id:
+        query += " AND user_id = ?"
+        params.append(user_id)
+    if symbol:
+        query += " AND symbol = ?"
+        params.append(symbol)
+    if source:
+        query += " AND source = ?"
+        params.append(source)
+
+    query += " ORDER BY id DESC LIMIT ?"
+    params.append(limit)
+
+    cursor.execute(query, params)
+    rows = cursor.fetchall()
+    conn.close()
+
+    return [
+        {
+            "trade_id": r[0],
+            "user_id": r[1],
+            "symbol": r[2],
+            "side": r[3],
+            "entry_price": r[4],
+            "exit_price": r[5],
+            "amount": r[6],
+            "leverage": r[7],
+            "fee": r[8],
+            "net_pnl": r[9],
+            "return_pct": r[10],
+            "is_win": bool(r[11]),
+            "source": r[12],
+            "opened_at": r[13],
+            "closed_at": r[14],
+        }
+        for r in rows
+    ]
+
+
+def export_learning_dataset(db_path: Path = DB_PATH) -> Dict[str, Any]:
+    """
+    蓄積されたAI売買履歴と意思決定ログから、次世代メタモデルの再学習データセット（X, y）を抽出する。
+    - X: エントリー時のシグナル確率、上位足トレンド、レジーム、市場特徴量
+    - y: 実際のトレード結果（1: 利確成功, 0: 損切り/失敗）
+    """
+    init_db(db_path)
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # AIがエントリーした約定トレード
+    cursor.execute("""
+    SELECT t.trade_id, t.symbol, t.side, t.net_pnl, t.return_pct, t.is_win, t.opened_at, t.closed_at
+    FROM trades t
+    WHERE t.source = 'AUTOPILOT'
+    ORDER BY t.id ASC
+    """)
+    trades = cursor.fetchall()
+
+    dataset_samples = []
+    for tr in trades:
+        tid, sym, side, pnl, ret_pct, is_win, opened_at, closed_at = tr
+
+        # 当該トレードのエントリー付近で行われたAI意思決定ログを検索
+        cursor.execute("""
+        SELECT prob_up, regime, htf_trend, meta_bet_size, features_json
+        FROM ai_decisions
+        WHERE symbol = ? AND (action LIKE '%BUY%' OR action LIKE '%SELL%') AND created_at <= ?
+        ORDER BY id DESC LIMIT 1
+        """, (sym, closed_at))
+        dec = cursor.fetchone()
+
+        sample_features = {
+            "symbol": sym,
+            "side": side,
+            "prob_up": dec[0] if dec else 0.5,
+            "regime": dec[1] if dec else "TREND",
+            "htf_trend": dec[2] if dec else 0.0,
+            "meta_bet_size": dec[3] if dec else 10.0,
+        }
+
+        # 補助特徴量JSONを展開
+        if dec and dec[4]:
+            try:
+                extra = json.loads(dec[4])
+                if isinstance(extra, dict):
+                    sample_features.update(extra)
+            except Exception:
+                pass
+
+        dataset_samples.append({
+            "trade_id": tid,
+            "features": sample_features,
+            "label_is_win": is_win,
+            "net_pnl": pnl,
+            "return_pct": ret_pct,
+            "opened_at": opened_at,
+            "closed_at": closed_at
+        })
+
+    conn.close()
+
+    total_samples = len(dataset_samples)
+    wins = sum(1 for s in dataset_samples if s["label_is_win"] == 1)
+    win_rate = (wins / total_samples * 100.0) if total_samples > 0 else 0.0
+
+    return {
+        "total_samples": total_samples,
+        "win_count": wins,
+        "loss_count": total_samples - wins,
+        "win_rate_pct": round(win_rate, 2),
+        "samples": dataset_samples
+    }
+

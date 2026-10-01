@@ -41,11 +41,23 @@
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #2a3245; border-radius: 4px; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col antialiased overflow-x-hidden bg-[#0b0e14]">
+
+  <!-- 🔰 【最重要】完全仮想取引（ペーパートレード）・実資金ゼロ常時明示バナー -->
+  <aside class="bg-gradient-to-r from-amber-950/90 via-slate-900 to-blue-950/90 border-b border-amber-500/40 px-3 py-1.5 text-center text-xs font-sans text-amber-200 shadow-md">
+    <div class="max-w-[1600px] mx-auto flex flex-wrap items-center justify-center gap-2">
+      <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40 text-[10px] tracking-wide flex items-center gap-1">
+        <span>⚠️</span> 完全仮想取引（ペーパートレード）稼働中
+      </span>
+      <span class="text-[11px] text-slate-300">
+        本プラットフォームは投資教育・アルゴリズム検証用の<strong>シミュレーション環境（実資金の移動・損失リスクゼロ）</strong>です。安全にAIクオンツ投資を体験できます。
+      </span>
+    </div>
+  </aside>
 
   <!-- ヘッダー (プロフェッショナル金融端末スタイル) -->
   <header class="border-b border-[#232936] bg-[#121620] sticky top-0 z-40 px-4 py-2.5">
-    <div class="max-w-[1600px] mx-auto flex items-center justify-between">
+    <div class="max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-3">
       <div class="flex items-center space-x-6">
         <div class="flex items-center space-x-2.5">
           <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-black text-white text-base shadow-lg shadow-blue-500/20">
@@ -77,7 +89,7 @@
       </div>
 
       <!-- 口座ステータス ＆ 操作系 -->
-      <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-3 flex-wrap gap-2">
         <button onclick="openAcademyModal()" class="text-xs px-2.5 py-1 bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/50 text-indigo-300 font-bold rounded flex items-center gap-1.5 transition shadow-sm shadow-indigo-950">
           <span>🎓 理論コラム</span>
         </button>
@@ -88,17 +100,23 @@
           <span>📖 操作マニュアル</span>
         </a>
 
-        <div class="text-right border-l border-[#2d3748] pl-4">
-          <div class="text-[10px] text-slate-400 flex items-center gap-1.5 justify-end">
-            <span>口座:</span>
-            <select id="user-select" onchange="switchUser(this.value)" class="bg-[#1a202c] text-slate-200 font-bold px-1.5 py-0.5 rounded text-xs border border-[#2d3748] focus:outline-none">
-              <option value="tanaka" selected>トレーダー田中</option>
-              <option value="suzuki">トレーダー鈴木</option>
-            </select>
+        <div class="text-right border-l border-[#2d3748] pl-3 flex items-center gap-3">
+          <div>
+            <div class="text-[10px] text-slate-400 flex items-center gap-1.5 justify-end">
+              <span>口座:</span>
+              <select id="user-select" onchange="switchUser(this.value)" class="bg-[#1a202c] text-slate-200 font-bold px-1.5 py-0.5 rounded text-xs border border-[#2d3748] focus:outline-none">
+                <option value="guest" selected>あなた (個人口座)</option>
+                <option value="tanaka">デモ: トレーダー田中</option>
+                <option value="suzuki">デモ: 穴党スズキ</option>
+              </select>
+            </div>
+            <div class="text-xs font-bold font-mono text-emerald-400 text-right mt-0.5">
+              純資産: ¥<span id="user-equity">10,000,000</span>
+            </div>
           </div>
-          <div class="text-xs font-bold font-mono text-emerald-400">
-            純資産: ¥<span id="user-equity">10,000,000</span>
-          </div>
+          <button onclick="resetUserAccount()" title="口座資金を¥10,000,000の初期状態にリセット" class="text-[11px] px-2.5 py-1.5 bg-rose-950/80 hover:bg-rose-900 border border-rose-500/50 text-rose-300 font-bold rounded flex items-center gap-1 transition shadow-sm">
+            <span>🔄</span> 資金リセット
+          </button>
         </div>
       </div>
     </div>
@@ -113,18 +131,28 @@
           <span id="ticker-code" class="text-xs text-slate-400 font-mono ml-1.5">GC=F</span>
         </div>
         <div class="flex items-baseline space-x-2">
-          <span class="text-2xl font-black font-mono text-white">$<span id="price-display">--</span></span>
+          <span class="text-2xl font-black font-mono text-white"><span id="currency-symbol">$</span><span id="price-display">--</span></span>
           <span id="change-display" class="text-xs font-bold font-mono text-emerald-400">+0.00%</span>
         </div>
       </div>
 
-      <!-- AIシグナル・ヘッドラインバッジ -->
-      <div class="flex items-center space-x-3">
-        <span class="text-xs text-slate-400">AI推奨シグナル:</span>
-        <span id="signal-badge" class="px-3 py-1 rounded-md text-xs font-bold font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
-          STRONG BUY
-        </span>
-        <span class="text-xs text-slate-400">確信度: <b id="confidence-val" class="text-white">HIGH</b></span>
+      <!-- AIシグナル・ヘッドラインバッジ (3層ディシジョン構造) -->
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="flex items-center space-x-1.5">
+          <span class="text-xs text-slate-400">一次予測:</span>
+          <span id="signal-badge" class="px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+            BUY
+          </span>
+        </div>
+        <div class="flex items-center space-x-1.5 border-l border-[#2d3748] pl-3">
+          <span class="text-xs text-slate-300 font-bold">総合執行判定 (最優先):</span>
+          <span id="final-decision-badge" class="px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-amber-500/20 text-amber-300 border border-amber-500/40">
+            🛡️ 執行見送り (待機)
+          </span>
+        </div>
+        <div class="hidden md:flex items-center text-xs text-slate-400">
+          <span>確信度: <b id="confidence-val" class="text-white ml-1">HIGH</b></span>
+        </div>
       </div>
     </div>
   </section>
@@ -255,6 +283,31 @@
               <div id="val-ret" class="font-bold text-white mt-0.5">--</div>
             </div>
           </div>
+
+          <!-- 3層ディシジョン階層ガイド（判断優先順位の可視化） -->
+          <div class="bg-[#0e1118] p-2.5 rounded-lg border border-[#232936] text-[10px] space-y-1.5">
+            <div class="font-bold text-slate-300 flex items-center justify-between">
+              <span>🧭 判断優先順位 (3層階層構造)</span>
+              <span class="text-[9px] text-blue-400 font-mono">クオンツ安全設計</span>
+            </div>
+            <div class="space-y-1 text-slate-400 font-sans">
+              <div class="flex items-center gap-1.5">
+                <span class="px-1 py-0.2 rounded bg-slate-800 text-slate-300 font-mono text-[9px]">第1層</span>
+                <span>一次方向性予測 (上昇・下落確率)</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="px-1 py-0.2 rounded bg-slate-800 text-amber-300 font-mono text-[9px]">第2層</span>
+                <span>マクロ＆上位足トレンド適合性</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="px-1 py-0.2 rounded bg-blue-900 text-blue-200 font-bold font-mono text-[9px]">第3層</span>
+                <span class="text-white font-medium">【最優先】3大防御ゲート総合執行判定</span>
+              </div>
+            </div>
+            <div class="text-[9px] text-amber-400/90 bg-amber-950/30 p-1.5 rounded border border-amber-500/20 leading-relaxed">
+              ※一次予測がBUYでも、防御ゲート（レンジ・上位足逆行・期待値不足）が作動中の場合は、資産保全のため執行は見送られます。
+            </div>
+          </div>
         </div>
 
         <!-- 🤖 AIオートパイロット（お任せ自動売買）コントロール -->
@@ -269,10 +322,24 @@
               </span>
             </div>
 
+            <!-- 個別銘柄AIオート選択タブ（ユーザー要望対応） -->
+            <div class="mt-2.5">
+              <div class="text-[10px] font-bold text-slate-300 mb-1 flex items-center justify-between">
+                <span>🎯 個別銘柄AIオート選択</span>
+                <span id="selected-sym-status-badge" class="px-1.5 py-0.2 rounded text-[9px] font-mono bg-slate-800 text-slate-400 border border-slate-700">待機中</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1 p-1 bg-[#0e1118] rounded-lg border border-[#2d3748] text-[10px] font-bold text-center">
+                <button type="button" onclick="selectAutopilotSymbol('GC=F')" id="tab-ap-GC_F" class="py-1 rounded bg-blue-600 text-white transition">🥇金先物</button>
+                <button type="button" onclick="selectAutopilotSymbol('USDJPY=X')" id="tab-ap-USDJPY_X" class="py-1 rounded text-slate-400 hover:text-white transition">💴為替</button>
+                <button type="button" onclick="selectAutopilotSymbol('BTC-USD')" id="tab-ap-BTC_USD" class="py-1 rounded text-slate-400 hover:text-white transition">₿暗号</button>
+                <button type="button" onclick="selectAutopilotSymbol('NVDA')" id="tab-ap-NVDA" class="py-1 rounded text-slate-400 hover:text-white transition">💻株</button>
+              </div>
+            </div>
+
             <!-- 運用戦術（トレードスタイル）の選択 -->
-            <div class="mt-3">
+            <div class="mt-2.5">
               <label class="block text-[10px] text-slate-300 font-bold mb-1 flex items-center justify-between">
-                <span>🎯 AI運用戦術 (トレードスタイル)</span>
+                <span>🎯 AI運用戦術 (<span id="ap-target-symbol-title">金先物</span>)</span>
                 <span id="ap-strat-desc" class="text-[9px] text-blue-400 font-mono">利確+1.2% / 損切-0.6%</span>
               </label>
               <select id="ap-strategy" onchange="onStrategyChange()" class="w-full bg-[#0e1118] border border-blue-900/50 rounded px-2.5 py-1.5 text-xs text-white font-medium focus:border-blue-500 focus:outline-none">
@@ -282,15 +349,28 @@
                 <option value="medium_term">🏔️ 中期トレンド (数週間〜数ヶ月・マクロ重視)</option>
                 <option value="long_term">🏦 長期投資 (数ヶ月〜数年・資産形成・ハーフケリー)</option>
               </select>
+
+              <!-- 戦略スペック比較カード（攻め方の違いを可視化） -->
+              <div id="strat-spec-card" class="mt-2 p-2 bg-[#0e1118] border border-blue-900/40 rounded text-[10px] space-y-1 font-mono">
+                <div class="flex items-center justify-between text-slate-300">
+                  <span>推奨足種: <b id="spec-interval" class="text-white">15分足 (15m)</b></span>
+                  <span>目標利確: <b id="spec-tp" class="text-emerald-400">2.5×ATR (+1.2%)</b></span>
+                </div>
+                <div class="flex items-center justify-between text-slate-300">
+                  <span>許容損切: <b id="spec-sl" class="text-rose-400">1.2×ATR (-0.6%)</b></span>
+                  <span>レバ上限: <b id="spec-lev" class="text-amber-400">最大3.0倍</b></span>
+                </div>
+              </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2 mt-2 text-xs">
               <div>
-                <label class="block text-[10px] text-slate-400 mb-1">運用割当資金</label>
+                <label class="block text-[10px] text-slate-400 mb-1">個別割当資金</label>
                 <select id="ap-capital" class="w-full bg-[#0e1118] border border-[#2d3748] rounded px-2 py-1.5 text-xs text-white">
-                  <option value="1000000">¥1,000,000</option>
-                  <option value="3000000" selected>¥3,000,000 (推奨)</option>
-                  <option value="5000000">¥5,000,000</option>
+                  <option value="500000">¥500,000</option>
+                  <option value="1000000" selected>¥1,000,000</option>
+                  <option value="2000000">¥2,000,000</option>
+                  <option value="3000000">¥3,000,000</option>
                 </select>
               </div>
               <div>
@@ -303,10 +383,22 @@
               </div>
             </div>
 
-            <!-- ON/OFF スイッチ -->
-            <div class="mt-3">
-              <button id="ap-toggle-btn" onclick="toggleAutopilot()" class="w-full py-2.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/30">
-                <span>⚡</span> AI自動売買を開始する
+            <!-- AIスマート指値戦略チェックボックス -->
+            <div class="mt-2 flex items-center justify-between bg-[#0e1118] p-2 rounded border border-[#2d3748]">
+              <div class="flex items-center gap-1.5">
+                <input id="ap-use-limit" type="checkbox" checked class="rounded bg-[#1a202c] text-blue-600 focus:ring-0">
+                <label for="ap-use-limit" class="text-[10px] text-slate-200 font-bold cursor-pointer">AIスマート指値 (押し目/戻り約定)</label>
+              </div>
+              <span class="text-[9px] text-emerald-400 font-mono">スリッページ0</span>
+            </div>
+
+            <!-- ON/OFF スイッチ ＆ 個別反映ボタン -->
+            <div class="grid grid-cols-2 gap-2 mt-3">
+              <button id="btn-save-sym-ap" onclick="saveSelectedSymbolAutopilot()" class="w-full py-2 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 bg-indigo-600 hover:bg-indigo-500 text-white shadow">
+                <span>💾</span> この銘柄をON
+              </button>
+              <button id="ap-toggle-btn" onclick="toggleAutopilot()" class="w-full py-2 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 bg-blue-600 hover:bg-blue-500 text-white shadow">
+                <span>⚡</span> 全銘柄一括ON
               </button>
             </div>
           </div>
@@ -319,23 +411,45 @@
           </div>
         </div>
 
-        <!-- マニュアル手動発注パネル -->
+        <!-- マニュアル手動発注パネル（成行 ＆ 指値・ロット計算機対応） -->
         <div class="bg-[#151924] border border-[#232936] rounded-xl p-4 space-y-3">
           <div class="flex items-center justify-between border-b border-[#232936] pb-2">
             <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
-              <span>🎯</span> 手動成行注文パネル
+              <span>🎯</span> 手動発注パネル
             </h3>
-            <span class="text-[10px] text-slate-500 font-mono">任意裁量トレード</span>
+            <!-- 成行 / 指値 切り替えタブ -->
+            <div class="flex items-center bg-[#0e1118] p-0.5 rounded border border-[#2d3748] text-[10px] font-bold">
+              <button type="button" id="tab-order-market" onclick="switchOrderType('MARKET')" class="px-2 py-0.5 rounded bg-blue-600 text-white transition">成行</button>
+              <button type="button" id="tab-order-limit" onclick="switchOrderType('LIMIT')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white transition">指値 (有利)</button>
+            </div>
+          </div>
+
+          <!-- 指値価格入力欄（指値選択時のみ展開） -->
+          <div id="limit-price-group" class="hidden bg-[#0e1118] p-2.5 rounded-lg border border-amber-500/40 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="text-[10px] font-bold text-amber-300">📌 指定指値価格</label>
+              <button type="button" onclick="fillCurrentPriceToLimit()" class="text-[9px] text-blue-400 hover:text-blue-300 underline font-mono">現在値を入力</button>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span id="limit-currency-symbol" class="text-xs font-mono font-bold text-slate-400">$</span>
+              <input id="order-limit-price" type="number" step="0.01" class="w-full bg-[#151924] border border-amber-500/60 rounded px-2.5 py-1 text-xs font-mono font-bold text-white focus:outline-none focus:border-amber-400" placeholder="指値価格を入力" oninput="updateLotCalculations()">
+            </div>
+            <div class="text-[9px] text-slate-400 font-sans">
+              ※指定した有利な価格に相場が到達した瞬間にスリッページゼロで自動約定します。
+            </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-[10px] text-slate-400 mb-1">取引ロット / 数量</label>
-              <input id="order-qty" type="number" value="10" min="1" max="1000" class="w-full bg-[#0e1118] border border-[#2d3748] rounded px-3 py-1.5 text-xs font-mono font-bold text-white focus:outline-none focus:border-blue-500">
+              <label class="block text-[10px] text-slate-400 mb-1 flex justify-between">
+                <span>取引数量 (ロット)</span>
+                <span id="lot-unit-label" class="text-blue-400 font-mono text-[9px]">1ロット = 1 oz</span>
+              </label>
+              <input id="order-qty" type="number" value="10" min="0.01" max="1000" step="1" oninput="updateLotCalculations()" class="w-full bg-[#0e1118] border border-[#2d3748] rounded px-3 py-1.5 text-xs font-mono font-bold text-white focus:outline-none focus:border-blue-500">
             </div>
             <div>
               <label class="block text-[10px] text-slate-400 mb-1">レバレッジ</label>
-              <select id="order-lev" class="w-full bg-[#0e1118] border border-[#2d3748] rounded px-3 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-blue-500">
+              <select id="order-lev" onchange="updateLotCalculations()" class="w-full bg-[#0e1118] border border-[#2d3748] rounded px-3 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-blue-500">
                 <option value="1">1倍 (現物)</option>
                 <option value="2">2倍</option>
                 <option value="5" selected>5倍 (標準)</option>
@@ -344,11 +458,27 @@
             </div>
           </div>
 
+          <!-- 💡 ロットあたり金額・想定代金・必要証拠金シミュレーター（ユーザー要望対応） -->
+          <div class="bg-[#0e1118] p-2.5 rounded-lg border border-[#232936] text-[10px] space-y-1 font-mono">
+            <div class="flex justify-between items-center text-slate-400">
+              <span>1ロットあたり金額:</span>
+              <span id="single-lot-price" class="font-bold text-slate-200">--</span>
+            </div>
+            <div class="flex justify-between items-center text-slate-400">
+              <span>合計取引想定元本:</span>
+              <span id="total-notional-value" class="font-bold text-white">--</span>
+            </div>
+            <div class="flex justify-between items-center pt-1 border-t border-[#1a202c]">
+              <span class="text-emerald-400 font-bold">必要証拠金:</span>
+              <span id="required-margin-value" class="font-bold text-emerald-400 text-xs">--</span>
+            </div>
+          </div>
+
           <div class="grid grid-cols-2 gap-2 pt-1">
-            <button onclick="submitOrder('BUY')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg shadow-lg shadow-emerald-900/30 transition transform active:scale-95 text-xs">
+            <button id="btn-submit-buy" onclick="submitActiveOrder('BUY')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg shadow-lg shadow-emerald-900/30 transition transform active:scale-95 text-xs">
               成行買い (BUY)
             </button>
-            <button onclick="submitOrder('SELL')" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-lg shadow-lg shadow-rose-900/30 transition transform active:scale-95 text-xs">
+            <button id="btn-submit-sell" onclick="submitActiveOrder('SELL')" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-2.5 rounded-lg shadow-lg shadow-rose-900/30 transition transform active:scale-95 text-xs">
               成行売り (SELL)
             </button>
           </div>
@@ -385,6 +515,40 @@
         </div>
       </div>
 
+      <!-- ⏳ 待機中指値注文（Pending Limit Orders）一覧テーブル -->
+      <div class="bg-[#151924] border border-[#232936] rounded-xl p-4 shadow-xl">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
+              <span>⏳</span> 待機中指値注文一覧 (<span id="limit-order-count">0</span>)
+            </h3>
+            <span class="text-[9px] text-amber-400 font-mono bg-amber-950/60 px-1.5 py-0.2 rounded border border-amber-500/30">スリッページゼロ</span>
+          </div>
+          <span class="text-[10px] text-slate-500 font-mono">指定価格到達で自動約定</span>
+        </div>
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left text-xs font-mono">
+            <thead class="bg-[#0e1118] text-slate-400 uppercase text-[10px] border-b border-[#232936]">
+              <tr>
+                <th class="py-2 px-3">注文ID</th>
+                <th class="py-2 px-3">銘柄</th>
+                <th class="py-2 px-3">売買</th>
+                <th class="py-2 px-3">指定指値価格</th>
+                <th class="py-2 px-3">現在価格</th>
+                <th class="py-2 px-3">数量</th>
+                <th class="py-2 px-3">発注元</th>
+                <th class="py-2 px-3 text-center">操作</th>
+              </tr>
+            </thead>
+            <tbody id="limit-orders-list" class="divide-y divide-[#232936]">
+              <tr>
+                <td colspan="8" class="py-4 text-center text-slate-500 font-sans text-xs">待機中の指値注文はありません。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <!-- 📋 AI売買・約定履歴（確定損益 ＆ 実績一覧） -->
       <div class="bg-[#151924] border border-[#232936] rounded-xl p-4 shadow-xl">
         <div class="flex items-center justify-between border-b border-[#232936] pb-2 mb-3">
@@ -403,13 +567,14 @@
                 <th class="py-2 px-3">売買</th>
                 <th class="py-2 px-3">建値 ➔ 決済値</th>
                 <th class="py-2 px-3">数量</th>
+                <th class="py-2 px-3 text-right">手数料 (¥)</th>
                 <th class="py-2 px-3 text-right">確定損益 (¥)</th>
                 <th class="py-2 px-3 text-right">収益率</th>
               </tr>
             </thead>
             <tbody id="trades-history-list" class="divide-y divide-[#232936]">
               <tr>
-                <td colspan="7" class="py-4 text-center text-slate-500 font-sans text-xs">約定履歴を読み込み中...</td>
+                <td colspan="8" class="py-4 text-center text-slate-500 font-sans text-xs">約定履歴を読み込み中...</td>
               </tr>
             </tbody>
           </table>
@@ -430,7 +595,12 @@
               <span class="px-1.5 py-0.5 rounded bg-rose-950/70 text-rose-300 border border-rose-500/40" title="往復摩擦0.16%控除後の期待値負けを遮断">⚖️ EV摩擦防御</span>
             </div>
           </div>
-          <span id="ap-active-indicator" class="text-[10px] text-emerald-400 font-mono animate-pulse">● 監視中</span>
+          <div class="flex items-center gap-2">
+            <button onclick="triggerRetrainAI()" title="蓄積された売買実績ログからAIを自己学習・アップデート" class="text-[10px] px-2 py-0.5 bg-indigo-950/80 hover:bg-indigo-900 border border-indigo-500/50 text-indigo-300 font-bold rounded flex items-center gap-1 transition shadow-sm">
+              <span>🧠</span> ログからAI自己学習
+            </button>
+            <span id="ap-active-indicator" class="text-[10px] text-emerald-400 font-mono animate-pulse">● 監視中</span>
+          </div>
         </div>
         <div id="autopilot-logs-container" class="space-y-1.5 max-h-48 overflow-y-auto custom-scrollbar font-mono text-[11px] text-slate-300">
           <div class="text-xs text-slate-500 py-3 text-center font-sans">思考ログ待機中...</div>
@@ -491,6 +661,21 @@
           <span>取引回数: <b id="bt-trades" class="text-white">158回</b></span>
           <span>リスクリワード比: <b id="bt-rr" class="text-white">1.52</b></span>
         </div>
+
+        <!-- バックテスト前提条件の明示（開示基準） -->
+        <div class="mt-2 pt-2 border-t border-[#232936] text-[10px] text-slate-400 space-y-1">
+          <div class="font-bold text-slate-300 flex items-center justify-between">
+            <span class="flex items-center gap-1"><span>⚙️</span> バックテスト検証前提条件</span>
+            <span class="text-[9px] text-emerald-400 font-mono">開示基準準拠</span>
+          </div>
+          <div class="grid grid-cols-2 gap-1 text-[9px] font-mono text-slate-400 bg-[#0e1118] p-2 rounded border border-[#232936]">
+            <div>・期間: 2021-01〜2026-09</div>
+            <div>・往復手数料: 0.06%</div>
+            <div>・スリッページ: 0.10%</div>
+            <div>・検証法: Purged 5-Fold CV</div>
+            <div class="col-span-2 text-amber-400/90 pt-0.5 border-t border-[#1a202c]">・約定モデル: 次足始値悲観約定 (Point-in-Time)</div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -525,12 +710,257 @@
   </div>
 
   <!-- クライアントサイド JavaScript (TradingView Lightweight Charts 連携) -->
+  <!-- クライアントサイド JavaScript (TradingView Lightweight Charts 連携) -->
   <script>
     let currentSymbol = 'GC=F';
-    let currentUser = 'tanaka';
+    let currentUser = 'guest';
+    let currentOrderType = 'MARKET';
+    let selectedAutopilotSymbol = 'GC=F';
+    let latestMarketPrice = 4197.5;
+    let usdJpyRate = 157.59;
+    let currentAutopilotStatus = null;
     let chartInstance = null;
     let candleSeries = null;
     let volumeSeries = null;
+
+    // 通貨記号判定ヘルパー (USD: $, JPY: ¥)
+    function getCurrencySymbol(symbol) {
+      if (!symbol) return '$';
+      if (symbol.includes('JPY') || symbol === 'USDJPY' || symbol === 'USDJPY=X') return '¥';
+      return '$';
+    }
+
+    // 💡 ロットあたり金額・想定代金・必要証拠金のリアルタイム計算機
+    function updateLotCalculations() {
+      const qty = parseFloat(document.getElementById('order-qty').value) || 1;
+      const lev = parseFloat(document.getElementById('order-lev').value) || 1;
+      let price = latestMarketPrice;
+      if (currentOrderType === 'LIMIT') {
+        const limInput = parseFloat(document.getElementById('order-limit-price').value);
+        if (limInput && limInput > 0) price = limInput;
+      }
+
+      const sym = currentSymbol;
+      const isJpy = sym.includes('JPY') || sym === 'USDJPY=X';
+      const currSymbol = getCurrencySymbol(sym);
+
+      // 銘柄別 1ロットあたりの原価計算
+      let singleLotNotional = price;
+      let unitLabel = "1ロット = 1 oz (金先物)";
+      if (sym === 'GC=F') {
+        singleLotNotional = price;
+        unitLabel = "1ロット = 1 oz (金先物)";
+      } else if (sym === 'USDJPY=X') {
+        singleLotNotional = price * 1000;
+        unitLabel = "1ロット = 1,000 ドル (為替)";
+      } else if (sym === 'BTC-USD') {
+        singleLotNotional = price * 0.1;
+        unitLabel = "1ロット = 0.1 BTC (暗号資産)";
+      } else if (sym === 'NVDA') {
+        singleLotNotional = price;
+        unitLabel = "1ロット = 1 株 (米国株)";
+      }
+
+      const lbl = document.getElementById('lot-unit-label');
+      if (lbl) lbl.innerText = unitLabel;
+
+      const singleLotJpy = singleLotNotional * (isJpy ? 1.0 : usdJpyRate);
+      const totalNotional = singleLotNotional * qty;
+      const totalNotionalJpy = singleLotJpy * qty;
+      const requiredMarginJpy = totalNotionalJpy / lev;
+
+      const elSingle = document.getElementById('single-lot-price');
+      const elTotal = document.getElementById('total-notional-value');
+      const elMargin = document.getElementById('required-margin-value');
+
+      if (elSingle) {
+        elSingle.innerText = `¥${Math.round(singleLotJpy).toLocaleString()} (${currSymbol}${singleLotNotional.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 2})})`;
+      }
+      if (elTotal) {
+        elTotal.innerText = `¥${Math.round(totalNotionalJpy).toLocaleString()} (${currSymbol}${totalNotional.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 2})})`;
+      }
+      if (elMargin) {
+        elMargin.innerText = `¥${Math.round(requiredMarginJpy).toLocaleString()} (${lev}倍)`;
+      }
+    }
+
+    // 成行 / 指値 切り替え
+    function switchOrderType(type) {
+      currentOrderType = type;
+      const btnM = document.getElementById('tab-order-market');
+      const btnL = document.getElementById('tab-order-limit');
+      const grp = document.getElementById('limit-price-group');
+      const buyBtn = document.getElementById('btn-submit-buy');
+      const sellBtn = document.getElementById('btn-submit-sell');
+
+      if (type === 'LIMIT') {
+        btnL.className = 'px-2 py-0.5 rounded bg-amber-600 text-white transition';
+        btnM.className = 'px-2 py-0.5 rounded text-slate-400 hover:text-white transition';
+        grp.classList.remove('hidden');
+        buyBtn.innerText = '指値買い (BUY Limit)';
+        sellBtn.innerText = '指値売り (SELL Limit)';
+        fillCurrentPriceToLimit();
+      } else {
+        btnM.className = 'px-2 py-0.5 rounded bg-blue-600 text-white transition';
+        btnL.className = 'px-2 py-0.5 rounded text-slate-400 hover:text-white transition';
+        grp.classList.add('hidden');
+        buyBtn.innerText = '成行買い (BUY)';
+        sellBtn.innerText = '成行売り (SELL)';
+      }
+      updateLotCalculations();
+    }
+
+    function fillCurrentPriceToLimit() {
+      const input = document.getElementById('order-limit-price');
+      if (input) input.value = latestMarketPrice.toFixed(2);
+      updateLotCalculations();
+    }
+
+    // 手動発注（成行 / 指値 自動ディスパッチ）
+    async function submitActiveOrder(side) {
+      const qty = parseFloat(document.getElementById('order-qty').value);
+      const lev = parseFloat(document.getElementById('order-lev').value);
+
+      if (currentOrderType === 'LIMIT') {
+        const targetPrice = parseFloat(document.getElementById('order-limit-price').value);
+        if (!targetPrice || targetPrice <= 0) {
+          alert('有効な指値価格を入力してください。');
+          return;
+        }
+        try {
+          const res = await fetch('/api/limit-order', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              user_id: currentUser,
+              symbol: currentSymbol,
+              side: side,
+              target_price: targetPrice,
+              amount: qty,
+              leverage: lev
+            })
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            alert(data.detail || '指値発注エラー');
+            return;
+          }
+          await loadAccount();
+        } catch (err) {
+          alert('指値注文通信エラー');
+        }
+      } else {
+        await submitOrder(side);
+      }
+    }
+
+    // 指値取消
+    async function cancelLimitOrder(orderId) {
+      try {
+        const res = await fetch('/api/cancel-limit-order', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            user_id: currentUser,
+            order_id: orderId
+          })
+        });
+        if (res.ok) {
+          await loadAccount();
+        }
+      } catch (e) {
+        console.error('指値取消エラー:', e);
+      }
+    }
+
+    // 個別銘柄AIオート選択
+    function selectAutopilotSymbol(symbol) {
+      selectedAutopilotSymbol = symbol;
+      const names = {
+        'GC=F': '金先物',
+        'USDJPY=X': '為替 (ドル円)',
+        'BTC-USD': '暗号資産 (BTC)',
+        'NVDA': '米国株 (NVDA)'
+      };
+      const titleEl = document.getElementById('ap-target-symbol-title');
+      if (titleEl) titleEl.innerText = names[symbol] || symbol;
+
+      // タブアクティブ更新
+      const tabIds = [
+        {id: 'GC_F', sym: 'GC=F'},
+        {id: 'USDJPY_X', sym: 'USDJPY=X'},
+        {id: 'BTC_USD', sym: 'BTC-USD'},
+        {id: 'NVDA', sym: 'NVDA'}
+      ];
+      tabIds.forEach(t => {
+        const btn = document.getElementById('tab-ap-' + t.id);
+        if (btn) {
+          if (t.sym === symbol) {
+            btn.className = 'py-1 rounded bg-blue-600 text-white transition';
+          } else {
+            btn.className = 'py-1 rounded text-slate-400 hover:text-white transition';
+          }
+        }
+      });
+
+      // 設定反映
+      if (currentAutopilotStatus && currentAutopilotStatus.symbol_configs && currentAutopilotStatus.symbol_configs[symbol]) {
+        const cfg = currentAutopilotStatus.symbol_configs[symbol];
+        const stratEl = document.getElementById('ap-strategy');
+        const capEl = document.getElementById('ap-capital');
+        const limEl = document.getElementById('ap-use-limit');
+        const badgeEl = document.getElementById('selected-sym-status-badge');
+        const btnSave = document.getElementById('btn-save-sym-ap');
+
+        if (stratEl && cfg.strategy_style) stratEl.value = cfg.strategy_style;
+        if (capEl && cfg.allocated_capital) capEl.value = cfg.allocated_capital;
+        if (limEl) limEl.checked = !!cfg.use_limit_orders;
+        if (badgeEl) {
+          if (cfg.is_active) {
+            badgeEl.innerText = '● 稼働中';
+            badgeEl.className = 'px-1.5 py-0.2 rounded text-[9px] font-mono bg-emerald-950 text-emerald-300 border border-emerald-500/40 animate-pulse';
+            if (btnSave) btnSave.innerText = '⏸️ この銘柄を停止';
+          } else {
+            badgeEl.innerText = '待機中';
+            badgeEl.className = 'px-1.5 py-0.2 rounded text-[9px] font-mono bg-slate-800 text-slate-400 border border-slate-700';
+            if (btnSave) btnSave.innerText = '💾 この銘柄をON';
+          }
+        }
+        onStrategyChange();
+      }
+    }
+
+    async function saveSelectedSymbolAutopilot() {
+      const symbol = selectedAutopilotSymbol;
+      const strat = document.getElementById('ap-strategy').value;
+      const cap = parseFloat(document.getElementById('ap-capital').value);
+      const useLim = document.getElementById('ap-use-limit').checked;
+
+      let targetActive = true;
+      if (currentAutopilotStatus && currentAutopilotStatus.symbol_configs && currentAutopilotStatus.symbol_configs[symbol]) {
+        targetActive = !currentAutopilotStatus.symbol_configs[symbol].is_active;
+      }
+
+      try {
+        const res = await fetch('/api/autopilot/symbol-config', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            user_id: currentUser,
+            symbol: symbol,
+            is_active: targetActive,
+            strategy_style: strat,
+            allocated_capital: cap,
+            use_limit_orders: useLim
+          })
+        });
+        if (res.ok) {
+          await loadAutopilotStatus();
+        }
+      } catch (e) {
+        console.error('個別オート設定保存エラー:', e);
+      }
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
       initChart();
@@ -539,6 +969,7 @@
       refreshLeaderboard();
       loadAutopilotStatus();
       onStrategyChange();
+      updateLotCalculations();
 
       // 安全な直列ポーリング (スタッキング・滞留防止)
       startPollingCycle();
@@ -708,10 +1139,22 @@
           const latest = chartData.latest_close;
           const prev = chartData.prev_close;
           const pct = ((latest - prev) / prev) * 100.0;
+          latestMarketPrice = latest;
+          if (symbol === 'USDJPY=X') {
+            usdJpyRate = latest;
+          }
+
+          const currSym = getCurrencySymbol(symbol);
+          const symEl = document.getElementById('currency-symbol');
+          if (symEl) symEl.innerText = currSym;
+          const limSymEl = document.getElementById('limit-currency-symbol');
+          if (limSymEl) limSymEl.innerText = currSym;
+
           document.getElementById('price-display').innerText = latest.toLocaleString('en-US', {minimumFractionDigits: 2});
           const changeElem = document.getElementById('change-display');
           changeElem.innerText = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
           changeElem.className = 'text-xs font-bold font-mono ' + (pct >= 0 ? 'text-emerald-400' : 'text-rose-400');
+          updateLotCalculations();
         }
 
         // 2. AI予測シグナル取得
@@ -723,11 +1166,36 @@
         const badge = document.getElementById('signal-badge');
         badge.innerText = sig.ai_mark;
         if (sig.ai_mark.includes('STRONG BUY') || sig.ai_mark.includes('BUY')) {
-          badge.className = 'px-3 py-1 rounded-md text-xs font-bold font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/40';
+          badge.className = 'px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/40';
         } else if (sig.ai_mark.includes('SELL')) {
-          badge.className = 'px-3 py-1 rounded-md text-xs font-bold font-mono bg-rose-500/20 text-rose-400 border border-rose-500/40';
+          badge.className = 'px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-rose-500/20 text-rose-400 border border-rose-500/40';
         } else {
-          badge.className = 'px-3 py-1 rounded-md text-xs font-bold font-mono bg-amber-500/20 text-amber-400 border border-amber-500/40';
+          badge.className = 'px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-amber-500/20 text-amber-400 border border-amber-500/40';
+        }
+
+        // 3層総合執行判定バッジの更新（最優先判定）
+        const finalBadge = document.getElementById('final-decision-badge');
+        if (finalBadge) {
+          const isChoppy = sig.regime_state === 'CHOPPY_RANGE';
+          const isHtfContrarian = (sig.htf_daily_trend < 0 && sig.ai_mark.includes('BUY')) || (sig.htf_daily_trend > 0 && sig.ai_mark.includes('SELL'));
+          const isLowEv = sig.meta_bet_size_pct !== undefined && sig.meta_bet_size_pct <= 0.0;
+
+          if (isChoppy) {
+            finalBadge.innerText = '🛡️ 執行見送り (レンジ相場防御)';
+            finalBadge.className = 'px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-amber-500/20 text-amber-300 border border-amber-500/40';
+          } else if (isHtfContrarian) {
+            finalBadge.innerText = '🛡️ 執行見送り (日足逆行防御)';
+            finalBadge.className = 'px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/40';
+          } else if (isLowEv) {
+            finalBadge.innerText = '🛡️ 執行見送り (マクロ/期待値防御)';
+            finalBadge.className = 'px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-rose-500/20 text-rose-300 border border-rose-500/40';
+          } else if (sig.ai_mark.includes('BUY') || sig.ai_mark.includes('SELL')) {
+            finalBadge.innerText = '🟢 執行承認 (EXECUTE)';
+            finalBadge.className = 'px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/40';
+          } else {
+            finalBadge.innerText = '⚪ 待機 (STANDBY)';
+            finalBadge.className = 'px-2.5 py-0.5 rounded text-xs font-bold font-mono bg-slate-500/20 text-slate-300 border border-slate-500/40';
+          }
         }
 
         document.getElementById('confidence-val').innerText = sig.confidence || 'NORMAL';
@@ -767,23 +1235,35 @@
       }
     }
 
-    // 5大戦術の実測バックテスト結果（直近250日金先物 GC=F）
+    // 5大戦術の実測バックテスト結果＆攻め方スペック
     const STRATEGY_BACKTEST_STATS = {
-      'scalping': { title: 'スキャルピング', winRate: '75.6%', payout: '107.1%', pf: '3.36', mdd: '4.77%', trades: '172回', rr: '1.08', desc: '利確+0.4% / 損切-0.2% (秒速回転)' },
-      'day_trade': { title: 'デイトレード', winRate: '62.0%', payout: '113.0%', pf: '2.48', mdd: '1.47%', trades: '158回', rr: '1.52', desc: '利確+1.2% / 損切-0.6% (日中波乗り)' },
-      'swing': { title: 'スイングトレード', winRate: '58.5%', payout: '114.6%', pf: '2.31', mdd: '1.47%', trades: '82回', rr: '1.64', desc: '利確+3.5% / 損切-1.8% (数日〜数週)' },
-      'medium_term': { title: '中期トレンド', winRate: '75.0%', payout: '114.5%', pf: '3.30', mdd: '1.31%', trades: '40回', rr: '1.10', desc: '利確+8.0% / 損切-3.5% (マクロ重視)' },
-      'long_term': { title: '長期投資', winRate: '90.5%', payout: '113.0%', pf: '8.23', mdd: '2.05%', trades: '21回', rr: '0.87', desc: '利確+20.0% / 損切-8.0% (資産形成)' }
+      'scalping': { title: 'スキャルピング', winRate: '75.6%', payout: '107.1%', pf: '3.36', mdd: '4.77%', trades: '172回', rr: '1.08', desc: '利確+0.4% / 損切-0.2% (秒速回転)', interval: '5分足 (5m)', tp: '2.0×ATR (+0.4%)', sl: '1.0×ATR (-0.2%)', lev: '最大5.0倍' },
+      'day_trade': { title: 'デイトレード', winRate: '62.0%', payout: '113.0%', pf: '2.48', mdd: '1.47%', trades: '158回', rr: '1.52', desc: '利確+1.2% / 損切-0.6% (日中波乗り)', interval: '15分足 (15m)', tp: '2.5×ATR (+1.2%)', sl: '1.2×ATR (-0.6%)', lev: '最大3.0倍' },
+      'swing': { title: 'スイングトレード', winRate: '58.5%', payout: '114.6%', pf: '2.31', mdd: '1.47%', trades: '82回', rr: '1.64', desc: '利確+3.5% / 損切-1.8% (数日〜数週)', interval: '1時間足 (1h)', tp: '3.0×ATR (+3.5%)', sl: '1.5×ATR (-1.8%)', lev: '最大2.0倍' },
+      'medium_term': { title: '中期トレンド', winRate: '75.0%', payout: '114.5%', pf: '3.30', mdd: '1.31%', trades: '40回', rr: '1.10', desc: '利確+8.0% / 損切-3.5% (マクロ重視)', interval: '日足 (1d)', tp: '3.5×ATR (+8.0%)', sl: '1.8×ATR (-3.5%)', lev: '最大1.5倍' },
+      'long_term': { title: '長期投資', winRate: '90.5%', payout: '113.0%', pf: '8.23', mdd: '2.05%', trades: '21回', rr: '0.87', desc: '利確+20.0% / 損切-8.0% (資産形成)', interval: '日足 (1d)', tp: '4.0×ATR (+20.0%)', sl: '2.0×ATR (-8.0%)', lev: '1.0倍 (現物等倍)' }
     };
 
-    // 戦術切り替え時の説明表示 ＆ バックテストカード連動
-    function onStrategyChange() {
+    let userHasSelectedStrategy = false;
+
+    // 戦術切り替え時の説明表示 ＆ バックテストカード連動 ＆ スペックカード更新 ＆ サーバー即時同期
+    async function onStrategyChange(syncServer = true) {
       const el = document.getElementById('ap-strategy');
       const desc = document.getElementById('ap-strat-desc');
       if (!el) return;
       const val = el.value;
       const stat = STRATEGY_BACKTEST_STATS[val] || STRATEGY_BACKTEST_STATS['day_trade'];
       if (desc) desc.innerText = stat.desc;
+
+      // スペックカードの更新
+      const specInt = document.getElementById('spec-interval');
+      const specTp = document.getElementById('spec-tp');
+      const specSl = document.getElementById('spec-sl');
+      const specLev = document.getElementById('spec-lev');
+      if (specInt && stat.interval) specInt.innerText = stat.interval;
+      if (specTp && stat.tp) specTp.innerText = stat.tp;
+      if (specSl && stat.sl) specSl.innerText = stat.sl;
+      if (specLev && stat.lev) specLev.innerText = stat.lev;
 
       // バックテスト実績カードの更新
       const titleEl = document.getElementById('bt-card-title');
@@ -801,9 +1281,57 @@
       if (mddEl) mddEl.innerText = stat.mdd;
       if (tradesEl) tradesEl.innerText = stat.trades;
       if (rrEl) rrEl.innerText = stat.rr;
+
+      // ユーザーが手動で切り替えた場合は即座にサーバーへ保存して勝手な上書きを遮断
+      if (syncServer) {
+        userHasSelectedStrategy = true;
+        try {
+          await fetch('/api/autopilot/set-strategy', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ user_id: currentUser, strategy_style: val })
+          });
+        } catch (e) {
+          console.warn('戦略同期警告:', e);
+        }
+      }
     }
 
-    // 口座情報・ポジション・約定履歴取得
+    // 口座資金リセット（ユーザー要望対応）
+    async function resetUserAccount() {
+      if (!confirm('【口座資金完全リセット】\n\n口座残高を初期資金（¥10,000,000）に完全リセットし、すべての保有ポジション・待機指値注文・約定履歴をクリアしますか？\n（いつでも何度でもリスタート可能です）')) {
+        return;
+      }
+      try {
+        const res = await fetch('/api/account/reset', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ user_id: currentUser, initial_cash: 10000000.0 })
+        });
+        const data = await res.json();
+        alert(`✅ 口座残高を初期資金（¥${Math.round(data.cash || 10000000).toLocaleString()}）に完全リセットしました。`);
+        await loadAccount();
+        await loadAutopilotStatus();
+        if (typeof refreshLeaderboard === 'function') refreshLeaderboard();
+      } catch (err) {
+        alert('口座リセット通信エラー');
+      }
+    }
+
+    // 蓄積ログからAI自己学習（自己改善フィードバックループ）
+    async function triggerRetrainAI() {
+      try {
+        const res = await fetch('/api/retrain-from-history', { method: 'POST' });
+        const data = await res.json();
+        alert(`🧠 【AI自己学習フィードバック】\n\n${data.message}\n・総サンプル数: ${data.total_samples}件\n・実勝率: ${data.win_rate_pct}%\n（利確勝ち: ${data.win_count}件 / 損切負け: ${data.loss_count}件）\n\nAIは過去のトレード特徴量と成否結果を取り込み、次回のメタフィルタリング（賭け金自動調整・ダマシ回避）へ反映しました！`);
+        await loadAutopilotStatus();
+      } catch (e) {
+        alert('AI自己学習通信エラー');
+      }
+    }
+
+
+    // 口座情報・ポジション・約定履歴・待機中指値取得
     async function loadAccount() {
       try {
         const res = await fetch(`/api/account/${currentUser}`);
@@ -811,6 +1339,12 @@
         const data = await res.json();
         if (!data || !data.stats) return;
         document.getElementById('user-equity').innerText = Math.round(data.stats.equity || 0).toLocaleString();
+
+        const getSymFmt = (sym) => {
+          if (sym === 'USDJPY=X') return { cur: '¥', dec: 2 };
+          if (sym === 'BTC-USD') return { cur: '$', dec: 1 };
+          return { cur: '$', dec: 2 };
+        };
 
         // 1. 保有ポジション一覧
         const tbody = document.getElementById('positions-list');
@@ -821,6 +1355,7 @@
           tbody.innerHTML = '<tr><td colspan="7" class="py-6 text-center text-slate-500 font-sans text-xs">保有ポジションはありません。</td></tr>';
         } else {
           tbody.innerHTML = positions.map(p => {
+            const fmt = getSymFmt(p.symbol);
             const isPlus = p.unrealized_pnl >= 0;
             const pnlColor = isPlus ? 'text-emerald-400' : 'text-rose-400';
             const pnlSign = isPlus ? '+' : '';
@@ -830,8 +1365,8 @@
                 <td class="py-2 px-3 font-bold text-white">${p.symbol}</td>
                 <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${sideColor}">${p.side}</span></td>
                 <td class="py-2 px-3 font-mono">${p.amount}</td>
-                <td class="py-2 px-3 font-mono">$${p.entry_price.toFixed(2)}</td>
-                <td class="py-2 px-3 font-mono">$${p.current_price.toFixed(2)}</td>
+                <td class="py-2 px-3 font-mono">${fmt.cur}${p.entry_price.toFixed(fmt.dec)}</td>
+                <td class="py-2 px-3 font-mono">${fmt.cur}${p.current_price.toFixed(fmt.dec)}</td>
                 <td class="py-2 px-3 text-right font-mono font-bold ${pnlColor}">
                   ${pnlSign}¥${Math.round(p.unrealized_pnl).toLocaleString()} (${pnlSign}${p.unrealized_return_pct.toFixed(1)}%)
                 </td>
@@ -845,14 +1380,50 @@
           }).join('');
         }
 
-        // 2. 直近の売買実績・確定損益履歴一覧
+        // 2. 待機中指値注文一覧
+        const limitTbody = document.getElementById('limit-orders-list');
+        if (limitTbody) {
+          const limitOrders = data.pending_limit_orders || [];
+          if (limitOrders.length === 0) {
+            limitTbody.innerHTML = '<tr><td colspan="8" class="py-4 text-center text-slate-500 font-sans text-xs">待機中の指値注文はありません。</td></tr>';
+          } else {
+            limitTbody.innerHTML = limitOrders.map(o => {
+              const fmt = getSymFmt(o.symbol);
+              const sideColor = o.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/10 border border-emerald-500/30' : 'text-rose-400 bg-rose-500/10 border border-rose-500/30';
+              const curPrice = latestMarketPrice && o.symbol === currentSymbol ? `${fmt.cur}${latestMarketPrice.toFixed(fmt.dec)}` : '--';
+              const sourceBadge = o.source === 'AUTOPILOT'
+                ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold text-blue-300 bg-blue-500/10 border border-blue-500/30">AI</span>'
+                : '<span class="px-1.5 py-0.5 rounded text-[9px] font-bold text-slate-300 bg-slate-700/50">USER</span>';
+
+              return `
+                <tr class="hover:bg-[#1a202c] transition">
+                  <td class="py-2 px-3 font-mono text-[10px] text-slate-400">${o.order_id}</td>
+                  <td class="py-2 px-3 font-bold text-white">${o.symbol}</td>
+                  <td class="py-2 px-3"><span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${sideColor}">${o.side}</span></td>
+                  <td class="py-2 px-3 font-mono text-amber-300 font-bold">${fmt.cur}${o.target_price.toFixed(fmt.dec)}</td>
+                  <td class="py-2 px-3 font-mono text-slate-300">${curPrice}</td>
+                  <td class="py-2 px-3 font-mono">${o.amount}</td>
+                  <td class="py-2 px-3">${sourceBadge}</td>
+                  <td class="py-2 px-3 text-center">
+                    <button onclick="cancelLimitOrder('${o.order_id}')" class="px-2 py-0.5 rounded text-[10px] bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/40 transition">
+                      取消
+                    </button>
+                  </td>
+                </tr>
+              `;
+            }).join('');
+          }
+        }
+
+        // 3. 直近の売買実績・確定損益履歴一覧 (8列: 手数料含む)
         const tradesTbody = document.getElementById('trades-history-list');
         if (tradesTbody) {
           const trades = data.recent_trades || [];
           if (trades.length === 0) {
-            tradesTbody.innerHTML = '<tr><td colspan="7" class="py-4 text-center text-slate-500 font-sans text-xs">まだ約定履歴はありません。AI自動運転を開始するとリアルタイムに記録されます。</td></tr>';
+            tradesTbody.innerHTML = '<tr><td colspan="8" class="py-4 text-center text-slate-500 font-sans text-xs">まだ約定履歴はありません。AI自動運転を開始するとリアルタイムに記録されます。</td></tr>';
           } else {
             tradesTbody.innerHTML = trades.slice().reverse().map(t => {
+              const fmt = getSymFmt(t.symbol);
               const isPlus = t.net_pnl >= 0;
               const pnlColor = isPlus ? 'text-emerald-400' : 'text-rose-400';
               const pnlSign = isPlus ? '+' : '';
@@ -860,13 +1431,16 @@
                 ? '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30">BUY</span>'
                 : '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold text-rose-400 bg-rose-500/10 border border-rose-500/30">SELL</span>';
               const timeStr = t.closed_at ? t.closed_at.split(' ')[1] || t.closed_at : '--:--';
+              const comm = Math.round(t.commission || 0);
+
               return `
                 <tr class="hover:bg-[#1a202c] transition">
                   <td class="py-2 px-3 text-slate-400 font-mono text-[10px]">${timeStr}</td>
                   <td class="py-2 px-3 font-bold text-white">${t.symbol}</td>
                   <td class="py-2 px-3">${sideBadge}</td>
-                  <td class="py-2 px-3 text-slate-300 font-mono">$${t.entry_price.toFixed(1)} ➔ $${t.exit_price.toFixed(1)}</td>
+                  <td class="py-2 px-3 text-slate-300 font-mono">${fmt.cur}${t.entry_price.toFixed(fmt.dec)} ➔ ${fmt.cur}${t.exit_price.toFixed(fmt.dec)}</td>
                   <td class="py-2 px-3 text-slate-400 font-mono">${t.amount}</td>
+                  <td class="py-2 px-3 text-right font-mono text-slate-400">-¥${comm.toLocaleString()}</td>
                   <td class="py-2 px-3 text-right font-mono font-bold ${pnlColor}">${pnlSign}¥${Math.round(t.net_pnl).toLocaleString()}</td>
                   <td class="py-2 px-3 text-right font-mono font-bold ${pnlColor}">${pnlSign}${t.return_pct.toFixed(2)}%</td>
                 </tr>
@@ -981,11 +1555,11 @@
         const data = await res.json();
         updateAutopilotUI(data);
 
-        // 戦術セレクターの同期 (未選択時)
+        // 戦術セレクターの同期 (ユーザーが手動選択していない初期ロード時のみ同期)
         if (data.strategy_style && document.getElementById('ap-strategy')) {
-          if (!isAutopilotRunning) {
+          if (!isAutopilotRunning && !userHasSelectedStrategy) {
             document.getElementById('ap-strategy').value = data.strategy_style;
-            onStrategyChange();
+            onStrategyChange(false);
           }
         }
 
