@@ -124,3 +124,21 @@ class SetStrategyRequest(BaseModel):
     user_id: str = "trader_1"
     strategy_style: str = "day_trade"
 
+
+class FocusSymbolRequest(BaseModel):
+    """特定銘柄専従（ゴールド専門等）設定リクエスト"""
+    user_id: str = "guest"
+    symbol: Optional[str] = Field(default=None, description="専従対象銘柄コード (例: 'GC=F'。Noneで全銘柄解除)")
+
+
+class SideDirectionRequest(BaseModel):
+    """売買方向設定リクエスト (買い専用/売りのみ/両方)"""
+    user_id: str = "guest"
+    allowed_side: Literal["BOTH", "BUY_ONLY", "SELL_ONLY"] = Field(
+        default="BOTH",
+        description="許可する売買方向 ('BOTH', 'BUY_ONLY', 'SELL_ONLY')"
+    )
+    symbol: Optional[str] = Field(default=None, description="個別銘柄指定 (Noneなら全銘柄)")
+    max_positions: Optional[int] = Field(default=1, ge=1, le=5, description="最大ポジション保有数 (買い増し許容数)")
+
+

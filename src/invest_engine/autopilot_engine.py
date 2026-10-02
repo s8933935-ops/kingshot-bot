@@ -172,6 +172,8 @@ class SymbolAutopilotConfig:
     allocated_capital: float = 1_000_000.0
     use_limit_orders: bool = False  # 指値注文を活用してスリッページを削減するか (デフォルト成行)
     limit_offset_pct: float = 0.15  # 押し目/戻りの指値オフセット (%)
+    allowed_side: str = "BOTH"      # 'BOTH', 'BUY_ONLY' (買い専用・現物/積立), 'SELL_ONLY' (売り専用)
+    max_positions: int = 1         # 同一銘柄の最大ポジション数 (1〜3: 買い増し・ピラミッディング許容)
 
 
 @dataclass
@@ -184,7 +186,11 @@ class AutopilotConfig:
     strategy_style: str = "day_trade"       # 'scalping', 'day_trade', 'swing', 'medium_term', 'long_term'
     base_equity_today: float = 3_000_000.0  # 当日の開始有効証拠金
     use_limit_orders: bool = False          # 全体デフォルト指値フラグ (デフォルト成行)
+    allowed_side: str = "BOTH"              # 全体デフォルト売買方向 ('BOTH', 'BUY_ONLY', 'SELL_ONLY')
+    max_positions: int = 1                  # 全体デフォルト最大ポジション数
+    focused_symbol: Optional[str] = None    # 特定銘柄専従モード (例: 'GC=F' ならゴールド以外完全スキップ)
     symbol_configs: Dict[str, SymbolAutopilotConfig] = field(default_factory=dict)
+
 
 
 @dataclass
@@ -229,7 +235,9 @@ class AutopilotEngine:
         is_active: bool,
         strategy_style: str = "day_trade",
         allocated_capital: float = 1_000_000.0,
-        use_limit_orders: bool = False
+        use_limit_orders: bool = False,
+        allowed_side: str = "BOTH",
+        max_positions: int = 1
     ) -> SymbolAutopilotConfig:
         """特定銘柄のオートパイロット個別設定を更新"""
         if symbol not in self.config.symbol_configs:
@@ -240,6 +248,9 @@ class AutopilotEngine:
         cfg.strategy_style = strategy_style if strategy_style in STRATEGY_PROFILES else "day_trade"
         cfg.allocated_capital = min(allocated_capital, self.account.equity)
         cfg.use_limit_orders = use_limit_orders
+        if allowed_side in ["BOTH", "BUY_ONLY", "SELL_ONLY"]:
+            cfg.allowed_side = allowed_side
+        cfg.max_positions = max(1, min(5, int(max_positions)))
 
         # もし1つでも個別銘柄がアクティブなら全体もアクティブとみなす
         if any(c.is_active for c in self.config.symbol_configs.values()):
@@ -247,8 +258,39 @@ class AutopilotEngine:
 
         state_str = "ON (自動稼働)" if is_active else "OFF (待機)"
         limit_str = "指値運用" if use_limit_orders else "成行"
-        self._log_decision(symbol, "CONFIG_UPDATE", f"[{symbol}] 個別AI設定更新: {state_str} (戦術: {cfg.strategy_style}, 割当: ¥{cfg.allocated_capital:,.0f}, {limit_str})", 0.0)
+        side_str = "📈 買いのみ" if cfg.allowed_side == "BUY_ONLY" else ("📉 売りのみ" if cfg.allowed_side == "SELL_ONLY" else "🔄 両方")
+        self._log_decision(symbol, "CONFIG_UPDATE", f"[{symbol}] 個別AI設定更新: {state_str} (戦術: {cfg.strategy_style}, 割当: ¥{cfg.allocated_capital:,.0f}, {limit_str}, 方向: {side_str}, 最大ポジ: {cfg.max_positions})", 0.0)
         return cfg
+
+    def set_focused_symbol(self, symbol: Optional[str]) -> Dict[str, Any]:
+        """特定銘柄専従モードの切り替え (例: 'GC=F' ならゴールド専従、Noneなら全銘柄解除)"""
+        self.config.focused_symbol = symbol
+        if symbol:
+            # 専従銘柄以外を個別停止し、専従銘柄のみアクティブに
+            for s, sc in self.config.symbol_configs.items():
+                sc.is_active = (s == symbol)
+            self._log_decision("SYSTEM", "FOCUS_ENABLED", f"🏆 【単一銘柄専従モード有効】 [{symbol}] 専門運用に切り替えました（他銘柄は完全スキップ）。", 0.0)
+        else:
+            self._log_decision("SYSTEM", "FOCUS_DISABLED", "🌐 単一銘柄専従モードを解除しました（全銘柄の運用を許可）。", 0.0)
+        return self.get_status()
+
+    def set_side_direction(self, allowed_side: str, symbol: Optional[str] = None) -> Dict[str, Any]:
+        """売買方向の指定 ('BOTH', 'BUY_ONLY', 'SELL_ONLY')"""
+        if allowed_side not in ["BOTH", "BUY_ONLY", "SELL_ONLY"]:
+            allowed_side = "BOTH"
+
+        if symbol and symbol in self.config.symbol_configs:
+            self.config.symbol_configs[symbol].allowed_side = allowed_side
+        else:
+            self.config.allowed_side = allowed_side
+            for sc in self.config.symbol_configs.values():
+                sc.allowed_side = allowed_side
+
+        side_label = "📈 買いのみ (Long Only)" if allowed_side == "BUY_ONLY" else ("📉 売りのみ (Short Only)" if allowed_side == "SELL_ONLY" else "🔄 買い＆売り両方")
+        target_label = f"[{symbol}]" if symbol else "全銘柄"
+        self._log_decision("SYSTEM", "SIDE_UPDATE", f"🧭 {target_label} の売買方向を「{side_label}」に固定設定しました。", 0.0)
+        return self.get_status()
+
 
     def toggle(self, is_active: bool, allocated_capital: float = 3_000_000.0, daily_max_loss_pct: float = 3.0, strategy_style: str = "day_trade", use_limit_orders: bool = False) -> Dict[str, Any]:
         """全銘柄一括オートパイロットのON/OFF切り替えおよび戦術設定"""
@@ -319,6 +361,10 @@ class AutopilotEngine:
             self._log_decision(symbol, "LIMIT_FILLED", f"待機中指値が市場価格に到達し約定完了。(約定値: {mp.entry_price:.2f}, 数量: {mp.amount}, メイカー優遇手数料適用)", mp.entry_price)
 
         # 銘柄別の稼働判定
+        # 専従銘柄チェック (特定銘柄専従モード有効時、それ以外は完全スキップ)
+        if self.config.focused_symbol and symbol != self.config.focused_symbol:
+            return None
+
         sym_cfg = self.config.symbol_configs.get(symbol)
         is_sym_active = (sym_cfg.is_active if sym_cfg else False) or self.config.is_active
         if not is_sym_active or self.is_halted_by_killswitch:
@@ -393,11 +439,14 @@ class AutopilotEngine:
                         self._log_decision(symbol, "CLOSE", f"[{profile['name']}] 下落期待反落 ({prob_up*100:.1f}%)。売りポジションを反転手仕舞い。(損益: {unrealized:+.1f}%)", current_price)
                         return "CLOSE_REVERSAL"
 
-        # 3. 新規エントリー判定（ポジションおよび未約定AI指値が無い場合のみ）
-        has_symbol_pos = any(p.symbol == symbol for p in self.account.positions.values())
+        # 3. 新規エントリー判定（許容ポジション数上限未満、かつ未約定AI指値が無い場合）
+        current_symbol_positions = [p for p in self.account.positions.values() if p.symbol == symbol]
+        symbol_pos_count = len(current_symbol_positions)
+        max_pos_allowed = sym_cfg.max_positions if sym_cfg else self.config.max_positions
+        allowed_side = sym_cfg.allowed_side if sym_cfg else self.config.allowed_side
         has_pending_ai_order = any(o.symbol == symbol and o.status == "PENDING" and o.source == "AI" for o in self.account.limit_orders.values())
 
-        if not has_symbol_pos and not has_pending_ai_order:
+        if symbol_pos_count < max_pos_allowed and not has_pending_ai_order:
             # 戦略別再エントリークールダウン（長期投資等のマシンガン売買を遮断）
             last_exit = self.last_exit_tick.get(symbol, -9999)
             cooldown_req = profile.get("cooldown_ticks", 2)
@@ -429,6 +478,18 @@ class AutopilotEngine:
             friction = 0.0002 if use_limit else 0.0016
 
             if prob_up >= profile["buy_threshold"]:
+                # 売買方向フィルター（SELL_ONLY時は買いを見送り）
+                if allowed_side == "SELL_ONLY":
+                    self._log_decision(symbol, "SKIP_SIDE_FILTER", f"[{profile['name']}] BUYシグナル検出も、売買方向「売りのみ (SELL_ONLY)」設定のため見送り。", current_price)
+                    return "SKIP_SIDE_FILTER"
+
+                # 買い増し時の安全検査（既存の買いポジションと同じ高値圏で掴まないよう、有利な価格または押し目を待つ）
+                if symbol_pos_count > 0:
+                    recent_buy_price = min(p.entry_price for p in current_symbol_positions if p.side == "BUY") if any(p.side == "BUY" for p in current_symbol_positions) else current_price
+                    if current_price > recent_buy_price * 1.01:
+                        self._log_decision(symbol, "SKIP_PYRAMIDING_HIGH", f"[{profile['name']}] 買い増し判定: 直近買い単価 ({recent_buy_price:.2f}) より高値圏のため、押し目を待機。", current_price)
+                        return "SKIP_PYRAMIDING_HIGH"
+
                 # 上位足が明確な下落トレンドの場合は順張り原則に基づき買い見送り
                 if htf_trend < 0:
                     self._log_decision(symbol, "SKIP_HTF_ALIGNMENT", f"[{profile['name']}] BUYシグナル検出も、上位足(日足)下降トレンド逆行のため見送り。", current_price)
@@ -444,6 +505,7 @@ class AutopilotEngine:
                     self._log_decision(symbol, "SKIP_NEGATIVE_EXPECTANCY", f"[{profile['name']}] BUY期待値が取引摩擦負け水準 (EV={expected_val*100:+.2f}%) のため見送り。", current_price)
                     return "SKIP_NEGATIVE_EXPECTANCY"
 
+                add_str = f" [買い増し {symbol_pos_count+1}/{max_pos_allowed}ポジ]" if symbol_pos_count > 0 else ""
                 if use_limit:
                     # AIスマート指値（押し目買い指値: 現在値よりoffset_pct安い価格で指す）
                     limit_target = round(current_price * (1.0 - offset_pct / 100.0), 2)
@@ -451,17 +513,22 @@ class AutopilotEngine:
                         symbol, "BUY", limit_target, amount=round(amount, 2), leverage=lev,
                         source="AI", tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
                     )
-                    self._log_decision(symbol, "LIMIT_BUY", f"[{profile['name']}] BUYシグナル検出 ({prob_up*100:.1f}%)。有利な押し目指値を発注 (指値: {limit_target:.2f} / 現在値: {current_price:.2f}, スリッページゼロ戦略)。", limit_target)
+                    self._log_decision(symbol, "LIMIT_BUY", f"[{profile['name']}] BUYシグナル検出 ({prob_up*100:.1f}%){add_str}。有利な押し目指値を発注 (指値: {limit_target:.2f} / 現在値: {current_price:.2f}, スリッページゼロ戦略)。", limit_target)
                     return "ORDER_LIMIT_BUY"
                 else:
                     self.account.open_position(
                         symbol, "BUY", current_price, amount=round(amount, 2), leverage=lev,
                         tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
                     )
-                    self._log_decision(symbol, "BUY", f"[{profile['name']}] BUYシグナル検出 ({prob_up*100:.1f}%, EV={expected_val*100:+.2f}%)。TP: {barriers['take_profit']:.2f} / SL: {barriers['stop_loss']:.2f}。ケリー推奨配分 {meta_bet_size:.1f}% で成行買いエントリー。", current_price)
+                    self._log_decision(symbol, "BUY", f"[{profile['name']}] BUYシグナル検出 ({prob_up*100:.1f}%, EV={expected_val*100:+.2f}%){add_str}。TP: {barriers['take_profit']:.2f} / SL: {barriers['stop_loss']:.2f}。ケリー推奨配分 {meta_bet_size:.1f}% で成行買いエントリー。", current_price)
                     return "ORDER_BUY"
 
             elif prob_up <= profile["sell_threshold"]:
+                # 売買方向フィルター（BUY_ONLY時は売りを完全見送り）
+                if allowed_side == "BUY_ONLY":
+                    self._log_decision(symbol, "SKIP_SIDE_FILTER", f"[{profile['name']}] SELLシグナル検出も、売買方向「買いのみ (BUY_ONLY)」固定のため見送り（下落トレンド時は静観）。", current_price)
+                    return "SKIP_SIDE_FILTER"
+
                 # 上位足が明確な上昇トレンドの場合は順張り原則に基づき売り見送り
                 if htf_trend > 0:
                     self._log_decision(symbol, "SKIP_HTF_ALIGNMENT", f"[{profile['name']}] SELLシグナル検出も、上位足(日足)上昇トレンド逆行のため見送り。", current_price)
@@ -478,6 +545,7 @@ class AutopilotEngine:
                     self._log_decision(symbol, "SKIP_NEGATIVE_EXPECTANCY", f"[{profile['name']}] SELL期待値が取引摩擦負け水準 (EV={expected_val*100:+.2f}%) のため見送り。", current_price)
                     return "SKIP_NEGATIVE_EXPECTANCY"
 
+                add_str = f" [売り増し {symbol_pos_count+1}/{max_pos_allowed}ポジ]" if symbol_pos_count > 0 else ""
                 if use_limit:
                     # AIスマート指値（戻り売り指値: 現在値よりoffset_pct高い価格で指す）
                     limit_target = round(current_price * (1.0 + offset_pct / 100.0), 2)
@@ -485,14 +553,14 @@ class AutopilotEngine:
                         symbol, "SELL", limit_target, amount=round(amount, 2), leverage=lev,
                         source="AI", tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
                     )
-                    self._log_decision(symbol, "LIMIT_SELL", f"[{profile['name']}] SELLシグナル検出 (下落確率 {prob_down*100:.1f}%)。有利な戻り売り指値を発注 (指値: {limit_target:.2f} / 現在値: {current_price:.2f}, スリッページゼロ戦略)。", limit_target)
+                    self._log_decision(symbol, "LIMIT_SELL", f"[{profile['name']}] SELLシグナル検出 (下落確率 {prob_down*100:.1f}%){add_str}。有利な戻り売り指値を発注 (指値: {limit_target:.2f} / 現在値: {current_price:.2f}, スリッページゼロ戦略)。", limit_target)
                     return "ORDER_LIMIT_SELL"
                 else:
                     self.account.open_position(
                         symbol, "SELL", current_price, amount=round(amount, 2), leverage=lev,
                         tp_price=barriers["take_profit"], sl_price=barriers["stop_loss"]
                     )
-                    self._log_decision(symbol, "SELL", f"[{profile['name']}] SELLシグナル検出 (下落確率 {prob_down*100:.1f}%, EV={expected_val*100:+.2f}%)。TP: {barriers['take_profit']:.2f} / SL: {barriers['stop_loss']:.2f}。ケリー推奨配分 {meta_bet_size:.1f}% で成行売りエントリー。", current_price)
+                    self._log_decision(symbol, "SELL", f"[{profile['name']}] SELLシグナル検出 (下落確率 {prob_down*100:.1f}%, EV={expected_val*100:+.2f}%){add_str}。TP: {barriers['take_profit']:.2f} / SL: {barriers['stop_loss']:.2f}。ケリー推奨配分 {meta_bet_size:.1f}% で成行売りエントリー。", current_price)
                     return "ORDER_SELL"
 
         return "HOLD"
@@ -562,6 +630,9 @@ class AutopilotEngine:
             "daily_max_loss_pct": self.config.daily_max_loss_pct,
             "max_leverage": self.config.max_leverage,
             "use_limit_orders": self.config.use_limit_orders,
+            "allowed_side": self.config.allowed_side,
+            "max_positions": self.config.max_positions,
+            "focused_symbol": self.config.focused_symbol,
             "is_halted_by_killswitch": self.is_halted_by_killswitch,
             "symbol_configs": {s: asdict(c) for s, c in self.config.symbol_configs.items()},
             "pending_limit_orders": [asdict(o) for o in self.account.limit_orders.values() if o.status == "PENDING"],

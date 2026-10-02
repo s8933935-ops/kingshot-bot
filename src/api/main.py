@@ -7,7 +7,9 @@ from typing import List, Dict, Any, Optional
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
+import io
+import csv
 
 from src.invest_engine.game_manager import InvestmentGameManager
 from src.invest_engine.autopilot_engine import STRATEGY_PROFILES
@@ -21,6 +23,8 @@ from src.api.schemas import (
     PanicStopRequest,
     ResetAccountRequest,
     SetStrategyRequest,
+    FocusSymbolRequest,
+    SideDirectionRequest,
     RaceCardResponse,
     UserStatsResponse,
     LeaderboardItem
@@ -561,13 +565,15 @@ def get_available_strategies():
     }
 
 
+@app.get("/api/autopilot/status", tags=["AIオートパイロット"])
 @app.get("/api/autopilot/status/{user_id}", tags=["AIオートパイロット"])
-def get_autopilot_status(user_id: str):
+def get_autopilot_status(user_id: str = "guest"):
     """ユーザーのAIオートパイロット状態および思考ログを取得"""
     ap = game_manager.get_autopilot(user_id)
     if not ap:
         raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
     return ap.get_status()
+
 
 
 @app.post("/api/autopilot/toggle", tags=["AIオートパイロット"])
@@ -655,6 +661,174 @@ def set_autopilot_strategy(req: SetStrategyRequest):
         "max_leverage": ap.config.max_leverage,
         "strategy_profile": STRATEGY_PROFILES.get(req.strategy_style, {})
     }
+
+
+@app.post("/api/autopilot/focus-symbol", tags=["AIオートパイロット"])
+def set_focused_symbol(req: FocusSymbolRequest):
+    """
+    特定銘柄専従モードを設定・解除します。
+    例: symbol='GC=F' を指定するとゴールド専門運用となり、他銘柄の売買を完全遮断します。
+    """
+    ap = game_manager.get_autopilot(req.user_id)
+    if not ap:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
+
+    status = ap.set_focused_symbol(req.symbol)
+    return {
+        "status": "FOCUS_SYMBOL_UPDATED",
+        "focused_symbol": ap.config.focused_symbol,
+        "is_focused_active": bool(ap.config.focused_symbol),
+        "autopilot_status": status
+    }
+
+
+@app.post("/api/autopilot/side-direction", tags=["AIオートパイロット"])
+def set_side_direction(req: SideDirectionRequest):
+    """
+    売買方向（買い専用/売りのみ/両方）および最大ポジション保有数（買い増し許容数）を設定します。
+    'BUY_ONLY' に設定すると、相場が下落傾向でも空売りせず、押し目買いのみを待機します。
+    """
+    ap = game_manager.get_autopilot(req.user_id)
+    if not ap:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
+
+    if req.max_positions and req.max_positions > 0:
+        ap.config.max_positions = min(5, req.max_positions)
+        if req.symbol and req.symbol in ap.config.symbol_configs:
+            ap.config.symbol_configs[req.symbol].max_positions = min(5, req.max_positions)
+
+    status = ap.set_side_direction(req.allowed_side, req.symbol)
+    return {
+        "status": "SIDE_DIRECTION_UPDATED",
+        "allowed_side": ap.config.allowed_side,
+        "max_positions": ap.config.max_positions,
+        "target_symbol": req.symbol,
+        "autopilot_status": status
+    }
+
+
+@app.get("/api/audit/trade-answers", tags=["トレード答え合わせ"])
+def get_trade_answers(user_id: str = "guest", symbol: Optional[str] = None):
+    """
+    過去の決済トレードと現在の最新市場価格を突合し、
+    「もし持ち続けていたらどうなっていたか？」「判断の正しさ」を答え合わせ監査します。
+    """
+    user = game_manager.get_user(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="ユーザーが見つかりません。")
+
+    live_prices = game_manager.live_prices
+    answers = []
+
+    for trade in reversed(user.trade_history):
+        if symbol and trade.symbol != symbol:
+            continue
+
+        cur_price = live_prices.get(trade.symbol, trade.exit_price)
+
+        # もし保有し続けていたら？（仮想損益）
+        if trade.side == "BUY":
+            hypothetical_pnl = (cur_price - trade.entry_price) * trade.amount * trade.leverage
+        else:
+            hypothetical_pnl = (trade.entry_price - cur_price) * trade.amount * trade.leverage
+
+        avoided_loss_or_missed_gain = trade.net_pnl - hypothetical_pnl
+
+        # 答え合わせ判定 (Verdict)
+        if trade.net_pnl < 0:
+            if avoided_loss_or_missed_gain >= 0:
+                verdict = "🛡️ ナイス損切り (更なる暴落を回避)"
+                verdict_type = "GOOD_CUT"
+            else:
+                verdict = "⚠️ 惜しい損切り (その後反発上昇)"
+                verdict_type = "BAD_CUT"
+        elif trade.net_pnl > 0:
+            if avoided_loss_or_missed_gain >= 0:
+                verdict = "🎯 完璧な天井利確 (最高点で逃げ切り)"
+                verdict_type = "PERFECT_TP"
+            else:
+                verdict = "💡 利確成功 (伸び代あり・機会損失)"
+                verdict_type = "EARLY_TP"
+        else:
+            verdict = "⚖️ 同値撤退"
+            verdict_type = "BREAKEVEN"
+
+        answers.append({
+            "trade_id": trade.trade_id,
+            "symbol": trade.symbol,
+            "side": trade.side,
+            "amount": trade.amount,
+            "leverage": trade.leverage,
+            "entry_price": trade.entry_price,
+            "exit_price": trade.exit_price,
+            "current_price": cur_price,
+            "realized_pnl": trade.net_pnl,
+            "return_pct": trade.return_pct,
+            "hypothetical_pnl": round(hypothetical_pnl, 2),
+            "difference_pnl": round(avoided_loss_or_missed_gain, 2),
+            "verdict": verdict,
+            "verdict_type": verdict_type,
+            "source": trade.source,
+            "opened_at": trade.opened_at,
+            "closed_at": trade.closed_at
+        })
+
+    # チャート描画用マーカー一覧も生成
+    markers = []
+    for a in answers:
+        markers.append({
+            "time": a["opened_at"],
+            "position": "belowBar" if a["side"] == "BUY" else "aboveBar",
+            "color": "#10b981" if a["side"] == "BUY" else "#ef4444",
+            "shape": "arrowUp" if a["side"] == "BUY" else "arrowDown",
+            "text": f"{a['side']} @ ${a['entry_price']:.2f}"
+        })
+        markers.append({
+            "time": a["closed_at"],
+            "position": "aboveBar" if a["side"] == "BUY" else "belowBar",
+            "color": "#f59e0b",
+            "shape": "circle",
+            "text": f"決済 @ ${a['exit_price']:.2f} ({'+' if a['realized_pnl'] >= 0 else ''}{a['realized_pnl']:,.0f}円)"
+        })
+
+    return {
+        "user_id": user_id,
+        "total_audited_trades": len(answers),
+        "answers": answers,
+        "chart_markers": markers
+    }
+
+
+@app.get("/api/audit/trade-answers/csv", tags=["トレード答え合わせ"])
+def export_trade_answers_csv(user_id: str = "guest", symbol: Optional[str] = None):
+    """トレード答え合わせ監査データをCSV形式でダウンロード出力"""
+    data = get_trade_answers(user_id=user_id, symbol=symbol)
+    output = io.StringIO()
+    writer = csv.writer(output)
+
+    writer.writerow([
+        "Trade ID", "銘柄", "売買", "数量", "レバレッジ", "エントリー価格", "決済価格",
+        "最新市場価格", "確定損益(円)", "リターン(%)", "もし保有時仮想損益(円)",
+        "損益差分(円)", "答え合わせ判定", "発注元", "エントリー時刻", "決済時刻"
+    ])
+
+    for a in data["answers"]:
+        writer.writerow([
+            a["trade_id"], a["symbol"], a["side"], a["amount"], f"{a['leverage']}x",
+            a["entry_price"], a["exit_price"], a["current_price"],
+            a["realized_pnl"], f"{a['return_pct']:.2f}%", a["hypothetical_pnl"],
+            a["difference_pnl"], a["verdict"], a["source"], a["opened_at"], a["closed_at"]
+        ])
+
+    csv_bytes = output.getvalue().encode("utf-8-sig")
+    return Response(
+        content=csv_bytes,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": f"attachment; filename=trade_answers_audit_{user_id}.csv"
+        }
+    )
+
 
 
 @app.post("/api/retrain-from-history", tags=["自己学習"])
