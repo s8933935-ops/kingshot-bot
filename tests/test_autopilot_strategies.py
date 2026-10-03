@@ -77,7 +77,9 @@ class TestAutopilotStrategies(unittest.TestCase):
         self.autopilot.toggle(is_active=True, allocated_capital=1_000_000.0, strategy_style="day_trade")
         # デイトレ base_ratio=0.20, capital=1,000,000 => base trade_value = 200,000
         # meta_bet_size_pct = 50.0% => scaled trade_value = 100,000
-        # price = 4000 => amount = 100,000 / 4000 = 25.0
+        # price = 4000 USD => amount = 100,000 / (4000 * fx_rate)
+        fx = self.account.get_fx_rate("GC=F")
+        expected_amount = round(100_000.0 / (4000.0 * fx), 2)
         race_card = {
             "symbol": "GC=F",
             "current_price": 4000.0,
@@ -88,7 +90,7 @@ class TestAutopilotStrategies(unittest.TestCase):
         action = self.autopilot.evaluate_and_execute("GC=F", race_card)
         self.assertEqual(action, "ORDER_BUY")
         pos = list(self.account.positions.values())[0]
-        self.assertAlmostEqual(pos.amount, 25.0, places=1)
+        self.assertAlmostEqual(pos.amount, expected_amount, places=2)
 
 
 if __name__ == "__main__":

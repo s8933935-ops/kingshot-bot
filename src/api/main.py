@@ -283,6 +283,9 @@ def get_account_details(user_id: str):
             "entry_price": p.entry_price,
             "current_price": p.current_price,
             "unrealized_pnl": round(p.unrealized_pnl, 2),
+            "unrealized_pnl_quote": round(getattr(p, "unrealized_pnl_quote", 0.0), 2),
+            "quote_currency": getattr(p, "quote_currency", "USD"),
+            "fx_rate": getattr(p, "fx_rate", 1.0),
             "unrealized_return_pct": round(p.unrealized_return_pct, 2),
             "opened_at": p.opened_at
         }
@@ -294,7 +297,8 @@ def get_account_details(user_id: str):
         "stats": stats,
         "positions": positions,
         "pending_limit_orders": pending_limits,
-        "recent_trades": [asdict_trade(t) for t in acc.trade_history[-5:]]
+        "recent_trades": [asdict_trade(t) for t in acc.trade_history[-5:]],
+        "latest_usd_jpy": getattr(acc, "latest_usd_jpy", 157.0)
     }
 
 
@@ -312,6 +316,13 @@ def reset_account(req: ResetAccountRequest):
     ap = game_manager.get_autopilot(req.user_id)
     if ap:
         ap.reset()
+
+    # DB内の過去トレード履歴もクリーンアップ（架空データやドリフト時の履歴を完全消去）
+    try:
+        from ..invest_engine.history_db import clear_user_trades
+        clear_user_trades(req.user_id)
+    except Exception:
+        pass
 
     return {
         "status": "ACCOUNT_RESET_SUCCESS",
@@ -726,11 +737,15 @@ def get_trade_answers(user_id: str = "guest", symbol: Optional[str] = None):
 
         cur_price = live_prices.get(trade.symbol, trade.exit_price)
 
-        # もし保有し続けていたら？（仮想損益）
+        # もし保有し続けていたら？（仮想損益・日本円換算）
+        fx_rate = getattr(trade, "fx_rate", 1.0)
+        if hasattr(acc, "get_fx_rate"):
+            fx_rate = acc.get_fx_rate(trade.symbol)
+
         if trade.side == "BUY":
-            hypothetical_pnl = (cur_price - trade.entry_price) * trade.amount * trade.leverage
+            hypothetical_pnl = (cur_price - trade.entry_price) * trade.amount * trade.leverage * fx_rate
         else:
-            hypothetical_pnl = (trade.entry_price - cur_price) * trade.amount * trade.leverage
+            hypothetical_pnl = (trade.entry_price - cur_price) * trade.amount * trade.leverage * fx_rate
 
         avoided_loss_or_missed_gain = trade.net_pnl - hypothetical_pnl
 
@@ -768,7 +783,7 @@ def get_trade_answers(user_id: str = "guest", symbol: Optional[str] = None):
             "difference_pnl": round(avoided_loss_or_missed_gain, 2),
             "verdict": verdict,
             "verdict_type": verdict_type,
-            "source": trade.source,
+            "source": getattr(trade, "source", "AUTOPILOT"),
             "opened_at": trade.opened_at,
             "closed_at": trade.closed_at
         })
@@ -864,7 +879,10 @@ def asdict_trade(t) -> Dict[str, Any]:
         "exit_price": t.exit_price,
         "net_pnl": t.net_pnl,
         "return_pct": t.return_pct,
-        "closed_at": t.closed_at
+        "closed_at": t.closed_at,
+        "quote_currency": getattr(t, "quote_currency", "USD"),
+        "fx_rate": getattr(t, "fx_rate", 1.0),
+        "gross_pnl_quote": getattr(t, "gross_pnl_quote", 0.0)
     }
 
 

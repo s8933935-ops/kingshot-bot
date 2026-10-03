@@ -77,7 +77,7 @@ class TestInvestKeibaAPI(unittest.TestCase):
             "user_id": user_id,
             "symbol": "GC=F",
             "side": "BUY",
-            "amount": 20.0,
+            "amount": 5.0,
             "leverage": 1.0
         }
         res_order = self.client.post("/api/order", json=order_payload)

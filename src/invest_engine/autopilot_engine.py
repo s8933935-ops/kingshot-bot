@@ -458,10 +458,12 @@ class AutopilotEngine:
                 self._log_decision(symbol, "SKIP_MACRO_RISK", f"[{profile['name']}] エントリー機会を検出も、マクロ危険水域 ({meta_conf}) のためロット0%で見送り。", current_price)
                 return "SKIP_MACRO_RISK"
 
-            # 戦術とハーフケリー基準に連動したポジションサイジング
+            # 戦術とハーフケリー基準に連動したポジションサイジング (日本円換算)
             size_multiplier = meta_bet_size / 100.0
             trade_value = allocated_cap * profile["base_capital_ratio"] * size_multiplier
-            amount = max(0.01, trade_value / current_price)
+            fx_rate = self.account.get_fx_rate(symbol)
+            unit_price_jpy = current_price * fx_rate
+            amount = max(0.01, trade_value / unit_price_jpy)
             lev = profile["max_leverage"]
             current_atr = float(race_card.get("current_atr", race_card.get("atr_14", 0.0)))
 

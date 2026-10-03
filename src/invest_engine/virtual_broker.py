@@ -11,6 +11,14 @@ from dataclasses import dataclass, field, asdict
 import numpy as np
 
 
+QUOTE_CURRENCIES = {
+    "GC=F": "USD",     # COMEX金先物 (USD/oz)
+    "BTC-USD": "USD",  # ビットコイン (USD/BTC)
+    "NVDA": "USD",     # エヌビディア株 (USD/share)
+    "USDJPY=X": "JPY", # ドル円為替 (JPY/USD)
+}
+
+
 @dataclass
 class Position:
     """保有ポジション"""
@@ -24,12 +32,19 @@ class Position:
     tp_price: Optional[float] = None  # 動的/固定 利確トリガー価格
     sl_price: Optional[float] = None  # 動的/固定 損切りトリガー価格
     opened_at: str = field(default_factory=lambda: datetime.now().isoformat())
+    quote_currency: str = "USD"
+    fx_rate: float = 1.0  # 日本円換算為替レート (USD建てならUSD/JPYレート、JPY建てなら1.0)
+
+    @property
+    def unrealized_pnl_quote(self) -> float:
+        """原資産通貨建ての含み損益 (例: USD)"""
+        multiplier = 1.0 if self.side == "BUY" else -1.0
+        return (self.current_price - self.entry_price) * self.amount * multiplier
 
     @property
     def unrealized_pnl(self) -> float:
-        """含み損益 (価格差 * 数量)"""
-        multiplier = 1.0 if self.side == "BUY" else -1.0
-        return (self.current_price - self.entry_price) * self.amount * multiplier
+        """口座通貨 (日本円 JPY) 換算の含み損益"""
+        return self.unrealized_pnl_quote * self.fx_rate
 
     @property
     def unrealized_return_pct(self) -> float:
@@ -59,7 +74,7 @@ class LimitOrder:
 
 @dataclass
 class TradeRecord:
-    """決済完了トレード履歴"""
+    """決済完了トレード履歴（口座通貨 JPY 基準）"""
     trade_id: str
     symbol: str
     side: str
@@ -67,12 +82,15 @@ class TradeRecord:
     exit_price: float
     amount: float
     leverage: float
-    gross_pnl: float
-    fee: float
-    net_pnl: float
-    return_pct: float
+    gross_pnl: float          # JPY換算 粗損益
+    fee: float                # JPY換算 手数料
+    net_pnl: float            # JPY換算 純損益
+    return_pct: float         # 投資利益率 (%)
     opened_at: str
     closed_at: str
+    quote_currency: str = "USD"
+    fx_rate: float = 1.0      # 決済時点の日本円換算レート
+    gross_pnl_quote: float = 0.0 # 原資産通貨建て粗損益
 
 
 class VirtualAccount:
@@ -84,7 +102,7 @@ class VirtualAccount:
         self.user_id = user_id
         self.user_name = user_name
         self.initial_cash = initial_cash
-        self.cash = initial_cash  # 利用可能現金残高
+        self.cash = initial_cash  # 利用可能現金残高 (日本円 JPY)
         self.positions: Dict[str, Position] = {}
         self.limit_orders: Dict[str, LimitOrder] = {}  # 待機中・約定済み指値注文
         self.trade_history: List[TradeRecord] = []
@@ -92,18 +110,31 @@ class VirtualAccount:
         self.maker_fee_rate = 0.0001  # 指値（メイカー）優遇手数料 (0.01% - スリッページゼロ＆低手数料)
         self.equity_peak = initial_cash
         self.max_drawdown = 0.0
+        self.latest_usd_jpy = 157.0  # 日本円換算用の米ドル/円為替レート (リアルタイム更新)
+
+    def get_fx_rate(self, symbol: str) -> float:
+        """銘柄に応じた日本円換算レートを返す（USD建てならUSD/JPYレート、JPY建てなら1.0）"""
+        quote_ccy = QUOTE_CURRENCIES.get(symbol, "USD")
+        if quote_ccy == "JPY":
+            return 1.0
+        return max(self.latest_usd_jpy, 50.0)
 
     @property
     def equity(self) -> float:
-        """有効証拠金（現金 + 全ポジションの含み損益）"""
+        """有効証拠金（現金 + 全ポジションの日本円換算含み損益）"""
         unrealized_total = sum(p.unrealized_pnl for p in self.positions.values())
         return self.cash + unrealized_total
 
     def update_market_price(self, symbol: str, current_price: float):
         """市場価格が動いた際に保有ポジションの現在値を更新し、ドローダウンを再計算"""
+        if symbol == "USDJPY=X" and current_price > 0:
+            self.latest_usd_jpy = current_price
+
         for pos in self.positions.values():
             if pos.symbol == symbol:
                 pos.current_price = current_price
+            # 全ポジションの為替レートも最新に同期
+            pos.fx_rate = self.get_fx_rate(pos.symbol)
 
         # ドローダウン更新
         current_eq = self.equity
@@ -124,19 +155,24 @@ class VirtualAccount:
         sl_price: Optional[float] = None
     ) -> Position:
         """
-        新規ポジションを成行でオープンする。
+        新規ポジションを成行でオープンする（米ドル建て銘柄は為替換算して日本円証拠金を拘束）。
         """
         side = side.upper()
         if side not in ["BUY", "SELL"]:
             raise ValueError(f"Invalid side: {side}. Must be 'BUY' or 'SELL'.")
 
-        required_margin = (current_price * amount) / leverage
-        fee = (current_price * amount) * self.fee_rate
+        fx_rate = self.get_fx_rate(symbol)
+        quote_ccy = QUOTE_CURRENCIES.get(symbol, "USD")
+
+        # 日本円換算の想定取引金額
+        notional_jpy = (current_price * amount) * fx_rate
+        required_margin = notional_jpy / leverage
+        fee = notional_jpy * self.fee_rate
 
         if self.cash < (required_margin + fee):
-            raise ValueError(f"資金不足: 必要証拠金+手数料 {required_margin + fee:.1f} に対して残高 {self.cash:.1f}")
+            raise ValueError(f"資金不足: 必要証拠金+手数料 {required_margin + fee:.1f}円 に対して残高 {self.cash:.1f}円")
 
-        # 手数料引き落とし
+        # 手数料引き落とし (日本円)
         self.cash -= fee
 
         pos_id = str(uuid.uuid4())[:8]
@@ -149,7 +185,9 @@ class VirtualAccount:
             amount=amount,
             leverage=leverage,
             tp_price=tp_price,
-            sl_price=sl_price
+            sl_price=sl_price,
+            quote_currency=quote_ccy,
+            fx_rate=fx_rate
         )
         self.positions[pos_id] = pos
         return pos
@@ -174,11 +212,13 @@ class VirtualAccount:
         if target_price <= 0 or amount <= 0:
             raise ValueError("Target price and amount must be positive.")
 
-        required_margin = (target_price * amount) / leverage
-        fee = (target_price * amount) * self.maker_fee_rate
+        fx_rate = self.get_fx_rate(symbol)
+        notional_jpy = (target_price * amount) * fx_rate
+        required_margin = notional_jpy / leverage
+        fee = notional_jpy * self.maker_fee_rate
 
         if self.cash < (required_margin + fee):
-            raise ValueError(f"資金不足: 必要証拠金+手数料 {required_margin + fee:.1f} に対して残高 {self.cash:.1f}")
+            raise ValueError(f"資金不足: 必要証拠金+手数料 {required_margin + fee:.1f}円 に対して残高 {self.cash:.1f}円")
 
         order_id = str(uuid.uuid4())[:8]
         order = LimitOrder(
@@ -233,8 +273,11 @@ class VirtualAccount:
                 fill_price = max(order.target_price, current_price)
 
             if matched:
-                required_margin = (fill_price * order.amount) / order.leverage
-                fee = (fill_price * order.amount) * self.maker_fee_rate
+                fx_rate = self.get_fx_rate(order.symbol)
+                quote_ccy = QUOTE_CURRENCIES.get(order.symbol, "USD")
+                notional_jpy = (fill_price * order.amount) * fx_rate
+                required_margin = notional_jpy / order.leverage
+                fee = notional_jpy * self.maker_fee_rate
 
                 if self.cash >= (required_margin + fee):
                     self.cash -= fee
@@ -248,7 +291,9 @@ class VirtualAccount:
                         amount=order.amount,
                         leverage=order.leverage,
                         tp_price=order.tp_price,
-                        sl_price=order.sl_price
+                        sl_price=order.sl_price,
+                        quote_currency=quote_ccy,
+                        fx_rate=fx_rate
                     )
                     self.positions[pos_id] = pos
                     order.status = "FILLED"
@@ -260,7 +305,7 @@ class VirtualAccount:
 
     def close_position(self, position_id: str, current_price: float) -> TradeRecord:
         """
-        保有ポジションを決済（エグジット）する。
+        保有ポジションを決済（エグジット）する（米ドル建て損益は為替レートで日本円換算）。
         """
         if position_id not in self.positions:
             raise KeyError(f"Position ID not found: {position_id}")
@@ -268,13 +313,19 @@ class VirtualAccount:
         pos = self.positions.pop(position_id)
         pos.current_price = current_price
 
+        fx_rate = self.get_fx_rate(pos.symbol)
         multiplier = 1.0 if pos.side == "BUY" else -1.0
-        gross_pnl = (current_price - pos.entry_price) * pos.amount * multiplier
-        exit_fee = (current_price * pos.amount) * self.fee_rate
-        net_pnl = gross_pnl - exit_fee
 
-        # 口座現金の反映
-        self.cash += net_pnl
+        # 原資産通貨建ての損益
+        gross_pnl_quote = (current_price - pos.entry_price) * pos.amount * multiplier
+
+        # 口座通貨 (日本円 JPY) 換算の損益・手数料
+        gross_pnl_jpy = gross_pnl_quote * fx_rate
+        exit_fee_jpy = (current_price * pos.amount * fx_rate) * self.fee_rate
+        net_pnl_jpy = gross_pnl_jpy - exit_fee_jpy
+
+        # 口座現金の反映 (日本円)
+        self.cash += net_pnl_jpy
 
         trade_record = TradeRecord(
             trade_id=str(uuid.uuid4())[:8],
@@ -284,12 +335,15 @@ class VirtualAccount:
             exit_price=current_price,
             amount=pos.amount,
             leverage=pos.leverage,
-            gross_pnl=round(gross_pnl, 2),
-            fee=round(exit_fee, 2),
-            net_pnl=round(net_pnl, 2),
+            gross_pnl=round(gross_pnl_jpy, 2),
+            fee=round(exit_fee_jpy, 2),
+            net_pnl=round(net_pnl_jpy, 2),
             return_pct=round(pos.unrealized_return_pct, 2),
             opened_at=pos.opened_at,
-            closed_at=datetime.now().isoformat()
+            closed_at=datetime.now().isoformat(),
+            quote_currency=pos.quote_currency,
+            fx_rate=round(fx_rate, 4),
+            gross_pnl_quote=round(gross_pnl_quote, 4)
         )
         self.trade_history.append(trade_record)
 

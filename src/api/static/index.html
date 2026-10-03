@@ -136,6 +136,7 @@
         <div class="flex items-baseline space-x-2">
           <span class="text-2xl font-black font-mono text-white"><span id="currency-symbol">$</span><span id="price-display">--</span></span>
           <span id="change-display" class="text-xs font-bold font-mono text-emerald-400">+0.00%</span>
+          <span id="jpy-reference-display" class="text-xs text-amber-300 font-mono pl-2 hidden sm:inline bg-amber-950/40 px-2 py-0.5 rounded border border-amber-500/20"></span>
         </div>
       </div>
 
@@ -1195,6 +1196,17 @@
           const changeElem = document.getElementById('change-display');
           changeElem.innerText = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
           changeElem.className = 'text-xs font-bold font-mono ' + (pct >= 0 ? 'text-emerald-400' : 'text-rose-400');
+
+          const jpyRefEl = document.getElementById('jpy-reference-display');
+          if (jpyRefEl) {
+            if (symbol === 'USDJPY=X') {
+              jpyRefEl.innerText = `為替基準: ¥${latest.toFixed(2)}`;
+            } else {
+              const jpyPrice = Math.round(latest * usdJpyRate);
+              jpyRefEl.innerText = `円換算参考: ¥${jpyPrice.toLocaleString()} (為替 ¥${usdJpyRate.toFixed(2)})`;
+            }
+          }
+
           updateLotCalculations();
         }
 
@@ -1379,6 +1391,9 @@
         if (!res.ok) return;
         const data = await res.json();
         if (!data || !data.stats) return;
+        if (data.latest_usd_jpy && data.latest_usd_jpy > 0) {
+          usdJpyRate = data.latest_usd_jpy;
+        }
         document.getElementById('user-equity').innerText = Math.round(data.stats.equity || 0).toLocaleString();
 
         const getSymFmt = (sym) => {
@@ -1401,6 +1416,10 @@
             const pnlColor = isPlus ? 'text-emerald-400' : 'text-rose-400';
             const pnlSign = isPlus ? '+' : '';
             const sideColor = p.side === 'BUY' ? 'text-emerald-400 bg-emerald-500/10 border border-emerald-500/30' : 'text-rose-400 bg-rose-500/10 border border-rose-500/30';
+            const quotePnl = p.unrealized_pnl_quote !== undefined ? p.unrealized_pnl_quote : 0;
+            const quoteStr = p.quote_currency === 'USD' 
+              ? `<div class="text-[9px] text-slate-400 font-mono font-normal">(${pnlSign}$${Math.abs(quotePnl).toFixed(2)})</div>` 
+              : '';
             return `
               <tr class="hover:bg-[#1a202c] transition">
                 <td class="py-2 px-3 font-bold text-white">${p.symbol}</td>
@@ -1409,7 +1428,9 @@
                 <td class="py-2 px-3 font-mono">${fmt.cur}${p.entry_price.toFixed(fmt.dec)}</td>
                 <td class="py-2 px-3 font-mono">${fmt.cur}${p.current_price.toFixed(fmt.dec)}</td>
                 <td class="py-2 px-3 text-right font-mono font-bold ${pnlColor}">
-                  ${pnlSign}¥${Math.round(p.unrealized_pnl).toLocaleString()} (${pnlSign}${p.unrealized_return_pct.toFixed(1)}%)
+                  <div>${pnlSign}¥${Math.round(p.unrealized_pnl).toLocaleString()}</div>
+                  ${quoteStr}
+                  <div class="text-[10px] font-normal opacity-80">${pnlSign}${p.unrealized_return_pct.toFixed(1)}%</div>
                 </td>
                 <td class="py-2 px-3 text-center font-sans">
                   <button onclick="closePos('${p.position_id}')" class="bg-[#232936] hover:bg-slate-700 text-slate-200 text-[11px] font-medium px-2 py-0.5 rounded transition">

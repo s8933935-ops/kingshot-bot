@@ -108,9 +108,9 @@ class TestFocusAndAudit(unittest.TestCase):
         # 現在価格がさらに暴落して 2600.0 の場合
         cur_price = 2600.0
         trade = self.account.trade_history[0]
-        hypothetical_pnl = (cur_price - trade.entry_price) * trade.amount * trade.leverage
+        hypothetical_pnl = (cur_price - trade.entry_price) * trade.amount * trade.leverage * trade.fx_rate
         avoided_loss = trade.net_pnl - hypothetical_pnl
-        # 損切りしていなかったら -100だったが、-20で済んだため +80の損失回避
+        # 損切りしていなかったら -100だったが、-20で済んだため +80相当(円換算)の損失回避
         self.assertGreater(avoided_loss, 0)
 
 

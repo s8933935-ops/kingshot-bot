@@ -440,3 +440,17 @@ def export_learning_dataset(db_path: Path = DB_PATH) -> Dict[str, Any]:
         "samples": dataset_samples
     }
 
+
+def clear_user_trades(user_id: str, db_path: Path = DB_PATH):
+    """
+    指定ユーザーの約定履歴およびAI意思決定ログを初期化・クリーンアップする。
+    """
+    init_db(db_path)
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM trades WHERE user_id = ?", (user_id,))
+    cursor.execute("DELETE FROM ai_decisions WHERE user_id = ?", (user_id,))
+    cursor.execute("DELETE FROM users WHERE user_id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+

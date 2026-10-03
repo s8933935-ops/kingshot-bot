@@ -22,14 +22,19 @@ class InvestmentGameManager:
     def __init__(self):
         self.users: Dict[str, VirtualAccount] = {}
         self.autopilots: Dict[str, AutopilotEngine] = {}
-        self.live_prices: Dict[str, float] = {
-            "GC=F": 4186.7,
-            "BTC-USD": 65420.0,
-            "NVDA": 125.8,
-            "USDJPY=X": 150.25
+        self.anchor_prices: Dict[str, float] = {
+            "GC=F": 4197.5,
+            "BTC-USD": 84083.0,
+            "NVDA": 229.12,
+            "USDJPY=X": 157.59
         }
+        self.last_anchor_sync: float = 0.0
+        self.live_prices: Dict[str, float] = dict(self.anchor_prices)
         self._card_cache: Dict[str, Dict[str, Any]] = {}
         self._cache_time: Dict[str, float] = {}
+
+        # 初期アンカー価格の取得を試行
+        self.sync_anchor_prices(force=True)
 
         # 公式AI予想屋を自動登録
         self.ai_user_id = "ai_gold_specialist"
@@ -38,6 +43,24 @@ class InvestmentGameManager:
         ai_ap = self.get_autopilot(self.ai_user_id)
         if ai_ap:
             ai_ap.toggle(is_active=True, allocated_capital=5_000_000.0, daily_max_loss_pct=5.0, strategy_style="swing")
+
+    def sync_anchor_prices(self, force: bool = False):
+        """yfinanceから最新の実市場価格を取得し、アンカー価格を更新する（5分ごと、または初回）"""
+        now = time.time()
+        if not force and (now - self.last_anchor_sync) < 300.0:
+            return
+        self.last_anchor_sync = now
+        for sym in ["USDJPY=X", "GC=F", "BTC-USD", "NVDA"]:
+            try:
+                real_p = fetch_latest_price(sym)
+                if real_p and real_p > 0:
+                    self.anchor_prices[sym] = real_p
+                    cur = self.live_prices.get(sym, real_p)
+                    # 乖離が2%以上あれば即座にアンカー近辺へ引き戻す
+                    if abs(cur - real_p) / real_p > 0.02:
+                        self.live_prices[sym] = real_p
+            except Exception:
+                pass
 
     def register_user(self, user_id: str, user_name: str, initial_cash: float = 10_000_000.0, preload_samples: bool = False) -> VirtualAccount:
         """新規ユーザーを登録"""
@@ -65,9 +88,11 @@ class InvestmentGameManager:
         ]
         from .virtual_broker import TradeRecord
         for sym, side, entry, exit_p, amt, c_at in past_trades:
-            pnl = (exit_p - entry) * amt if side == "BUY" else (entry - exit_p) * amt
+            fx_rate = account.get_fx_rate(sym)
+            quote_pnl = (exit_p - entry) * amt if side == "BUY" else (entry - exit_p) * amt
+            pnl_jpy = quote_pnl * fx_rate
             ret_pct = ((exit_p - entry) / entry * 100.0) if side == "BUY" else ((entry - exit_p) / entry * 100.0)
-            account.cash += pnl
+            account.cash += pnl_jpy
             tr = TradeRecord(
                 trade_id=f"hist_{random.randint(1000, 9999)}",
                 symbol=sym,
@@ -76,12 +101,15 @@ class InvestmentGameManager:
                 leverage=1.0,
                 entry_price=entry,
                 exit_price=exit_p,
-                gross_pnl=pnl,
+                gross_pnl=round(pnl_jpy, 2),
                 fee=0.0,
-                net_pnl=round(pnl, 2),
+                net_pnl=round(pnl_jpy, 2),
                 return_pct=round(ret_pct, 2),
                 opened_at=c_at,
-                closed_at=c_at
+                closed_at=c_at,
+                quote_currency="USD",
+                fx_rate=round(fx_rate, 4),
+                gross_pnl_quote=round(quote_pnl, 4)
             )
             account.trade_history.append(tr)
 
@@ -260,23 +288,39 @@ class InvestmentGameManager:
     def tick_market(self) -> Dict[str, Any]:
         """
         リアルタイム市場ティック進行（3〜5秒ごとに呼び出される）
-        1. 各銘柄の価格を微小変動（ランダムウォーク）
-        2. 全口座のオープンポジションの現在価格を更新
-        3. オートパイロット稼働中のユーザーについて自動売買（評価＆執行）を実行
+        1. 定期的な実市場アンカー同期（5分TTL）
+        2. Ornstein-Uhlenbeck平均回帰モデルによる微小変動生成（アンカー乖離防止 & ±1.0%ハード制限）
+        3. 口座のポジション価格・為替レート（USD/JPY）のリアルタイム更新
+        4. 待機中指値注文の突き合わせ約定
+        5. オートパイロット稼働中ユーザーの売買執行
         """
+        self.sync_anchor_prices()
+
         actions = []
-        for sym in ["GC=F", "BTC-USD", "NVDA", "USDJPY=X"]:
-            cur = self.live_prices.get(sym, 4200.0)
-            # リアルなマイクロボラティリティ (±0.08%〜±0.25%)
-            pct_change = random.gauss(0.0001, 0.0018)
-            new_price = round(cur * (1.0 + pct_change), 2)
+        # まずUSDJPYの価格を決定して各口座の為替レートを更新できるようにする
+        symbols = ["USDJPY=X", "GC=F", "BTC-USD", "NVDA"]
+        for sym in symbols:
+            anchor = self.anchor_prices.get(sym, 4200.0)
+            cur = self.live_prices.get(sym, anchor)
+
+            # Ornstein-Uhlenbeck平均回帰過程
+            # diff_pct: アンカーからの相対乖離率
+            diff_pct = (cur - anchor) / anchor
+            # 乖離すればするほどアンカーに引き戻す復元力 (-0.15 * diff_pct) + 微小ガウスノイズ (標準偏差0.06%)
+            reversion = -0.15 * diff_pct
+            noise = random.gauss(0.0, 0.0006)
+            pct_change = reversion + noise
+
+            new_price = cur * (1.0 + pct_change)
+            # ハードリミット: 実市場アンカー価格から ±0.8% 〜 ±1.0% を絶対に超えない
+            min_price = anchor * 0.992
+            max_price = anchor * 1.008
+            new_price = round(min(max(new_price, min_price), max_price), 2)
             self.live_prices[sym] = new_price
 
-            # ポジションの現在価格・評価損益を更新
+            # 全口座の現在市場価格・為替レート・評価損益を更新
             for user in self.users.values():
-                for pos in user.positions.values():
-                    if pos.symbol == sym:
-                        pos.current_price = new_price
+                user.update_market_price(sym, new_price)
 
             # 全ユーザー（手動発注・AI問わず）の待機中指値注文を市場価格と突き合わせ自動約定検査
             for user in self.users.values():
@@ -313,12 +357,14 @@ class InvestmentGameManager:
 
         # 新規エントリー
         if len(ai_account.positions) == 0:
+            fx_rate = ai_account.get_fx_rate(symbol)
+            unit_price_jpy = current_price * fx_rate
             if prob_up >= 0.55:
                 # 資金の20%を投じる
-                amount = (ai_account.cash * 0.20) / current_price
+                amount = (ai_account.cash * 0.20) / unit_price_jpy
                 ai_account.open_position(symbol, "BUY", current_price, amount=round(amount, 2))
             elif prob_up <= 0.45:
-                amount = (ai_account.cash * 0.20) / current_price
+                amount = (ai_account.cash * 0.20) / unit_price_jpy
                 ai_account.open_position(symbol, "SELL", current_price, amount=round(amount, 2))
 
     def get_leaderboard(self, sort_by: str = "grand_prix_score") -> List[Dict[str, Any]]:
