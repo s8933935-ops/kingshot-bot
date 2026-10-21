@@ -1,0 +1,830 @@
+[
+  {
+    "kid": 900,
+    "abbr": "24K",
+    "member_count": 93,
+    "top1_mt": 3585,
+    "top3_avg_mt": 3545.0,
+    "top10_avg_mt": 3163.5,
+    "top10_power": 13545714177,
+    "top10_kills": 1927869012,
+    "players": [
+      {
+        "rank": 1,
+        "name": "Niki",
+        "power": 2539805760,
+        "mystic": 3585,
+        "mystic_rank": 1,
+        "kills": 105039267
+      },
+      {
+        "rank": 2,
+        "name": "Luka",
+        "power": 2456207385,
+        "mystic": 3577,
+        "mystic_rank": 2,
+        "kills": 305883912
+      },
+      {
+        "rank": 3,
+        "name": "Alice~靜",
+        "power": 2045815748,
+        "mystic": 3473,
+        "mystic_rank": 3,
+        "kills": 391095680
+      },
+      {
+        "rank": 4,
+        "name": "Steve~~B",
+        "power": 1461231772,
+        "mystic": 3404,
+        "mystic_rank": 5,
+        "kills": 134712746
+      },
+      {
+        "rank": 5,
+        "name": "Minky",
+        "power": 1224559897,
+        "mystic": 3471,
+        "mystic_rank": 4,
+        "kills": 136444790
+      },
+      {
+        "rank": 6,
+        "name": "Win",
+        "power": 894514132,
+        "mystic": 3264,
+        "mystic_rank": 6,
+        "kills": 286016941
+      },
+      {
+        "rank": 7,
+        "name": "熊熊George",
+        "power": 751274609,
+        "mystic": 2806,
+        "mystic_rank": 17,
+        "kills": 69806869
+      },
+      {
+        "rank": 8,
+        "name": "꒰ঌGemini Pome໒꒱",
+        "power": 744971640,
+        "mystic": 2662,
+        "mystic_rank": 20,
+        "kills": 133350138
+      },
+      {
+        "rank": 9,
+        "name": "Vegeta",
+        "power": 716965869,
+        "mystic": 2281,
+        "mystic_rank": 39,
+        "kills": 34585772
+      },
+      {
+        "rank": 10,
+        "name": "King David דוד",
+        "power": 710367365,
+        "mystic": 3112,
+        "mystic_rank": 10,
+        "kills": 330932897
+      }
+    ]
+  },
+  {
+    "kid": 855,
+    "abbr": "855",
+    "member_count": 60,
+    "top1_mt": 3695,
+    "top3_avg_mt": 3613.6666666666665,
+    "top10_avg_mt": 3291.0,
+    "top10_power": 15150499905,
+    "top10_kills": 2788681286,
+    "players": [
+      {
+        "rank": 1,
+        "name": "Dracfolus",
+        "power": 2764758285,
+        "mystic": 3695,
+        "mystic_rank": 1,
+        "kills": 470578360
+      },
+      {
+        "rank": 2,
+        "name": "Plazmic",
+        "power": 2583288208,
+        "mystic": 3532,
+        "mystic_rank": 4,
+        "kills": 644586992
+      },
+      {
+        "rank": 3,
+        "name": "نونو",
+        "power": 2143793878,
+        "mystic": 3614,
+        "mystic_rank": 2,
+        "kills": 294590891
+      },
+      {
+        "rank": 4,
+        "name": "Jack O Lantern",
+        "power": 1626383198,
+        "mystic": 3401,
+        "mystic_rank": 7,
+        "kills": 124740346
+      },
+      {
+        "rank": 5,
+        "name": "ʰᵉˡˡᵒ ᶦᵐKitty SG",
+        "power": 1213879784,
+        "mystic": 3266,
+        "mystic_rank": 8,
+        "kills": 111022168
+      },
+      {
+        "rank": 6,
+        "name": "CLOS",
+        "power": 1150430968,
+        "mystic": 3131,
+        "mystic_rank": 9,
+        "kills": 123060757
+      },
+      {
+        "rank": 7,
+        "name": "Mr Kusok Joker",
+        "power": 1076242485,
+        "mystic": 2952,
+        "mystic_rank": 12,
+        "kills": 171480244
+      },
+      {
+        "rank": 8,
+        "name": "Metabold",
+        "power": 997615330,
+        "mystic": 3573,
+        "mystic_rank": 3,
+        "kills": 201476709
+      },
+      {
+        "rank": 9,
+        "name": "Duckrescuer",
+        "power": 799888979,
+        "mystic": 2811,
+        "mystic_rank": 20,
+        "kills": 241030843
+      },
+      {
+        "rank": 10,
+        "name": "ALI BABA",
+        "power": 794218790,
+        "mystic": 2935,
+        "mystic_rank": 13,
+        "kills": 406113976
+      }
+    ]
+  },
+  {
+    "kid": 846,
+    "abbr": "RYO",
+    "member_count": 82,
+    "top1_mt": 3226,
+    "top3_avg_mt": 3293.0,
+    "top10_avg_mt": 2723.9,
+    "top10_power": 6885819319,
+    "top10_kills": 1136575291,
+    "players": [
+      {
+        "rank": 1,
+        "name": "NomNomNom",
+        "power": 928572088,
+        "mystic": 3226,
+        "mystic_rank": 5,
+        "kills": 171619531
+      },
+      {
+        "rank": 2,
+        "name": "BabyCorgiPopo",
+        "power": 830653724,
+        "mystic": 3320,
+        "mystic_rank": 4,
+        "kills": 222496927
+      },
+      {
+        "rank": 3,
+        "name": "ღღ27",
+        "power": 808251973,
+        "mystic": 3333,
+        "mystic_rank": 2,
+        "kills": 257277947
+      },
+      {
+        "rank": 4,
+        "name": "°○◌◯xLife◯◌○°",
+        "power": 663193576,
+        "mystic": 3147,
+        "mystic_rank": 8,
+        "kills": 66231668
+      },
+      {
+        "rank": 5,
+        "name": "Abstraction",
+        "power": 659073439,
+        "mystic": 2739,
+        "mystic_rank": 18,
+        "kills": 124028819
+      },
+      {
+        "rank": 6,
+        "name": "BabyBearPopo",
+        "power": 649822224,
+        "mystic": 2507,
+        "mystic_rank": 26,
+        "kills": 103032057
+      },
+      {
+        "rank": 7,
+        "name": "The One",
+        "power": 613614117,
+        "mystic": 2442,
+        "mystic_rank": 29,
+        "kills": 95771466
+      },
+      {
+        "rank": 8,
+        "name": "°○◌◯ᴅᴇʟʟᴀ◯◌○°",
+        "power": 586220250,
+        "mystic": 2616,
+        "mystic_rank": 22,
+        "kills": 61841782
+      },
+      {
+        "rank": 9,
+        "name": "The Afro Man",
+        "power": 578468307,
+        "mystic": 2080,
+        "mystic_rank": 61,
+        "kills": 21784952
+      },
+      {
+        "rank": 10,
+        "name": "ꂵꍟꋪꉓꀎꋪꌩ",
+        "power": 567949621,
+        "mystic": 1829,
+        "mystic_rank": 51,
+        "kills": 12490142
+      }
+    ]
+  },
+  {
+    "kid": 855,
+    "abbr": "DOM",
+    "member_count": 156,
+    "top1_mt": 3424,
+    "top3_avg_mt": 3244.6666666666665,
+    "top10_avg_mt": 2773.0,
+    "top10_power": 8443488935,
+    "top10_kills": 1054315681,
+    "players": [
+      {
+        "rank": 1,
+        "name": "BΣΛᄃΉ",
+        "power": 1755577413,
+        "mystic": 3424,
+        "mystic_rank": 5,
+        "kills": 178118236
+      },
+      {
+        "rank": 2,
+        "name": "FatMike",
+        "power": 1400748396,
+        "mystic": 3406,
+        "mystic_rank": 6,
+        "kills": 136453586
+      },
+      {
+        "rank": 3,
+        "name": "MäX GäS",
+        "power": 867305359,
+        "mystic": 2904,
+        "mystic_rank": 16,
+        "kills": 156389200
+      },
+      {
+        "rank": 4,
+        "name": "The_WaterBoy",
+        "power": 791441509,
+        "mystic": 2700,
+        "mystic_rank": 24,
+        "kills": 133358933
+      },
+      {
+        "rank": 5,
+        "name": "jc2026",
+        "power": 714359111,
+        "mystic": 2970,
+        "mystic_rank": 10,
+        "kills": 119865891
+      },
+      {
+        "rank": 6,
+        "name": "Rusty",
+        "power": 644016723,
+        "mystic": 2627,
+        "mystic_rank": 27,
+        "kills": 52816593
+      },
+      {
+        "rank": 7,
+        "name": "MIƧƧΣƧ BΣΛᄃΉ",
+        "power": 623259305,
+        "mystic": 2607,
+        "mystic_rank": 30,
+        "kills": 72180419
+      },
+      {
+        "rank": 8,
+        "name": "Shadowcasts",
+        "power": 564056877,
+        "mystic": 2370,
+        "mystic_rank": 42,
+        "kills": 93177347
+      },
+      {
+        "rank": 9,
+        "name": "HeckuvaBeetle",
+        "power": 548864472,
+        "mystic": 2544,
+        "mystic_rank": 34,
+        "kills": 60755487
+      },
+      {
+        "rank": 10,
+        "name": "mr_between ᵏʷᵗ",
+        "power": 533859770,
+        "mystic": 2178,
+        "mystic_rank": 61,
+        "kills": 51199989
+      }
+    ]
+  },
+  {
+    "kid": 850,
+    "abbr": "TOP",
+    "member_count": 98,
+    "top1_mt": 3042,
+    "top3_avg_mt": 3031.3333333333335,
+    "top10_avg_mt": 2823.0,
+    "top10_power": 7072496987,
+    "top10_kills": 1210608423,
+    "players": [
+      {
+        "rank": 1,
+        "name": "PowerMeat",
+        "power": 877533534,
+        "mystic": 3042,
+        "mystic_rank": 4,
+        "kills": 128527628
+      },
+      {
+        "rank": 2,
+        "name": "Rook the Dog 亗",
+        "power": 855732440,
+        "mystic": 2874,
+        "mystic_rank": 10,
+        "kills": 66272407
+      },
+      {
+        "rank": 3,
+        "name": "Orionᴹᵒᶠᵒ",
+        "power": 791258620,
+        "mystic": 3178,
+        "mystic_rank": 2,
+        "kills": 151875940
+      },
+      {
+        "rank": 4,
+        "name": "Ogmotol",
+        "power": 788266033,
+        "mystic": 2892,
+        "mystic_rank": 7,
+        "kills": 44480837
+      },
+      {
+        "rank": 5,
+        "name": "Zoey",
+        "power": 701750372,
+        "mystic": 3173,
+        "mystic_rank": 3,
+        "kills": 292740814
+      },
+      {
+        "rank": 6,
+        "name": "Whos your Teddy",
+        "power": 681034035,
+        "mystic": 2629,
+        "mystic_rank": 19,
+        "kills": 64558804
+      },
+      {
+        "rank": 7,
+        "name": "Deppy",
+        "power": 621153009,
+        "mystic": 2436,
+        "mystic_rank": 23,
+        "kills": 117269921
+      },
+      {
+        "rank": 8,
+        "name": "Yertl",
+        "power": 598995242,
+        "mystic": 2741,
+        "mystic_rank": 16,
+        "kills": 93668927
+      },
+      {
+        "rank": 9,
+        "name": "Dionyson",
+        "power": 588343627,
+        "mystic": 2429,
+        "mystic_rank": 24,
+        "kills": 109282700
+      },
+      {
+        "rank": 10,
+        "name": "Toxin",
+        "power": 568430075,
+        "mystic": 2836,
+        "mystic_rank": 6,
+        "kills": 141930445
+      }
+    ]
+  },
+  {
+    "kid": 836,
+    "abbr": "KOR",
+    "member_count": 81,
+    "top1_mt": 3284,
+    "top3_avg_mt": 2972.6666666666665,
+    "top10_avg_mt": 2306.6,
+    "top10_power": 5680994831,
+    "top10_kills": 1038315440,
+    "players": [
+      {
+        "rank": 1,
+        "name": "Persil",
+        "power": 958920700,
+        "mystic": 3284,
+        "mystic_rank": 1,
+        "kills": 203485708
+      },
+      {
+        "rank": 2,
+        "name": "디디씨",
+        "power": 788505645,
+        "mystic": 3076,
+        "mystic_rank": 2,
+        "kills": 214682549
+      },
+      {
+        "rank": 3,
+        "name": "박카스",
+        "power": 545836744,
+        "mystic": 2558,
+        "mystic_rank": 7,
+        "kills": 228581135
+      },
+      {
+        "rank": 4,
+        "name": "maru",
+        "power": 521529096,
+        "mystic": 2218,
+        "mystic_rank": 12,
+        "kills": 30420476
+      },
+      {
+        "rank": 5,
+        "name": "Bnine",
+        "power": 515688252,
+        "mystic": 2124,
+        "mystic_rank": 15,
+        "kills": 48742597
+      },
+      {
+        "rank": 6,
+        "name": "A Shot Chu",
+        "power": 488474396,
+        "mystic": 1868,
+        "mystic_rank": 28,
+        "kills": 49269551
+      },
+      {
+        "rank": 7,
+        "name": "문 어",
+        "power": 475580211,
+        "mystic": 2606,
+        "mystic_rank": 5,
+        "kills": 166166211
+      },
+      {
+        "rank": 8,
+        "name": "류쾌_Honey",
+        "power": 464511238,
+        "mystic": 1542,
+        "mystic_rank": 74,
+        "kills": 19387327
+      },
+      {
+        "rank": 9,
+        "name": "이름없음",
+        "power": 463247490,
+        "mystic": 1601,
+        "mystic_rank": 61,
+        "kills": 34190818
+      },
+      {
+        "rank": 10,
+        "name": "재미니",
+        "power": 458701059,
+        "mystic": 2189,
+        "mystic_rank": 14,
+        "kills": 43389068
+      }
+    ]
+  },
+  {
+    "kid": 841,
+    "abbr": "KOR",
+    "member_count": 98,
+    "top1_mt": 2302,
+    "top3_avg_mt": 2476.3333333333335,
+    "top10_avg_mt": 2470.5,
+    "top10_power": 6373019467,
+    "top10_kills": 1076807795,
+    "players": [
+      {
+        "rank": 1,
+        "name": "＊워뇨｡·͜·｡এ",
+        "power": 828626087,
+        "mystic": 2302,
+        "mystic_rank": 9,
+        "kills": 76163972
+      },
+      {
+        "rank": 2,
+        "name": "＊카피추｡·͜·｡এ",
+        "power": 714770031,
+        "mystic": 2771,
+        "mystic_rank": 2,
+        "kills": 120515059
+      },
+      {
+        "rank": 3,
+        "name": "롸밧~~!",
+        "power": 711266704,
+        "mystic": 2356,
+        "mystic_rank": 7,
+        "kills": 56366462
+      },
+      {
+        "rank": 4,
+        "name": "＊엘리｡·͜·｡এ",
+        "power": 647395945,
+        "mystic": 2914,
+        "mystic_rank": 1,
+        "kills": 209024857
+      },
+      {
+        "rank": 5,
+        "name": "＊슈가｡·͜·｡এ",
+        "power": 640558955,
+        "mystic": 2642,
+        "mystic_rank": 4,
+        "kills": 134444372
+      },
+      {
+        "rank": 6,
+        "name": "＊다소니｡·͜·｡এ",
+        "power": 611109936,
+        "mystic": 2568,
+        "mystic_rank": 5,
+        "kills": 59500118
+      },
+      {
+        "rank": 7,
+        "name": "＊성진우 ｡·͜·｡এ",
+        "power": 602981340,
+        "mystic": 2479,
+        "mystic_rank": 6,
+        "kills": 254892210
+      },
+      {
+        "rank": 8,
+        "name": "＊마루나래｡·͜·｡এ",
+        "power": 553098144,
+        "mystic": 2336,
+        "mystic_rank": 8,
+        "kills": 97578560
+      },
+      {
+        "rank": 9,
+        "name": "＊Xᴇɴᴢ｡·͜·｡এ",
+        "power": 546738825,
+        "mystic": 2182,
+        "mystic_rank": 11,
+        "kills": 31749180
+      },
+      {
+        "rank": 10,
+        "name": "강태공#",
+        "power": 516473500,
+        "mystic": 2155,
+        "mystic_rank": 13,
+        "kills": 36573005
+      }
+    ]
+  },
+  {
+    "kid": 881,
+    "abbr": "WET",
+    "member_count": 98,
+    "top1_mt": 3115,
+    "top3_avg_mt": 2771.0,
+    "top10_avg_mt": 2441.5,
+    "top10_power": 6339232603,
+    "top10_kills": 807800024,
+    "players": [
+      {
+        "rank": 1,
+        "name": "TikleMyPickle",
+        "power": 1147711034,
+        "mystic": 3115,
+        "mystic_rank": 3,
+        "kills": 165079539
+      },
+      {
+        "rank": 2,
+        "name": "MightyMichael",
+        "power": 624155671,
+        "mystic": 2704,
+        "mystic_rank": 4,
+        "kills": 98249870
+      },
+      {
+        "rank": 3,
+        "name": "Broham",
+        "power": 620937727,
+        "mystic": 2494,
+        "mystic_rank": 9,
+        "kills": 45109241
+      },
+      {
+        "rank": 4,
+        "name": "Ryder",
+        "power": 615844586,
+        "mystic": 2556,
+        "mystic_rank": 8,
+        "kills": 186264405
+      },
+      {
+        "rank": 5,
+        "name": "Have a Nice Day",
+        "power": 608986498,
+        "mystic": 2581,
+        "mystic_rank": 7,
+        "kills": 34917562
+      },
+      {
+        "rank": 6,
+        "name": "MoTaxDoom",
+        "power": 567728209,
+        "mystic": 2302,
+        "mystic_rank": 18,
+        "kills": 11978632
+      },
+      {
+        "rank": 7,
+        "name": "TikklyMyKitty",
+        "power": 567671226,
+        "mystic": 2220,
+        "mystic_rank": 24,
+        "kills": 155095638
+      },
+      {
+        "rank": 8,
+        "name": "MR WET",
+        "power": 543687915,
+        "mystic": 2319,
+        "mystic_rank": 17,
+        "kills": 21363276
+      },
+      {
+        "rank": 9,
+        "name": "Berserker",
+        "power": 521415113,
+        "mystic": 1968,
+        "mystic_rank": 34,
+        "kills": 28372388
+      },
+      {
+        "rank": 10,
+        "name": "Spookyjoer",
+        "power": 521094624,
+        "mystic": 2156,
+        "mystic_rank": 24,
+        "kills": 61369473
+      }
+    ]
+  },
+  {
+    "kid": 911,
+    "abbr": "EMP",
+    "member_count": 97,
+    "top1_mt": 2959,
+    "top3_avg_mt": 2672.0,
+    "top10_avg_mt": 2508.4,
+    "top10_power": 6365478297,
+    "top10_kills": 729689846,
+    "players": [
+      {
+        "rank": 1,
+        "name": "༒오로라༒",
+        "power": 870229118,
+        "mystic": 2959,
+        "mystic_rank": 2,
+        "kills": 155338593
+      },
+      {
+        "rank": 2,
+        "name": "SongYY",
+        "power": 764664208,
+        "mystic": 2396,
+        "mystic_rank": 11,
+        "kills": 17700584
+      },
+      {
+        "rank": 3,
+        "name": "༒마녀༒",
+        "power": 673053965,
+        "mystic": 2661,
+        "mystic_rank": 3,
+        "kills": 149191565
+      },
+      {
+        "rank": 4,
+        "name": "JIYU",
+        "power": 661356666,
+        "mystic": 2978,
+        "mystic_rank": 1,
+        "kills": 120661474
+      },
+      {
+        "rank": 5,
+        "name": "Lord777",
+        "power": 602577719,
+        "mystic": 2478,
+        "mystic_rank": 8,
+        "kills": 66031758
+      },
+      {
+        "rank": 6,
+        "name": "부캉이",
+        "power": 574851002,
+        "mystic": 2528,
+        "mystic_rank": 6,
+        "kills": 52913933
+      },
+      {
+        "rank": 7,
+        "name": "༒니나노༒",
+        "power": 573954713,
+        "mystic": 2277,
+        "mystic_rank": 16,
+        "kills": 50664515
+      },
+      {
+        "rank": 8,
+        "name": "༒평강공주༒",
+        "power": 559551589,
+        "mystic": 2319,
+        "mystic_rank": 15,
+        "kills": 33054824
+      },
+      {
+        "rank": 9,
+        "name": "༒민들레༒",
+        "power": 551643396,
+        "mystic": 2329,
+        "mystic_rank": 13,
+        "kills": 60159655
+      },
+      {
+        "rank": 10,
+        "name": "쿠미콩",
+        "power": 533595921,
+        "mystic": 2159,
+        "mystic_rank": 19,
+        "kills": 23972945
+      }
+    ]
+  }
+]

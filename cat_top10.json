@@ -1,0 +1,92 @@
+{
+  "kid": 837,
+  "abbr": "CAT",
+  "member_count": 23,
+  "top1_mt": 3500,
+  "top3_avg_mt": 2829.0,
+  "top10_avg_mt": 2207.6,
+  "top10_power": 6252977238,
+  "top10_kills": 774101205,
+  "players": [
+    {
+      "rank": 1,
+      "name": "Admiral Tinky",
+      "power": 1481512356,
+      "mystic": 3500,
+      "mystic_rank": 2,
+      "kills": 191580590
+    },
+    {
+      "rank": 2,
+      "name": "༒Ɓıŧə Mɛ༒",
+      "power": 663986939,
+      "mystic": 2486,
+      "mystic_rank": 20,
+      "kills": 107362725
+    },
+    {
+      "rank": 3,
+      "name": "MissYouAhmad",
+      "power": 660119157,
+      "mystic": 2501,
+      "mystic_rank": 19,
+      "kills": 69853864
+    },
+    {
+      "rank": 4,
+      "name": "Mewtwo 내맘대로",
+      "power": 548285097,
+      "mystic": 2554,
+      "mystic_rank": 7,
+      "kills": 150781167
+    },
+    {
+      "rank": 5,
+      "name": "Myopic Pupper",
+      "power": 544274080,
+      "mystic": 2252,
+      "mystic_rank": 23,
+      "kills": 76271350
+    },
+    {
+      "rank": 6,
+      "name": "Jacko Lantern",
+      "power": 513195811,
+      "mystic": 1959,
+      "mystic_rank": 20,
+      "kills": 9941677
+    },
+    {
+      "rank": 7,
+      "name": "Gelado",
+      "power": 502186200,
+      "mystic": 1713,
+      "mystic_rank": 35,
+      "kills": 24572983
+    },
+    {
+      "rank": 8,
+      "name": "0DIN",
+      "power": 451549282,
+      "mystic": 1694,
+      "mystic_rank": 57,
+      "kills": 25054645
+    },
+    {
+      "rank": 9,
+      "name": "Kulitzo",
+      "power": 447675548,
+      "mystic": 1741,
+      "mystic_rank": 46,
+      "kills": 46254798
+    },
+    {
+      "rank": 10,
+      "name": "Captain Levi",
+      "power": 440192768,
+      "mystic": 1676,
+      "mystic_rank": 127,
+      "kills": 72427406
+    }
+  ]
+}
