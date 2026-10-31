@@ -1,7 +1,9 @@
 # Kingshot 神秘の占い屋 X（旧Twitter）ポスト文案集
 
 > 元記事: [神秘の占い屋 完全攻略ガイド](https://s8933935-ops.github.io/kingshot-bot/docs/guides/kingshot_mystic_divination_complete_guide.html)
-> 画像アセット: `docs/guides/images/mystic_divination_x_hook_1.jpg` (キャラ忠実再現), `docs/guides/images/mystic_divination_x_hook_2.jpg` (エピック構図)
+> 画像アセット:
+> - `docs/guides/images/mystic_divination_x_hook_chibi_16x9.jpg` (キャラ忠実再現・正面16:9)
+> - `docs/guides/images/mystic_divination_x_hook_action_16x9.jpg` (キャラ忠実再現・ダイナミック構図16:9)
 
 ---
 
