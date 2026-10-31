@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【Kingshot】神秘の占い屋（占いの館）完全攻略ガイド - 期待値・確率の真相・課金効率・ゴリポン流鉄の掟</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --bg-primary: #0a0e17;
+      --bg-secondary: #121826;
+      --bg-card: rgba(23, 31, 50, 0.85);
+      --bg-card-hover: rgba(30, 41, 67, 0.95);
+      --border-color: rgba(212, 175, 55, 0.25);
+      --border-glow: rgba(212, 175, 55, 0.5);
+      --gold-border: rgba(245, 158, 11, 0.45);
+      --gold-primary: #f59e0b;
+      --gold-light: #fef08a;
+      --gold-dark: #b45309;
+      --purple-accent: #a855f7;
+      --purple-glow: rgba(168, 85, 247, 0.35);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-highlight: #38bdf8;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.75;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 60%, rgba(245, 158, 11, 0.08) 0%, transparent 45%);
+      background-attachment: fixed;
+    }
+
+    /* Container & Layout */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+    }
+
+    /* Header & Hero */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 60px 20px 40px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 300px;
+      background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.15), transparent 70%);
+      pointer-events: none;
+    }
+
+    .badge-event {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: rgba(168, 85, 247, 0.2);
+      border: 1px solid var(--purple-accent);
+      color: #e9d5ff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 18px;
+    }
+
+    h1.main-title {
+      font-family: 'Cinzel', 'Noto Sans JP', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fffbeb 0%, #fbbf24 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 14px;
+      letter-spacing: 0.02em;
+      text-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+    }
+
+    .subtitle {
+      font-size: 1.15rem;
+      color: #cbd5e1;
+      max-width: 800px;
+      margin: 0 auto 24px;
+      font-weight: 500;
+    }
+
+    .meta-info {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    /* Section Styling */
+    section {
+      margin-bottom: 64px;
+      scroll-margin-top: 80px;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title i {
+      color: var(--gold-primary);
+    }
+
+    /* Cards & Glassmorphism */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 28px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: var(--border-glow);
+    }
+
+    /* Dialogue & Character Speech Bubbles */
+    .dialogue-box {
+      display: flex;
+      gap: 20px;
+      margin: 28px 0;
+      align-items: flex-start;
+    }
+
+    .dialogue-avatar {
+      flex-shrink: 0;
+      width: 68px;
+      text-align: center;
+    }
+
+    .dialogue-avatar .avatar-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid var(--gold-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      background: #1e293b;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    .dialogue-avatar .avatar-name {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-top: 6px;
+    }
+
+    .dialogue-bubble {
+      flex-grow: 1;
+      position: relative;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 18px 22px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+
+    .dialogue-bubble::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: -10px;
+      border-width: 6px 10px 6px 0;
+      border-style: solid;
+      border-color: transparent #1e293b transparent transparent;
+    }
+
+    .dialogue-box.goripon .dialogue-avatar .avatar-img {
+      border-color: #f97316;
+      background: linear-gradient(135deg, #7c2d12, #1e293b);
+    }
+    .dialogue-box.goripon .dialogue-bubble {
+      border-left: 3px solid #f97316;
+    }
+
+    .dialogue-box.witch .dialogue-avatar .avatar-img {
+      border-color: var(--purple-accent);
+      background: linear-gradient(135deg, #4c1d95, #1e293b);
+    }
+    .dialogue-box.witch .dialogue-bubble {
+      border-left: 3px solid var(--purple-accent);
+    }
+
+    /* Comparison Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
+      }
+      h1.main-title {
+        font-size: 1.8rem;
+      }
+      .dialogue-box {
+        gap: 12px;
+      }
+      .dialogue-avatar {
+        width: 52px;
+      }
+      .dialogue-avatar .avatar-img {
+        width: 48px;
+        height: 48px;
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      margin: 20px 0;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background: rgba(30, 41, 59, 0.9);
+      color: var(--gold-light);
+      padding: 14px 18px;
+      font-weight: 700;
+      border-bottom: 2px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 13px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(18, 24, 38, 0.7);
+    }
+
+    tr:hover td {
+      background: rgba(30, 41, 67, 0.8);
+    }
+
+    .highlight-row td {
+      background: rgba(245, 158, 11, 0.12) !important;
+      font-weight: 700;
+      color: #fef08a;
+    }
+
+    /* Image Gallery Cards */
+    .image-showcase {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .image-card {
+      background: #151d30;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .image-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.5);
+      border-color: var(--border-glow);
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+    }
+
+    .image-card .caption {
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .image-card .caption strong {
+      display: block;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    /* Key Insights Banner */
+    .golden-rule {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(180, 83, 9, 0.25) 100%);
+      border: 2px solid var(--gold-primary);
+      border-radius: 14px;
+      padding: 24px;
+      margin: 30px 0;
+      position: relative;
+    }
+
+    .golden-rule::before {
+      content: '👑 ゴリポン流・鉄の掟';
+      position: absolute;
+      top: -14px;
+      left: 24px;
+      background: var(--gold-primary);
+      color: #000;
+      font-weight: 900;
+      font-size: 0.82rem;
+      padding: 2px 12px;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Charts Container */
+    .chart-box {
+      position: relative;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin: 20px 0;
+    }
+
+    /* Badges */
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+    .tag-danger { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid #ef4444; }
+    .tag-best { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid #10b981; }
+    .tag-warn { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid #f59e0b; }
+
+    /* Sticky Quick Nav */
+    .quick-nav {
+      position: sticky;
+      top: 16px;
+      z-index: 100;
+      background: rgba(18, 24, 38, 0.95);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin-bottom: 32px;
+      backdrop-filter: blur(8px);
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .quick-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .quick-nav a:hover, .quick-nav a.active {
+      color: var(--gold-light);
+      background: rgba(245, 158, 11, 0.15);
+    }
+
+    /* Modal for Image Preview */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .modal img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.8);
+      border: 1px solid var(--gold-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Quick Nav -->
+  <div class="container" style="padding-bottom: 0;">
+    <nav class="quick-nav">
+      <a href="#overview"><i data-lucide="sparkles"></i> 概要</a>
+      <a href="#rules"><i data-lucide="book-open"></i> 基本仕様</a>
+      <a href="#odds"><i data-lucide="help-circle"></i> 確率の真相 (1.790% vs 10%)</a>
+      <a href="#expected-values"><i data-lucide="trending-up"></i> 期待値解析</a>
+      <a href="#packs"><i data-lucide="shopping-bag"></i> 課金パック効率</a>
+      <a href="#goripon-rules"><i data-lucide="shield-alert"></i> ゴリポン流・鉄の掟</a>
+      <a href="#recommendations"><i data-lucide="award"></i> おすすめ報酬</a>
+      <a href="#faq"><i data-lucide="message-circle"></i> FAQ</a>
+    </nav>
+  </div>
+
+  <header class="hero">
+    <div class="container">
+      <div class="badge-event">
+        <i data-lucide="flame"></i> KINGSHOT 定期開催イベント完全攻略
+      </div>
+      <h1 class="main-title">神秘の占い屋（占いの館）完全攻略ガイド</h1>
+      <p class="subtitle">
+        確率表記の真相（1.790% vs 10%）、全戦略の期待値比較、800円パックの圧倒的コスパ、そして実戦で勝率を最大化する「ゴリポン流・鉄の掟」まで徹底解説！
+      </p>
+      <div class="meta-info">
+        <span><i data-lucide="calendar"></i> 最終更新: 2026年10月31日</span>
+        <span><i data-lucide="check-circle-2" style="color: #10b981;"></i> Claude Keiba Gate 独立監査済</span>
+        <span><i data-lucide="user"></i> 監修: ゴリポン × AI共同戦略室</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 1. はじめに -->
+    <section id="overview">
+      <h2 class="section-title"><i data-lucide="sparkles"></i> 1. はじめに：神秘の占い屋（占いの館）とは？</h2>
+      
+      <div class="card">
+        <p style="font-size: 1.1rem; margin-bottom: 20px;">
+          『Kingshot』で定期開催される「神秘の占い屋（通称：占いの館）」は、一言で言えば<strong style="color: var(--gold-light);">「当たり景品だらけのテーブルから、自分で選んだ最高の景品を格安で狙い撃ちできる」</strong>屈指の超お得イベントです。
+        </p>
+
+        <!-- メイン盤面キービジュアル（高品質デフォルメアート ＆ リッチテロップバナー） -->
+        <div style="text-align: center; margin: 32px 0;">
+          <div style="position: relative; display: inline-block; max-width: 440px; width: 100%; border-radius: 18px; overflow: hidden; border: 2px solid var(--gold-border); box-shadow: 0 16px 40px rgba(168, 85, 247, 0.4); cursor: pointer;" onclick="openModal('images/mystic_divination_main_stylized.png', '神秘の占い屋 メインキービジュアル（赤髪の魔女と黄金・10枚の水晶カード）')">
+            
+            <img src="images/mystic_divination_main_stylized.png" alt="神秘の占い屋 メインキービジュアル" style="width: 100%; display: block; transition: transform 0.4s ease;">
+            
+            <!-- 上部バッジ：公式イベント完全攻略 -->
+            <div style="position: absolute; top: 14px; left: 14px; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--gold-border); border-radius: 30px; padding: 4px 14px; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.4);">
+              <span style="color: #fbbf24; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.05em;">👑 公式イベント徹底攻略</span>
+            </div>
+
+            <!-- 下部リッチテロップ（グラスモーフィズム） -->
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.85) 25%, rgba(15, 23, 42, 0.95) 100%); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 22px 18px 18px 18px; border-top: 1px solid rgba(245, 158, 11, 0.25); text-align: center;">
+              
+              <div style="display: inline-block; background: linear-gradient(90deg, #f59e0b, #fbbf24); color: #1e1b4b; font-size: 0.75rem; font-weight: 800; padding: 2px 10px; border-radius: 4px; margin-bottom: 6px; letter-spacing: 0.08em; text-transform: uppercase;">
+                KINGSHOT SPECIAL GUIDE
+              </div>
+              
+              <h3 style="font-size: 1.35rem; font-weight: 800; color: #ffffff; text-shadow: 0 2px 10px rgba(0,0,0,0.8), 0 0 20px rgba(245, 158, 11, 0.4); margin-bottom: 6px; letter-spacing: 0.03em;">
+                【完全網羅】神秘の占い屋 徹底攻略
+              </h3>
+              
+              <p style="font-size: 0.86rem; color: #fde68a; font-weight: 600; text-shadow: 0 1px 4px rgba(0,0,0,0.9); margin: 0; letter-spacing: 0.02em;">
+                数理モデルが導く“引き切り”の真実 ＆ 祈願報酬の最適解
+              </p>
+            </div>
+
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">▲ タップでキービジュアルを高画質全画面表示</p>
+        </div>
+
+        <div class="grid-3">
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
+            <div style="color: var(--gold-primary); font-size: 1.5rem; margin-bottom: 8px;"><i data-lucide="target"></i></div>
+            <h4 style="color: var(--gold-light); margin-bottom: 6px;">① 欲しいアイテムを1つ選ぶ</h4>
+            <p style="font-size: 0.88rem; color: var(--text-muted);">
+              最初に実機仕様の4種（鍛造ハンマー、黄金、汎用加速、ダイヤ）から一番欲しいアイテムを「祈願報酬」に設定。
+            </p>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
+            <div style="color: var(--purple-accent); font-size: 1.5rem; margin-bottom: 8px;"><i data-lucide="layers"></i></div>
+            <h4 style="color: var(--gold-light); margin-bottom: 6px;">② 10枚の水晶を開封する</h4>
+            <p style="font-size: 0.88rem; color: var(--text-muted);">
+              「祈願報酬1個」と「当たりアイテムを含む通常枠9個」で構成。約半数が有用アイテムという有利な状態でスタート。
+            </p>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);">
+            <div style="color: var(--success); font-size: 1.5rem; margin-bottom: 8px;"><i data-lucide="gift"></i></div>
+            <h4 style="color: var(--gold-light); margin-bottom: 6px;">③ 無料リセットで次へ</h4>
+            <p style="font-size: 0.88rem; color: var(--text-muted);">
+              見事、祈願報酬を引き当てると<strong style="color: #6ee7b7;">無料で次の盤面に進む権利</strong>を獲得！このサイクルを最大化するのが目的です。
+            </p>
+          </div>
+        </div>
+
+        <!-- キャラ会話 -->
+        <div class="dialogue-box witch">
+          <div class="dialogue-avatar">
+            <div class="avatar-img">🔮</div>
+            <div class="avatar-name">占い師</div>
+          </div>
+          <div class="dialogue-bubble">
+            「ふふふ…我が水晶を覗き込むのですね。10枚の水晶の中には、あなたが設定した至高の祈願報酬が必ず1つ眠っています。運が良ければ1枚目で手に入り、すぐに新しい盤面へと進めますよ。」
+          </div>
+        </div>
+
+        <div class="dialogue-box goripon">
+          <div class="dialogue-avatar">
+            <div class="avatar-img">🦍</div>
+            <div class="avatar-name">ゴリポン</div>
+          </div>
+          <div class="dialogue-bubble">
+            「だが甘い言葉に騙されるな！このイベントは<strong>『いつリセットするか』『天井まで引き切るか』の判断一つで消費チケットが何十枚も変わる</strong>超シビアな数学の世界だ。まずは仕様とコスト推移を頭に叩き込め！」
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. 基本仕様と水晶開封のメカニズム -->
+    <section id="rules">
+      <h2 class="section-title"><i data-lucide="book-open"></i> 2. 基本仕様と水晶開封のメカニズム</h2>
+
+      <div class="card">
+        <h3 style="color: var(--gold-light); margin-bottom: 14px;">盤面構成と消費チケット推移</h3>
+        <p style="margin-bottom: 16px;">
+          盤面を開けるごとに、次回開封に必要なチケット（水晶）の枚数は段階的に跳ね上がります。以下のテーブルは、現行環境（天井116枚モデル）のコスト仕様です。
+        </p>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>開封回数</th>
+                <th>必要チケット数</th>
+                <th>累計消費チケット</th>
+                <th>特徴・立ち回り上の意味</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1回目</td><td>1枚</td><td>1枚</td><td><span class="tag tag-best">超格安</span> 誰でも引くべき</td></tr>
+              <tr><td>2回目</td><td>2枚</td><td>3枚</td><td>コスパ良好</td></tr>
+              <tr><td>3回目</td><td>4枚</td><td>7枚</td><td>まだ手頃</td></tr>
+              <tr><td>4回目</td><td>6枚</td><td>13枚</td><td>低コスト帯の上限</td></tr>
+              <tr class="highlight-row"><td>5回目</td><td>8枚</td><td>21枚</td><td><span class="tag tag-warn">分岐点</span> リセット検討ライン</td></tr>
+              <tr><td>6回目</td><td>11枚</td><td>32枚</td><td>コストが急激に重くなる</td></tr>
+              <tr><td>7回目</td><td>15枚</td><td>47枚</td><td>完走目的以外は危険</td></tr>
+              <tr><td>8回目</td><td>20枚</td><td>67枚</td><td>完走覚悟ゾーン</td></tr>
+              <tr><td>9回目</td><td>24枚</td><td>91枚</td><td>天井目前（ここでやめるのは絶対NG）</td></tr>
+              <tr style="background: rgba(16, 185, 129, 0.15); font-weight: 700;"><td>10回目</td><td>25枚</td><td>116枚</td><td><span class="tag tag-best">天井確定</span> 祈願報酬 100% 獲得</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- コスト推移グラフ -->
+        <div class="chart-box">
+          <canvas id="costChart" height="120"></canvas>
+        </div>
+
+        <div class="grid-2" style="margin-top: 24px;">
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 10px; border-left: 4px solid var(--danger);">
+            <h4 style="color: #fca5a5; margin-bottom: 8px;"><i data-lucide="alert-triangle"></i> 途中手動リセット（6枚）の罠</h4>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+              祈願報酬を引かずに途中でリセットする場合、<strong>「リセット費用としてチケット6枚」</strong>を没収されます。この6枚の手数料が、リセット戦法の期待値を大きく押し下げます。
+            </p>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 10px; border-left: 4px solid var(--purple-accent);">
+            <h4 style="color: #d8b4fe; margin-bottom: 8px;"><i data-lucide="zap"></i> 連続倍率（2x / 4x / 5x）は加算重複！</h4>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+              Century Games公式FAQ準拠：倍率水晶を連続で引いた場合、効果は乗算ではなく<strong>「加算」</strong>されます。<br>
+              （例：2倍 ➔ 4倍 ＝ <strong>6倍（2＋4）</strong>、2倍 ➔ 5倍 ＝ <strong>7倍</strong>）
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. 確率の真相：均等10%説 vs 重み付き1.790%説 -->
+    <section id="odds">
+      <h2 class="section-title"><i data-lucide="help-circle"></i> 3. 確率の真相：均等10%説 vs 重み付き1.790%説</h2>
+
+      <div class="card">
+        <p style="margin-bottom: 20px;">
+          神秘の占い屋の確率に関しては、プレイヤーコミュニティや攻略サイトの間で大きく異なる2つの見解が存在します。客観的事実とゲーム内データからその真相を解剖します。
+        </p>
+
+        <!-- 実際のゲーム内確率スクショ・プール全一覧 -->
+        <h3 style="color: var(--gold-light); margin: 28px 0 14px;"><i data-lucide="image"></i> ゲーム内公式画面・確率＆景品プール全一覧</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">
+          ゲーム内の「！」アイコンおよび虫眼鏡アイコンから確認できる公式詳細画面です（クリックで拡大表示可能）。
+        </p>
+
+        <div class="image-showcase">
+          <div class="image-card">
+            <img src="images/user_odds_pool1.png" alt="ゲーム内確率表記 1.790%" onclick="openModal(this.src)">
+            <div class="caption">
+              <strong>① 祈願報酬 1.790% ＆ プールI</strong>
+              画面上に明記された祈願報酬の基礎確率とプールIのアイテム。
+            </div>
+          </div>
+          <div class="image-card">
+            <img src="images/user_odds_pool2.png" alt="景品プールII 詳細" onclick="openModal(this.src)">
+            <div class="caption">
+              <strong>② 景品プールII（倍率水晶枠）</strong>
+              2x/4x/5xなどの倍率水晶が含まれる重要プール。
+            </div>
+          </div>
+          <div class="image-card">
+            <img src="images/user_odds_pool3.png" alt="景品プールIII 詳細" onclick="openModal(this.src)">
+            <div class="caption">
+              <strong>③ 景品プールIII（育成素材枠）</strong>
+              装備強化・特装パーツなどのサブ当たり枠。
+            </div>
+          </div>
+          <div class="image-card">
+            <img src="images/user_odds_pool4.png" alt="景品プールIV 詳細" onclick="openModal(this.src)">
+            <div class="caption">
+              <strong>④ 景品プールIV（時短・加速枠）</strong>
+              汎用加速・研究加速などの育成時短アイテム。
+            </div>
+          </div>
+          <div class="image-card">
+            <img src="images/user_odds_pool5_6.png" alt="景品プールV & VI 詳細" onclick="openModal(this.src)">
+            <div class="caption">
+              <strong>⑤ 景品プールV・VI（資源・消耗品枠）</strong>
+              木材・食料・鉄などの基本資源や通常募集アイテム。
+            </div>
+          </div>
+          <div class="image-card">
+            <img src="images/user_wish_rewards_grid.png" alt="祈願報酬ラインナップ" onclick="openModal(this.src)">
+            <div class="caption">
+              <strong>⑥ 祈願報酬選択グリッド</strong>
+              プレイヤーが任意で1点指定できる至高の報酬一覧。
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 24px;">
+          <!-- 仮説A -->
+          <div style="background: rgba(15, 23, 42, 0.7); padding: 22px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+              <h3 style="color: #93c5fd;">【仮説A】均等残数モデル</h3>
+              <span class="tag" style="background: rgba(59, 130, 246, 0.2); color: #bfdbfe; border: 1px solid #3b82f6;">大手攻略サイト説</span>
+            </div>
+            <p style="font-size: 0.92rem; color: #cbd5e1; margin-bottom: 12px;">
+              10枚の裏にアイテムがあらかじめランダムに配置されており、めくるごとに残数から均等に引かれるとする考え方。
+            </p>
+            <ul style="font-size: 0.85rem; color: var(--text-muted); padding-left: 20px; line-height: 1.6;">
+              <li>1回目：1/10 (10.0%)</li>
+              <li>2回目：1/9 (11.1%)</li>
+              <li>5回目：1/6 (16.7%)</li>
+              <li>10回目：1/1 (100.0%)</li>
+            </ul>
+            <div style="margin-top: 14px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 6px; font-size: 0.82rem; color: #fca5a5;">
+              ⚠️ 直感的だが、ゲーム内の「1.790%」という公式表記と矛盾する。
+            </div>
+          </div>
+
+          <!-- 仮説B -->
+          <div style="background: rgba(15, 23, 42, 0.7); padding: 22px; border-radius: 12px; border: 1px solid var(--purple-accent);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+              <h3 style="color: #d8b4fe;">【仮説B】重み付き抽選モデル</h3>
+              <span class="tag" style="background: rgba(168, 85, 247, 0.2); color: #e9d5ff; border: 1px solid var(--purple-accent);">ゲーム内公式表記説</span>
+            </div>
+            <p style="font-size: 0.92rem; color: #cbd5e1; margin-bottom: 12px;">
+              タップした瞬間に各アイテムの「重み（Weight）」に基づいて抽選されるモデル。祈願報酬の基礎ウェイトは極めて低く設定。
+            </p>
+            <ul style="font-size: 0.85rem; color: var(--text-muted); padding-left: 20px; line-height: 1.6;">
+              <li>初回の祈願報酬当選率はわずか <strong>1.790%</strong></li>
+              <li>前半は低ランク報酬が優先的に排出</li>
+              <li>6〜10枚目に向けて条件付き確率が急上昇</li>
+              <li>海外Redditやユーザー実測「後半偏重」と完全に合致</li>
+            </ul>
+            <div style="margin-top: 14px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 6px; font-size: 0.82rem; color: #6ee7b7;">
+              ✅ 実際のプレイヤー体験・公式ヘルプ数値と最も整合する有力仮説。
+            </div>
+          </div>
+        </div>
+
+        <div class="dialogue-box goripon" style="margin-top: 24px;">
+          <div class="dialogue-avatar">
+            <div class="avatar-img">🦍</div>
+            <div class="avatar-name">ゴリポン</div>
+          </div>
+          <div class="dialogue-bubble">
+            「ここが最重要だ！大手サイトの『初回10%』を鵜呑みにして『5回引けば50%で出るっしょｗ』と挑むと、1.790%の重み付き抽選に阻まれて痛い目を見る。<strong>『前半ではまず出ない、後半で仕留めるのが基本』</strong>と心得るべし！」
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. 【独自解析】どの戦略が一番お得？期待値の徹底比較 -->
+    <section id="expected-values">
+      <h2 class="section-title"><i data-lucide="trending-up"></i> 4. 【独自解析】どの戦略が一番お得？期待値の徹底比較</h2>
+
+      <div class="card">
+        <p style="margin-bottom: 20px;">
+          「途中でリセットした方が得なのか？それとも天井まで引くべきか？」<br>
+          すべてのリセット戦略における<strong>景品1個あたりの平均消費チケット数（期待値）</strong>を比較検証しました。
+        </p>
+
+        <!-- 期待値比較チャート -->
+        <div class="chart-box">
+          <canvas id="strategyChart" height="130"></canvas>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>戦略（当たりが出なければリセット）</th>
+                <th>平均消費コスト（旧96枚モデル試算）</th>
+                <th>平均消費コスト（現行116枚厳密計算）</th>
+                <th>評価・特徴</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1回目でリセット</td><td>145.0枚</td><td>約170枚</td><td><span class="tag tag-danger">論外</span> 最悪の効率</td></tr>
+              <tr><td>2回目でリセット</td><td>70.0枚</td><td>約85枚</td><td>極めて非効率</td></tr>
+              <tr><td>3回目でリセット</td><td>47.7枚</td><td>約58枚</td><td>割高</td></tr>
+              <tr><td>4回目でリセット</td><td>35.0枚</td><td>約43枚</td><td>改善傾向</td></tr>
+              <tr class="highlight-row"><td>5回目でリセット</td><td>29.2枚</td><td>36.0枚</td><td><span class="tag tag-warn">理論値</span> 計算上の最安値</td></tr>
+              <tr><td>6回目でリセット</td><td>29.3枚</td><td>36.8枚</td><td>5回目とほぼ同等</td></tr>
+              <tr><td>7回目でリセット</td><td>30.9枚</td><td>38.2枚</td><td>コスト悪化</td></tr>
+              <tr><td>8回目でリセット</td><td>31.9枚</td><td>39.1枚</td><td>完走した方がマシ</td></tr>
+              <tr><td>9回目でリセット</td><td>32.3枚</td><td>39.5枚</td><td><span class="tag tag-danger">大損</span> ここでやめるのは最悪</td></tr>
+              <tr style="background: rgba(16, 185, 129, 0.2); font-weight: 900; color: #a7f3d0;">
+                <td><strong>天井まで引く（引き切り）</strong></td>
+                <td><strong>31.4枚</strong></td>
+                <td><strong>39.8枚</strong></td>
+                <td><span class="tag tag-best">総合第1位</span> 圧倒的安定＆高リターン</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="golden-rule">
+          <h3 style="color: var(--gold-light); margin-bottom: 10px;">「5回目リセット」vs「天井引き切り」わずか数枚差の真実</h3>
+          <p style="font-size: 1.05rem; line-height: 1.7; color: #fef3c7;">
+            計算上の最安値（36.0枚）と、天井まで引き切る場合（39.8枚）の差は、<strong>わずか【3.8枚】</strong>（旧仕様では2.2枚）しかありません。<br>
+            このたった3〜4枚のために「5回目リセット」を狙うと、以下の<strong>2大リスク</strong>に直面します：
+          </p>
+          <ul style="margin: 12px 0 12px 24px; color: #fde68a;">
+            <li><strong>次回無料リセットの権利を自らドブに捨てることになる</strong>（手動リセット代6枚の累積）。</li>
+            <li><strong>沼にハマった場合、天井を大幅に超えるチケットを溶かす危険がある</strong>。</li>
+          </ul>
+          <p style="font-size: 0.95rem; color: #cbd5e1;">
+            さらに、ゲーム内表記通りの<strong>重み付きモデル（仮説B：1.790%）</strong>では、前半で当たる確率が低いため5回リセットのコストはさらに悪化します。したがって、<strong>「天井まで引き切る」のが最も賢明かつ安定した王道戦略</strong>です！
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. どの課金パックが一番効率いいのか？ -->
+    <section id="packs">
+      <h2 class="section-title"><i data-lucide="shopping-bag"></i> 5. どの課金パックが一番効率いいのか？実質コスト比較</h2>
+
+      <div class="card">
+        <p style="margin-bottom: 20px;">
+          ストアで販売されている課金パックのチケット付与数と、景品獲得期待値を掛け合わせ、<strong>「景品1個あたりの実質円建てコスト」</strong>を算出しました。
+        </p>
+
+        <div class="grid-3">
+          <!-- 1位 -->
+          <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(15, 23, 42, 0.8)); padding: 24px; border-radius: 12px; border: 2px solid var(--gold-primary); text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 6px;">🥇</div>
+            <div class="tag tag-best" style="margin-bottom: 10px;">コスパ第1位</div>
+            <h3 style="color: var(--gold-light); font-size: 1.5rem; margin-bottom: 8px;">800円 パック</h3>
+            <div style="font-size: 2rem; font-weight: 900; color: #34d399; margin-bottom: 10px;">約503円</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">景品1個あたりの実質価格</p>
+            <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; color: #fef08a;">
+              圧倒的最安！毎日コツコツ購入が最強！
+            </div>
+          </div>
+
+          <!-- 2位 -->
+          <div style="background: rgba(15, 23, 42, 0.7); padding: 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 6px;">🥈</div>
+            <div class="tag" style="background: rgba(255,255,255,0.1); color: #cbd5e1; margin-bottom: 10px;">コスパ第2位</div>
+            <h3 style="color: #cbd5e1; font-size: 1.5rem; margin-bottom: 8px;">1,600円 パック</h3>
+            <div style="font-size: 2rem; font-weight: 900; color: #93c5fd; margin-bottom: 10px;">約559円</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">景品1個あたりの実質価格</p>
+            <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; color: var(--text-muted);">
+              標準的なレート。追加で欲しい時の選択肢。
+            </div>
+          </div>
+
+          <!-- 3位 -->
+          <div style="background: rgba(15, 23, 42, 0.7); padding: 24px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); text-align: center;">
+            <div style="font-size: 2rem; margin-bottom: 6px;">🥉</div>
+            <div class="tag tag-warn" style="margin-bottom: 10px;">コスパ第3位</div>
+            <h3 style="color: #cbd5e1; font-size: 1.5rem; margin-bottom: 8px;">3,200円 パック</h3>
+            <div style="font-size: 2rem; font-weight: 900; color: #fca5a5; margin-bottom: 10px;">約625円</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">景品1個あたりの実質価格</p>
+            <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; color: #fca5a5;">
+              割高。まとめ買いは推奨しない。
+            </div>
+          </div>
+        </div>
+
+        <div class="dialogue-box goripon" style="margin-top: 24px;">
+          <div class="dialogue-avatar">
+            <div class="avatar-img">🦍</div>
+            <div class="avatar-name">ゴリポン</div>
+          </div>
+          <div class="dialogue-bubble">
+            「ソシャゲあるあるの<strong>『高いパックほどお得』はこのイベントには通用しない！</strong> 800円デイリーパックが圧倒的に最強だ。何万円も一気に突っ込むな、毎日800円をコツコツ買え！」
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 6. 【実戦編】ゴリポン流・鉄の掟 -->
+    <section id="goripon-rules">
+      <h2 class="section-title"><i data-lucide="shield-alert"></i> 6. 【実戦編】状況判断で効率を最大化する「ゴリポン流・鉄の掟」</h2>
+
+      <div class="card">
+        <p style="margin-bottom: 20px;">
+          基本は「天井引き切り」ですが、盤面の状況に応じて立ち回りを変えることで、さらに無駄なチケット消費を削ぎ落とせます。
+        </p>
+
+        <div class="grid-2">
+          <!-- 状況1 -->
+          <div style="background: rgba(15, 23, 42, 0.7); padding: 20px; border-radius: 12px; border-left: 4px solid #3b82f6;">
+            <h4 style="color: #93c5fd; margin-bottom: 10px;"><i data-lucide="filter"></i> 状況①：前半で当たりが出尽くした場合</h4>
+            <p style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+              5枚目までにサブプールの良品（高倍率、加速等）が引け、残りが木材や低ランク素材だけになった場合：<br>
+              ➔ <strong style="color: #fbbf24;">「5回目手動リセット（6枚）」に切り替え！</strong><br>
+              ゴミカードのために終盤の高いチケット（15〜25枚）を払うのは愚の骨頂。次の盤面へ進もう。
+            </p>
+          </div>
+
+          <!-- 状況2 -->
+          <div style="background: rgba(15, 23, 42, 0.7); padding: 20px; border-radius: 12px; border-left: 4px solid var(--purple-accent);">
+            <h4 style="color: #d8b4fe; margin-bottom: 10px;"><i data-lucide="zap"></i> 状況②：倍率カード（2x / 4x / 5x）の明暗</h4>
+            <p style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+              <strong>【超大チャンス】</strong>祈願報酬の前に倍率が出た！<br>
+              ➔ 迷わず続行！祈願報酬が2〜5倍になる最大のリターン。<br><br>
+              <strong>【罠！】</strong>祈願報酬を引いた後に倍率が残った！<br>
+              ➔ <strong style="color: #f87171;">即座に無料リセット！</strong> 価値の低い通常報酬を倍にするために高額チケットを払うな！
+            </p>
+          </div>
+        </div>
+
+        <div class="golden-rule" style="margin-top: 30px;">
+          <h3 style="color: var(--gold-light); font-size: 1.25rem; margin-bottom: 12px;">損益分岐点の鉄則：9枚目まで来たら天井直行！</h3>
+          <p style="font-size: 1rem; color: #fef3c7; line-height: 1.7;">
+            <strong>「6〜8回目で倍率カードを空振ったら、未練を捨ててリセットボタン！それがチケット節約の絶対条件！」</strong><br>
+            <strong>「ただし、9回目まで来てしまったら話は別！最初からやり直す（期待値約36枚）より、残り25枚で天井を叩く方が確実に安い！」</strong>
+          </p>
+          <div style="margin-top: 14px; font-size: 0.88rem; color: #cbd5e1; background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px;">
+            💡 累計91枚投資した後の残り1回は、<strong>100%確実に本命が取れる確定枠（25枚）</strong>です。ここで悔しがってリセットするのは数学的に大損です。
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. おすすめ祈願報酬の選び方 -->
+    <section id="recommendations">
+      <h2 class="section-title"><i data-lucide="award"></i> 7. おすすめ祈願報酬の選び方</h2>
+
+      <div class="card">
+        <p style="margin-bottom: 20px;">
+          神秘の占い屋で選択できる祈願報酬は、実機仕様において<strong>【以下の4種類のみ】</strong>に限定されています。<br>
+          進行状況やプレイスタイルに合わせて、最もリターンが大きいアイテムをセットしましょう。
+        </p>
+
+        <!-- 実機祈願報酬UIプレビュー -->
+        <div style="text-align: center; margin: 25px 0;">
+          <img src="images/wish_reward_real_selection.png" alt="実機祈願報酬選択UI（4種）" style="max-width: 100%; width: 560px; border-radius: 12px; border: 2px solid var(--gold-border); box-shadow: 0 8px 24px rgba(0,0,0,0.5); cursor: pointer;" onclick="openModal(this.src, '実機の祈願報酬選択画面（黄金130 / 鍛造ハンマー18 / 汎用加速105h / ダイヤ35K）')">
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 8px;">▲ 実機の祈願報酬選択画面（タップで拡大）</p>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>優先度</th>
+                <th>対象アイテム</th>
+                <th>数量</th>
+                <th>おすすめ対象プレイヤー</th>
+                <th>選定理由・コスパ評価</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background: rgba(245, 158, 11, 0.15);">
+                <td><strong style="color: #fbbf24; font-size: 1.1rem;">S+ランク<br>（最優先①）</strong></td>
+                <td><strong>鍛造ハンマー<br>（マスターハンマー）</strong></td>
+                <td><strong style="color: var(--gold-light); font-size: 1.1rem;">18個</strong></td>
+                <td>全プレイヤー<br>（特に中盤〜終盤・部隊ステータス重視）</td>
+                <td>装備強化・進化に必須の最希少アイテム。他イベントでの入手手段が極めて限られ、全兵種のステータスに永続直結する最高峰リソース！</td>
+              </tr>
+              <tr style="background: rgba(234, 179, 8, 0.15);">
+                <td><strong style="color: #fde047; font-size: 1.1rem;">S+ランク<br>（最優先②）</strong></td>
+                <td><strong>黄金<br>（Truegold / TG資源）</strong></td>
+                <td><strong style="color: var(--gold-light); font-size: 1.1rem;">130個</strong></td>
+                <td>城Lv30到達〜黄金時代のプレイヤー<br>（施設TG化・研究重視）</td>
+                <td>役場Lv30以降の「黄金レベル（TG1〜TG5...）」への昇格、強力な「黄金兵士」の訓練、戦争学院（アカデミー）の最先端研究に必須のプレミアム高級資源。終盤最大の育成ボトルネックとなるため、黄金時代突入組にはハンマーと並ぶ最重要選択肢！</td>
+              </tr>
+              <tr style="background: rgba(59, 130, 246, 0.12);">
+                <td><strong style="color: #93c5fd; font-size: 1.1rem;">A+ランク</strong></td>
+                <td><strong>1時間汎用加速</strong></td>
+                <td><strong style="color: var(--gold-light); font-size: 1.1rem;">105個<br>（計105時間）</strong></td>
+                <td>城育成・重要研究・T5部隊解放を急ぐ発展期プレイヤー</td>
+                <td>約4日半（105時間）の時短効果。最強王国（SVS）でのポイント稼ぎや、育成ボトルネックの突破に即効性抜群。</td>
+              </tr>
+              <tr style="background: rgba(148, 163, 184, 0.1);">
+                <td><strong style="color: #cbd5e1; font-size: 1.1rem;">Aランク</strong></td>
+                <td><strong>ダイヤ箱<br>（1Kダイヤ×35）</strong></td>
+                <td><strong style="color: var(--gold-light); font-size: 1.1rem;">35,000<br>ダイヤ</strong></td>
+                <td>別イベント（ルーレット等）用にダイヤを備蓄したいプレイヤー</td>
+                <td>何にでも使える究極の汎用通貨。ただしダイヤは各種デイリーや報酬でも日常的に獲得可能なため、希少素材（ハンマー・黄金）優先が基本セオリー。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ゴリポン先生のアドバイス -->
+        <div class="dialogue-box goripon" style="margin-top: 25px;">
+          <div class="dialogue-avatar">
+            <div class="avatar-img">🦍</div>
+            <div class="avatar-name">ゴリポン先生</div>
+          </div>
+          <div class="dialogue-bubble">
+            <h4 style="color: #fb923c; margin-bottom: 6px;">💡 ゴリポン先生の報酬選定アドバイス！</h4>
+            <p>
+              「迷ったら<strong>【鍛造ハンマー18個】</strong>か<strong>【黄金130個】</strong>の2大巨頭から選べ！<br>
+              部隊装備を極めて対人戦で圧倒したいなら『ハンマー』、城Lv30以降の黄金レベル（TG）化や黄金兵士・戦争学院研究を爆速で進めたいなら『黄金』が一押しだ！<br>
+              ダイヤ35,000も豪華に見えるが、これら高級資源をダイヤ換算した場合の実質バリューには遠く及ばないぞ！」
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 8. FAQ -->
+    <section id="faq">
+      <h2 class="section-title"><i data-lucide="message-circle"></i> 8. よくある質問（FAQ）</h2>
+
+      <div class="card">
+        <div style="margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px;">
+          <h4 style="color: var(--gold-light); font-size: 1.05rem; margin-bottom: 8px;">
+            Q1. 水晶を押す位置（左上、右下など）で当たりやすさは変わる？
+          </h4>
+          <p style="font-size: 0.92rem; color: #cbd5e1;">
+            <strong>A. 位置による当選確率の差は一切ありません。</strong><br>
+            内部的にはタップ時の確率抽選、または盤面生成時に重み付け決定されています。好きな場所をタップして楽しんで問題ありません。
+          </p>
+        </div>
+
+        <div style="margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px;">
+          <h4 style="color: var(--gold-light); font-size: 1.05rem; margin-bottom: 8px;">
+            Q2. 祈願報酬は本当に後半まで出にくい？
+          </h4>
+          <p style="font-size: 0.92rem; color: #cbd5e1;">
+            <strong>A. プレイヤーの体験談では、後半（6〜10枚目）での獲得報告が多数を占めます。</strong><br>
+            1.790%の重み付き抽選モデルとも整合するため、「前半で出ないのは普通の挙動」と捉えておくのが精神衛生上も安全です。
+          </p>
+        </div>
+
+        <div>
+          <h4 style="color: var(--gold-light); font-size: 1.05rem; margin-bottom: 8px;">
+            Q3. 余った占いチケットは次回イベントに持ち越せる？
+          </h4>
+          <p style="font-size: 0.92rem; color: #cbd5e1;">
+            <strong>A. 完全に持ち越し可能です！</strong><br>
+            チケットはバッグ（インベントリ）に保持され、次回開催時にもそのまま使えます。「中途半端な枚数なら次回まで温存し、天井分（約100〜116枚）貯まったタイミングで一気に祈願報酬を取り切る」のが最も賢い立ち回りです。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. まとめ -->
+    <section>
+      <h2 class="section-title"><i data-lucide="check-square"></i> 9. まとめ：あなたに合った最適投資戦略</h2>
+
+      <div class="grid-3">
+        <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 12px; padding: 22px;">
+          <div style="font-size: 1.5rem; margin-bottom: 8px;">🟢</div>
+          <h4 style="color: #6ee7b7; margin-bottom: 10px;">無課金〜微課金</h4>
+          <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">
+            <strong>「無料チケットを貯め、天井分（約116枚）揃うまで待機 ➔ 出るまで引き切り」</strong><br>
+            ドハマりリスクを完全排除し、次回無料リセットの権利を確実に得る。
+          </p>
+        </div>
+
+        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid var(--gold-primary); border-radius: 12px; padding: 22px;">
+          <div style="font-size: 1.5rem; margin-bottom: 8px;">🟡</div>
+          <h4 style="color: #fef08a; margin-bottom: 10px;">微課金〜中課金</h4>
+          <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">
+            <strong>「800円デイリーパックを毎日買い、当たりが出るまで引き切り」</strong><br>
+            景品1個あたり約503円という破格のコスパを享受する最善手。高額パックは買わない。
+          </p>
+        </div>
+
+        <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid var(--purple-accent); border-radius: 12px; padding: 22px;">
+          <div style="font-size: 1.5rem; margin-bottom: 8px;">🔴</div>
+          <h4 style="color: #e9d5ff; margin-bottom: 10px;">上級理論派</h4>
+          <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.6;">
+            <strong>「基本は引き切り。ただし前半で当たりが出尽くしたら5回リセット。9回目まで行ったら天井直行！」</strong><br>
+            盤面の残存価値と限界コストを見極め、極限のチケット節約を狙う。
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Image Preview Modal -->
+  <div id="imageModal" class="modal" onclick="closeModal()">
+    <div style="text-align: center; max-width: 90vw; display: flex; flex-direction: column; align-items: center;" onclick="event.stopPropagation()">
+      <img id="modalImg" src="" alt="拡大プレビュー">
+      <p id="modalCaption" style="color: var(--gold-light); font-size: 0.95rem; margin-top: 12px; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,0.9); max-width: 600px; line-height: 1.4;"></p>
+    </div>
+  </div>
+
+  <footer style="text-align: center; padding: 40px 20px; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.85rem;">
+    <p>Kingshot 神秘の占い屋（占いの館）攻略ガイドチーム © 2026</p>
+    <p style="margin-top: 6px;">Based on Community Research, In-game Verification & Claude Keiba Gate Independent Audit.</p>
+  </footer>
+
+  <script>
+    // Lucide Icons Render
+    lucide.createIcons();
+
+    // Modal Functionality
+    function openModal(src, caption) {
+      const modal = document.getElementById('imageModal');
+      const img = document.getElementById('modalImg');
+      const cap = document.getElementById('modalCaption');
+      img.src = src;
+      if (cap) {
+        cap.textContent = caption || '';
+        cap.style.display = caption ? 'block' : 'none';
+      }
+      modal.style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('imageModal').style.display = 'none';
+    }
+
+    // Chart 1: Cost Progression
+    const ctxCost = document.getElementById('costChart').getContext('2d');
+    new Chart(ctxCost, {
+      type: 'bar',
+      data: {
+        labels: ['1回目', '2回目', '3回目', '4回目', '5回目', '6回目', '7回目', '8回目', '9回目', '10回目(天井)'],
+        datasets: [
+          {
+            label: '単回消費チケット数',
+            data: [1, 2, 4, 6, 8, 11, 15, 20, 24, 25],
+            backgroundColor: 'rgba(245, 158, 11, 0.7)',
+            borderColor: '#f59e0b',
+            borderWidth: 1,
+            order: 2
+          },
+          {
+            label: '累計消費チケット数',
+            data: [1, 3, 7, 13, 21, 32, 47, 67, 91, 116],
+            type: 'line',
+            borderColor: '#38bdf8',
+            backgroundColor: 'rgba(56, 189, 248, 0.1)',
+            borderWidth: 3,
+            fill: false,
+            tension: 0.3,
+            order: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#e2e8f0', font: { family: 'Noto Sans JP' } } },
+          tooltip: { mode: 'index', intersect: false }
+        },
+        scales: {
+          x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.08)' } }
+        }
+      }
+    });
+
+    // Chart 2: Strategy Comparison
+    const ctxStrategy = document.getElementById('strategyChart').getContext('2d');
+    new Chart(ctxStrategy, {
+      type: 'bar',
+      data: {
+        labels: ['1回リセット', '2回リセット', '3回リセット', '4回リセット', '5回リセット(理論値)', '6回リセット', '7回リセット', '8回リセット', '9回リセット', '天井引き切り(推奨)'],
+        datasets: [{
+          label: '景品1個あたりの平均コスト（枚）',
+          data: [145.0, 70.0, 47.7, 35.0, 29.2, 29.3, 30.9, 31.9, 32.3, 31.4],
+          backgroundColor: [
+            'rgba(239, 68, 68, 0.7)',
+            'rgba(239, 68, 68, 0.6)',
+            'rgba(245, 158, 11, 0.6)',
+            'rgba(245, 158, 11, 0.7)',
+            'rgba(245, 158, 11, 0.9)',
+            'rgba(168, 85, 247, 0.6)',
+            'rgba(168, 85, 247, 0.6)',
+            'rgba(239, 68, 68, 0.6)',
+            'rgba(239, 68, 68, 0.8)',
+            'rgba(16, 185, 129, 0.9)'
+          ],
+          borderColor: '#ffffff',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return ' 平均コスト: ' + context.parsed.y + ' 枚';
+              }
+            }
+          }
+        },
+        scales: {
+          x: { ticks: { color: '#94a3b8', font: { size: 11 } }, grid: { display: false } },
+          y: {
+            ticks: { color: '#94a3b8' },
+            grid: { color: 'rgba(255,255,255,0.08)' },
+            title: { display: true, text: '平均消費チケット（枚）', color: '#94a3b8' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

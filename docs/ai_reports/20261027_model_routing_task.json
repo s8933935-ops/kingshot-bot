@@ -1,0 +1,20 @@
+{
+  "id": "20261027-model-routing",
+  "goal": "Define model roles and token budgets with GPT-6.1 Terra",
+  "status": "limited",
+  "scope": "Workspace rulebook only; no router or bridge implementation",
+  "owner": "Codex current session; exact runtime model ID unverified",
+  "budget": { "elapsed_minutes_limit": 30, "usage_tokens": null, "usage_cost_usd": null, "same_failure_retry_limit": 2 },
+  "required_stages": ["inspect", "official_sources", "independent_comparison", "edit", "document_validation", "claude_gate", "git_commit"],
+  "stages": {
+    "inspect": { "status": "PASS", "evidence": "AGENTS.md and AI_WORKSPACE_GUIDELINES.md read; existing changes preserved" },
+    "official_sources": { "status": "PASS", "evidence": "Three official URLs in docs/guides/AI_MODEL_ROUTING.md" },
+    "independent_comparison": { "status": "PASS", "context": "/root/routing_review", "prior_recommendation_exposure": "unexposed", "evidence": "Two-option JSON analysis; summary in 20261027_model_routing.md" },
+    "edit": { "status": "PASS", "evidence": ["AGENTS.md", "GEMINI.md", "docs/guides/AI_MODEL_ROUTING.md"] },
+    "document_validation": { "status": "PASS", "evidence": "Python relative-link checks, policy boundaries and four arithmetic examples" },
+    "claude_gate": { "status": "BLOCKED", "attempts": 1, "exit_code": 1, "evidence": "No conversation found with session ID: 533b4982-120f-4baa-b810-9c4dfe42570c" },
+    "git_commit": { "status": "BLOCKED", "evidence": "Environment grants read-only access to .git" }
+  },
+  "control_validation": "Manual stage record; shared skill control/templates resources and ops.py unavailable; not certified by ops.py",
+  "next_action": "Resume required audit with a valid authorized session; measure usage and rework in real tasks"
+}

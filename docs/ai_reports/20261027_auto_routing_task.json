@@ -1,0 +1,105 @@
+{
+  "id": "20261027-auto-routing",
+  "goal": "Apply autonomous team selection and real model-specific delegation without competing routing paths",
+  "status": "limited",
+  "scope": "Native host delegation rules, one machine-readable policy, shared route selector, recommendation entry points, legacy CLI guard, tests",
+  "excluded": [
+    "Parent UI model changes",
+    "New paid API execution",
+    "Existing investment code",
+    "Model capability scores",
+    "Claude audit session replacement"
+  ],
+  "budget": {
+    "elapsed_minutes_limit": 30,
+    "repair_rounds_limit": 2,
+    "escalation_stages_limit": 2,
+    "actual_tokens": null,
+    "actual_cost_usd": null
+  },
+  "required_stages": [
+    "inspect",
+    "report_before_edit",
+    "independent_analysis",
+    "implement",
+    "independent_review",
+    "tests",
+    "native_delegation_check",
+    "claude_audit",
+    "git_commit"
+  ],
+  "stages": {
+    "inspect": {
+      "status": "PASS",
+      "evidence": "Read AGENTS, GEMINI, routing guide, recommender, dispatcher, presets and bridges"
+    },
+    "report_before_edit": {
+      "status": "PASS",
+      "evidence": "User-facing conflict table and scoped implementation report preceded edits"
+    },
+    "independent_analysis": {
+      "status": "PASS",
+      "agent": "/root/auto_routing_analysis",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "prior_conclusion_exposure": "unexposed",
+      "evidence": "Compared native rule routing and full API pipeline redesign; chose native execution scope"
+    },
+    "implement": {
+      "status": "PASS",
+      "evidence": "Shared selector and both CLI entry points use model_routing.json; rules require actual host delegation"
+    },
+    "independent_review": {
+      "status": "PASS",
+      "agent": "/root/auto_routing_analysis",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "prior_conclusion_exposure": "exposed",
+      "revision_requests": 2,
+      "evidence": "R1-R6 fixed. Final response PASS with no remaining findings. Reviewer ran all 20 tests and 20 additional boundary combinations."
+    },
+    "tests": {
+      "status": "PASS",
+      "evidence": [
+        "node --test tests/test_model_router.js: 20/20",
+        "node tests/test_consortium_dispatcher.js: passed",
+        "node --check on three changed scripts: passed",
+        "document relative links and policy JSON: passed",
+        "git diff --check on tracked code changes: passed"
+      ],
+      "limit": "Selection and native delegation behavior; not a paid API or Claude connection success test"
+    },
+    "native_delegation_check": {
+      "status": "PASS",
+      "agent": "/root/terra_rule_check",
+      "requested_model": "gpt-6.1-terra",
+      "requested_effort": "medium",
+      "result": "Completed rule-table consistency check",
+      "limit": "Successful model-specific tool delegation, not provider-internal model attestation or a parent UI change"
+    },
+    "claude_audit": {
+      "status": "BLOCKED",
+      "attempts": 1,
+      "exit_code": 1,
+      "evidence": "No conversation found with session ID: 533b4982-120f-4baa-b810-9c4dfe42570c",
+      "specialist_bridge_error": "Cannot find module ./token_watcher",
+      "substituted": false
+    },
+    "git_commit": {
+      "status": "BLOCKED",
+      "evidence": "Environment grants .git read-only access"
+    }
+  },
+  "controls": "Manual stage record. Shared skill control/templates and ops.py were unavailable in the preceding inspection; no ops.py certification claimed.",
+  "next_action": "Restore the authorized Claude audit session and missing specialist bridge dependency; do not mark overall approval complete without explicit PASS.",
+  "artifact_sha256": {
+    "AGENTS.md": "f9114b1b2a84fd6a356c21b2295c71ead510082da8c96da894aa0cdb48aa6f77",
+    "GEMINI.md": "df0863da65e810b13dc11d496620b8517d426fe30c3637ba59c428d1d009df54",
+    "docs/guides/AI_MODEL_ROUTING.md": "18c3dd5168880d9033130276de2933120794b810a3f757faf416ab28d1456241",
+    "data/consortium/model_routing.json": "4820134badea290c1813ff73829e03d88d9928c847f693105689d05bcc33d0d7",
+    "scripts/model_router.js": "f6ab062e7a315cc5621b2b1838ca0344340b15992723895d2a15d24a421f83ea",
+    "scripts/model_learning_engine.js": "1803ab53255f9d5f0ab9035513e213d57cf10d589a935555184900856166dbd5",
+    "scripts/consortium_dispatcher.js": "5c410d93216772fdf5f9e59f62e6a23f8123dc4f45078c61bf103f6aa0003f8e",
+    "tests/test_model_router.js": "a69cc1e5a557328b15ff25504cd245d9cf25896308871d75d340058aa2f9a075"
+  }
+}

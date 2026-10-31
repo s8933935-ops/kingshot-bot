@@ -95,6 +95,9 @@ function resolveApiKey() {
  */
 function resolveModelAlias(inputModel) {
   const m = (inputModel || '').toLowerCase().trim();
+  if (m === 'terra' || m === 'gpt-6.1-terra') {
+    return 'gpt-6.1-terra';
+  }
   if (m === 'astra' || m === 'gpt-6-astra') {
     return 'gpt-6-astra';
   }
@@ -265,6 +268,7 @@ function parseArgs() {
   let prompt = '';
   let systemPrompt = '';
   let filePath = null;
+  let imagePath = null;
   let model = 'gpt-4o-mini'; // デフォルトは高コスパ
   let requireJson = false;
   let outPath = null;
@@ -274,6 +278,8 @@ function parseArgs() {
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--file' && i + 1 < args.length) {
       filePath = args[++i];
+    } else if (args[i] === '--image' && i + 1 < args.length) {
+      imagePath = args[++i];
     } else if (args[i] === '--system' && i + 1 < args.length) {
       systemPrompt = args[++i];
     } else if (args[i] === '--model' && i + 1 < args.length) {
@@ -297,17 +303,17 @@ function parseArgs() {
 
   model = resolveModelAlias(model);
 
-  return { prompt, systemPrompt, model, requireJson, outPath, testCmd, timeoutMs };
+  return { prompt, systemPrompt, model, imagePath, requireJson, outPath, testCmd, timeoutMs };
 }
 
 /**
  * メイン実行エントリポイント
  */
 async function main() {
-  const { prompt, systemPrompt, model, requireJson, outPath, testCmd, timeoutMs } = parseArgs();
+  const { prompt, systemPrompt, model, imagePath, requireJson, outPath, testCmd, timeoutMs } = parseArgs();
 
   if (!prompt) {
-    console.error("Usage: node openai_bridge.js \"<prompt>\" [--model <model>] [--system \"<sys>\"] [--file <path>] [--out <path>] [--test \"<cmd>\"] [--require-json]");
+    console.error("Usage: node openai_bridge.js \"<prompt>\" [--model <model>] [--system \"<sys>\"] [--file <path>] [--image <path>] [--out <path>] [--test \"<cmd>\"] [--require-json]");
     process.exit(1);
   }
 
@@ -326,7 +332,6 @@ async function main() {
   // メッセージの構築
   const messages = [];
   if (systemPrompt && !isReasoningModel) {
-    // o1/o3 は system role を非推奨または developer role を使用
     messages.push({ role: "system", content: systemPrompt });
   } else if (systemPrompt && isReasoningModel) {
     messages.push({ role: "developer", content: systemPrompt });
@@ -336,7 +341,24 @@ async function main() {
   if (requireJson && !effectivePrompt.includes("JSON")) {
     effectivePrompt += "\n\nOutput strictly valid parseable JSON. Do not include markdown wraps or conversational prose.";
   }
-  messages.push({ role: "user", content: effectivePrompt });
+
+  if (imagePath && fs.existsSync(imagePath)) {
+    const ext = path.extname(imagePath).toLowerCase().replace('.', '') || 'png';
+    const mime = ext === 'jpg' ? 'jpeg' : ext;
+    const base64Data = fs.readFileSync(imagePath).toString('base64');
+    messages.push({
+      role: "user",
+      content: [
+        { type: "text", text: effectivePrompt },
+        {
+          type: "image_url",
+          image_url: { url: `data:image/${mime};base64,${base64Data}` }
+        }
+      ]
+    });
+  } else {
+    messages.push({ role: "user", content: effectivePrompt });
+  }
 
   let attempts = 0;
   const maxAttempts = testCmd ? 2 : 1;
