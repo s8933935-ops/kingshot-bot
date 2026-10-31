@@ -2,7 +2,7 @@
 
 > 元記事: [神秘の占い屋 完全攻略ガイド](https://s8933935-ops.github.io/kingshot-bot/docs/guides/kingshot_mystic_divination_complete_guide.html)
 > 画像アセット:
-> - `docs/guides/images/mystic_divination_x_infographic_16x9.jpg` (🔥 超高フック＆比較インフォグラフィック 16:9・本命)
+> - `docs/guides/images/mystic_divination_x_hook_master_16x9.jpg` (👑 精錬ハンマーvs黄金TG ＆ 課金者5回リセット問い掛け・超高フック決定版)
 > - `docs/guides/images/mystic_divination_x_hook_action_16x9.jpg` (キャラ忠実再現・ダイナミック構図16:9)
 > - `docs/guides/images/mystic_divination_x_hook_chibi_16x9.jpg` (キャラ忠実再現・正面16:9)
 
