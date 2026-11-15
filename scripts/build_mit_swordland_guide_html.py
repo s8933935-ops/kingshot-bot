@@ -23,18 +23,20 @@ I18N_PATHS = {
     "tr": DATA_DIR / "i18n_tr.json",
 }
 
-# Explicit band assignment for #898 [MIT] core cannons & special-case players.
+# Explicit band assignment for #898 [MIT+MI2] core cannons & special-case players.
 # Translated role/mission prose lives in DATA_DIR / i18n_*.json under roster.custom.
 MIT_CUSTOM_BANDS: dict[str, str] = {
     "YetimDöven": "band1",
     "ツ\xa0GENGAR\xa0ツ": "band1",
+    "CEO": "band1",
+    "GuyTheGreat": "band1",
     "Asi\xa0007": "band1",
     "Battle\xa0Cat": "band1",
+    "༺Fayezᵏˢᵃ༻": "band1",
     "Oflu": "band1",
     "Mithrandir": "band4",
     "Stark": "band3",
     "Yusuf13": "band3",
-    "HoLeNaa": "band3",
 }
 
 
@@ -209,7 +211,7 @@ def build_mit_portal() -> str:
             ],
         },
         "chart_cfg": {
-            "self_label": "#898 [MIT]",
+            "self_label": "#898 [MIT+MI2]",
             "opp_label": "#878 [BIZ]",
             "self_pcs": [
                 self_data["avg_pcs_top_n"],

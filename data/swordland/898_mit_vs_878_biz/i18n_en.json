@@ -15,22 +15,22 @@
     "enemy_risk": "Enemy Intel & Notes"
   },
   "hero": {
-    "pill": "Alliance Members Only (noindex) | MightPulse Live Data",
+    "pill": "Alliance Members Only (noindex) | MightPulse Live Data (3 MI2 Merge Players Applied)",
     "h1_html": "Swordland League Legion 1 Showdown: <span style=\"color:#38bdf8\">#898 [MIT] Legion 1</span> vs <span style=\"color:#c084fc\">#878 [BIZ] Legion 1</span>",
-    "sub_html": "BIZ holds a slight edge in raw Troop volume, but <strong>MIT dominates in Top-30 Avg PCS (MIT 612.9 vs BIZ 600.7), Quad-A Elites (14 vs 11), and total alliance TG8s (25 vs 22)!</strong> Avoid head-on 1v1 brawls against their top leads <strong>『特攻隊長 ターチュン (PCS 870)』 &amp; 『べにまるこ (528.7M)』</strong>; secure Bell Tower &amp; mid-tier depth for multi-lane control and a decisive win.",
+    "sub_html": "BIZ holds a slight edge in raw Troop volume, but <strong>after merging MI2 (CEO, Guy, Fayez), MIT dominates across the board: Top-30 Avg PCS (630.9 vs 601.2), Top 4 (756.2 vs 749.8), Quad-A Elites (17 vs 11), and TG8 depth (28 vs 22)!</strong> Avoid head-on 1v1 brawls against their top leads <strong>『特攻隊長 ターチュン (PCS 870)』 &amp; 『べにまるこ (529.4M)』</strong>; secure Bell Tower &amp; quality advantage for multi-lane control and an ironclad win.",
     "self_lbl": "Our Team (Top · Legion 1)",
-    "self_val": "#898 [MIT] (Top30)",
-    "self_sub": "Avg PCS 612.9 | Quad-A 14 | Alliance TG8 Total 25",
+    "self_val": "#898 [MIT+MI2] (Top30)",
+    "self_sub": "Avg PCS 630.9 | Quad-A 17 | TG8 Total 28",
     "opp_lbl": "Opponent (Bottom · Legion 1)",
     "opp_val": "#878 [BIZ] (Top30)",
-    "opp_sub": "Avg PCS 600.7 | Quad-A 11 | Alliance TG8 Total 22",
+    "opp_sub": "Avg PCS 601.2 | Quad-A 11 | Alliance TG8 Total 22",
     "core_lbl": "MIT Win Condition Core",
     "core_val": "Pure TG8 × Dodge #1 & Multi-Lane Cap",
     "core_sub": "Bypass ターチュン's post; lock down the other 10 facilities, Bell Tower & Stables"
   },
   "sec_titles": {
     "s01": "30-Second Matchup Diagnosis & Win Condition",
-    "s02": "Find Your Squad & Mission (MIT Top 30 | Out of 94 Members)",
+    "s02": "Find Your Squad & Mission (MIT Top 30 | Out of 97 Members incl. MI2 Merge)",
     "s03": "[Beginner-Friendly] Glossary, Formulas & How to Use Metrics",
     "s04": "[Basic UI Guide] Pre-Match Checklist & Slot 1 (Leftmost) Golden Rules",
     "s05": "[Swordland UI] Interactive Tactical Map & All Facility Rules",
@@ -41,30 +41,30 @@
   "kpis": [
     {
       "label": "Top 30 Overall Avg PCS (Quality)",
-      "sub": "MIT leads by +12.2 pts (stronger mid-tier & overall quality)"
+      "sub": "MIT dominates by +29.7 pts (ahead in Top 4, mid-tier & overall quality)"
     },
     {
       "label": "#5-#10 & #11+ Mid-Tier PCS",
-      "sub": "MIT leads by +14.8 to +15.1 pts across 2nd wave & depth"
+      "sub": "MIT leads heavily: +51.5 pts in 2nd wave & +27.7 pts in #11+ depth"
     },
     {
       "label": "Est. Active Troop Power (Troop)",
-      "sub": "BIZ is ~1.11x thicker (avoid prolonged attrition wars)"
+      "sub": "BIZ is ~1.08x thicker (avoid prolonged attrition wars)"
     },
     {
       "label": "TG8-Equiv. Effective Garrison (EGC)",
-      "sub": "MIT has 19 TG8s in Top 30 + 6 reserves to keep 15 garrison slots pure"
+      "sub": "MIT has 20 TG8s in Top 30 + 8 reserves (28 total) to keep 15 slots comfortably pure"
     }
   ],
   "ok_heading": "✅ DO: Winning Playbook (Asymmetric Mobile Warfare)",
   "ng_heading": "❌ DON'T: Losing Traps to Avoid",
   "ok_bullets": [
-    "<strong>Squad 1 (5) + Squad 2/3 (14 TG8 Joiners) = 19 TG8s total to keep all 15 main Garrison slots 100% pure TG8</strong>, crushing BIZ with superior mid-tier quality (+15 PCS lead) everywhere except #1 ターチュン's node.",
+    "<strong>Squad 1 (8) + Squad 2/3 (12 TG8 Joiners) = 20 TG8s total to keep all 15 main Garrison slots 100% pure TG8</strong>, crushing BIZ with overwhelming quality (Avg PCS +29.7 pts, #5-#10 +51.5 pts) everywhere except #1 ターチュン's node.",
     "Cap <strong>Bell Tower (-50% Capture Time)</strong> and <strong>Royal Stables (-50% Free Teleport CD)</strong> at opening, then rapidly flip the opposite flank the instant ターチュン or べにまるこ rotates.",
-    "<strong>The 50% Escrow Baggage Drop is active from Phase 1</strong>. Late game, crack BIZ's stacked nodes with synced Rallies from YetimDöven, Asi 007, etc., then sweep scattered boxes and Undercellars to maximize Point Differential."
+    "<strong>The 50% Escrow Baggage Drop is active from Phase 1</strong>. Late game, crack BIZ's stacked nodes with synced Rallies from YetimDöven, CEO, GuyTheGreat, Asi 007, etc., then sweep scattered boxes and Undercellars to maximize Point Differential."
   ],
   "ng_bullets": [
-    "<strong>Feeding troops via repeated solo hits into nodes held by BIZ #1 『特攻隊長 ターチュン (PCS 870 / 384.9M)』 or 『べにまるこ (528.7M)』</strong> (#1 Throw: always pivot to thin nodes and synced multi-front attacks).",
+    "<strong>Feeding troops via repeated solo hits into nodes held by BIZ #1 『特攻隊長 ターチュン (PCS 870 / 384.9M)』 or 『べにまるこ (529.4M)』</strong> (#1 Throw: always pivot to thin nodes and synced multi-front attacks).",
     "Mixing Top 30's lone <strong>TG6 Troop-Heavy (<code>Gamze T͜͡c٭</code> Stv62 / 268.0M)</strong> into a main TG8 Garrison (drops expected durability to <code>~0.5625x</code> by our model; isolate to side-lane &amp; Baggage sweep).",
     "Putting <strong>Long Fei / Jabel / Helga / Zoe / Sophia</strong> (plus Garrison-only <strong>Saul / Eric / Fahd</strong>) in Attack Rally Slot 1, bricking the Lead's DPS multiplier slots."
   ],
@@ -83,13 +83,13 @@
     ]
   },
   "roster": {
-    "search_placeholder": "Search your name (e.g., Yetim, GENGAR, Battle, ミッキー, Mithrandir...)",
+    "search_placeholder": "Search your name (e.g., Yetim, CEO, Guy, Fayez, GENGAR, Battle...)",
     "tabs": {
       "all": "All (30)",
-      "band1": "Sq 1: Main Leads (5)",
+      "band1": "Sq 1: Main Leads (8)",
       "band2": "Sq 2: TG8 Quad-A (6)",
-      "band3": "Sq 3: TG8 Heavy Wall (8)",
-      "band4": "Sq 4: TG7 Skirmish (10)",
+      "band3": "Sq 3: TG8 Heavy Wall (6)",
+      "band4": "Sq 4: TG7 Skirmish (9)",
       "band5": "Sq 5: TG6 Isolate/Loot (1)"
     },
     "glossary_hint_html": "* To see what each metric means, how it is calculated, and how to apply it in battle, check <a href=\"#glossary\" style=\"color:#7dd3fc\"><strong>03 Beginner's \"Glossary &amp; Formulas Guide\"</strong></a> below or tap any <span class=\"q-dot\">?</span> icon.",
@@ -106,13 +106,13 @@
     },
     "no_match": "No matching members found",
     "fat_warn_badge": "⚠TG6 Heavy",
-    "reserve_title": "🔄 Legion 1 Reserve Bench: \"Top-30 Outside TG8 Replacements (6 Players)\"",
-    "reserve_desc_html": "MIT holds <strong>25 TG8 players alliance-wide</strong> (BIZ has 22 TG8 total). If anyone in the Top 30 is absent, sub in these TG8 reserves first into Squad 3:",
+    "reserve_title": "🔄 Legion 1 Reserve Bench: \"Top-30 Outside TG8 Replacements (8 Players)\"",
+    "reserve_desc_html": "MIT holds <strong>28 TG8 players alliance-wide</strong> incl. the 3 MI2 merges (20 in Top 30 + 8 reserves / BIZ has 22 total). If anyone in the Top 30 is absent, sub in these TG8 reserves (HoLeNaa, AvcıBerkoo, etc.) first into Squad 3:",
     "bands": {
       "band2_label": "Sq 2: TG8 Elite Joiner (A)",
       "band2_mission": "Guaranteed Attack/Garrison Joiners for Squad 1 + Sub-Leads (Quad-A / PCS 610+). Elite flex slots supporting double Rallies without diluting Lead quality.",
       "band3_label": "Sq 3: TG8 Heavy Wall",
-      "band3_mission": "Core reinforcement & thick wall keeping the TG8 line pure. Combined with Squads 1-2 (19 TG8s total), fills all 15 Garrison slots with 100% TG8.",
+      "band3_mission": "Core reinforcement & thick wall keeping the TG8 line pure. Combined with Squads 1-2 (20 TG8s total), easily fills all 15 Garrison slots with 100% TG8.",
       "band4_label": "Sq 4: TG7 Skirmish / Pressure",
       "band4_mission": "Simultaneous caps on outer Sanctums/Abbeys & pressure away from BIZ Aces. Temporarily fill open Squad 1-3 slots only until TG8s arrive, then swap immediately ('Dance').",
       "band5_label": "Sq 5: TG6 Isolate / Loot",
@@ -121,27 +121,39 @@
     "custom": {
       "YetimDöven": [
         "Sq 1: #1 Main Lead",
-        "MIT's #1 Ace (PCS 781 / 352.3M Troops). Dodge head-on attrition vs BIZ #1 ターチュン; spearhead off-lane flips, Hall of Reformation steals, and late-game swings."
+        "MIT's #1 Ace (PCS 781 / 352.3M Troops). Dodge head-on attrition vs BIZ #1 ターチュン; spearhead synced multi-front pushes with CEO & Guy, Hall of Reformation steals, and late-game swings."
       ],
       "ツ GENGAR ツ": [
         "Sq 1: Precision Lead",
         "#2 Lead (PCS 757 / Join 825). Top-tier firepower with 232.2M Troops—prioritize opening Rallies and double-Rally strikes over long Garrisons, and rotate early."
       ],
+      "CEO": [
+        "Sq 1: Main Lead (MI2 Merge)",
+        "#3 Lead (PCS 751 / Join 823 / MI2 Merge). Ultra-precision firepower with 227.0M Troops—like GENGAR, skip long attrition Garrisons and shine in opening & double-Rally strikes."
+      ],
+      "GuyTheGreat": [
+        "Sq 1: Heavy Lead Anchor (MI2 Merge)",
+        "#4 Lead & Tank (PCS 736 / Join 819 / 305.8M Troops / DTV 80.8). All-around TG8 ace pairing high firepower with deep troops; drives side-lane caps and key facility holds."
+      ],
       "Asi 007": [
         "Sq 1: Main Lead & Top Joiner",
-        "#3 Lead & MIT's highest Join score (869). Delivers max damage inside YetimDöven's Rallies and runs independent Rallies on opposite lanes."
+        "#5 Lead & MIT's highest Join score (869). Delivers max damage inside YetimDöven's or CEO's Rallies and runs independent Rallies on opposite lanes."
       ],
       "Battle Cat": [
         "Sq 1: #1 Garrison Anchor",
         "#1 Garrison Tank (MIT's deepest troops: 420.1M / DTV 90.5). Top anchor for holding Bell Tower, Sanctums, and Swordshrine long-term."
       ],
+      "༺Fayezᵏˢᵃ༻": [
+        "Sq 1: Flex Attack/Def Core (MI2 Merge)",
+        "#7-tier Lead (PCS 683 / Join 751 / 312.2M Troops / DTV 81.5 / MI2 Merge). Leverages thick TG8 troop depth to anchor Swordshrine/Bell Tower Garrisons or run 2nd-wave Rallies."
+      ],
       "Oflu": [
-        "Sq 1: #5 Lead & Flex Anchor",
+        "Sq 1: Backup Lead & Def Core",
         "Reliable TG8 Lead (PCS 668). Steps up as backup Lead while top whales are on 12-min exit-heal, or anchors the Royal Stables flank."
       ],
       "Mithrandir": [
         "Sq 4: TG7 Precision Skirmisher",
-        "[Note] #5-tier combat quality (PCS 688 / Join 736) on a TG7 (166.2M). Stay out of TG8 main Garrisons; shred enemy TG7s at outer Sanctums/Abbeys or temporarily 'Dance'."
+        "[Note] High combat quality (PCS 688 / Join 736) on a TG7 (166.2M). Stay out of TG8 main Garrisons; shred enemy TG7s at outer Sanctums/Abbeys or temporarily 'Dance'."
       ],
       "Stark": [
         "Sq 3: TG8 Heavy Wall",
@@ -150,10 +162,6 @@
       "Yusuf13": [
         "Sq 3: TG8 Heavy Wall",
         "Thick TG8 wall (337.2M Troops / DTV 85.2). Pairs with Battle Cat & Stark to fortify facility Garrison durability."
-      ],
-      "HoLeNaa": [
-        "Sq 3: TG8 Buffer & Short Join",
-        "TG8 with lighter troops (176.2M / DTV 65.9). Supply Slot-1 buff heroes, pull early before heavy losses, and rotate to open caps."
       ]
     }
   },
@@ -166,28 +174,28 @@
         "range": "TG1 - TG8",
         "easy_html": "<strong>Quick Concept: Your troops' generation tier (base stats &amp; gear foundation).</strong><br>Furnace (Stove) Lv.60-70 corresponds to Truegold troops TG6-TG8. For the same 100k march, TG8 has a decisive base HP and Attack gap over TG6.",
         "formula_html": "TG = clip(floor((Furnace Lv - 30) / 5), 1, 8)<br>· Lv.60-64 = TG6 | Lv.65-69 = TG7 | Lv.70 = TG8<br>· Dilution Risk EGC_M = Est. Troops × (TG / 8)² (TG6 ≈ 0.5625x in our model)",
-        "use_html": "Garrisons cap at 15 players (~1M troops), so MIT can <strong>fill all 15 slots with 100% pure TG8s from Squads 1-3 (19 in Top 30 + 6 reserves)</strong>. Only let Squad 4 (TG7) fill empty slots temporarily, then 'Dance' (swap immediately) as soon as a TG8 arrives."
+        "use_html": "Garrisons cap at 15 players (~1M troops), so MIT can <strong>fill all 15 slots with 100% pure TG8s from Squads 1-3 (20 in Top 30 + 8 reserves)</strong>. Only let Squad 4 (TG7) fill empty slots temporarily, then 'Dance' (swap immediately) as soon as a TG8 arrives."
       },
       "pcs": {
         "title": "② Combat PCS — Pure Combat Score",
         "range": "0 - 1,000 pts",
         "easy_html": "<strong>Quick Concept: \"Pure per-troop combat strength independent of troop count (Lead readiness).\"</strong><br>Computed from Charms, Governor Gear, Heroes, Research, and Pets—it never drops when troops die and stays high even at zero troops. <strong>600+ (especially 700+) are prime Rally/Garrison Lead candidates.</strong>",
         "formula_html": "1) Normalize 6 Trial Towers to 0-1 via CAP (removes scale bias)<br>CAP = &#123;Charms CC:400, GovGear MF:440, Research KN:320, Pets FoL:340, Hero Col:800, Total RS:840&#125;<br>2) Weighted Combat Core Q_core = 0.26×CC + 0.20×Col + 0.18×MF + 0.14×KN + 0.14×RS + 0.08×FoL<br>3) Neutralize Furnace scaling on Migration Score (TC=min(Stove,70), wps=Mig/TC+2226) at 12% weight<br>PCS = 1000 × clip(0.88 × Q_core + 0.12 × clip(wps/42000, 0, 1), 0, 1)",
-        "use_html": "Rallies and Garrisons apply the strongest Lead's stats to everyone's troops. Because MIT holds a clear depth advantage—<strong>Avg PCS 612.9 (BIZ 600.7) and 14 Quad-A elites (BIZ 11)</strong>—avoiding BIZ #1 ターチュン (870) head-on and forcing multi-lane skirmishes guarantees winning trades at 2nd and 3rd facilities."
+        "use_html": "Rallies and Garrisons apply the strongest Lead's stats to everyone's troops. Because MIT dominates across every tier—<strong>Avg PCS 630.9 (BIZ 601.2), Top 4 (756.2 vs 749.8), and 17 Quad-A elites (BIZ 11)</strong>—avoiding BIZ #1 ターチュン (870) head-on and forcing multi-lane skirmishes guarantees winning trades at 2nd and 3rd facilities."
       },
       "join": {
         "title": "③ Joiner Score (Join) — Rally/Garrison Support",
         "range": "0 - 1,000 pts",
         "easy_html": "<strong>Quick Concept: \"How much value you bring when joining a Lead's Rally or Garrison.\"</strong><br>As a Joiner, your own Research and Governor Gear don't apply—only your <strong>Slot 1 (Leftmost) Hero's 1st skill &amp; sent troop TG tier</strong> affect the fight.",
         "formula_html": "PCS_joiner = 1000 × (0.45×n_Col[Hero] + 0.15×n_RS[Total] + 0.10×n_CC + 0.05×n_MF + 0.25×(TG / 8))<br>* Evaluates Joiner value with 85% weight on Hero, Total Tower, and TG Tier",
-        "use_html": "Even with a 500s Combat PCS, high-Join TG8s in Squads 2-3 (<strong>Join 620-734+</strong> like <code>Uçan100lükRakı</code> / <code>ミッキー</code> / <code>Stark</code> / <code>Yusuf13</code>) maximize Rally/Garrison durability and DPS when joining Squad 1. <code>Asi 007</code> also doubles as MIT's #1 Joiner (<strong>Join 869</strong>)."
+        "use_html": "Beyond high-Join TG8s in Squads 2-3 (<strong>Join 620-734+</strong> like <code>Uçan100lükRakı</code> / <code>ミッキー</code> / <code>Stark</code> / <code>Yusuf13</code>), MIT's biggest edge is having 800+ Joiners right in Squad 1: <strong>Asi 007 (Join 869), GENGAR (825), CEO (823), and GuyTheGreat (819)</strong>."
       },
       "troop": {
         "title": "④ Est. Troops (Troop Power)",
         "range": "Unit: M (Million Power)",
         "easy_html": "<strong>Quick Concept: \"Active deployable troops left after subtracting fixed Building/Research power.\"</strong><br>If a player burned troops in Kingdom Castle Battle or recent fights, their total Power may look high while their Est. Troops (Troop) are low.",
         "formula_html": "1) Fixed Base Power (Power-law): BasePower_M = 5.79 × (wps ^ 0.318)<br>* Lower-envelope nonlinear fit prevents misreading high-power accounts as troop-starved<br>2) Est. Troops: TroopPower_M = max(Total Power M - BasePower_M, 0)<br>3) Troop Ratio phi = TroopPower_M / Total Power M",
-        "use_html": "Total Est. Troops: <strong>MIT 7,930.8M vs BIZ 8,815.1M (~1.11x)</strong>. BIZ has slightly thicker reserves—especially <code>べにまるこ (528.7M)</code>'s wall—so lighter-troop elites like <code>Mithrandir (166.2M)</code> and <code>HoLeNaa (176.2M)</code> should skip attrition holds and focus on precision Rallies, Slot-1 buffers, open caps, and 1-troop Undercellars."
+        "use_html": "Total Est. Troops: <strong>MIT 8,125.9M vs BIZ 8,814.9M (~1.08x)</strong>. BIZ has slightly thicker reserves—especially <code>べにまるこ (529.4M)</code>'s wall—so lighter-troop elites like <code>Mithrandir (166.2M)</code> and high-PCS light-troop Leads like <code>CEO (227.0M)</code> and <code>GENGAR (232.2M)</code> perform best skipping attrition holds for precision opening Rallies and early rotations."
       },
       "dtv": {
         "title": "⑤ Stamina Depth (DTV) — Sustain Index",
@@ -233,7 +241,7 @@
       "<strong>Confirm Roster Slot &amp; TG Tier</strong><br>Be punctual once Legion 1 time locks in. Know whether you are TG8 (Furnace 70), TG7 (65-69), or TG6 (60-64); TG6 and below must stay separate and never join main TG8 Garrisons.",
       "<strong>Why Never Mix TG6 with TG8?</strong><br>When a TG6 joins a <img src=\"assets/ui/icon_truegold_crucible.png\" alt=\"Truegold Crucible\"> TG8 Garrison (15-player cap), our model estimates durability drops to <strong>~0.5625x</strong>. Use TG7s only to fill empty seats temporarily, then 'Dance' (swap out) immediately when a TG8 arrives.",
       "<strong>Only Your Slot 1 (Leftmost) Hero's Top-Right 1st Expedition Skill Triggers!</strong><br>Just like Chenko's 'Stand of Arms Lv.5 (Lethality +25%)', the top 4 Joiner buff slots for the entire Rally/Garrison are decided solely by that leftmost Hero's 1st skill.",
-      "<strong><img src=\"assets/ui/icon_command_center.png\" alt=\"Command Center\"> Joining Rallies (Rally Rules)</strong><br>When joining Rallies launched by Squad 1 (YetimDöven, GENGAR, Asi 007, etc.), always 1-tap your saved \"Attack Joiner Preset\". Putting the wrong Hero in Slot 1 kicks out an ally's DPS buff.",
+      "<strong><img src=\"assets/ui/icon_command_center.png\" alt=\"Command Center\"> Joining Rallies (Rally Rules)</strong><br>When joining Rallies launched by Squad 1 (YetimDöven, GENGAR, CEO, GuyTheGreat, Asi 007, etc.), always 1-tap your saved \"Attack Joiner Preset\". Putting the wrong Hero in Slot 1 kicks out an ally's DPS buff.",
       "<strong><img src=\"assets/ui/icon_embassy.png\" alt=\"Embassy\"> Garrison Swaps (Garrison Rules)</strong><br>Key holds rely on Squad 1 <code>Battle Cat (420.1M)</code> + Squad 2/3 TG8 tanks (<code>Stark 389.7M</code>, etc.) + Garrison Defense Slot-1 heroes (Gordon/Howard/Saul). Let Squad 4 (TG7) plug gaps briefly, then swap out immediately as TG8s land."
     ],
     "hero_title": "Copy-Paste \"Slot 1 (Leftmost)\" Recommended Heroes vs Strictly Banned Traps",
@@ -375,7 +383,7 @@
         ]
       },
       "p2": {
-        "desc": "<strong>Phase 2 (15:00-40:00 Elapsed | 45:00-20:00 Remaining) Center Unlock &amp; Rotations</strong>: <strong>① Swordshrine, ② Mercenary Camp, ③ Hall of Reformation</strong> unlock! Avoid nodes anchored by ターチュン or べにまるこ; hit thin targets &amp; Reformation with YetimDöven, Asi 007, and GENGAR (<strong>* NO exiting after 22:00 remaining!</strong>).",
+        "desc": "<strong>Phase 2 (15:00-40:00 Elapsed | 45:00-20:00 Remaining) Center Unlock &amp; Rotations</strong>: <strong>① Swordshrine, ② Mercenary Camp, ③ Hall of Reformation</strong> unlock! Avoid nodes anchored by ターチュン or べにまるこ; hit thin targets &amp; Reformation with YetimDöven, CEO, GuyTheGreat, GENGAR, and Asi 007 (<strong>* NO exiting after 22:00 remaining!</strong>).",
         "labels": [
           "Leads: Double Rally",
           "② Merc Camp (15:00)",
@@ -399,7 +407,7 @@
     "p1_title": "Phase 1 (0:00-15:00 Elapsed | 60:00-45:00 Remaining)",
     "p1_html": "<strong>Top Priority: Lock Bell Tower (-50%) &amp; Royal Stables (TP CD -50%).</strong><br>First-capture bonuses only trigger after holding the full <strong>capture timer (3:00, or 1:30 at Bell Tower)</strong>—keep reinforcements flowing! Squads 4-5 sync outer Sanctums/Abbeys and save Free Teleports.",
     "p2_title": "Phase 2 (15:00-40:00 Elapsed | 45:00-20:00 Remaining)",
-    "p2_html": "<strong>Center Trio Unlocks &amp; Exit-Heal Rotations.</strong><br>Never force rallies into a node fortified by ターチュン + べにまるこ; deploy YetimDöven, Asi 007, and GENGAR to take undefended Shrine/Reformation/Merc Camp lanes. <strong>* After 22:00 remaining (38:00 elapsed), DO NOT exit—the 12-min CD locks you out!</strong>",
+    "p2_html": "<strong>Center Trio Unlocks &amp; Exit-Heal Rotations.</strong><br>Never force rallies into a node fortified by ターチュン + べにまるこ; deploy YetimDöven, CEO, GuyTheGreat, GENGAR, and Asi 007 to take undefended Shrine/Reformation/Merc Camp lanes. <strong>* After 22:00 remaining (38:00 elapsed), DO NOT exit—the 12-min CD locks you out!</strong>",
     "p3_title": "Endgame Window (40:00-60:00 Elapsed | 20:00-00:00 Remaining)",
     "p3_html": "<strong>Decoy Rallies + Baggage Heist + 1-Troop Undercellars.</strong><br>Use Decoy Rallies to pull ターチュン's reinforcements out of position, crack high-escrow holds with Squad 1 Double Rallies, then scoop every 50% Escrow box and Undercellar. <strong>Point Differential counts for League rank—loot until 00:00!</strong>"
   },
@@ -413,12 +421,12 @@
       "dtv": "DTV",
       "troop": "Est. Troop"
     },
-    "top_note": "* #1 『特攻隊長 ターチュン (PCS 870 / Join 921)』 and #2 『べにまるこ (528.7M Troops / DTV 96.4)』 are standouts. However, #11+ averages just 560.9 PCS (vs MIT 576.0), and #24 『KSS』 is TG6 Troop-Heavy (359.1M), making their backline prime targets.",
+    "top_note": "* #1 『特攻隊長 ターチュン (PCS 870 / Join 921)』 and #2 『べにまるこ (PCS 737 / 529.4M Troops / DTV 96.5)』 are standouts. However, #11+ averages just 561.4 PCS (vs MIT 589.1), and #24 『KSS』 is TG6 Troop-Heavy (359.1M), making their backline prime targets.",
     "notes_heading": "🔎 BIZ Detailed Breakdown & Uncrawled Tier (Flag D) Disclosure",
-    "notes_desc_html": "Out of 99 BIZ members, all Top 30 are <strong>Flag A (100% measured)</strong>—there are zero hidden whales. Alliance-wide TG8 count is 22 (vs MIT's 25), giving MIT a clear edge in TG8 bench depth and mid-tier PCS over a full 60-minute match.",
+    "notes_desc_html": "Out of 99 BIZ members, all Top 30 are <strong>Flag A (100% measured)</strong>—there are zero hidden whales. Alliance-wide TG8 count is 22 (vs MIT's 28 incl. the 3 MI2 merges), giving MIT an overwhelming edge in TG8 bench depth and PCS across every tier over a full 60-minute match.",
     "chips": [
       "#1 特攻隊長 ターチュン (PCS 870 / 384.9M / Dodge 1v1)",
-      "#2 べにまるこ (PCS 735 / 528.7M / Ultra-Heavy Tank)",
+      "#2 べにまるこ (PCS 737 / 529.4M / Ultra-Heavy Tank)",
       "#9 ВесКу王子ᴺʸᴬ (PCS 619 / 366.8M)",
       "#18 進撃のやす (PCS 567 / 343.7M)",
       "#24 KSS (Stv61 TG6 / 359.1M / FAT_WARN Dilution Target)",
@@ -427,6 +435,6 @@
     ]
   },
   "footer": {
-    "html": "<strong>Data &amp; Asset Disclosure</strong>: Power and 2-axis scores (PCS / DTV) were deterministically computed from live MightPulse API telemetry (as of <code>2026-11-15T17:47:57+09:00</code>); defer to live in-game roll call for match-day troop healing, Hero Exclusive Gear levels, and active buffs. \"In-Game UI\" panels are captured from strategy guides/walkthroughs, while \"Tactical Visual\" and \"Map Base\" artwork are watermark-free AI illustrations to aid tactical clarity.<br>Last Updated: 2026-11-15 JST | #898 [MIT] Swordland Ops Room (Created by SGR Strategy Desk)"
+    "html": "<strong>Data &amp; Asset Disclosure</strong>: Power and 2-axis scores (PCS / DTV) were deterministically computed from live MightPulse API telemetry (as of <code>2026-11-15T20:03:00+09:00</code>, reflecting 3 MI2 merge players); defer to live in-game roll call for match-day troop healing, Hero Exclusive Gear levels, and active buffs. \"In-Game UI\" panels are captured from strategy guides/walkthroughs, while \"Tactical Visual\" and \"Map Base\" artwork are watermark-free AI illustrations to aid tactical clarity.<br>Last Updated: 2026-11-15 JST | #898 [MIT] Swordland Ops Room (Created by SGR Strategy Desk)"
   }
 }
