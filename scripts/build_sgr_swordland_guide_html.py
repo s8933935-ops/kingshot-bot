@@ -1,0 +1,1524 @@
+#!/usr/bin/env python3
+"""Build member-facing Swordland Showdown HTML guide from verified v2 scores & UI assets."""
+
+from __future__ import annotations
+
+import html
+import json
+import pathlib
+from datetime import datetime, timezone, timedelta
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+SCORES_PATH = ROOT / "scratch" / "seiken_898_vs_812" / "sgr_vs_saw_v2_scores.json"
+MANIFEST_PATH = ROOT / "scratch" / "ui_asset_library" / "manifest.json"
+OUT_DIR = ROOT / "web_apps" / "sgr_swordland_guide"
+
+# Exact role-band assignment aligned with docs/ai_reports/20261114_seiken_898_sgr_vs_812_saw_v2_strategy.md
+SGR_MISSIONS = {
+    "リョ〜〜〜朕": ("班① 主砲エース", "band1", "絶対エース砲台。相手 #1 亗Đ丨ĐĐㄚ への対抗集結、終盤の祭壇・高蓄積施設剥がし一撃役。"),
+    "レッサー": ("班① 主砲・防衛核", "band1", "第1駐屯タンク（SGR最多兵力 629.5M）。鐘楼または中央の長期防衛アンカー最有力。"),
+    "だりゅDaryu": ("班① 主砲エース", "band1", "第2砲台／相殺集結長。レッサーと並ぶ厚い兵量（585.5M）で同時2拠点・二重集結の片翼。"),
+    "Hinata": ("班① 主砲エース", "band1", "第3拠点・王立厩舎防衛長。総戦力控えめでも中身はTop4級（PCS 754）。兵切れ前の早め交代を徹底。"),
+    "ルーク": ("班① 第5砲台・合流長", "band1", "班①が12分退場回復中の代理砲台、平常時は主力集結の最上位TG8合流。"),
+    "ROCK": ("班② TG8精鋭合流", "band2", "班①への確定殺傷/攻撃ジョイナー（Join 672）。Stove 70・TG8でステータス希釈ゼロ。"),
+    "ゴリポン": ("班② TG8精鋭合流", "band2", "班①への確定殺傷/攻撃ジョイナー（Join 674）。Stove 70・TG8で最重要エンジン。"),
+    "ネプチューンマン": ("班② TG8精鋭合流", "band2", "班①への防衛/攻撃ジョイナー（Join 654）。重要拠点の常駐増援として維持。"),
+    "ぐるぐる": ("班② TG8精鋭合流", "band2", "班①への防衛/攻撃ジョイナー（Join 639）。兵力307.2Mを活かし主力駐屯を支える。"),
+}
+
+
+def classify_sgr_band(member: dict) -> tuple[str, str, str]:
+    name = member["nick_name"]
+    if name in SGR_MISSIONS:
+        return SGR_MISSIONS[name]
+    quad = member.get("quadrant")
+    tg = member.get("tg", 0)
+    fat = member.get("fat_warn", False)
+    if quad == "B" and tg == 7:
+        return (
+            "班③ TG7遊撃・サンクタム",
+            "band3",
+            "相手エース不在の外周サンクタム確保＆班①②回復中の時間稼ぎ。主力合流時はSlot1適正4枠厳守。",
+        )
+    if fat or (quad == "B" and tg <= 6):
+        return (
+            "班④ TG6分離レーン",
+            "band4",
+            "【主力TG8駐屯へ混入禁止（0.5625倍希釈）】別レーンのサンクタム争奪・おとり集結・敵拠点圧迫＆輜重待機に専念。",
+        )
+    return (
+        "班⑤ 遊撃・輜重回収",
+        "band5",
+        "開戦前点呼で実兵回復状況を確認。低兵力なら①空き施設即踏み ②50%輜重ハイスト ③地下貯蔵庫 ④バフ頭添えに特化。",
+    )
+
+
+def build_html() -> str:
+    scores = json.loads(SCORES_PATH.read_text(encoding="utf-8"))
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    asset_paths = {a["rel_path"] for a in manifest["assets"]}
+
+    self_data = scores["self"]
+    opp_data = scores["opp"]
+
+    # Precompute SGR roster JSON for client-side instant filter/search
+    sgr_rows = []
+    for idx, m in enumerate(self_data["top_roster"], 1):
+        band_label, band_id, mission = classify_sgr_band(m)
+        sgr_rows.append(
+            {
+                "rank": idx,
+                "name": m["nick_name"],
+                "power_M": m["power_M"],
+                "stove_lv": m["stove_lv"],
+                "tg": m["tg"],
+                "pcs": m["pcs"],
+                "pcs_joiner": m["pcs_joiner"],
+                "dtv": m["dtv"],
+                "troop_M": m["troop_M"],
+                "egc_M": m["egc_M"],
+                "quadrant": m["quadrant"],
+                "fat_warn": m["fat_warn"],
+                "band_label": band_label,
+                "band_id": band_id,
+                "mission": mission,
+            }
+        )
+
+    saw_unscored = [
+        {"name": x["nick_name"], "power_M": x["power_M"], "stove_lv": x["stove_lv"], "tg": x["tg"]}
+        for x in opp_data.get("unscored_300m", [])
+    ]
+    saw_top6 = [
+        {
+            "rank": i,
+            "name": m["nick_name"],
+            "power_M": m["power_M"],
+            "stove_lv": m["stove_lv"],
+            "tg": m["tg"],
+            "pcs": m["pcs"],
+            "dtv": m["dtv"],
+            "troop_M": m["troop_M"],
+            "flag": m["flag"],
+        }
+        for i, m in enumerate(opp_data["top_roster"][:6], 1)
+    ]
+
+    # Verify required image assets exist on disk before embedding paths
+    required_imgs = [
+        "assets/generated/banner_swordland_showdown.jpg",
+        "assets/generated/swordland_tactical_map_base.jpg",
+        "assets/generated/baggage_heist_scene.jpg",
+        "assets/generated/infirmary_ready_scene.jpg",
+        "assets/swordland/facility_swordshrine.png",
+        "assets/swordland/facility_sanctum.png",
+        "assets/swordland/facility_royal_stables.png",
+        "assets/swordland/facility_abbey.png",
+        "assets/swordland/facility_reformation.png",
+        "assets/swordland/facility_mercenary.png",
+        "assets/swordland/facility_undercellar.png",
+        "assets/swordland/ui_rules_swordshrine.png",
+        "assets/swordland/ui_rules_stables_buff.png",
+        "assets/swordland/ui_battle_cluster_march.png",
+        "assets/swordland/ui_entry_timezone_ja.png",
+        "assets/swordland/ui_swordshrine_garrison_crop.jpg",
+        "assets/swordland/ui_swordland_field_crop.jpg",
+        "assets/ui/ui_chenko_skill1_crop.jpg",
+        "assets/ui/ui_garrison_list.png",
+        "assets/ui/ui_rally_panel.png",
+        "assets/ui/ui_squad_formation.png",
+        "assets/ui/ui_tg8_refinement_ja.png",
+        "assets/ui/icon_infirmary.png",
+        "assets/ui/icon_truegold_crucible.png",
+        "assets/ui/icon_command_center.png",
+        "assets/ui/icon_embassy.png",
+        "assets/ui/icon_teleport.png",
+    ]
+    for rel in required_imgs:
+        if rel not in asset_paths:
+            raise RuntimeError(f"Asset missing from manifest: {rel}")
+
+    sgr_json_js = json.dumps(sgr_rows, ensure_ascii=False)
+    saw_top6_js = json.dumps(saw_top6, ensure_ascii=False)
+    saw_unscored_js = json.dumps(saw_unscored, ensure_ascii=False)
+
+    jst_now = datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M JST")
+
+    return f"""<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>【#898 SGR メンバー共有用】聖剣リーグ 1軍決戦 SGR vs SAW 完全作戦＆基礎UIマニュアル</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {{
+      --bg-0: #090d16;
+      --bg-1: #111827;
+      --bg-card: rgba(20, 29, 47, 0.9);
+      --bg-glass: rgba(15, 23, 42, 0.78);
+      --border: rgba(245, 158, 11, 0.25);
+      --border-strong: rgba(245, 158, 11, 0.55);
+      --gold: #f59e0b;
+      --gold-lt: #fde68a;
+      --blue: #38bdf8;
+      --blue-bg: rgba(56, 189, 248, 0.14);
+      --purple: #a855f7;
+      --red: #ef4444;
+      --red-bg: rgba(239, 68, 68, 0.14);
+      --green: #10b981;
+      --green-bg: rgba(16, 185, 129, 0.14);
+      --amber-bg: rgba(245, 158, 11, 0.14);
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+    }}
+    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    html {{ scroll-behavior: smooth; }}
+    body {{
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--bg-0);
+      color: var(--text);
+      line-height: 1.7;
+      background-image:
+        radial-gradient(circle at 12% 15%, rgba(56, 189, 248, 0.10) 0%, transparent 42%),
+        radial-gradient(circle at 88% 35%, rgba(168, 85, 247, 0.10) 0%, transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(245, 158, 11, 0.07) 0%, transparent 45%);
+      background-attachment: fixed;
+    }}
+    .top-nav {{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(9, 13, 22, 0.88);
+      border-bottom: 1px solid var(--border);
+    }}
+    .top-nav-inner {{
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }}
+    .brand-tag {{
+      font-weight: 900;
+      font-size: 0.9rem;
+      color: var(--gold-lt);
+      letter-spacing: 0.04em;
+    }}
+    .nav-links {{
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }}
+    @media (max-width: 640px) {{
+      .top-nav-inner {{
+        padding: 8px 12px;
+        gap: 6px;
+      }}
+      .nav-links {{
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        max-width: 100%;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }}
+      .nav-links a {{
+        white-space: nowrap;
+        flex: 0 0 auto;
+        font-size: 0.78rem;
+        padding: 4px 9px;
+      }}
+    }}
+    .nav-links a {{
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: 0.18s ease;
+    }}
+    .nav-links a:hover {{
+      color: var(--gold-lt);
+      border-color: var(--border-strong);
+      background: rgba(245, 158, 11, 0.1);
+    }}
+
+    .container {{
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 20px 16px 84px;
+    }}
+
+    /* Hero */
+    .hero {{
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      margin-bottom: 28px;
+      min-height: 360px;
+      display: flex;
+      align-items: flex-end;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+    }}
+    .hero-bg {{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 35%;
+      filter: brightness(0.62) saturate(1.1);
+    }}
+    .hero-overlay {{
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: 40px 28px 28px;
+      background: linear-gradient(180deg, rgba(9, 13, 22, 0.05) 0%, rgba(9, 13, 22, 0.82) 55%, rgba(9, 13, 22, 0.96) 100%);
+    }}
+    .pill {{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(245, 158, 11, 0.18);
+      border: 1px solid var(--border-strong);
+      color: var(--gold-lt);
+      margin-bottom: 10px;
+    }}
+    .hero h1 {{
+      font-size: clamp(1.5rem, 3.3vw, 2.35rem);
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+    }}
+    .hero-sub {{
+      color: #d1d5db;
+      font-size: 0.95rem;
+      max-width: 820px;
+    }}
+    .match-strip {{
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }}
+    .match-box {{
+      background: rgba(15, 23, 42, 0.86);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }}
+    .match-box.self {{ border-color: rgba(56, 189, 248, 0.55); }}
+    .match-box.opp {{ border-color: rgba(168, 85, 247, 0.55); }}
+    .match-box .lbl {{ font-size: 0.75rem; color: var(--muted); font-weight: 700; }}
+    .match-box .val {{ font-size: 1.15rem; font-weight: 900; margin-top: 2px; }}
+
+    section {{
+      margin-bottom: 42px;
+      scroll-margin-top: 66px;
+    }}
+    .sec-head {{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }}
+    .sec-num {{
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #f59e0b, #b45309);
+      color: #090d16;
+      padding: 3px 11px;
+      border-radius: 8px;
+    }}
+    .sec-head h2 {{
+      font-size: clamp(1.2rem, 2.3vw, 1.55rem);
+      font-weight: 900;
+    }}
+
+    .card {{
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }}
+    .grid-2 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 16px; }}
+    .grid-3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }}
+    .grid-4 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }}
+
+    .kpi-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }}
+    .kpi {{
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }}
+    .kpi .k-lbl {{ font-size: 0.76rem; color: var(--muted); font-weight: 700; }}
+    .kpi .k-val {{ font-size: 1.25rem; font-weight: 900; color: var(--gold-lt); margin-top: 2px; }}
+    .kpi .k-sub {{ font-size: 0.76rem; color: #cbd5e1; margin-top: 2px; }}
+
+    .callout {{
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      border: 1px solid;
+    }}
+    .callout.ok {{ background: var(--green-bg); border-color: rgba(16, 185, 129, 0.45); }}
+    .callout.ng {{ background: var(--red-bg); border-color: rgba(239, 68, 68, 0.45); }}
+    .callout.warn {{ background: var(--amber-bg); border-color: rgba(245, 158, 11, 0.45); }}
+    .callout.info {{ background: var(--blue-bg); border-color: rgba(56, 189, 248, 0.45); }}
+    .callout h3 {{ font-size: 1rem; font-weight: 900; margin-bottom: 6px; }}
+    .callout ul {{ padding-left: 18px; font-size: 0.9rem; }}
+    .callout li + li {{ margin-top: 4px; }}
+
+    /* Filter & Table */
+    .filter-bar {{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 14px;
+    }}
+    .search-input {{
+      flex: 1 1 220px;
+      min-width: 200px;
+      padding: 9px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border-strong);
+      background: #0b1120;
+      color: var(--text);
+      font-size: 0.92rem;
+    }}
+    .tab-btn {{
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.85);
+      color: #d1d5db;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s;
+    }}
+    .tab-btn.active, .tab-btn:hover {{
+      background: var(--gold);
+      color: #090d16;
+      border-color: var(--gold);
+    }}
+    .table-wrap {{
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }}
+    table {{
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      min-width: 720px;
+    }}
+    th, td {{
+      padding: 9px 10px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      vertical-align: middle;
+    }}
+    th {{
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--gold-lt);
+      font-weight: 800;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }}
+    tr:hover td {{ background: rgba(255, 255, 255, 0.03); }}
+    .badge {{
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }}
+    .b-band1 {{ background: rgba(56, 189, 248, 0.22); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.5); }}
+    .b-band2 {{ background: rgba(16, 185, 129, 0.22); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.5); }}
+    .b-band3 {{ background: rgba(168, 85, 247, 0.22); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.5); }}
+    .b-band4 {{ background: rgba(245, 158, 11, 0.22); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.5); }}
+    .b-band5 {{ background: rgba(239, 68, 68, 0.22); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.5); }}
+
+    /* UI Shot cards */
+    .ui-shot {{
+      background: rgba(11, 17, 32, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }}
+    .ui-shot img {{
+      width: 100%;
+      max-height: 310px;
+      object-fit: contain;
+      background: #060911;
+      display: block;
+    }}
+    .ui-shot .cap {{
+      padding: 10px 12px;
+      font-size: 0.82rem;
+      color: #d1d5db;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }}
+    .ui-tag {{
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 1px 7px;
+      border-radius: 6px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }}
+    .tag-real {{ background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.45); }}
+    .tag-gen {{ background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.45); }}
+
+    /* Hero Slot Grid */
+    .hero-strip {{
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }}
+    .hero-chip {{
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px;
+      text-align: center;
+    }}
+    .hero-chip.ban {{
+      border-color: rgba(239, 68, 68, 0.65);
+      background: rgba(127, 29, 29, 0.25);
+    }}
+    .hero-chip.limit {{
+      border-color: rgba(245, 158, 11, 0.65);
+      background: rgba(120, 53, 15, 0.25);
+    }}
+    .hero-chip img {{
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+    }}
+    .hero-chip .h-name {{ font-size: 0.8rem; font-weight: 800; margin-top: 4px; }}
+    .hero-chip .h-eff {{ font-size: 0.7rem; color: var(--muted); line-height: 1.3; margin-top: 2px; }}
+
+    /* Interactive Tactical Board */
+    .map-board-wrap {{
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      background: #060911;
+    }}
+    .map-board-wrap img.base {{
+      width: 100%;
+      display: block;
+      filter: brightness(0.84);
+    }}
+    .map-svg-overlay {{
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }}
+    .map-pin {{
+      position: absolute;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.16s ease;
+    }}
+    .map-pin:hover {{ transform: translate(-50%, -50%) scale(1.1); z-index: 10; }}
+    .map-pin img {{
+      width: clamp(28px, 4.4vw, 50px);
+      height: clamp(28px, 4.4vw, 50px);
+      object-fit: contain;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.9));
+    }}
+    .map-pin .m-lbl {{
+      margin-top: 1px;
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-size: clamp(0.6rem, 1.05vw, 0.76rem);
+      font-weight: 900;
+      background: rgba(9, 13, 22, 0.9);
+      border: 1px solid rgba(245, 158, 11, 0.55);
+      color: #fef08a;
+      white-space: nowrap;
+    }}
+    .map-pin.priority .m-lbl {{
+      background: rgba(14, 116, 144, 0.95);
+      border-color: #38bdf8;
+      color: #ffffff;
+    }}
+    .bell-emblem {{
+      width: clamp(28px, 4.4vw, 46px);
+      height: clamp(28px, 4.4vw, 46px);
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 30%, #38bdf8, #0e7490 70%, #082f49);
+      border: 2px solid #fde68a;
+      display: grid;
+      place-items: center;
+      font-size: clamp(14px, 2.2vw, 22px);
+      box-shadow: 0 3px 12px rgba(56, 189, 248, 0.55);
+    }}
+    .phase-detail-box {{
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border);
+      font-size: 0.88rem;
+    }}
+
+    /* Glossary & Formula Guide */
+    .th-help {{
+      color: var(--gold-lt);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }}
+    .th-help:hover {{ color: #38bdf8; text-decoration: underline; }}
+    .q-dot {{
+      display: inline-grid;
+      place-items: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      font-size: 0.65rem;
+      font-weight: 900;
+      background: rgba(56, 189, 248, 0.22);
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      color: #bae6fd;
+    }}
+    .glossary-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 14px;
+    }}
+    .term-card {{
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px 16px;
+      scroll-margin-top: 72px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }}
+    .term-card .t-head {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }}
+    .term-card .t-title {{
+      font-size: 1.02rem;
+      font-weight: 900;
+      color: var(--gold-lt);
+    }}
+    .term-card .t-range {{
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #7dd3fc;
+    }}
+    .term-card .t-easy {{
+      font-size: 0.85rem;
+      color: #f3f4f6;
+      background: rgba(30, 41, 59, 0.72);
+      border-left: 3px solid var(--gold);
+      padding: 7px 10px;
+      border-radius: 6px;
+    }}
+    .term-card .t-formula {{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.76rem;
+      line-height: 1.55;
+      color: #bae6fd;
+      background: #060911;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 8px;
+      padding: 8px 10px;
+      overflow-x: auto;
+    }}
+    .term-card .t-use {{
+      font-size: 0.82rem;
+      color: #d1d5db;
+    }}
+    .dict-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }}
+    .dict-item {{
+      background: rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 11px 13px;
+      font-size: 0.8rem;
+      color: #d1d5db;
+    }}
+    .dict-item strong {{
+      display: block;
+      color: var(--gold-lt);
+      font-size: 0.86rem;
+      margin-bottom: 3px;
+    }}
+
+    .fac-card {{
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.86);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }}
+    .fac-card img {{
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      flex-shrink: 0;
+      border-radius: 8px;
+      background: #080c15;
+    }}
+    .fac-card h4 {{ font-size: 0.9rem; font-weight: 900; color: var(--gold-lt); }}
+    .fac-card p {{ font-size: 0.78rem; color: #d1d5db; margin-top: 2px; }}
+
+    footer {{
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: 40px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }}
+  </style>
+</head>
+<body>
+  <nav class="top-nav">
+    <div class="top-nav-inner">
+      <div class="brand-tag">⚔️ #898 [SGR] 聖剣リーグ 1軍作戦ポータル</div>
+      <div class="nav-links">
+        <a href="#summary">勝利の結論</a>
+        <a href="#roster">全27名 班検索</a>
+        <a href="#glossary">用語＆計算式</a>
+        <a href="#basic-ui">基礎UI・禁止英雄</a>
+        <a href="#tactical-map">聖剣マップ＆施設</a>
+        <a href="#timeline">Phase 1〜3動線</a>
+        <a href="#enemy-risk">相手分析＆開示</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- HERO -->
+    <header class="hero">
+      <img class="hero-bg" src="assets/generated/banner_swordland_showdown.jpg" alt="聖剣リーグ SGR vs SAW イメージバナー">
+      <div class="hero-overlay">
+        <span class="pill">同盟メンバー限定共有（noindex）｜MightPulse基準 2026-11-14 18:59 JST</span>
+        <h1>聖剣リーグ 1軍決戦：<span style="color:#38bdf8">#898 [SGR]</span> vs <span style="color:#c084fc">#812 [SAW]</span></h1>
+        <p class="hero-sub">
+          総戦力・層では相手が上回る格上カードですが、<strong>Top 4 主砲の戦闘質（PCS）は完全互角（首位はSGR『リョ〜〜〜朕』）</strong>。
+          全27名が「入る場所」と「一番左（Slot 1）の英雄」を徹底するだけで勝ち筋が開けます。まずは下の検索ボックスで自分の班を確認してください！
+        </p>
+        <div class="match-strip">
+          <div class="match-box self">
+            <div class="lbl">自チーム（青・左）</div>
+            <div class="val" style="color:#7dd3fc">#898 [SGR] Stargazer</div>
+            <div class="lbl">カード表記 86,176 / 27名 ｜ Top4平均 PCS 826.0</div>
+          </div>
+          <div class="match-box opp">
+            <div class="lbl">対戦相手（赤・右）</div>
+            <div class="val" style="color:#e9d5ff">#812 [SAW] SaintsNWarrior</div>
+            <div class="lbl">カード表記 89,889 / 28名 ｜ Top4平均 PCS 839.0</div>
+          </div>
+          <div class="match-box">
+            <div class="lbl">SGR 勝ち筋コア</div>
+            <div class="val" style="color:#fcd34d">鐘楼＆厩舎 ＋ 輜重ハイスト</div>
+            <div class="lbl">TG8駐屯は純化・TG6は別レーン＆回収へ分離</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 1. SUMMARY & CHARTS -->
+    <section id="summary">
+      <div class="sec-head">
+        <span class="sec-num">01</span>
+        <h2>30秒でわかる戦力診断と勝ち筋</h2>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="k-lbl">Top 1〜4 主砲 平均PCS</div>
+          <div class="k-val">826.0 <span style="font-size:0.85rem;color:#9ca3af">vs 839.0</span></div>
+          <div class="k-sub">差わずか-13点。主砲同士は完全互角</div>
+        </div>
+        <div class="kpi">
+          <div class="k-lbl">#5〜#10 第2陣 平均PCS</div>
+          <div class="k-val" style="color:#fca5a5">588.5 <span style="font-size:0.85rem;color:#9ca3af">vs 699.2</span></div>
+          <div class="k-sub">SAWは10番手までTG8が連続（A象限16名）</div>
+        </div>
+        <div class="kpi">
+          <div class="k-lbl">推定保有兵士戦力 (Troop)</div>
+          <div class="k-val">6,973.9M <span style="font-size:0.85rem;color:#9ca3af">vs 10,365.8M</span></div>
+          <div class="k-sub">相手の総兵力は約1.49倍。正面消耗戦はNG</div>
+        </div>
+        <div class="kpi">
+          <div class="k-lbl">TG8換算 実効耐久 (EGC)</div>
+          <div class="k-val">5,953.3M <span style="font-size:0.85rem;color:#9ca3af">vs 10,227.5M</span></div>
+          <div class="k-sub">SGRは班①②のTG8精鋭9名を純化維持が必須</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="callout ok">
+          <h3>✅ OK：勝てる黄金パターン（非対称機動戦）</h3>
+          <ul>
+            <li><strong>主力砲台を班①（5名）＋ 班②（TG8精鋭合流4名）に完全集約</strong>し、駐屯15枠に空きが出た時のみ班③(TG7)で枠埋め→TG8到着で即差し替え（「ダンス」）します。</li>
+            <li>開始直後に <strong>鐘楼（占領時間 -50%）</strong> と <strong>王立厩舎（無料移転CD -50%）</strong> を確保し、足と塗り替え速度で翻弄する。</li>
+            <li><strong>保有ポイント50%の輜重ドロップは Phase 1 から常時発動</strong>。終盤にSAWが高蓄積した拠点を主砲で剥がし、散乱する輜重箱を班④⑤が電撃回収する。</li>
+          </ul>
+        </div>
+        <div class="callout ng">
+          <h3>❌ NG：絶対に避けるべき負けパターン</h3>
+          <ul>
+            <li>Top4以外の砲台を立てて 4〜6拠点を同時に正面防衛する（層差で確実に押し潰される）。</li>
+            <li><strong>TG6（班④ <code>FAT_WARN</code> 4名）の大量兵士を班①のTG8主力駐屯へ最初から混ぜる</strong>（本作戦モデル換算で TG8比 <code>0.5625倍</code> 相当まで耐久見込みが低下。TG6は別レーン＆終盤回収へ分離）。</li>
+            <li>攻撃集結の左端に <strong>ロン・フェイ / ジェイブル / ヘルガ / ゾーイ / ソフィア</strong>（＋防御特化の <strong>サウル / エリック / ファハド</strong>）を入れて火力バフ枠を潰す。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3 style="font-size:0.95rem;margin-bottom:10px;color:var(--gold-lt)">純粋戦闘スコア PCS（質）の帯域比較</h3>
+          <canvas id="pcsChart" height="200"></canvas>
+        </div>
+        <div class="card">
+          <h3 style="font-size:0.95rem;margin-bottom:10px;color:var(--gold-lt)">兵量（Troop）＆ TG8換算実効戦力（EGC）比較</h3>
+          <canvas id="troopChart" height="200"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. INTERACTIVE ROSTER -->
+    <section id="roster">
+      <div class="sec-head">
+        <span class="sec-num">02</span>
+        <h2>自分の担当班・ミッション検索（SGR 全27名）</h2>
+      </div>
+      <div class="card">
+        <div class="filter-bar">
+          <input id="rosterSearch" class="search-input" type="text" placeholder="自分の名前を検索（例：リョ、ぽんた、ROCK、Hinata...）">
+          <button class="tab-btn active" data-band="all">全員 (27)</button>
+          <button class="tab-btn" data-band="band1">班① 主砲 (5)</button>
+          <button class="tab-btn" data-band="band2">班② TG8合流 (4)</button>
+          <button class="tab-btn" data-band="band3">班③ TG7遊撃 (7)</button>
+          <button class="tab-btn" data-band="band4">班④ TG6分離 (4)</button>
+          <button class="tab-btn" data-band="band5">班⑤ 回収/要確認 (7)</button>
+        </div>
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:10px">
+          ※各指標の意味・計算式・戦場での使い方は、すぐ下の <a href="#glossary" style="color:#7dd3fc"><strong>03 初心者向け「専門用語・計算式ガイド」</strong></a> または見出しの <span class="q-dot">?</span> をタップして確認できます。
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>プレイヤー名</th>
+                <th>担当班</th>
+                <th><a class="th-help" href="#g-tg">TG(火炉)<span class="q-dot">?</span></a></th>
+                <th><a class="th-help" href="#g-pcs">戦闘質 PCS<span class="q-dot">?</span></a></th>
+                <th><a class="th-help" href="#g-join">合流 Join<span class="q-dot">?</span></a></th>
+                <th><a class="th-help" href="#g-dtv">兵余裕 DTV<span class="q-dot">?</span></a></th>
+                <th><a class="th-help" href="#g-troop">推定兵力<span class="q-dot">?</span></a></th>
+                <th>聖剣内ミッション・注意点</th>
+              </tr>
+            </thead>
+            <tbody id="rosterBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. BEGINNER GLOSSARY & SCORING FORMULAS -->
+    <section id="glossary">
+      <div class="sec-head">
+        <span class="sec-num">03</span>
+        <h2>【初心者歓迎】専門用語・計算式・指標の活かし方ガイド</h2>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <p style="font-size:0.88rem;color:#e5e7eb">
+          ゲーム内の「総戦力（Power）」は <strong>兵士をたくさん抱えるだけで簡単に水増しできる</strong> ため、総戦力だけで砲台や駐屯を決めると「見た目ほど強くない部隊」が主力拠点を溶かしてしまいます。そこで本ポータルでは、<strong>MightPulse（秘境試練6塔 ＋ 移民スコア ＋ 火炉Lv）</strong> を使い、誰が見ても納得できるよう <strong>「1兵あたりの強さ（質）」と「動員できる兵隊量（余裕度）」</strong> を5つの指標に分解して算出しています。
+        </p>
+      </div>
+
+      <div class="glossary-grid">
+        <article id="g-tg" class="term-card">
+          <div class="t-head">
+            <span class="t-title">① TG(火炉) — 真金世代ティア</span>
+            <span class="t-range">TG1 〜 TG8</span>
+          </div>
+          <div class="t-easy">
+            <strong>一言イメージ：兵隊の世代ランク（装備・基礎ステータスの土台）。</strong><br>
+            火炉Lv（Stove Lv）60〜70 が真金兵士 TG6〜TG8 に該当します。同じ10万兵でも TG8 と TG6 では基礎耐久と攻撃力に明確な世代差が出ます。
+          </div>
+          <div class="t-formula">
+            TG = clip(floor((火炉Lv - 30) / 5), 1, 8)<br>
+            ・Lv.60〜64 ＝ TG6 ｜ Lv.65〜69 ＝ TG7 ｜ Lv.70 ＝ TG8<br>
+            ・混入目安 EGC_M ＝ 推定兵力 × (TG / 8)² （TG6は0.5625倍目安）
+          </div>
+          <div class="t-use">
+            <strong>🎯 実戦での活かし方：</strong>駐屯拠点には「最大15名・約100万兵」の定員があるため、<strong>班①②のTG8（9名）を核</strong>にします。枠がスカスカの時だけ班③(TG7)で一時埋めし、TG8が着いたら即交代（ダンス）することで最大耐久を維持します。
+          </div>
+        </article>
+
+        <article id="g-pcs" class="term-card">
+          <div class="t-head">
+            <span class="t-title">② 戦闘質 PCS — 純粋戦闘スコア</span>
+            <span class="t-range">0 〜 1,000 点</span>
+          </div>
+          <div class="t-easy">
+            <strong>一言イメージ：「兵数を抜いた1兵あたりの純粋な強さ（砲台向き度）」。</strong><br>
+            護符・領主装備・英雄・研究・ペットから算出しており、兵が増えても下がらず、兵がゼロでも高い数値が出ます。<strong>600点以上（特に700点超）が主砲・駐屯リーダー候補</strong>です。
+          </div>
+          <div class="t-formula">
+            1) 秘境試練6塔を各上限 CAP で0〜1に正規化（桁差バイアス除去）<br>
+            CAP = &#123;護符CC:400, 装備MF:440, 研究KN:320, ペットFoL:340, 英雄Col:800, 総合RS:840&#125;<br>
+            2) 実戦重み合成 Q_core = 0.26×CC + 0.20×Col + 0.18×MF + 0.14×KN + 0.14×RS + 0.08×FoL<br>
+            3) 移民スコアの火炉倍率を除算中立化（TC=min(Stove,70), wps=Mig/TC+2226）し 12% のみ統合<br>
+            PCS = 1000 × clip(0.88 × Q_core + 0.12 × clip(wps/42000, 0, 1), 0, 1)
+          </div>
+          <div class="t-use">
+            <strong>🎯 実戦での活かし方：</strong>集結・駐屯は「一番強いリーダーの倍率」が全員の兵に乗ります。SGRは <strong>Top4平均 PCS 826.0（SAW 839.0と互角）</strong> あるため、班①の5名だけが砲台・駐屯長を担えば格上とも殴り合えます。
+          </div>
+        </article>
+
+        <article id="g-join" class="term-card">
+          <div class="t-head">
+            <span class="t-title">③ 合流 Join — 乗る時専用スコア</span>
+            <span class="t-range">0 〜 1,000 点</span>
+          </div>
+          <div class="t-easy">
+            <strong>一言イメージ：「自分が砲台の集結・駐屯へ合流（乗る）ときの貢献度」。</strong><br>
+            自分が合流側（ジョイナー）に回る時は、自分の研究や領主装備は戦闘に使われず、<strong>「一番左（Slot 1）の英雄スキル」と「送る兵のTG」</strong> だけが戦場に効きます。
+          </div>
+          <div class="t-formula">
+            PCS_joiner = 1000 × (0.45×n_Col[英雄] + 0.15×n_RS[総合] + 0.10×n_CC + 0.05×n_MF + 0.25×(TG / 8))<br>
+            ※英雄・総合塔・TG世代の比重 85% で合流適正を評価
+          </div>
+          <div class="t-use">
+            <strong>🎯 実戦での活かし方：</strong>戦闘質 PCS が500台でも <strong>TG8 × 英雄育成（Join 630超）</strong> が高い ROCK・ゴリポン・ネプチューンマン・ぐるぐる（班②）が班①の主砲へ乗り込むと、主砲部隊の耐久・火力が最大化します。
+          </div>
+        </article>
+
+        <article id="g-troop" class="term-card">
+          <div class="t-head">
+            <span class="t-title">④ 推定兵力（Troop Power）</span>
+            <span class="t-range">単位：M（百万戦力）</span>
+          </div>
+          <div class="t-easy">
+            <strong>一言イメージ：「総戦力から建物・研究などの固定戦力を引き算した、いま動く兵隊の数」。</strong><br>
+            王城戦や直近の戦闘で兵を消耗している場合、総戦力（Power）は高く見えても推定兵力（Troop）が小さく出ます。
+          </div>
+          <div class="t-formula">
+            1) 固定ベース戦力（冪乗則モデル）：BasePower_M = 5.79 × (wps ^ 0.318)<br>
+            ※高戦力帯で兵枯渇と誤認しないよう下側包絡線で非線形推定<br>
+            2) 推定兵力：TroopPower_M = max(総戦力M - BasePower_M, 0)<br>
+            3) 兵比率 phi = TroopPower_M / 総戦力M
+          </div>
+          <div class="t-use">
+            <strong>🎯 実戦での活かし方：</strong>SGRの推定総兵力は <strong>6,973.9M vs SAW 10,365.8M（約1.49倍差）</strong>。兵が少ないメンバー（班⑤の一部）は防衛で溶かさず、<strong>空拠点踏み・1兵地下貯蔵庫・輜重回収</strong> に回るのが最もポイント効率が高くなります。
+          </div>
+        </article>
+
+        <article id="g-dtv" class="term-card">
+          <div class="t-head">
+            <span class="t-title">⑤ 兵余裕 DTV — 出撃スタミナ余裕度</span>
+            <span class="t-range">0 〜 100 点（目安60+）</span>
+          </div>
+          <div class="t-easy">
+            <strong>一言イメージ：「聖剣1時間を通して前線に兵を出し続けられるスタミナ余裕」。</strong><br>
+            ただ兵が多いだけでなく、<strong>TG世代係数・推定兵量・総力内の兵比率</strong> を組み合わせて「連戦に耐えられるか」を0〜100点で示します。
+          </div>
+          <div class="t-formula">
+            ・兵量因子 a = clip(ln(1 + TroopPower_M / 20) / ln(31), 0, 1)  [600Mで1.0]<br>
+            ・兵比率因子 s = clip((phi - 0.15) / 0.65, 0.02, 1.0)<br>
+            ・世代床係数 qf = max(1 - 0.04 × (8 - TG), 0.60)<br>
+            DTV = 100 × qf × (a ^ 0.6) × (s ^ 0.4)
+          </div>
+          <div class="t-use">
+            <strong>🎯 実戦での活かし方：</strong>DTV 60以上ならフル回転可。ただし <strong>TG6以下 かつ a ≧ 0.70（推定201M兵超）は <code>△TG6大兵（FAT_WARN）</code></strong> に自動分類され、主力のTG8駐屯枠を圧迫しないよう <strong>班④（別レーン＆終盤ハイスト待機）</strong> へ振り分けます。
+          </div>
+        </article>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h3 style="font-size:0.96rem;color:var(--gold-lt);margin-bottom:4px">📖 初心者向け：聖剣リーグ 重要ルール・用語ミニ辞典</h3>
+        <div class="dict-grid">
+          <div class="dict-item">
+            <strong>🗺️ 4象限（班分けの地図）</strong>
+            <code>PCS≧600 & DTV≧60</code> が <strong>A象限（主砲）</strong>、<code>DTV≧60</code> が <strong>B象限（合流・陽動）</strong>、<code>PCS≧600</code> だが兵少が <strong>C象限（頭枠・回復）</strong>、両方控えめが <strong>D象限（回収・空き踏み）</strong> です。
+          </div>
+          <div class="dict-item">
+            <strong>🧬 Slot 1（一番左英雄）＆ 異種乗算</strong>
+            集結・駐屯に乗るスキルは参加者の <strong>一番左の英雄・第1遠征スキル（上位4名まで）</strong> だけ！同じバフばかりより「攻撃+25% × 殺傷+25% × 敵被ダメ増」を混ぜるほど倍率が伸びます。
+          </div>
+          <div class="dict-item">
+            <strong>📦 保有50%輜重ドロップ（エスクロー）</strong>
+            聖剣では拠点を保持している間に貯まる同盟ポイントの <strong>50%が拠点上に保管</strong> されます。Phase 1から常に有効で、落城させると相手から引かれて周囲に箱が散らばり、<strong>どちらの同盟でも拾えます</strong>。
+          </div>
+          <div class="dict-item">
+            <strong>⏱️ 画面の「残り時間」見間違い注意</strong>
+            戦場上部のタイマーは <strong>60:00 → 00:00 のカウントダウン</strong> です。経過15分＝<strong>残り45:00</strong>、残り<strong>22:00以降は12分退場禁止</strong>（戻ってこられなくなるため）を徹底しましょう。
+          </div>
+          <div class="dict-item">
+            <strong>🏆 聖剣リーグは「得失点差」も重要</strong>
+            勝敗だけでなく、シーズン昇格順位には <strong>自軍ポイント − 相手ポイント（得失点差）</strong> も効きます。万一ビハインドでも、残り10分〜終了0秒まで箱・地下貯蔵庫を1つでも多く拾い切る価値があります。
+          </div>
+          <div class="dict-item">
+            <strong>🔍 Flag B〜D（未計測フラグ注記）</strong>
+            MightPulse上で6塔や移民スコアが一部未取得のメンバーは「Flag B/C」で数学的に補完、両方未取得は「Flag D（算出対象外・別表警告）」として正直に開示しています。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. BASIC UI & HERO PRESET -->
+    <section id="basic-ui">
+      <div class="sec-head">
+        <span class="sec-num">04</span>
+        <h2>【基礎UI図解】開戦前チェック ＆ プリセットSlot 1（一番左）の鉄則</h2>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:18px">
+        <div class="ui-shot">
+          <img src="assets/generated/infirmary_ready_scene.jpg" alt="医務室・負傷兵ゼロ準備イメージ">
+          <div class="cap">
+            <span class="ui-tag tag-gen">戦術イメージ</span>
+            <strong>開戦15分前：医務室の負傷兵を必ず「0」に！</strong><br>
+            自都市の <img src="assets/ui/icon_infirmary.png" alt="医務室" style="width:18px;height:18px;vertical-align:text-bottom"> 医務室に負傷兵が1兵でも残っていると、聖剣戦場そのものへ入場できません。事前に全治療し、出撃中マーチ・増援もすべて帰還させておきます。
+          </div>
+        </div>
+        <div class="ui-shot">
+          <img src="assets/swordland/ui_entry_timezone_ja.png" alt="日本語実機UI：軍団1参戦時間帯エントリー">
+          <div class="cap">
+            <span class="ui-tag tag-real">実機UI</span>
+            <strong>参戦枠とTG世代（兵質）の確認</strong><br>
+            エントリー時間帯確定後は時間厳守。自分が TG8（火炉70）か TG7（65-69）か TG6（60-64）かを把握し、TG6以下の方は班①駐屯へ合流しないよう分離行動します。
+          </div>
+        </div>
+        <div class="ui-shot">
+          <img src="assets/ui/ui_tg8_refinement_ja.png" alt="精製黄金TG8実機画面">
+          <div class="cap">
+            <span class="ui-tag tag-real">実機UI</span>
+            <strong>なぜTG6とTG8を混ぜてはいけない？</strong><br>
+            精製黄金で鍛えた <img src="assets/ui/icon_truegold_crucible.png" alt="るつぼ" style="width:18px;height:18px;vertical-align:text-bottom"> TG8 駐屯拠点（上限15名）にTG6が混ざると、本作戦モデル換算の耐久効率が <strong>0.5625倍目安</strong> に低下。枠に空きがある間だけ班③(TG7)で埋め、TG8着弾で即入れ替え（「ダンス」）を行います。
+          </div>
+        </div>
+      </div>
+
+      <!-- Preset & Rally UI -->
+      <div class="grid-3" style="margin-bottom:18px">
+        <div class="ui-shot">
+          <img src="assets/ui/ui_chenko_skill1_crop.jpg" alt="チェンコ第1遠征スキル実機UI">
+          <div class="cap">
+            <span class="ui-tag tag-real">実機UI</span>
+            <strong>合流時に発動するのは「一番左（Slot 1）英雄の右上・第1遠征スキル」のみ！</strong><br>
+            チェンコの『Stand of Arms Lv.5（殺傷力+25%）』のように、合流メンバー全員の上位4枠がこの「左端英雄の第1スキル」で決まります。
+          </div>
+        </div>
+        <div class="ui-shot">
+          <img src="assets/ui/ui_rally_panel.png" alt="集結Rally画面">
+          <div class="cap">
+            <span class="ui-tag tag-real">実機UI</span>
+            <strong><img src="assets/ui/icon_command_center.png" alt="指揮センター" style="width:18px;height:18px;vertical-align:text-bottom"> 集結（Rally）参加時の注意</strong><br>
+            班①（リョ〜〜〜朕・だりゅ等）が立てた集結へ乗る時は、必ず保存しておいた「攻撃合流プリセット」で1タップ送信。余計な英雄を左に置くと他人のバフ枠を弾き出します。
+          </div>
+        </div>
+        <div class="ui-shot">
+          <img src="assets/ui/ui_garrison_list.png" alt="駐屯Defender Squad一覧">
+          <div class="cap">
+            <span class="ui-tag tag-real">実機UI</span>
+            <strong><img src="assets/ui/icon_embassy.png" alt="大使館" style="width:18px;height:18px;vertical-align:text-bottom"> 防衛駐屯（Garrison）の差し替え</strong><br>
+            重要拠点を守る際は班②（TG8）＋防衛向き左端英雄（ゴードン/ハワード/サウル等）が核。空き枠は班③(TG7)で一時補助し、兵が減った部隊やTG低めはTG8到着と同時に即交代させます。
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Hero Checklists -->
+      <div class="card">
+        <h3 style="font-size:1.05rem;font-weight:900;color:var(--gold-lt);margin-bottom:6px">
+          そのまま真似する「Slot 1（一番左）」推奨英雄 vs 絶対禁止（地雷）英雄
+        </h3>
+        <p style="font-size:0.86rem;color:#d1d5db">
+          攻撃集結では <strong>「攻撃力 × 殺傷力 × 敵被ダメ増」の異種乗算</strong> を組むと主砲の火力が跳ね上がります（防御・被ダメ軽減系は敵を削れないため<strong>防衛専用</strong>に分離）。開戦前にプリセット1（攻撃合流）・2（防衛）・3（高速回収）へ登録してください。
+        </p>
+
+        <h4 style="margin-top:14px;font-size:0.9rem;color:#7dd3fc">⚔️ 攻撃集結 黄金ジョイナー枠（この中から一番左に1名配置）</h4>
+        <div class="hero-strip">
+          <div class="hero-chip"><img src="assets/heroes/chenko.png" alt="チェンコ"><div class="h-name">チェンコ</div><div class="h-eff">確定 殺傷+25%</div></div>
+          <div class="hero-chip"><img src="assets/heroes/yeonwoo.png" alt="インウー"><div class="h-name">インウー</div><div class="h-eff">確定 殺傷+25%</div></div>
+          <div class="hero-chip"><img src="assets/heroes/amane.png" alt="アマネ"><div class="h-name">アマネ</div><div class="h-eff">確定 攻撃+25%</div></div>
+          <div class="hero-chip"><img src="assets/heroes/margot.png" alt="マーゴ"><div class="h-name">マーゴ</div><div class="h-eff">確定 攻撃+25%</div></div>
+          <div class="hero-chip"><img src="assets/heroes/vivian.png" alt="ヴィヴィアン"><div class="h-name">ヴィヴィアン</div><div class="h-eff">敵被ダメ+25%</div></div>
+          <div class="hero-chip"><img src="assets/heroes/hilde.png" alt="ヒルダ"><div class="h-name">ヒルダ</div><div class="h-eff">攻撃+10%/防御+15%</div></div>
+          <div class="hero-chip limit"><img src="assets/heroes/petra.png" alt="ペトラ"><div class="h-name">ペトラ ⚠</div><div class="h-eff" style="color:#fcd34d">1集結1名のみ（確率50%被ダメ+50%）</div></div>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px">
+          <div>
+            <h4 style="font-size:0.9rem;color:#6ee7b7">🛡️ 防衛駐屯 推奨左端（第1スキルが耐久・軽減特化）</h4>
+            <div class="hero-strip">
+              <div class="hero-chip"><img src="assets/heroes/gordon.png" alt="ゴードン"><div class="h-name">ゴードン</div><div class="h-eff">味方体力+25%</div></div>
+              <div class="hero-chip"><img src="assets/heroes/howard.png" alt="ハワード"><div class="h-name">ハワード</div><div class="h-eff">被ダメ-20%</div></div>
+              <div class="hero-chip"><img src="assets/heroes/saul.png" alt="サウル"><div class="h-name">サウル</div><div class="h-eff">防御+10%/HP+15%（防衛向け）</div></div>
+              <div class="hero-chip"><img src="assets/heroes/eric.png" alt="エリック"><div class="h-name">エリック</div><div class="h-eff">敵攻撃-20%（防衛向け）</div></div>
+              <div class="hero-chip"><img src="assets/heroes/fahd.png" alt="ファハド"><div class="h-name">ファハド</div><div class="h-eff">敵与ダメ-20%（防衛向け）</div></div>
+            </div>
+          </div>
+          <div>
+            <h4 style="font-size:0.9rem;color:#fca5a5">💣 絶対禁止（合流Slot 1に入れると地雷）</h4>
+            <div class="hero-strip">
+              <div class="hero-chip ban"><img src="assets/heroes/long-fei.png" alt="ロン・フェイ"><div class="h-name">ロン・フェイ</div><div class="h-eff" style="color:#fca5a5">攻撃集結 NG</div></div>
+              <div class="hero-chip ban"><img src="assets/heroes/jabel.png" alt="ジェイブル"><div class="h-name">ジェイブル</div><div class="h-eff" style="color:#fca5a5">確率発動で枠汚染</div></div>
+              <div class="hero-chip ban"><img src="assets/heroes/helga.png" alt="ヘルガ"><div class="h-name">ヘルガ</div><div class="h-eff" style="color:#fca5a5">合流時 NG</div></div>
+              <div class="hero-chip ban"><img src="assets/heroes/zoe.png" alt="ゾーイ"><div class="h-name">ゾーイ</div><div class="h-eff" style="color:#fca5a5">確率・枠潰し</div></div>
+              <div class="hero-chip ban"><img src="assets/heroes/sophia.png" alt="ソフィア"><div class="h-name">ソフィア</div><div class="h-eff" style="color:#fca5a5">合流時 NG</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. INTERACTIVE TACTICAL MAP & FACILITIES -->
+    <section id="tactical-map">
+      <div class="sec-head">
+        <span class="sec-num">05</span>
+        <h2>【聖剣UI】インタラクティブ戦術マップ ＆ 全施設ルール</h2>
+      </div>
+
+      <div class="card" style="margin-bottom:18px">
+        <div class="filter-bar" style="justify-content:space-between">
+          <div>
+            <strong style="color:var(--gold-lt)">SGR 作戦動線マップ（11拠点 ＋ 地下貯蔵庫4箇所の実配置）</strong>
+            <span style="font-size:0.78rem;color:var(--muted);margin-left:8px">※ボタンで各時間帯の狙いを切り替えられます</span>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="tab-btn active" data-phase="p1">Phase 1 初動 (残り60:00〜45:00)</button>
+            <button class="tab-btn" data-phase="p2">Phase 2 中央開放 (残り45:00〜20:00)</button>
+            <button class="tab-btn" data-phase="p3">終盤勝負帯 輜重ハイスト (残り20:00〜00:00)</button>
+          </div>
+        </div>
+
+        <div class="map-board-wrap">
+          <img class="base" src="assets/generated/swordland_tactical_map_base.jpg" alt="聖剣戦場戦略マップ土台">
+          <!-- SVG arrows for phase movements -->
+          <svg id="mapSvg" class="map-svg-overlay" viewBox="0 0 1000 562" preserveAspectRatio="none"></svg>
+
+          <!-- All 11 facilities + 4 undercellar zones positioned per real diamond layout -->
+          <div class="map-pin priority" style="left:50%;top:50%" title="① 聖剣祭壇：15:00開放（残り45:00）。初回9,000 / 毎分+1,800">
+            <img src="assets/swordland/facility_swordshrine.png" alt="聖剣祭壇">
+            <span class="m-lbl">① 聖剣祭壇 (15:00開放)</span>
+          </div>
+          <div class="map-pin" style="left:50%;top:24%" title="② 傭兵駐屯地（傭兵キャンプ）：15:00開放（残り45:00）。約7分毎に敵施設を自動攻撃">
+            <img src="assets/swordland/facility_mercenary.png" alt="傭兵駐屯地">
+            <span class="m-lbl">② 傭兵駐屯地 (15:00)</span>
+          </div>
+          <div class="map-pin" style="left:50%;top:77%" title="③ 教化の間（宗教改革所）：15:00開放（残り45:00）。与ダメ+15% / 被ダメ軽減-15%">
+            <img src="assets/swordland/facility_reformation.png" alt="教化の間">
+            <span class="m-lbl">③ 教化の間 (15:00/+15%)</span>
+          </div>
+          <div class="map-pin priority" style="left:34%;top:13%" title="⑦ 鐘楼：0:00開放。初回1,200 / +240/m。占領時間-50%（3分→1分30秒）。Phase 1最優先！">
+            <div class="bell-emblem" aria-label="鐘楼">🔔</div>
+            <span class="m-lbl">⑦ 鐘楼 (占領-50%)★</span>
+          </div>
+          <div class="map-pin" style="left:66%;top:13%" title="⑪ 北東・修道院：0:00開放。初回3,000 / +600/m">
+            <img src="assets/swordland/facility_abbey.png" alt="北東修道院">
+            <span class="m-lbl">⑪ 北東・修道院</span>
+          </div>
+          <div class="map-pin" style="left:25%;top:40%" title="⑤ 西・聖域（サンクタム）：0:00開放。初回6,000 / +1,200/m">
+            <img src="assets/swordland/facility_sanctum.png" alt="西聖域">
+            <span class="m-lbl">⑤ 西・聖域</span>
+          </div>
+          <div class="map-pin" style="left:77%;top:43%" title="⑨ 中東・修道院：0:00開放。初回3,000 / +600/m">
+            <img src="assets/swordland/facility_abbey.png" alt="中東修道院">
+            <span class="m-lbl">⑨ 中東・修道院</span>
+          </div>
+          <div class="map-pin" style="left:22%;top:60%" title="⑧ 中西・修道院：0:00開放。初回3,000 / +600/m">
+            <img src="assets/swordland/facility_abbey.png" alt="中西修道院">
+            <span class="m-lbl">⑧ 中西・修道院</span>
+          </div>
+          <div class="map-pin" style="left:74%;top:61%" title="④ 東・聖域（サンクタム）：0:00開放。初回6,000 / +1,200/m">
+            <img src="assets/swordland/facility_sanctum.png" alt="東聖域">
+            <span class="m-lbl">④ 東・聖域</span>
+          </div>
+          <div class="map-pin" style="left:34%;top:88%" title="⑩ 南西・修道院：0:00開放。初回3,000 / +600/m">
+            <img src="assets/swordland/facility_abbey.png" alt="南西修道院">
+            <span class="m-lbl">⑩ 南西・修道院</span>
+          </div>
+          <div class="map-pin priority" style="left:66%;top:88%" title="⑥ 王立厩舎：0:00開放。初回1,200 / +240/m。無料移転クールダウン-50%（10分→5分）★">
+            <img src="assets/swordland/facility_royal_stables.png" alt="王立厩舎">
+            <span class="m-lbl">⑥ 王立厩舎 (移転-50%)★</span>
+          </div>
+          <div class="map-pin" style="left:36%;top:30%" title="地下貯蔵庫（北西）：戦場マップ虫眼鏡で確認し1兵採集可">
+            <img src="assets/swordland/facility_undercellar.png" alt="地下貯蔵庫">
+            <span class="m-lbl" style="font-size:0.62rem">地下貯蔵庫</span>
+          </div>
+          <div class="map-pin" style="left:64%;top:30%" title="地下貯蔵庫（北東）：戦場マップ虫眼鏡で確認し1兵採集可">
+            <img src="assets/swordland/facility_undercellar.png" alt="地下貯蔵庫">
+            <span class="m-lbl" style="font-size:0.62rem">地下貯蔵庫</span>
+          </div>
+          <div class="map-pin" style="left:36%;top:70%" title="地下貯蔵庫（南西）：戦場マップ虫眼鏡で確認し1兵採集可">
+            <img src="assets/swordland/facility_undercellar.png" alt="地下貯蔵庫">
+            <span class="m-lbl" style="font-size:0.62rem">地下貯蔵庫</span>
+          </div>
+          <div class="map-pin" style="left:64%;top:70%" title="地下貯蔵庫（南東）：戦場マップ虫眼鏡で確認し1兵採集可">
+            <img src="assets/swordland/facility_undercellar.png" alt="地下貯蔵庫">
+            <span class="m-lbl" style="font-size:0.62rem">地下貯蔵庫</span>
+          </div>
+        </div>
+        <div id="phaseDetailBox" class="phase-detail-box"></div>
+      </div>
+
+      <!-- 7 Facilities & Real UI Rules -->
+      <div class="grid-3" style="margin-bottom:16px">
+        <div class="fac-card"><img src="assets/swordland/facility_royal_stables.png" alt="王立厩舎"><div><h4>王立厩舎 (0:00開放 ★最優先)</h4><p>初回1,200 / +240/m。無料移転CDが <strong>-50%（10分→5分）</strong>。遊撃と輜重回収の回転数が倍増（緊急時は高級移転アイテムも併用可）。</p></div></div>
+        <div class="fac-card"><img src="assets/swordland/facility_swordshrine.png" alt="聖剣祭壇"><div><h4>聖剣祭壇 (15:00開放 / 残り45:00)</h4><p>初回 <strong>9,000</strong> / 毎分 <strong>+1,800</strong>。正面消耗戦を避け、手薄な隙間やダブル集結・終盤スイングを狙います。</p></div></div>
+        <div class="fac-card"><img src="assets/swordland/facility_sanctum.png" alt="聖域"><div><h4>聖域 / サンクタム (0:00開放・東西2棟)</h4><p>初回 <strong>6,000</strong> / 毎分 <strong>+1,200</strong>。中盤の主力ポイント源。相手が手薄な側を常に踏み替えます。</p></div></div>
+        <div class="fac-card"><img src="assets/swordland/facility_reformation.png" alt="教化の間"><div><h4>教化の間 / 宗教改革所 (15:00開放)</h4><p>初回3,000 / +600/m。戦場全体へ <strong>与ダメ+15% ＆ 被ダメ軽減-15%</strong> バフを付与。主砲対決前に確保したい拠点。</p></div></div>
+        <div class="fac-card"><img src="assets/swordland/facility_mercenary.png" alt="傭兵駐屯地"><div><h4>傭兵駐屯地 / キャンプ (15:00開放)</h4><p>初回3,000 / +600/m。占領すると <strong>約7分間隔</strong> で敵保持拠点を自動攻撃して駐屯を削ります。味方集結と噛み合わせるのが強力。</p></div></div>
+        <div class="fac-card"><img src="assets/swordland/facility_abbey.png" alt="鐘楼・修道院"><div><h4>鐘楼（🔔 0:00）＆ 修道院（4棟 0:00）</h4><p><strong>鐘楼は占領カウント時間 -50%（3:00→1:30）</strong>・初回1,200/+240/m。<strong>修道院4棟</strong>は初回3,000/+600/mで班③④⑤の遊撃・揺さぶり点。</p></div></div>
+      </div>
+
+      <div class="grid-4">
+        <div class="ui-shot">
+          <img src="assets/swordland/ui_rules_swordshrine.png" alt="聖剣祭壇ルールUI">
+          <div class="cap"><span class="ui-tag tag-real">実機UI</span>聖剣祭壇の獲得ポイント表（9,000 / +1,800/m）</div>
+        </div>
+        <div class="ui-shot">
+          <img src="assets/swordland/ui_rules_stables_buff.png" alt="王立厩舎バフUI">
+          <div class="cap"><span class="ui-tag tag-real">実機UI</span>王立厩舎の効果（<img src="assets/ui/icon_teleport.png" alt="移転" style="width:16px;height:16px;vertical-align:text-bottom"> 無料移転CD -50%）</div>
+        </div>
+        <div class="ui-shot">
+          <img src="assets/swordland/ui_swordshrine_garrison_crop.jpg" alt="聖剣祭壇駐屯リスト実機UI">
+          <div class="cap"><span class="ui-tag tag-real">実機UI</span>聖剣拠点の駐屯リスト（11/15枠・左端英雄並び確認）</div>
+        </div>
+        <div class="ui-shot">
+          <img src="assets/swordland/ui_battle_cluster_march.png" alt="聖剣戦場進軍クラスタ実機UI">
+          <div class="cap"><span class="ui-tag tag-real">実機UI</span>戦場マップでの同盟クラスタ集中と連撃マーチ</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. TIMELINE & BAGGAGE HEIST -->
+    <section id="timeline">
+      <div class="sec-head">
+        <span class="sec-num">06</span>
+        <h2>聖剣タイムライン（残り時間基準）＆ 輜重ハイスト逆転法</h2>
+      </div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="ui-shot">
+          <img src="assets/generated/baggage_heist_scene.jpg" alt="輜重ハイスト・高速回収作戦イメージ">
+          <div class="cap">
+            <span class="ui-tag tag-gen">戦術イメージ</span>
+            <strong>格上逆転の切り札：輜重ハイスト（保有50%エスクロー強奪）</strong><br>
+            Phase 1 から拠点保持ポイントの <strong>50%は常に施設上に保管</strong> されており、落城させると敵から減算されて周囲に箱が散乱します。貯まりきった終盤におとり集結で敵を散らし、班①の一撃で落として班④⑤が一気に拾います！
+          </div>
+        </div>
+        <div class="ui-shot">
+          <img src="assets/swordland/ui_swordland_field_crop.jpg" alt="実機UI：戦場に落ちている輜重ドロップ荷車">
+          <div class="cap">
+            <span class="ui-tag tag-real">実機UI</span>
+            <strong>実際の戦場に落ちた輜重（159 / 45 / 401 等）＆ 無料移転タイマー</strong><br>
+            右上に <strong>残り時間（例 00:47:43）</strong>、右下に Battle Map 虫眼鏡（地下貯蔵庫探し）、左下に無料移転クールダウン。貯蔵庫は <strong>1兵〜最小限マーチ</strong> で兵損ゼロ採集が可能です！
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3 style="color:#7dd3fc;font-size:1rem;margin-bottom:6px">Phase 1（経過0:00〜15:00｜残り60:00〜45:00）</h3>
+          <p style="font-size:0.86rem">
+            <strong>最優先：鐘楼（-50%）＆ 王立厩舎（移転CD-50%）確保。</strong><br>
+            初回占領は <strong>カウント完了（3分／鐘楼で1分30秒）</strong> まで守って初めて初回ボーナスが入るため増援を切らさない！班④⑤は開幕に無料移転を無駄撃ちせず温存。
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="color:#fcd34d;font-size:1rem;margin-bottom:6px">Phase 2（経過15:00〜40:00｜残り45:00〜20:00）</h3>
+          <p style="font-size:0.86rem">
+            <strong>祭壇・教化・傭兵一斉開放 ＆ 退場回復ローテ。</strong><br>
+            『亗Đ丨ĐĐㄚ』＋『GunDam』との正面消耗戦を避け、『リョ〜〜〜朕』＋『だりゅ』のダブル集結で薄い拠点・バフを突く。<strong>※残り22:00（経過38:00）以降は12分CDで戻れないため退場禁止！</strong>
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="color:#fca5a5;font-size:1rem;margin-bottom:6px">終盤勝負帯（経過40:00〜60:00｜残り20:00〜00:00）</h3>
+          <p style="font-size:0.86rem">
+            <strong>おとり集結 ＋ 輜重ハイスト ＋ 1兵地下貯蔵庫回収。</strong><br>
+            おとり攻撃で増援先を迷わせ、高蓄積拠点を主砲で撃破 → 班④⑤が散乱箱と地下貯蔵庫を回収。<strong>リーグ順位は得失点差も効くため終了0秒まで全拾い徹底！</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. ENEMY RISK & TRANSPARENCY -->
+    <section id="enemy-risk">
+      <div class="sec-head">
+        <span class="sec-num">07</span>
+        <h2>相手方 <code>#812 [SAW]</code> 要警戒メンバー ＆ データ開示（透明性）</h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3 style="font-size:0.95rem;color:#e9d5ff;margin-bottom:10px">SAW 主砲・要警戒ライン（Top 6）</h3>
+          <div class="table-wrap">
+            <table style="min-width:460px">
+              <thead>
+                <tr><th>#</th><th>プレイヤー</th><th>Stv(TG)</th><th>PCS</th><th>DTV</th><th>推定Troop</th></tr>
+              </thead>
+              <tbody id="sawTopBody"></tbody>
+            </table>
+          </div>
+          <p style="font-size:0.78rem;color:var(--muted);margin-top:8px">
+            ※ほか #9 GunDam（PCS 673 / Troop 611.7M）など2軍TG8が厚く、Flag B 3名（BOO 652 / ꕤ~SANSAM~ꕤ 606 / Teo Rini 557）は仕様上 λ=0 算出のため +2〜4%上振れ余地があります。
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="font-size:0.95rem;color:#fcd34d;margin-bottom:10px">⚠ 未取得リスク：SAW <code>Flag D</code> 300M+ 未クロール 10名</h3>
+          <p style="font-size:0.82rem;color:#d1d5db;margin-bottom:8px">
+            以下10名は MightPulse で6塔/移民スコア未取得（すべて Stove 60〜66 / 330〜400M帯のため隠れ800Mクジラではありません）ですが、28名枠に出てくる場合は中堅TG6〜7合流が厚くなります。
+          </p>
+          <div id="sawUnscoredList" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        <strong>データ・作成開示</strong>：戦力・2軸スコア（PCS / DTV）は MightPulse API 実測値（<code>2026-11-14T18:59:15+09:00</code> 時点）から
+        決定論スクリプトで自動算出し、当日の部隊回復数・英雄専用装備Lv・バフアイテム発動状況はゲーム内点呼を優先してください。
+        ページ内の「実機UI」は攻略資料・解説映像からの実画面キャプチャ、「戦術イメージ」「戦略マップ土台」は作戦理解を助けるためのAI生成イラスト（透かし・誤文字なし）です。<br>
+        最終更新：{jst_now} ｜ #898 [SGR] 聖剣作戦室
+      </p>
+    </footer>
+  </main>
+
+  <script>
+    const SGR_ROSTER = {sgr_json_js};
+    const SAW_TOP6 = {saw_top6_js};
+    const SAW_UNSCORED = {saw_unscored_js};
+
+    // 1. Render SGR filterable roster
+    const rosterBody = document.getElementById('rosterBody');
+    const searchInput = document.getElementById('rosterSearch');
+    let currentBand = 'all';
+
+    function esc(s) {{
+      return String(s).replace(/[&<>"']/g, m => ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[m]));
+    }}
+
+    function renderRoster() {{
+      const q = (searchInput.value || '').trim().toLowerCase();
+      const rows = SGR_ROSTER.filter(m => {{
+        const matchBand = currentBand === 'all' || m.band_id === currentBand;
+        const matchName = !q || m.name.toLowerCase().includes(q) || m.band_label.toLowerCase().includes(q);
+        return matchBand && matchName;
+      }});
+      rosterBody.innerHTML = rows.map(m => {{
+        const fatTag = m.fat_warn ? ' <span class="badge b-band4">⚠TG6大兵</span>' : '';
+        return `<tr>
+          <td><strong>${{m.rank}}</strong></td>
+          <td><strong>${{esc(m.name)}}</strong>${{fatTag}}</td>
+          <td><span class="badge b-${{m.band_id}}">${{esc(m.band_label)}}</span></td>
+          <td>Stv ${{m.stove_lv}} (TG${{m.tg}})</td>
+          <td><strong>${{m.pcs}}</strong></td>
+          <td>${{m.pcs_joiner}}</td>
+          <td>${{m.dtv.toFixed(1)}}</td>
+          <td>${{m.troop_M.toFixed(1)}}M</td>
+          <td style="font-size:0.8rem;color:#e5e7eb">${{esc(m.mission)}}</td>
+        </tr>`;
+      }}).join('') || '<tr><td colspan="9" style="text-align:center;color:#9ca3af">該当するメンバーがいません</td></tr>';
+    }}
+
+    document.querySelectorAll('[data-band]').forEach(btn => {{
+      btn.addEventListener('click', () => {{
+        document.querySelectorAll('[data-band]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentBand = btn.dataset.band;
+        renderRoster();
+      }});
+    }});
+    searchInput.addEventListener('input', renderRoster);
+    renderRoster();
+
+    // 2. Render SAW Top6 & Unscored
+    document.getElementById('sawTopBody').innerHTML = SAW_TOP6.map(m => `<tr>
+      <td>${{m.rank}}</td>
+      <td><strong>${{esc(m.name)}}</strong></td>
+      <td>Stv ${{m.stove_lv}} (TG${{m.tg}})</td>
+      <td><strong>${{m.pcs}}</strong></td>
+      <td>${{m.dtv.toFixed(1)}}</td>
+      <td>${{m.troop_M.toFixed(1)}}M</td>
+    </tr>`).join('');
+
+    document.getElementById('sawUnscoredList').innerHTML = SAW_UNSCORED.map(u =>
+      `<span class="badge b-band4">${{esc(u.name)}} (${{u.power_M}}M / Stv${{u.stove_lv}})</span>`
+    ).join('');
+
+    // 3. Interactive Phase Map SVG Arrows
+    const phaseSpecs = {{
+      p1: {{
+        desc: '<strong>Phase 1（経過0:00〜15:00｜ゲーム内残り 60:00〜45:00）初動方針</strong>：左（青陣）から班①②が上ルート <strong>⑦ 鐘楼（占領時間-50%）</strong> と右下 <strong>⑥ 王立厩舎（移転CD-50%）</strong> へ即展開（占領カウント完了まで維持）。班③④⑤は外周の聖域・修道院4棟を同時踏みし、SAWのA象限主力を分散させます。',
+        arrows: [
+          {{x1:95, y1:255, x2:305, y2:82, lx:155, ly:128, color:'#38bdf8', label:'班①② 鐘楼最優先'}},
+          {{x1:105, y1:315, x2:615, y2:488, lx:155, ly:435, color:'#f59e0b', label:'班①② 王立厩舎へ'}},
+          {{x1:95, y1:275, x2:215, y2:232, lx:118, ly:220, color:'#a855f7', label:'班③ 西・聖域'}},
+          {{x1:95, y1:305, x2:185, y2:335, lx:98, ly:388, color:'#10b981', label:'班④⑤ 修道院遊撃'}}
+        ]
+      }},
+      p2: {{
+        desc: '<strong>Phase 2（経過15:00〜40:00｜残り 45:00〜20:00）中央開放＆交代期</strong>：<strong>① 聖剣祭壇・② 傭兵駐屯地・③ 教化の間</strong> がすべて開放！『リョ〜〜〜朕』『だりゅ』のダブル集結で薄い拠点や教化の間を突き、負傷した主力は順番に12分退場回復（<strong>※残り22:00以降は退場禁止</strong>）。',
+        arrows: [
+          {{x1:295, y1:240, x2:455, y2:275, lx:370, ly:295, color:'#38bdf8', label:'主砲ダブル集結'}},
+          {{x1:375, y1:80, x2:468, y2:128, lx:500, ly:42, color:'#38bdf8', label:'②傭兵(15:00開放)'}},
+          {{x1:255, y1:355, x2:458, y2:425, lx:175, ly:465, color:'#f59e0b', label:'③教化 +15%(15:00)'}},
+          {{x1:675, y1:460, x2:735, y2:375, lx:875, ly:395, color:'#10b981', label:'班④ 東聖域・修道院'}}
+        ]
+      }},
+      p3: {{
+        desc: '<strong>終盤勝負帯（経過40:00〜60:00｜残り 20:00〜00:00）輜重ハイスト</strong>：SAWが高蓄積した拠点へ <strong>班④のおとり集結 ＋ 班①の本命一撃</strong> を時間差で着弾。落城時に放出される50%エスクロー輜重と <strong>4箇所の地下貯蔵庫（1兵採集）</strong> を班④⑤が総取りし、得失点差まで伸ばし切ります！',
+        arrows: [
+          {{x1:540, y1:285, x2:695, y2:335, lx:595, ly:228, color:'#ef4444', label:'主砲一撃で落城'}},
+          {{x1:680, y1:460, x2:765, y2:275, lx:885, ly:305, color:'#f59e0b', label:'おとり同時集結'}},
+          {{x1:785, y1:440, x2:675, y2:405, lx:845, ly:468, color:'#10b981', label:'班④⑤ 輜重＆貯蔵庫回収'}}
+        ]
+      }}
+    }};
+
+    function renderPhase(key) {{
+      const spec = phaseSpecs[key];
+      const svg = document.getElementById('mapSvg');
+      let inner = `<defs>
+        <marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/></marker>
+        <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#f59e0b"/></marker>
+        <marker id="arr-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#a855f7"/></marker>
+        <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981"/></marker>
+        <marker id="arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#ef4444"/></marker>
+      </defs>`;
+      const markMap = {{'#38bdf8':'arr-blue','#f59e0b':'arr-amber','#a855f7':'arr-purple','#10b981':'arr-green','#ef4444':'arr-red'}};
+      for (const a of spec.arrows) {{
+        const mx = a.lx !== undefined ? a.lx : (a.x1 + a.x2) / 2;
+        const my = a.ly !== undefined ? a.ly : (a.y1 + a.y2) / 2 - 18;
+        const boxW = Math.max(136, a.label.length * 12 + 24);
+        inner += `<line x1="${{a.x1}}" y1="${{a.y1}}" x2="${{a.x2}}" y2="${{a.y2}}" stroke="${{a.color}}" stroke-width="4" stroke-dasharray="10,6" marker-end="url(#${{markMap[a.color]}})" />`;
+        inner += `<rect x="${{mx - boxW / 2}}" y="${{my - 11}}" width="${{boxW}}" height="22" rx="6" fill="rgba(9,13,22,0.92)" stroke="${{a.color}}" stroke-width="1.2"/>`;
+        inner += `<text x="${{mx}}" y="${{my+4}}" fill="#f8fafc" font-size="11.5" font-weight="800" text-anchor="middle">${{a.label}}</text>`;
+      }}
+      svg.innerHTML = inner;
+      document.getElementById('phaseDetailBox').innerHTML = spec.desc;
+    }}
+
+    document.querySelectorAll('[data-phase]').forEach(btn => {{
+      btn.addEventListener('click', () => {{
+        document.querySelectorAll('[data-phase]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderPhase(btn.dataset.phase);
+      }});
+    }});
+    renderPhase('p1');
+
+    // 4. Chart.js Comparisons
+    new Chart(document.getElementById('pcsChart'), {{
+      type: 'bar',
+      data: {{
+        labels: ['全体平均', 'Top 1〜4 主砲', '#5〜#10 第2陣', '#11以降'],
+        datasets: [
+          {{ label: '#898 [SGR]', data: [566.0, 826.0, 588.5, 496.9], backgroundColor: 'rgba(56, 189, 248, 0.78)', borderRadius: 6 }},
+          {{ label: '#812 [SAW]', data: [650.0, 839.0, 699.2, 591.7], backgroundColor: 'rgba(168, 85, 247, 0.78)', borderRadius: 6 }}
+        ]
+      }},
+      options: {{
+        plugins: {{ legend: {{ labels: {{ color: '#e5e7eb' }} }} }},
+        scales: {{
+          x: {{ ticks: {{ color: '#cbd5e1' }}, grid: {{ color: 'rgba(255,255,255,0.06)' }} }},
+          y: {{ min: 0, max: 1000, ticks: {{ color: '#cbd5e1' }}, grid: {{ color: 'rgba(255,255,255,0.08)' }} }}
+        }}
+      }}
+    }});
+
+    new Chart(document.getElementById('troopChart'), {{
+      type: 'bar',
+      data: {{
+        labels: ['推定保有兵士 (Troop M)', 'TG8換算実効 (EGC M)'],
+        datasets: [
+          {{ label: '#898 [SGR]', data: [6973.9, 5953.3], backgroundColor: 'rgba(56, 189, 248, 0.78)', borderRadius: 6 }},
+          {{ label: '#812 [SAW]', data: [10365.8, 10227.5], backgroundColor: 'rgba(168, 85, 247, 0.78)', borderRadius: 6 }}
+        ]
+      }},
+      options: {{
+        plugins: {{ legend: {{ labels: {{ color: '#e5e7eb' }} }} }},
+        scales: {{
+          x: {{ ticks: {{ color: '#cbd5e1' }}, grid: {{ color: 'rgba(255,255,255,0.06)' }} }},
+          y: {{ min: 0, ticks: {{ color: '#cbd5e1' }}, grid: {{ color: 'rgba(255,255,255,0.08)' }} }}
+        }}
+      }}
+    }});
+  </script>
+</body>
+</html>
+"""
+
+
+def main() -> None:
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    html_text = build_html()
+    (OUT_DIR / "index.html").write_text(html_text, encoding="utf-8")
+    (OUT_DIR / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")
+    print(f"Built {OUT_DIR / 'index.html'} ({len(html_text)} chars)")
+
+
+if __name__ == "__main__":
+    main()
