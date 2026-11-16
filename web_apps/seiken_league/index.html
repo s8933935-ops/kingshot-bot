@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>聖剣スポーツ 号外｜【第14ブロック】16強(x16) 2軸評価(PCS/DTV)＆フェアオッズ完全大予想</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@500;700;900&family=Noto+Sans+KR:wght@500;700;900&family=Noto+Sans+SC:wght@500;700;900&family=Shippori+Mincho:wght@600;800;900&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper-bg: #f5f2eb;
+      --paper-line: #dcd5c5;
+      --ink: #111111;
+      --muted: #555555;
+      --red: #c9171e;
+      --blue: #0f4c81;
+      --gold: #b5850b;
+      --green: #1b5e20;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #1a1a1a;
+      color: var(--ink);
+      font-family: 'Zen Kaku Gothic New', 'Noto Sans SC', 'Noto Sans KR', 'Noto Sans Arabic', 'Yu Gothic', sans-serif;
+      padding: 18px 10px;
+      line-height: 1.55;
+    }
+    html[dir="rtl"] body {
+      font-family: 'Noto Sans Arabic', 'Zen Kaku Gothic New', sans-serif;
+    }
+    .newspaper-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      background: var(--paper-bg);
+      padding: 24px 36px 28px;
+      box-shadow: 0 12px 45px rgba(0,0,0,0.65);
+      border: 3px solid var(--ink);
+    }
+    .lang-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--paper-line);
+    }
+    .lang-bar-label { font-size: 12px; color: var(--muted); font-weight: 700; margin-inline-end: 4px; }
+    .lang-btn {
+      background: #fff;
+      color: var(--ink);
+      border: 1.5px solid #999;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .lang-btn:hover { border-color: var(--ink); background: #fff8e1; }
+    .lang-btn.active {
+      background: var(--ink);
+      color: #ffd75e;
+      border-color: var(--ink);
+    }
+    .header-meta {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+      border-bottom: 1px solid var(--paper-line);
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+    }
+    .masthead {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 4px double var(--ink);
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .paper-title {
+      font-family: 'Shippori Mincho', 'Noto Sans SC', 'Noto Sans KR', 'Noto Sans Arabic', serif;
+      font-size: 50px;
+      font-weight: 900;
+      line-height: 1.05;
+    }
+    .paper-title .sub-kanji {
+      display: block;
+      font-size: 15px;
+      color: var(--red);
+      letter-spacing: 2px;
+      font-family: 'Zen Kaku Gothic New', 'Noto Sans SC', 'Noto Sans KR', 'Noto Sans Arabic', sans-serif;
+      margin-bottom: 4px;
+    }
+    .masthead-badges { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .block14-badge {
+      background: linear-gradient(135deg, #111111, #2b2b2b);
+      color: #ffd75e;
+      font-weight: 900;
+      font-size: 24px;
+      padding: 8px 20px;
+      border: 3px solid #c9171e;
+      box-shadow: 4px 4px 0 #c9171e;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .block14-badge small {
+      display: block;
+      font-size: 11px;
+      color: #ffffff;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+    .gogai-badge {
+      background: var(--red);
+      color: #fff;
+      font-weight: 900;
+      font-size: 26px;
+      padding: 6px 22px;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px var(--red);
+      transform: rotate(-2deg);
+    }
+    .urgent-banner {
+      background: #fff1f1;
+      border: 2px dashed var(--red);
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .urgent-tag {
+      background: var(--red);
+      color: #fff;
+      font-weight: 900;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .headline-section {
+      background: #fff;
+      border: 2px solid var(--ink);
+      padding: 22px 24px;
+      margin-bottom: 24px;
+      box-shadow: 5px 5px 0 var(--ink);
+    }
+    .main-headline {
+      font-family: 'Shippori Mincho', 'Noto Sans SC', 'Noto Sans KR', 'Noto Sans Arabic', serif;
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1.28;
+      margin-bottom: 12px;
+    }
+    .hl-red { color: var(--red); background: linear-gradient(transparent 62%, #ffd4d4 62%); padding: 0 4px; }
+    .hl-gold { color: #7a5800; background: linear-gradient(transparent 62%, #ffefc2 62%); padding: 0 4px; }
+    .lead-text {
+      font-size: 14.5px;
+      color: #2b2b2b;
+      border-inline-start: 4px solid var(--red);
+      padding-inline-start: 14px;
+      line-height: 1.75;
+    }
+    .lead-note { display: block; margin-top: 8px; font-size: 12.5px; color: #555; font-weight: 700; }
+    .section-bar {
+      background: var(--ink);
+      color: #fff;
+      font-weight: 900;
+      font-size: 19px;
+      padding: 9px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .section-bar small { font-size: 12px; font-weight: 500; color: #ddd; }
+    .picks-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+    .pick-card {
+      background: #fff;
+      border: 2px solid var(--ink);
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.14);
+      display: flex;
+      flex-direction: column;
+    }
+    .pick-header { padding: 9px 12px; font-weight: 900; font-size: 13px; }
+    .pick-header.rank1 { background: linear-gradient(135deg, #d4a62a, #f2d97d); color: #111; }
+    .pick-header.rank2 { background: linear-gradient(135deg, #0f4c81, #2b6cb0); color: #fff; }
+    .pick-header.rank3 { background: linear-gradient(135deg, #2e7d32, #43a047); color: #fff; }
+    .pick-header.rank4 { background: linear-gradient(135deg, #6d4c41, #8d6e63); color: #fff; }
+    .pick-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; flex-grow: 1; }
+    .matchup-box { background: #f8f5ee; border: 1px solid var(--paper-line); padding: 9px; text-align: center; border-radius: 4px; }
+    .team-title { font-size: 15px; margin-bottom: 6px; }
+    .odds-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; border-top: 1px solid #e2dccb; padding-top: 6px; }
+    .odds-strip small { display: block; font-size: 10px; color: var(--muted); }
+    .odds-strip strong { font-size: 14px; }
+    .text-red { color: var(--red); }
+    .text-green { color: var(--green); }
+    .stats-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+    .stats-table th, .stats-table td { padding: 4px 3px; border-bottom: 1px solid #eee; }
+    .stats-table th { text-align: start; color: var(--muted); font-weight: 500; }
+    .stats-table td { text-align: end; font-weight: 700; }
+    .comment-box {
+      font-size: 12px;
+      background: #fffdf0;
+      border-inline-start: 3px solid var(--gold);
+      padding: 8px;
+      margin-top: auto;
+    }
+    .box-panel {
+      background: #fff;
+      border: 2px solid var(--ink);
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+    .panel-title {
+      font-size: 20px;
+      font-weight: 900;
+      border-inline-start: 6px solid var(--red);
+      padding-inline-start: 10px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .panel-title small { font-size: 12px; color: var(--muted); font-weight: 500; }
+    .r16-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .match-card { border: 1.5px solid #333; background: #faf8f3; border-radius: 4px; overflow: hidden; }
+    .match-head { background: #222; color: #fff; font-size: 11px; font-weight: 700; padding: 4px 8px; }
+    .match-team { display: flex; justify-content: space-between; padding: 6px 8px; font-size: 12.5px; border-top: 1px solid #e3ddd0; }
+    .match-team.fav { background: #eef6ff; font-weight: 900; color: var(--blue); }
+    .badge-full { display: inline-block; background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
+    .badge-shell { display: inline-block; background: #fff8e1; color: #8d6e00; border: 1px solid #ffe082; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
+    .badge-danger { display: inline-block; background: var(--red); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 2px; }
+    .badge-trap { display: inline-block; background: #fbe9e7; color: #bf360c; border: 1px solid #ffab91; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
+    .table-wrap { overflow-x: auto; }
+    .race-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .race-table th {
+      background: #222;
+      color: #fff;
+      padding: 8px 6px;
+      border: 1px solid #444;
+      text-align: center;
+      font-size: 11.5px;
+      white-space: nowrap;
+    }
+    .race-table td {
+      padding: 7px 6px;
+      border: 1px solid #ddd;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .race-table tr:nth-child(even) { background: #faf8f5; }
+    .race-table tr:hover { background: #fff9e6; }
+    .text-left { text-align: start !important; }
+    .q-link {
+      display: inline-block;
+      background: #555;
+      color: #fff;
+      border-radius: 50%;
+      width: 15px;
+      height: 15px;
+      line-height: 15px;
+      font-size: 10px;
+      text-decoration: none;
+      margin-inline-start: 3px;
+    }
+    .q-link:hover { background: var(--gold); color: #111; }
+    .stamp { font-size: 19px; font-weight: 900; }
+    .mark-honmei { color: var(--red); }
+    .mark-taikou { color: var(--blue); }
+    .mark-tanana { color: var(--green); }
+    .mark-tokuchu { color: #8b5a00; }
+    .mark-renge { color: #6a1b9a; }
+    .mark-kike { color: #666; }
+    .mark-none { color: #aaa; }
+    .odds-fair { color: var(--red); font-size: 13.5px; }
+    .ev-plus { background: #edf7ed; color: var(--green); }
+    .ev-minus { color: #666; }
+    .two-col { display: grid; grid-template-columns: 1.25fr 1fr; gap: 20px; margin-bottom: 24px; }
+    .caution-callout { background: #eef5fb; border-inline-start: 4px solid var(--blue); padding: 10px; }
+    .danger-callout-1 { background: #fbe9e7; border-inline-start: 4px solid var(--red); padding: 10px; }
+    .danger-callout-2 { background: #fff3e0; border-inline-start: 4px solid #ef6c00; padding: 10px; }
+    .glossary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; font-size: 12.5px; }
+    .gloss-card { background: #faf8f3; border: 1px solid var(--paper-line); padding: 12px; border-radius: 4px; }
+    .gloss-card h4 { color: var(--blue); margin-bottom: 5px; font-size: 13.5px; }
+    .paper-footer {
+      border-top: 2px solid var(--ink);
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+    @media (max-width: 1080px) {
+      .picks-grid, .r16-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col, .glossary-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .picks-grid, .r16-grid { grid-template-columns: 1fr; }
+      .paper-title { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="newspaper-container">
+    <nav class="lang-bar" aria-label="Language Selector">
+      <span class="lang-bar-label">🌐 Language:</span>
+      <button type="button" class="lang-btn active" data-lang-btn="ja">日本語</button><button type="button" class="lang-btn" data-lang-btn="en">English</button><button type="button" class="lang-btn" data-lang-btn="ar">العربية</button><button type="button" class="lang-btn" data-lang-btn="tr">Türkçe</button><button type="button" class="lang-btn" data-lang-btn="zh">简体中文</button><button type="button" class="lang-btn" data-lang-btn="ko">한국어</button>
+    </nav>
+
+    <div class="header-meta">
+      <div data-i18n-html="meta_left_html"><strong>聖剣スポーツ</strong> 特別号外｜<strong>【第14ブロック】</strong>16強(x16) 2軸評価(PCS/DTV)＋フェアオッズ完全版</div>
+      <div data-i18n="meta_mid">データ実測時点：2026-11-16T18:22:52+09:00 ｜ 対象：第14ブロック（#766〜#919 / 軍団1・全16同盟 / 総応援数 18,945,904）</div>
+      <div data-i18n-html="meta_right_html">正本エンジン：<code>pvp_two_axis_scorer.py</code> ＆ 厳密ブラケットDP</div>
+    </div>
+
+    <header class="masthead">
+      <div class="paper-title">
+        <span class="sub-kanji" data-i18n="sub_kanji">KINGSHOT SWORDLAND LEAGUE｜第14ブロック 16強優勝予想 FAIR ODDS</span>
+        <span data-i18n="paper_title">聖剣スポーツ</span>
+      </div>
+      <div class="masthead-badges">
+        <div class="block14-badge">
+          <span data-i18n="block14_title">第14ブロック</span>
+          <small data-i18n="block14_sub">#766〜#919（軍団1・16強）</small>
+        </div>
+        <div class="gogai-badge" data-i18n="gogai">号外</div>
+      </div>
+    </header>
+
+    <div class="urgent-banner">
+      <span class="urgent-tag" data-i18n="urgent_tag">第14ブロック特報</span>
+      <div data-i18n-html="urgent_body_html"><strong>【第14ブロック 1番人気 #766 [ITz]（支持36.9%）は危険な過剰人気！】</strong> 第14ブロック全16同盟を MightPulse 最新データ × PvP 2軸評価（PCS/DTV）で全量監査した結果、<strong>#919 [OBV] が確定ロスター最強（優勝確率32.45% / フェア3.08倍）</strong>にもかかわらず人気オッズ<strong>32.42倍（支持3.08%）</strong>に放置される異常な歪みが発生！さらに「抜け殻・王国番号タグ」<strong>#908 [908] / #867 [867]</strong> の国内オールスター合流脅威を暴き出した！</div>
+    </div>
+
+    <section class="headline-section">
+      <h1 class="main-headline" data-i18n-html="headline_html">【第14ブロック決戦】狙え<span class="hl-red">「フェア3.08倍 vs 人気32.4倍」</span>の超絶ギャップ！<br>確定最強 <span class="hl-gold">#919 [OBV]</span> が期待値5.19倍の不動の本命！</h1>
+      <p class="lead-text">
+        <span data-i18n-html="lead_html">今回の聖剣リーグ<strong>第14ブロック（#766〜#919）</strong>優勝予想は的中一律<strong>16倍（損益分岐勝率 6.25%）</strong>のトーナメント戦。本紙では、兵数水増しを除外する純粋戦闘密度 <strong>PCS（0–1000）</strong> と実戦兵量 <strong>DTV / EGC_M</strong> の2軸評価に加え、スクリーンショット順（Seed 1〜16）の1回戦〜決勝までの全対戦経路を厳密動的計画法（DP）でシミュレーションし、本来あるべき勝率期待値<strong>「フェアオッズ（1 / 優勝確率）」</strong>を算出した。<br>さらに調査班は、現在メンバーが2〜11名しか在籍していない<strong>5つの「抜け殻／仮設タグ」（#908, #867, #795, #812, #799）</strong>を発見。本国第1同盟（Home#1）と国内上位30名選抜（AllStar-Pool）の両レンジを計測し、見せかけの人気に騙されない真の期待値ランキングを公開する。</span>
+        <span class="lead-note" data-i18n="lead_note">※ ご注意：APIデータの取得時期（2026-11-16T18:22:52+09:00）と大会本番のタイミングによっては、同盟の移籍・合流などで出場選手が変わっていることがあります。予想・投票の最終判断は、あくまでも参考情報としてご活用ください。</span>
+      </p>
+    </section>
+
+    <div class="section-bar">
+      <span data-i18n="sec_picks">🎯 第14ブロック 本紙推奨・期待値 TOP 4 フォーカス（x16優勝応援）</span>
+      <small data-i18n="sec_picks_sub">※16倍固定配当の損益分岐は勝率 6.25%（EV 1.00以上がプラス期待値）</small>
+    </div>
+
+    <div class="picks-grid">
+      
+      <div class="pick-card">
+        <div class="pick-header rank1">
+          <span data-pick-sub="16">🥇 本命 ◎｜確定フルロスター最強 ＆ 究極の歪み</span>
+        </div>
+        <div class="pick-body">
+          <div class="matchup-box">
+            <div class="team-title">Seed 16｜<strong>#919 [OBV]</strong> <span class="badge-full" data-i18n="badge_full">確定名簿</span></div>
+            <div class="odds-strip">
+              <div><small data-i18n="lbl_fair_odds">フェアオッズ</small><strong class="text-red" data-odds="3.08">3.08倍</strong></div>
+              <div><small data-i18n="lbl_pop_odds">人気オッズ</small><strong data-odds="32.42">32.42倍</strong></div>
+              <div><small data-i18n="lbl_ev16">16x期待値</small><strong class="text-green">5.19x</strong></div>
+            </div>
+          </div>
+          <table class="stats-table">
+            <tr><th data-i18n="lbl_win_prob_range">優勝確率（標準 / 幅）</th><td>32.5% <small>(H1:42.5% / AS:25.1%)</small></td></tr>
+            <tr><th data-i18n="lbl_pcs30_dens">PCS30（戦闘密度）</th><td>764.8 (Top4: 992.2)</td></tr>
+            <tr><th data-i18n="lbl_egc_dtv">実効兵量 EGC / DTV</th><td>15.80B (DTV 90.3)</td></tr>
+            <tr><th data-i18n="lbl_cheers_share">応援数（支持率）</th><td>584,464 (3.08%)</td></tr>
+            <tr><th data-i18n="lbl_kvk_flagd">KvK戦闘 / Flag D(300M+)</th><td>#104 (69.2%) / <span data-flagd="0">0名</span></td></tr>
+          </table>
+          <div class="comment-box" data-pick-com="16">確定93名・Flag Dゼロの完全無欠ロスター。PCS30 764.8、Top4 992.2、Top30全員がA象限(30/30)、EGC 15,798M、Top1 MT 3,551階すべてが確定同盟中1位。死のブロックQF4を抜ければ頂点最有力にもかかわらず人気はわずか3.08%（人気32.4倍 vs フェア3.08倍）。</div>
+        </div>
+      </div>
+      <div class="pick-card">
+        <div class="pick-header rank2">
+          <span data-pick-sub="14">🥈 対抗 ○｜王国オールスター筆頭（要名簿注意）</span>
+        </div>
+        <div class="pick-body">
+          <div class="matchup-box">
+            <div class="team-title">Seed 14｜<strong>#908 [908]</strong> <span class="badge-shell" data-i18n="badge_shell">抜け殻/結集想定</span></div>
+            <div class="odds-strip">
+              <div><small data-i18n="lbl_fair_odds">フェアオッズ</small><strong class="text-red" data-odds="4.5">4.50倍</strong></div>
+              <div><small data-i18n="lbl_pop_odds">人気オッズ</small><strong data-odds="14.63">14.63倍</strong></div>
+              <div><small data-i18n="lbl_ev16">16x期待値</small><strong class="text-green">3.56x</strong></div>
+            </div>
+          </div>
+          <table class="stats-table">
+            <tr><th data-i18n="lbl_win_prob_range">優勝確率（標準 / 幅）</th><td>22.2% <small>(H1:13.0% / AS:24.4%)</small></td></tr>
+            <tr><th data-i18n="lbl_pcs30_dens">PCS30（戦闘密度）</th><td>807.4 〜 894.7</td></tr>
+            <tr><th data-i18n="lbl_egc_dtv">実効兵量 EGC / DTV</th><td>11.9B 〜 14.0B</td></tr>
+            <tr><th data-i18n="lbl_cheers_share">応援数（支持率）</th><td>1,295,408 (6.84%)</td></tr>
+            <tr><th data-i18n="lbl_kvk_flagd">KvK戦闘 / Flag D(300M+)</th><td>#336 (61.5%) / <span data-flagd="0">0名</span></td></tr>
+          </table>
+          <div class="comment-box" data-pick-com="14">現時点の名簿は5名だが王国番号タグ[908]を冠する結集枠。本国1位[REV]単体でもPCS30 807.4・Top4 993.5、国内上位30名結集時はPCS30 894.7・MT1 3,560階に達する銀河系軍団。初戦#867・QF4#919OBVとの潰し合いが唯一の懸念。</div>
+        </div>
+      </div>
+      <div class="pick-card">
+        <div class="pick-header rank3">
+          <span data-pick-sub="13">🥉 単穴 ▲｜純度100%の超穴馬（人気1.79%）</span>
+        </div>
+        <div class="pick-body">
+          <div class="matchup-box">
+            <div class="team-title">Seed 13｜<strong>#867 [867]</strong> <span class="badge-shell" data-i18n="badge_shell">抜け殻/結集想定</span></div>
+            <div class="odds-strip">
+              <div><small data-i18n="lbl_fair_odds">フェアオッズ</small><strong class="text-red" data-odds="7.34">7.34倍</strong></div>
+              <div><small data-i18n="lbl_pop_odds">人気オッズ</small><strong data-odds="55.93">55.93倍</strong></div>
+              <div><small data-i18n="lbl_ev16">16x期待値</small><strong class="text-green">2.18x</strong></div>
+            </div>
+          </div>
+          <table class="stats-table">
+            <tr><th data-i18n="lbl_win_prob_range">優勝確率（標準 / 幅）</th><td>13.6% <small>(H1:6.6% / AS:15.8%)</small></td></tr>
+            <tr><th data-i18n="lbl_pcs30_dens">PCS30（戦闘密度）</th><td>752.9 〜 851.9</td></tr>
+            <tr><th data-i18n="lbl_egc_dtv">実効兵量 EGC / DTV</th><td>12.4B 〜 14.7B</td></tr>
+            <tr><th data-i18n="lbl_cheers_share">応援数（支持率）</th><td>338,736 (1.79%)</td></tr>
+            <tr><th data-i18n="lbl_kvk_flagd">KvK戦闘 / Flag D(300M+)</th><td>#328 (64.3%) / <span data-flagd="0">0名</span></td></tr>
+          </table>
+          <div class="comment-box" data-pick-com="13">同じく王国番号タグ[867]。本国1位[ERA]単体でPCS30 752.9・A象限30名、オールスター結集時はPCS30 851.9・EGC 14,662M・Flag D 0名という超高純度戦力。人気55.9倍に対しフェア7.34倍と妙味7.6倍超の爆発枠。</div>
+        </div>
+      </div>
+      <div class="pick-card">
+        <div class="pick-header rank4">
+          <span data-pick-sub="2">☆ 特注｜上の山・確定最強＆KvK #43の勝者</span>
+        </div>
+        <div class="pick-body">
+          <div class="matchup-box">
+            <div class="team-title">Seed 02｜<strong>#780 [BAR]</strong> <span class="badge-full" data-i18n="badge_full">確定名簿</span></div>
+            <div class="odds-strip">
+              <div><small data-i18n="lbl_fair_odds">フェアオッズ</small><strong class="text-red" data-odds="8.09">8.09倍</strong></div>
+              <div><small data-i18n="lbl_pop_odds">人気オッズ</small><strong data-odds="9.84">9.84倍</strong></div>
+              <div><small data-i18n="lbl_ev16">16x期待値</small><strong class="text-green">1.98x</strong></div>
+            </div>
+          </div>
+          <table class="stats-table">
+            <tr><th data-i18n="lbl_win_prob_range">優勝確率（標準 / 幅）</th><td>12.4% <small>(H1:14.3% / AS:7.0%)</small></td></tr>
+            <tr><th data-i18n="lbl_pcs30_dens">PCS30（戦闘密度）</th><td>731.1 (Top4: 925.2)</td></tr>
+            <tr><th data-i18n="lbl_egc_dtv">実効兵量 EGC / DTV</th><td>12.72B (DTV 87.8)</td></tr>
+            <tr><th data-i18n="lbl_cheers_share">応援数（支持率）</th><td>1,924,848 (10.16%)</td></tr>
+            <tr><th data-i18n="lbl_kvk_flagd">KvK戦闘 / Flag D(300M+)</th><td>#43 (78.6%) / <span data-flagd="5">5名</span></td></tr>
+          </table>
+          <div class="comment-box" data-pick-com="2">上の山（Seed 1〜8）における確定フルロスター最上位。KvK戦闘ランク#43（勝率78.6%）は全16シード中1位。初戦で1番人気[ITz]を約68%で退ければQF4の潰し合いを回避して決勝へ無傷で進みやすく、SF到達率37.9%を誇る。</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="box-panel">
+      <div class="panel-title">
+        <span data-i18n="sec_r16">⚔️ 第14ブロック トーナメント1回戦（R16）勝率予測 ＆ 死のブロック「QF4」構造</span>
+        <small data-i18n="sec_r16_sub">スクリーンショット順（Seed 1v2, 3v4 ... 15v16）に基づく初戦勝率（標準モデル）</small>
+      </div>
+      <div class="r16-grid">
+        
+        <div class="match-card">
+          <div class="match-head"><span data-r16-m="1" data-r16-q="1">R16 第1試合（QF1ブロック）</span></div>
+          <div class="match-team ">
+            <span>S01 #766 [ITz]</span>
+            <strong>32.2%</strong>
+          </div>
+          <div class="match-team fav">
+            <span>S02 #780 [BAR]</span>
+            <strong>67.8%</strong>
+          </div>
+        </div>
+        <div class="match-card">
+          <div class="match-head"><span data-r16-m="2" data-r16-q="1">R16 第2試合（QF1ブロック）</span></div>
+          <div class="match-team fav">
+            <span>S03 #792 [LUX]</span>
+            <strong>61.3%</strong>
+          </div>
+          <div class="match-team ">
+            <span>S04 #795 [795] *</span>
+            <strong>38.7%</strong>
+          </div>
+        </div>
+        <div class="match-card">
+          <div class="match-head"><span data-r16-m="3" data-r16-q="2">R16 第3試合（QF2ブロック）</span></div>
+          <div class="match-team ">
+            <span>S05 #799 [NOT] *</span>
+            <strong>12.0%</strong>
+          </div>
+          <div class="match-team fav">
+            <span>S06 #801 [EOA]</span>
+            <strong>88.0%</strong>
+          </div>
+        </div>
+        <div class="match-card">
+          <div class="match-head"><span data-r16-m="4" data-r16-q="2">R16 第4試合（QF2ブロック）</span></div>
+          <div class="match-team ">
+            <span>S07 #801 [LOC]</span>
+            <strong>40.3%</strong>
+          </div>
+          <div class="match-team fav">
+            <span>S08 #812 [VHS] *</span>
+            <strong>59.7%</strong>
+          </div>
+        </div>
+        <div class="match-card">
+          <div class="match-head"><span data-r16-m="5" data-r16-q="3">R16 第5試合（QF3ブロック）</span></div>
+          <div class="match-team ">
+            <span>S09 #815 [ATM]</span>
+            <strong>43.9%</strong>
+          </div>
+          <div class="match-team fav">
+            <span>S10 #836 [KOR]</span>
+            <strong>56.1%</strong>
+          </div>
+        </div>
+        <div class="match-card">
+          <div class="match-head"><span data-r16-m="6" data-r16-q="3">R16 第6試合（QF3ブロック）</span></div>
+          <div class="match-team ">
+            <span>S11 #856 [PAX]</span>
+            <strong>45.0%</strong>
+          </div>
+          <div class="match-team fav">
+            <span>S12 #865 [UTD]</span>
+            <strong>55.0%</strong>
+          </div>
+        </div>
+        <div class="match-card">
+          <div class="match-head"><span data-r16-m="7" data-r16-q="4">R16 第7試合（QF4ブロック）</span> <span class="badge-danger" data-i18n="badge_danger">死のブロック</span></div>
+          <div class="match-team ">
+            <span>S13 #867 [867] *</span>
+            <strong>43.3%</strong>
+          </div>
+          <div class="match-team fav">
+            <span>S14 #908 [908] *</span>
+            <strong>56.7%</strong>
+          </div>
+        </div>
+        <div class="match-card">
+          <div class="match-head"><span data-r16-m="8" data-r16-q="4">R16 第8試合（QF4ブロック）</span> <span class="badge-danger" data-i18n="badge_danger">死のブロック</span></div>
+          <div class="match-team ">
+            <span>S15 #914 [RAC]</span>
+            <strong>3.6%</strong>
+          </div>
+          <div class="match-team fav">
+            <span>S16 #919 [OBV]</span>
+            <strong>96.4%</strong>
+          </div>
+        </div>
+      </div>
+      <div class="comment-box" style="font-size:13px;" data-i18n-html="r16_note_html"><strong>【ブラケット最大の構造歪み】</strong>下の山 <strong>QF4（Seed 13〜16）</strong> に、#908 [908]*・#867 [867]*・#919 [OBV] という優勝候補TOP3が集中する<strong>「死のブロック」</strong>が発生。逆に上の山（Seed 1〜8）は初戦で1番人気 #766 [ITz] を #780 [BAR] が約68%で迎撃する構図となり、勝った側（BAR または EOA）が決勝へ進みやすい構造となっている。</div>
+    </section>
+
+    <section class="box-panel">
+      <div class="panel-title">
+        <span data-i18n="sec_table">📊 第14ブロック 全16同盟 2軸評価（PCS / DTV）＆ フェアオッズ完全出馬表</span>
+        <small data-i18n-html="sec_table_sub_html">各指標の <span class="q-link">?</span> をクリックするとページ下部の用語・数式解説へジャンプします</small>
+      </div>
+      <div class="table-wrap">
+        <table class="race-table">
+          <thead>
+            <tr>
+              <th data-i18n="th_rank">順</th>
+              <th data-i18n="th_mark">印</th>
+              <th data-i18n="th_team">シード / 同盟 / 名簿</th>
+              <th><span data-i18n="th_fair">フェアオッズ</span><a class="q-link" href="#glossary">?</a><br><small data-i18n="th_fair_sub">(優勝確率)</small></th>
+              <th><span data-i18n="th_scen">シナリオ幅</span><a class="q-link" href="#glossary">?</a><br><small data-i18n="th_scen_sub">(H1〜AS)</small></th>
+              <th><span data-i18n="th_pop">人気オッズ</span><br><small data-i18n="th_pop_sub">(応援数/率)</small></th>
+              <th><span data-i18n="th_ev">16x期待値</span><a class="q-link" href="#glossary">?</a><br><small data-i18n="th_ev_sub">(妙味倍率)</small></th>
+              <th><span data-i18n="th_pcs">PCS30</span><a class="q-link" href="#glossary">?</a></th>
+              <th data-i18n="th_top4">Top4 PCS</th>
+              <th><span data-i18n="th_dtv">DTV30</span><a class="q-link" href="#glossary">?</a><br><small data-i18n="th_egc">(EGC_M)</small></th>
+              <th><span data-i18n="th_quada">A象限</span><a class="q-link" href="#glossary">?</a><br><small data-i18n="th_quada_sub">(30名中)</small></th>
+              <th data-i18n="th_mt1">Top1 MT</th>
+              <th data-i18n="th_kvk">KvK戦闘</th>
+              <th><span data-i18n="th_flagd">Flag D</span><a class="q-link" href="#glossary">?</a><br><small data-i18n="th_flagd_sub">(300M+)</small></th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          <tr>
+            <td>1</td>
+            <td><span class="stamp mark-honmei">◎</span><br><small data-mark-key="1">本命</small></td>
+            <td class="text-left"><strong>S16 #919 [OBV]</strong><br><span class="badge-full" data-roster-full="93">確定 93名</span></td>
+            <td><strong class="odds-fair" data-odds="3.08">3.08倍</strong><br><small>32.45%</small></td>
+            <td><small>H1:42.5%<br>AS:25.1%</small></td>
+            <td><span data-odds="32.42">32.42倍</span><br><small>584,464 (3.1%)</small></td>
+            <td class="ev-plus"><strong>5.19</strong><br><small><span data-gap-val="10.52">妙味 10.52x</span></small></td>
+            <td><strong>764.8</strong></td>
+            <td>992.2</td>
+            <td>90.3<br><small>15.80B</small></td>
+            <td>30/30</td>
+            <td>3551</td>
+            <td>#104<br><small>69%</small></td>
+            <td><span data-flagd="0">0名</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><span class="stamp mark-taikou">○</span><br><small data-mark-key="2">対抗</small></td>
+            <td class="text-left"><strong>S14 #908 [908]</strong><br><span class="badge-shell" data-roster-shell="5">仮 5名</span></td>
+            <td><strong class="odds-fair" data-odds="4.5">4.50倍</strong><br><small>22.23%</small></td>
+            <td><small>H1:13.0%<br>AS:24.4%</small></td>
+            <td><span data-odds="14.63">14.63倍</span><br><small>1,295,408 (6.8%)</small></td>
+            <td class="ev-plus"><strong>3.56</strong><br><small><span data-gap-val="3.25">妙味 3.25x</span></small></td>
+            <td>807.4〜894.7</td>
+            <td>993.5〜996.2</td>
+            <td>84.9〜88.3<br><small>11.9〜14.0B</small></td>
+            <td>30〜30</td>
+            <td>3560</td>
+            <td>#336<br><small>62%</small></td>
+            <td>4〜34</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><span class="stamp mark-tanana">▲</span><br><small data-mark-key="3">単穴</small></td>
+            <td class="text-left"><strong>S13 #867 [867]</strong><br><span class="badge-shell" data-roster-shell="4">仮 4名</span></td>
+            <td><strong class="odds-fair" data-odds="7.34">7.34倍</strong><br><small>13.63%</small></td>
+            <td><small>H1:6.6%<br>AS:15.8%</small></td>
+            <td><span data-odds="55.93">55.93倍</span><br><small>338,736 (1.8%)</small></td>
+            <td class="ev-plus"><strong>2.18</strong><br><small><span data-gap-val="7.62">妙味 7.62x</span></small></td>
+            <td>752.9〜851.9</td>
+            <td>976.0〜991.8</td>
+            <td>86.9〜88.5<br><small>12.4〜14.7B</small></td>
+            <td>30〜29</td>
+            <td>3330</td>
+            <td>#328<br><small>64%</small></td>
+            <td>0〜0</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><span class="stamp mark-tokuchu">☆</span><br><small data-mark-key="4">特注</small></td>
+            <td class="text-left"><strong>S02 #780 [BAR]</strong><br><span class="badge-full" data-roster-full="99">確定 99名</span></td>
+            <td><strong class="odds-fair" data-odds="8.09">8.09倍</strong><br><small>12.36%</small></td>
+            <td><small>H1:14.3%<br>AS:7.0%</small></td>
+            <td><span data-odds="9.84">9.84倍</span><br><small>1,924,848 (10.2%)</small></td>
+            <td class="ev-plus"><strong>1.98</strong><br><small><span data-gap-val="1.22">妙味 1.22x</span></small></td>
+            <td><strong>731.1</strong></td>
+            <td>925.2</td>
+            <td>87.8<br><small>12.72B</small></td>
+            <td>29/30</td>
+            <td>3485</td>
+            <td>#43<br><small>79%</small></td>
+            <td><span data-flagd="5">5名</span></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><span class="stamp mark-renge">△</span><br><small data-mark-key="5">連下</small></td>
+            <td class="text-left"><strong>S06 #801 [EOA]</strong><br><span class="badge-full" data-roster-full="91">確定 91名</span></td>
+            <td><strong class="odds-fair" data-odds="10.98">10.98倍</strong><br><small>9.11%</small></td>
+            <td><small>H1:10.8%<br>AS:1.2%</small></td>
+            <td><span data-odds="10.87">10.87倍</span><br><small>1,743,120 (9.2%)</small></td>
+            <td class="ev-plus"><strong>1.46</strong><br><small><span data-gap-val="0.99">妙味 0.99x</span></small></td>
+            <td><strong>731.2</strong></td>
+            <td>973.0</td>
+            <td>86.3<br><small>11.70B</small></td>
+            <td>26/30</td>
+            <td>3197</td>
+            <td>#1186<br><small>50%</small></td>
+            <td><span data-flagd="0">0名</span></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><span class="stamp mark-kike">×</span><br><small data-mark-key="6">警戒</small></td>
+            <td class="text-left"><strong>S10 #836 [KOR]</strong><br><span class="badge-full" data-roster-full="91">確定 91名</span></td>
+            <td><strong class="odds-fair" data-odds="23.64">23.64倍</strong><br><small>4.23%</small></td>
+            <td><small>H1:5.2%<br>AS:2.9%</small></td>
+            <td><span data-odds="62.86">62.86倍</span><br><small>301,392 (1.6%)</small></td>
+            <td class="ev-minus"><strong>0.68</strong><br><small><span data-gap-val="2.66">妙味 2.66x</span></small></td>
+            <td><strong>726.0</strong></td>
+            <td>976.2</td>
+            <td>86.3<br><small>12.12B</small></td>
+            <td>25/30</td>
+            <td>3314</td>
+            <td>#1292<br><small>43%</small></td>
+            <td><span data-flagd="1">1名</span></td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><span class="stamp mark-kike">×</span><br><small data-mark-key="6">警戒</small></td>
+            <td class="text-left"><strong>S01 #766 [ITz]</strong> <span class="badge-trap" data-i18n="badge_trap">過剰人気罠</span><br><span class="badge-full" data-roster-full="92">確定 92名</span></td>
+            <td><strong class="odds-fair" data-odds="43.91">43.91倍</strong><br><small>2.28%</small></td>
+            <td><small>H1:2.7%<br>AS:1.0%</small></td>
+            <td><span data-odds="2.71">2.71倍</span><br><small>6,993,024 (36.9%)</small></td>
+            <td class="ev-minus"><strong>0.36</strong><br><small><span data-gap-val="0.06">妙味 0.06x</span></small></td>
+            <td><strong>718.4</strong></td>
+            <td>955.2</td>
+            <td>85.0<br><small>11.09B</small></td>
+            <td>26/30</td>
+            <td>3361</td>
+            <td>#1288<br><small>50%</small></td>
+            <td><span data-flagd="5">5名</span></td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><span class="stamp mark-kike">×</span><br><small data-mark-key="6">警戒</small></td>
+            <td class="text-left"><strong>S09 #815 [ATM]</strong><br><span class="badge-full" data-roster-full="100">確定 100名</span></td>
+            <td><strong class="odds-fair" data-odds="44.07">44.07倍</strong><br><small>2.27%</small></td>
+            <td><small>H1:2.8%<br>AS:1.5%</small></td>
+            <td><span data-odds="22.98">22.98倍</span><br><small>824,432 (4.3%)</small></td>
+            <td class="ev-minus"><strong>0.36</strong><br><small><span data-gap-val="0.52">妙味 0.52x</span></small></td>
+            <td><strong>706.1</strong></td>
+            <td>946.5</td>
+            <td>90.5<br><small>13.57B</small></td>
+            <td>20/30</td>
+            <td>3231</td>
+            <td>#529<br><small>57%</small></td>
+            <td><span data-flagd="6">6名</span></td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td><span class="stamp mark-none">無</span><br><small data-mark-key="9">見送り</small></td>
+            <td class="text-left"><strong>S03 #792 [LUX]</strong><br><span class="badge-full" data-roster-full="92">確定 92名</span></td>
+            <td><strong class="odds-fair" data-odds="119.46">119倍</strong><br><small>0.84%</small></td>
+            <td><small>H1:1.5%<br>AS:0.3%</small></td>
+            <td><span data-odds="24.9">24.90倍</span><br><small>760,960 (4.0%)</small></td>
+            <td class="ev-minus"><strong>0.13</strong><br><small><span data-gap-val="0.21">妙味 0.21x</span></small></td>
+            <td><strong>692.3</strong></td>
+            <td>904.0</td>
+            <td>87.8<br><small>11.90B</small></td>
+            <td>21/30</td>
+            <td>2916</td>
+            <td>#312<br><small>64%</small></td>
+            <td><span data-flagd="0">0名</span></td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><span class="stamp mark-none">無</span><br><small data-mark-key="9">見送り</small></td>
+            <td class="text-left"><strong>S04 #795 [795]</strong> <span class="badge-trap" data-i18n="badge_trap">過剰人気罠</span><br><span class="badge-shell" data-roster-shell="2">仮 2名</span></td>
+            <td><strong class="odds-fair" data-odds="504.72">505倍</strong><br><small>0.20%</small></td>
+            <td><small>H1:0.0%<br>AS:0.5%</small></td>
+            <td><span data-odds="7.77">7.77倍</span><br><small>2,439,568 (12.9%)</small></td>
+            <td class="ev-minus"><strong>0.03</strong><br><small><span data-gap-val="0.02">妙味 0.02x</span></small></td>
+            <td>614.0〜696.7</td>
+            <td>856.8〜930.8</td>
+            <td>79.7〜85.8<br><small>9.0〜11.8B</small></td>
+            <td>11〜23</td>
+            <td>3252</td>
+            <td>#1467<br><small>43%</small></td>
+            <td>4〜6</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td><span class="stamp mark-none">無</span><br><small data-mark-key="9">見送り</small></td>
+            <td class="text-left"><strong>S08 #812 [VHS]</strong><br><span class="badge-shell" data-roster-shell="7">仮 7名</span></td>
+            <td><strong class="odds-fair" data-odds="628.16">628倍</strong><br><small>0.16%</small></td>
+            <td><small>H1:0.2%<br>AS:9.9%</small></td>
+            <td><span data-odds="82.12">82.12倍</span><br><small>230,720 (1.2%)</small></td>
+            <td class="ev-minus"><strong>0.03</strong><br><small><span data-gap-val="0.13">妙味 0.13x</span></small></td>
+            <td>656.0〜798.0</td>
+            <td>857.8〜919.0</td>
+            <td>84.4〜89.3<br><small>11.2〜13.1B</small></td>
+            <td>19〜30</td>
+            <td>2897</td>
+            <td>#390<br><small>64%</small></td>
+            <td>12〜33</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td><span class="stamp mark-none">無</span><br><small data-mark-key="9">見送り</small></td>
+            <td class="text-left"><strong>S12 #865 [UTD]</strong><br><span class="badge-full" data-roster-full="96">確定 96名</span></td>
+            <td><strong class="odds-fair" data-odds="889.71">890倍</strong><br><small>0.11%</small></td>
+            <td><small>H1:0.1%<br>AS:0.1%</small></td>
+            <td><span data-odds="126.32">126倍</span><br><small>149,984 (0.8%)</small></td>
+            <td class="ev-minus"><strong>0.02</strong><br><small><span data-gap-val="0.14">妙味 0.14x</span></small></td>
+            <td><strong>674.0</strong></td>
+            <td>901.2</td>
+            <td>83.0<br><small>9.91B</small></td>
+            <td>18/30</td>
+            <td>3072</td>
+            <td>#549<br><small>57%</small></td>
+            <td><span data-flagd="9">9名</span></td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td><span class="stamp mark-none">無</span><br><small data-mark-key="9">見送り</small></td>
+            <td class="text-left"><strong>S11 #856 [PAX]</strong><br><span class="badge-full" data-roster-full="96">確定 96名</span></td>
+            <td><strong class="odds-fair" data-odds="1813.63">999倍+</strong><br><small>0.06%</small></td>
+            <td><small>H1:0.1%<br>AS:0.0%</small></td>
+            <td><span data-odds="57.82">57.82倍</span><br><small>327,680 (1.7%)</small></td>
+            <td class="ev-minus"><strong>0.01</strong><br><small><span data-gap-val="0.03">妙味 0.03x</span></small></td>
+            <td><strong>647.9</strong></td>
+            <td>932.0</td>
+            <td>82.6<br><small>10.52B</small></td>
+            <td>14/30</td>
+            <td>3249</td>
+            <td>#941<br><small>50%</small></td>
+            <td><span data-flagd="6">6名</span></td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td><span class="stamp mark-none">無</span><br><small data-mark-key="9">見送り</small></td>
+            <td class="text-left"><strong>S05 #799 [NOT]</strong><br><span class="badge-shell" data-roster-shell="11">仮 11名</span></td>
+            <td><strong class="odds-fair" data-odds="2817.75">999倍+</strong><br><small>0.04%</small></td>
+            <td><small>H1:0.0%<br>AS:10.3%</small></td>
+            <td><span data-odds="39.11">39.11倍</span><br><small>484,464 (2.6%)</small></td>
+            <td class="ev-minus"><strong>0.01</strong><br><small><span data-gap-val="0.01">妙味 0.01x</span></small></td>
+            <td>636.8〜788.8</td>
+            <td>875.8〜939.2</td>
+            <td>82.1〜88.4<br><small>11.4〜14.1B</small></td>
+            <td>13〜30</td>
+            <td>3425</td>
+            <td>#1023<br><small>50%</small></td>
+            <td>0〜13</td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td><span class="stamp mark-none">無</span><br><small data-mark-key="9">見送り</small></td>
+            <td class="text-left"><strong>S07 #801 [LOC]</strong><br><span class="badge-full" data-roster-full="84">確定 84名</span></td>
+            <td><strong class="odds-fair" data-odds="2394.83">999倍+</strong><br><small>0.04%</small></td>
+            <td><small>H1:0.1%<br>AS:0.0%</small></td>
+            <td><span data-odds="49.09">49.09倍</span><br><small>385,936 (2.0%)</small></td>
+            <td class="ev-minus"><strong>0.01</strong><br><small><span data-gap-val="0.02">妙味 0.02x</span></small></td>
+            <td><strong>624.2</strong></td>
+            <td>947.5</td>
+            <td>80.3<br><small>9.63B</small></td>
+            <td>13/30</td>
+            <td>3252</td>
+            <td>#1186<br><small>50%</small></td>
+            <td><span data-flagd="12">12名</span></td>
+          </tr>
+          <tr>
+            <td>16</td>
+            <td><span class="stamp mark-none">無</span><br><small data-mark-key="9">見送り</small></td>
+            <td class="text-left"><strong>S15 #914 [RAC]</strong><br><span class="badge-full" data-roster-full="97">確定 97名</span></td>
+            <td><strong class="odds-fair" data-odds="9999.0">999倍+</strong><br><small>0.00%</small></td>
+            <td><small>H1:0.0%<br>AS:0.0%</small></td>
+            <td><span data-odds="117.55">118倍</span><br><small>161,168 (0.8%)</small></td>
+            <td class="ev-minus"><strong>0.00</strong><br><small><span data-gap-lt="1">妙味 0.01x未満</span></small></td>
+            <td><strong>661.0</strong></td>
+            <td>931.8</td>
+            <td>82.4<br><small>9.43B</small></td>
+            <td>15/30</td>
+            <td>3170</td>
+            <td>#1922<br><small>38%</small></td>
+            <td><span data-flagd="0">0名</span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="two-col">
+      <section class="box-panel" style="margin-bottom:0;">
+        <div class="panel-title">
+          <span data-i18n="sec_chart">📈 2軸戦力マップ（PCS30 × DTV30 / バブル＝優勝確率）</span>
+          <small data-i18n="sec_chart_sub">右上ほど「高倍率 × 大兵量」の真の強豪</small>
+        </div>
+        <div style="height:320px; position:relative;">
+          <canvas id="twoAxisChart"></canvas>
+        </div>
+      </section>
+
+      <section class="box-panel" style="margin-bottom:0;">
+        <div class="panel-title">
+          <span data-i18n="sec_danger">⚠️ 危険な人気馬 ＆ 監査上の注意点</span>
+          <small data-i18n="sec_danger_sub">過剰人気に注意すべき2陣営</small>
+        </div>
+        <div style="font-size:13px; display:flex; flex-direction:column; gap:10px;">
+          <div class="danger-callout-1" data-i18n-html="danger1_html"><strong>1番人気 #766 [ITz]（応援699万 / 36.91%支持）→ 危険度：極大</strong><br>確定名簿（92名）で実力自体はある（PCS30 718.4 / Top4 955.2）ものの、<strong>初戦（R16）から難敵 #780 [BAR]（勝率67.8%側）と激突</strong>。初戦突破32.2%・優勝確率はわずか<strong>2.28%（フェア43.9倍 / 期待値0.36）</strong>であり、左上1枚目クリックバイアスによる典型的な過剰人気罠。</div>
+          <div class="danger-callout-2" data-i18n-html="danger2_html"><strong>2番人気 #795 [795]*（応援244万 / 12.88%支持）→ 危険度：大</strong><br>王国番号タグだが、本国1位[FAL]（PCS30 614.0 / A象限11名）および国内Top30オールスター天井でも <strong>PCS30 696.7 / EGC 11.8B</strong> 止まり。BAR・EOA・OBV・908の壁を越える上限値がなく、優勝確率は<strong>0.20%〜0.47%（期待値0.03）</strong>。</div>
+          <div class="caution-callout">
+            <strong data-i18n="caution_title">ご注意事項・モデル前提（あくまでも参考にどうぞ）</strong><br>
+            <span data-i18n="caution_body">本号外は MightPulse API 取得時点（2026-11-16T18:22:52+09:00）の在籍データに基づく機械的試算です。APIの取得時期によって同盟間の移籍・合流等により実際の出場選手が変わっていることがあるほか、抜け殻5同盟（*印）の最終集結規模や大会当日のイン率・戦術判断（鐘楼制圧・地下倉庫等）によっても結果は変動します。数値は確定ではなく、あくまでも予想の参考としてご覧ください。</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="box-panel">
+      <div class="panel-title">
+        <span data-i18n="sec_shell">🔍 抜け殻・仮設シード（在籍2〜11名）5陣営のポテンシャル検証</span>
+        <small data-i18n="sec_shell_sub">大会直前に別同盟から主力が出入りする「オールスター殻」の正体</small>
+      </div>
+      <div class="table-wrap">
+        <table class="race-table">
+          <thead>
+            <tr>
+              <th data-i18n="sh_th_seed">対象シード</th>
+              <th data-i18n="sh_th_now">現時点在籍</th>
+              <th data-i18n="sh_th_type">タグ種別・モデル扱い</th>
+              <th data-i18n="sh_th_h1">本国1位同盟（Home#1）実測</th>
+              <th data-i18n="sh_th_as">国内Top30オールスター上限（AllStar-Pool）</th>
+              <th data-i18n="sh_th_range">優勝確率レンジ（H1〜AS）</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          <tr>
+            <td><strong>S14 #908 [908]</strong></td>
+            <td><span data-flagd="5">5名</span></td>
+            <td data-i18n="sh_type_king">王国番号結集タグ（高確率合流）</td>
+            <td>[REV] PCS30: 807.4 / A:30 / EGC:11.9B</td>
+            <td>PCS30: <strong>894.7</strong> / Top4:996.2 / MT1:3560 / EGC:14.0B</td>
+            <td>13.04% 〜 24.39%</td>
+          </tr>
+          <tr>
+            <td><strong>S13 #867 [867]</strong></td>
+            <td><span data-flagd="4">4名</span></td>
+            <td data-i18n="sh_type_king">王国番号結集タグ（高確率合流）</td>
+            <td>[ERA] PCS30: 752.9 / A:30 / EGC:12.4B</td>
+            <td>PCS30: <strong>851.9</strong> / Top4:991.8 / MT1:3330 / EGC:14.7B</td>
+            <td>6.57% 〜 15.77%</td>
+          </tr>
+          <tr>
+            <td><strong>S05 #799 [NOT]</strong></td>
+            <td><span data-flagd="11">11名</span></td>
+            <td data-i18n="sh_type_gen">一般タグ殻（保守評価:Home#1）</td>
+            <td>[ZOO] PCS30: 636.8 / A:13 / EGC:11.4B</td>
+            <td>PCS30: <strong>788.8</strong> / Top4:939.2 / MT1:3425 / EGC:14.1B</td>
+            <td>0.04% 〜 10.34%</td>
+          </tr>
+          <tr>
+            <td><strong>S08 #812 [VHS]</strong></td>
+            <td><span data-flagd="7">7名</span></td>
+            <td data-i18n="sh_type_gen">一般タグ殻（保守評価:Home#1）</td>
+            <td>[SAW] PCS30: 656.0 / A:19 / EGC:11.2B</td>
+            <td>PCS30: <strong>798.0</strong> / Top4:919.0 / MT1:2897 / EGC:13.1B</td>
+            <td>0.19% 〜 9.95%</td>
+          </tr>
+          <tr>
+            <td><strong>S04 #795 [795]</strong></td>
+            <td><span data-flagd="2">2名</span></td>
+            <td data-i18n="sh_type_king">王国番号結集タグ（高確率合流）</td>
+            <td>[FAL] PCS30: 614.0 / A:11 / EGC:9.0B</td>
+            <td>PCS30: <strong>696.7</strong> / Top4:930.8 / MT1:3252 / EGC:11.8B</td>
+            <td>0.00% 〜 0.47%</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="glossary" class="box-panel">
+      <div class="panel-title">
+        <span data-i18n="sec_glossary">📘 初心者＆上級者向け 指標・数式用語集（#glossary）</span>
+        <small data-i18n-html="sec_glossary_sub_html">正本仕様書：<code>docs/guides/KINGSHOT_PVP_SCORING_SPEC.md</code></small>
+      </div>
+      <div class="glossary-grid">
+        
+        <div class="gloss-card">
+          <h4 data-gloss-h="0">PCS（Pure Combat Quality Score / 0–1000）</h4>
+          <div data-gloss-b="0"><strong>定義:</strong> 秘境試練6塔の到達階数をキャップ正規化（護符CC 26% / 英雄Col 20% / 領主装備MF 18% / 研究KN 14% / 総合RS 14% / ペットFoL 8%）し、火炉中立化 <code>migrant_score</code> を12%ブレンドした「1兵あたりの純粋戦闘密度」。<br><strong>生かし方:</strong> 兵数水増しに騙されず、集結・駐屯で勝てる「砲台の質」を見抜く。</div>
+        </div>
+        <div class="gloss-card">
+          <h4 data-gloss-h="1">DTV / EGC_M（出撃兵量・実効戦力）</h4>
+          <div data-gloss-b="1"><strong>定義:</strong> 非線形ベース控除 <code>BasePower = 5.79 × wps^0.318</code> で建物・研究等の非兵士戦力を引き算し、推定兵士戦力と兵質(TG)から算出した継戦兵量スコア（0–100）。<code>EGC_M</code> は TG8換算の実効戦力 <code>Troop_M × (TG/8)²</code>。<br><strong>生かし方:</strong> 60分間の長期消耗戦で「兵切れせず増援し続けられるか」を測る。</div>
+        </div>
+        <div class="gloss-card">
+          <h4 data-gloss-h="2">A象限人数（砲台エース層 / PCS≥600 &amp; DTV≥60）</h4>
+          <div data-gloss-b="2"><strong>定義:</strong> 戦闘密度・兵量ともに前線基準を超える主力メンバー数（上位30名中）。<br><strong>生かし方:</strong> 聖剣の戦いは11施設＋4地下倉庫の同時展開戦。A象限が25〜30名揃う同盟は多方面同時制圧で崩れない。</div>
+        </div>
+        <div class="gloss-card">
+          <h4 data-gloss-h="3">フェアオッズ（Fair Odds = 1 / 優勝確率）</h4>
+          <div data-gloss-b="3"><strong>定義:</strong> 16強ブラケットの勝敗確率を全経路計算した「本来あるべき適正倍率」。<br><strong>生かし方:</strong> 人気オッズ（1 / 支持率）よりフェアオッズが小さいほど「世間が過小評価している美味しい馬」となる。</div>
+        </div>
+        <div class="gloss-card">
+          <h4 data-gloss-h="4">16x期待値（EV = 16 × 優勝確率）</h4>
+          <div data-gloss-b="4"><strong>定義:</strong> 的中時16倍リターンに対する投資1枚あたりの期待回収倍率（損益分岐は勝率 6.25% / EV=1.00）。<br><strong>生かし方:</strong> ハズレ時一部返還がある場合でも、EVが1.00を大きく上回る上位4同盟（特にOBV・908・867・BAR）に絞るのが鉄則。</div>
+        </div>
+        <div class="gloss-card">
+          <h4 data-gloss-h="5">Flag D (300M+) / 抜け殻リスク</h4>
+          <div data-gloss-b="5"><strong>定義:</strong> <code>Flag D</code> は6塔・移民スコアとも未クロールの300M超プレイヤー数（隠れ主力の可能性）。抜け殻は現在2〜11名しかおらず、当日どこまで本国上位が集結するかで振れ幅が生じる。</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="paper-footer">
+      <div data-i18n-html="footer_left_html">発行：聖剣スポーツ データ分析局 ｜ スコア正本：<code>scripts/pvp_two_axis_scorer.py</code></div>
+      <div data-i18n="footer_right">※本記事は 2026-11-16T18:22:52+09:00 時点のAPIデータに基づく統計的予測です。API取得時期によって出場選手が変わっていることがあるため、あくまでも参考としてご覧ください。</div>
+    </footer>
+  </div>
+
+  <script>
+    const I18N = {"ja": {"page_title": "聖剣スポーツ 号外｜【第14ブロック】16強(x16) 2軸評価(PCS/DTV)＆フェアオッズ完全大予想", "meta_left_html": "<strong>聖剣スポーツ</strong> 特別号外｜<strong>【第14ブロック】</strong>16強(x16) 2軸評価(PCS/DTV)＋フェアオッズ完全版", "meta_right_html": "正本エンジン：<code>pvp_two_axis_scorer.py</code> ＆ 厳密ブラケットDP", "meta_mid_tpl": "データ実測時点：{fetched_at} ｜ 対象：第14ブロック（#766〜#919 / 軍団1・全16同盟 / 総応援数 {total_cheers}）", "sub_kanji": "KINGSHOT SWORDLAND LEAGUE｜第14ブロック 16強優勝予想 FAIR ODDS", "paper_title": "聖剣スポーツ", "block14_title": "第14ブロック", "block14_sub": "#766〜#919（軍団1・16強）", "gogai": "号外", "urgent_tag": "第14ブロック特報", "urgent_body_html": "<strong>【第14ブロック 1番人気 #766 [ITz]（支持36.9%）は危険な過剰人気！】</strong> 第14ブロック全16同盟を MightPulse 最新データ × PvP 2軸評価（PCS/DTV）で全量監査した結果、<strong>#919 [OBV] が確定ロスター最強（優勝確率32.45% / フェア3.08倍）</strong>にもかかわらず人気オッズ<strong>32.42倍（支持3.08%）</strong>に放置される異常な歪みが発生！さらに「抜け殻・王国番号タグ」<strong>#908 [908] / #867 [867]</strong> の国内オールスター合流脅威を暴き出した！", "headline_html": "【第14ブロック決戦】狙え<span class=\"hl-red\">「フェア3.08倍 vs 人気32.4倍」</span>の超絶ギャップ！<br>確定最強 <span class=\"hl-gold\">#919 [OBV]</span> が期待値5.19倍の不動の本命！", "lead_html": "今回の聖剣リーグ<strong>第14ブロック（#766〜#919）</strong>優勝予想は的中一律<strong>16倍（損益分岐勝率 6.25%）</strong>のトーナメント戦。本紙では、兵数水増しを除外する純粋戦闘密度 <strong>PCS（0–1000）</strong> と実戦兵量 <strong>DTV / EGC_M</strong> の2軸評価に加え、スクリーンショット順（Seed 1〜16）の1回戦〜決勝までの全対戦経路を厳密動的計画法（DP）でシミュレーションし、本来あるべき勝率期待値<strong>「フェアオッズ（1 / 優勝確率）」</strong>を算出した。<br>さらに調査班は、現在メンバーが2〜11名しか在籍していない<strong>5つの「抜け殻／仮設タグ」（#908, #867, #795, #812, #799）</strong>を発見。本国第1同盟（Home#1）と国内上位30名選抜（AllStar-Pool）の両レンジを計測し、見せかけの人気に騙されない真の期待値ランキングを公開する。", "lead_note_tpl": "※ ご注意：APIデータの取得時期（{fetched_at}）と大会本番のタイミングによっては、同盟の移籍・合流などで出場選手が変わっていることがあります。予想・投票の最終判断は、あくまでも参考情報としてご活用ください。", "sec_picks": "🎯 第14ブロック 本紙推奨・期待値 TOP 4 フォーカス（x16優勝応援）", "sec_picks_sub": "※16倍固定配当の損益分岐は勝率 6.25%（EV 1.00以上がプラス期待値）", "pick_subtitles": {"16": "🥇 本命 ◎｜確定フルロスター最強 ＆ 究極の歪み", "14": "🥈 対抗 ○｜王国オールスター筆頭（要名簿注意）", "13": "🥉 単穴 ▲｜純度100%の超穴馬（人気1.79%）", "2": "☆ 特注｜上の山・確定最強＆KvK #43の勝者"}, "pick_comments": {"16": "確定93名・Flag Dゼロの完全無欠ロスター。PCS30 764.8、Top4 992.2、Top30全員がA象限(30/30)、EGC 15,798M、Top1 MT 3,551階すべてが確定同盟中1位。死のブロックQF4を抜ければ頂点最有力にもかかわらず人気はわずか3.08%（人気32.4倍 vs フェア3.08倍）。", "14": "現時点の名簿は5名だが王国番号タグ[908]を冠する結集枠。本国1位[REV]単体でもPCS30 807.4・Top4 993.5、国内上位30名結集時はPCS30 894.7・MT1 3,560階に達する銀河系軍団。初戦#867・QF4#919OBVとの潰し合いが唯一の懸念。", "13": "同じく王国番号タグ[867]。本国1位[ERA]単体でPCS30 752.9・A象限30名、オールスター結集時はPCS30 851.9・EGC 14,662M・Flag D 0名という超高純度戦力。人気55.9倍に対しフェア7.34倍と妙味7.6倍超の爆発枠。", "2": "上の山（Seed 1〜8）における確定フルロスター最上位。KvK戦闘ランク#43（勝率78.6%）は全16シード中1位。初戦で1番人気[ITz]を約68%で退ければQF4の潰し合いを回避して決勝へ無傷で進みやすく、SF到達率37.9%を誇る。"}, "lbl_fair_odds": "フェアオッズ", "lbl_pop_odds": "人気オッズ", "lbl_ev16": "16x期待値", "lbl_win_prob_range": "優勝確率（標準 / 幅）", "lbl_pcs30_dens": "PCS30（戦闘密度）", "lbl_egc_dtv": "実効兵量 EGC / DTV", "lbl_cheers_share": "応援数（支持率）", "lbl_kvk_flagd": "KvK戦闘 / Flag D(300M+)", "badge_full": "確定名簿", "badge_shell": "抜け殻/結集想定", "badge_danger": "死のブロック", "badge_trap": "過剰人気罠", "unit_odds": "倍", "unit_odds_over": "999倍+", "flagd_tpl": "{n}名", "sec_r16": "⚔️ 第14ブロック トーナメント1回戦（R16）勝率予測 ＆ 死のブロック「QF4」構造", "sec_r16_sub": "スクリーンショット順（Seed 1v2, 3v4 ... 15v16）に基づく初戦勝率（標準モデル）", "r16_match_tpl": "R16 第{m}試合（QF{q}ブロック）", "r16_note_html": "<strong>【ブラケット最大の構造歪み】</strong>下の山 <strong>QF4（Seed 13〜16）</strong> に、#908 [908]*・#867 [867]*・#919 [OBV] という優勝候補TOP3が集中する<strong>「死のブロック」</strong>が発生。逆に上の山（Seed 1〜8）は初戦で1番人気 #766 [ITz] を #780 [BAR] が約68%で迎撃する構図となり、勝った側（BAR または EOA）が決勝へ進みやすい構造となっている。", "sec_table": "📊 第14ブロック 全16同盟 2軸評価（PCS / DTV）＆ フェアオッズ完全出馬表", "sec_table_sub_html": "各指標の <span class=\"q-link\">?</span> をクリックするとページ下部の用語・数式解説へジャンプします", "th_rank": "順", "th_mark": "印", "th_team": "シード / 同盟 / 名簿", "th_fair": "フェアオッズ", "th_fair_sub": "(優勝確率)", "th_scen": "シナリオ幅", "th_scen_sub": "(H1〜AS)", "th_pop": "人気オッズ", "th_pop_sub": "(応援数/率)", "th_ev": "16x期待値", "th_ev_sub": "(妙味倍率)", "th_pcs": "PCS30", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "A象限", "th_quada_sub": "(30名中)", "th_mt1": "Top1 MT", "th_kvk": "KvK戦闘", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "marks": {"1": "本命", "2": "対抗", "3": "単穴", "4": "特注", "5": "連下", "6": "警戒", "9": "見送り"}, "roster_confirmed_tpl": "確定 {n}名", "roster_shell_tpl": "仮 {n}名", "gap_prefix": "妙味 ", "gap_lt": "0.01x未満", "sec_chart": "📈 2軸戦力マップ（PCS30 × DTV30 / バブル＝優勝確率）", "sec_chart_sub": "右上ほど「高倍率 × 大兵量」の真の強豪", "chart_ds_full": "確定フルロスター同盟", "chart_ds_shell": "抜け殻/結集想定シード (*)", "chart_x": "PCS30（純粋戦闘密度）", "chart_y": "DTV30（出撃可能兵量・兵質）", "chart_tt_win": "優勝", "chart_tt_fair": "フェア", "chart_tt_pop": "人気支持", "sec_danger": "⚠️ 危険な人気馬 ＆ 監査上の注意点", "sec_danger_sub": "過剰人気に注意すべき2陣営", "danger1_html": "<strong>1番人気 #766 [ITz]（応援699万 / 36.91%支持）→ 危険度：極大</strong><br>確定名簿（92名）で実力自体はある（PCS30 718.4 / Top4 955.2）ものの、<strong>初戦（R16）から難敵 #780 [BAR]（勝率67.8%側）と激突</strong>。初戦突破32.2%・優勝確率はわずか<strong>2.28%（フェア43.9倍 / 期待値0.36）</strong>であり、左上1枚目クリックバイアスによる典型的な過剰人気罠。", "danger2_html": "<strong>2番人気 #795 [795]*（応援244万 / 12.88%支持）→ 危険度：大</strong><br>王国番号タグだが、本国1位[FAL]（PCS30 614.0 / A象限11名）および国内Top30オールスター天井でも <strong>PCS30 696.7 / EGC 11.8B</strong> 止まり。BAR・EOA・OBV・908の壁を越える上限値がなく、優勝確率は<strong>0.20%〜0.47%（期待値0.03）</strong>。", "caution_title": "ご注意事項・モデル前提（あくまでも参考にどうぞ）", "caution_body_tpl": "本号外は MightPulse API 取得時点（{fetched_at}）の在籍データに基づく機械的試算です。APIの取得時期によって同盟間の移籍・合流等により実際の出場選手が変わっていることがあるほか、抜け殻5同盟（*印）の最終集結規模や大会当日のイン率・戦術判断（鐘楼制圧・地下倉庫等）によっても結果は変動します。数値は確定ではなく、あくまでも予想の参考としてご覧ください。", "sec_shell": "🔍 抜け殻・仮設シード（在籍2〜11名）5陣営のポテンシャル検証", "sec_shell_sub": "大会直前に別同盟から主力が出入りする「オールスター殻」の正体", "sh_th_seed": "対象シード", "sh_th_now": "現時点在籍", "sh_th_type": "タグ種別・モデル扱い", "sh_th_h1": "本国1位同盟（Home#1）実測", "sh_th_as": "国内Top30オールスター上限（AllStar-Pool）", "sh_th_range": "優勝確率レンジ（H1〜AS）", "sh_type_king": "王国番号結集タグ（高確率合流）", "sh_type_gen": "一般タグ殻（保守評価:Home#1）", "sec_glossary": "📘 初心者＆上級者向け 指標・数式用語集（#glossary）", "sec_glossary_sub_html": "正本仕様書：<code>docs/guides/KINGSHOT_PVP_SCORING_SPEC.md</code>", "glossary_cards": [{"h": "PCS（Pure Combat Quality Score / 0–1000）", "b_html": "<strong>定義:</strong> 秘境試練6塔の到達階数をキャップ正規化（護符CC 26% / 英雄Col 20% / 領主装備MF 18% / 研究KN 14% / 総合RS 14% / ペットFoL 8%）し、火炉中立化 <code>migrant_score</code> を12%ブレンドした「1兵あたりの純粋戦闘密度」。<br><strong>生かし方:</strong> 兵数水増しに騙されず、集結・駐屯で勝てる「砲台の質」を見抜く。"}, {"h": "DTV / EGC_M（出撃兵量・実効戦力）", "b_html": "<strong>定義:</strong> 非線形ベース控除 <code>BasePower = 5.79 × wps^0.318</code> で建物・研究等の非兵士戦力を引き算し、推定兵士戦力と兵質(TG)から算出した継戦兵量スコア（0–100）。<code>EGC_M</code> は TG8換算の実効戦力 <code>Troop_M × (TG/8)²</code>。<br><strong>生かし方:</strong> 60分間の長期消耗戦で「兵切れせず増援し続けられるか」を測る。"}, {"h": "A象限人数（砲台エース層 / PCS≥600 & DTV≥60）", "b_html": "<strong>定義:</strong> 戦闘密度・兵量ともに前線基準を超える主力メンバー数（上位30名中）。<br><strong>生かし方:</strong> 聖剣の戦いは11施設＋4地下倉庫の同時展開戦。A象限が25〜30名揃う同盟は多方面同時制圧で崩れない。"}, {"h": "フェアオッズ（Fair Odds = 1 / 優勝確率）", "b_html": "<strong>定義:</strong> 16強ブラケットの勝敗確率を全経路計算した「本来あるべき適正倍率」。<br><strong>生かし方:</strong> 人気オッズ（1 / 支持率）よりフェアオッズが小さいほど「世間が過小評価している美味しい馬」となる。"}, {"h": "16x期待値（EV = 16 × 優勝確率）", "b_html": "<strong>定義:</strong> 的中時16倍リターンに対する投資1枚あたりの期待回収倍率（損益分岐は勝率 6.25% / EV=1.00）。<br><strong>生かし方:</strong> ハズレ時一部返還がある場合でも、EVが1.00を大きく上回る上位4同盟（特にOBV・908・867・BAR）に絞るのが鉄則。"}, {"h": "Flag D (300M+) / 抜け殻リスク", "b_html": "<strong>定義:</strong> <code>Flag D</code> は6塔・移民スコアとも未クロールの300M超プレイヤー数（隠れ主力の可能性）。抜け殻は現在2〜11名しかおらず、当日どこまで本国上位が集結するかで振れ幅が生じる。"}], "footer_left_html": "発行：聖剣スポーツ データ分析局 ｜ スコア正本：<code>scripts/pvp_two_axis_scorer.py</code>", "footer_right_tpl": "※本記事は {fetched_at} 時点のAPIデータに基づく統計的予測です。API取得時期によって出場選手が変わっていることがあるため、あくまでも参考としてご覧ください。", "meta_mid": "データ実測時点：2026-11-16T18:22:52+09:00 ｜ 対象：第14ブロック（#766〜#919 / 軍団1・全16同盟 / 総応援数 18,945,904）", "lead_note": "※ ご注意：APIデータの取得時期（2026-11-16T18:22:52+09:00）と大会本番のタイミングによっては、同盟の移籍・合流などで出場選手が変わっていることがあります。予想・投票の最終判断は、あくまでも参考情報としてご活用ください。", "caution_body": "本号外は MightPulse API 取得時点（2026-11-16T18:22:52+09:00）の在籍データに基づく機械的試算です。APIの取得時期によって同盟間の移籍・合流等により実際の出場選手が変わっていることがあるほか、抜け殻5同盟（*印）の最終集結規模や大会当日のイン率・戦術判断（鐘楼制圧・地下倉庫等）によっても結果は変動します。数値は確定ではなく、あくまでも予想の参考としてご覧ください。", "footer_right": "※本記事は 2026-11-16T18:22:52+09:00 時点のAPIデータに基づく統計的予測です。API取得時期によって出場選手が変わっていることがあるため、あくまでも参考としてご覧ください。"}, "en": {"page_title": "Swordland Sports Extra | [Block 14] Top 16 (16x) PCS/DTV & Fair Odds Forecast", "meta_left_html": "<strong>Swordland Sports</strong> Extra Edition | <strong>[Block 14]</strong> Top 16 (16x) Two-Axis (PCS/DTV) &amp; Fair Odds", "meta_right_html": "Canonical Engine: <code>pvp_two_axis_scorer.py</code> &amp; Exact Bracket DP", "meta_mid_tpl": "Fetched: {fetched_at} | Scope: Block 14 (#766–#919 / Legion 1, 16 Alliances / Total Cheers {total_cheers})", "sub_kanji": "KINGSHOT SWORDLAND LEAGUE | BLOCK 14 CHAMPIONSHIP FAIR ODDS", "paper_title": "SWORDLAND SPORTS", "block14_title": "BLOCK 14", "block14_sub": "#766–#919 (Legion 1 / Top 16)", "gogai": "EXTRA", "urgent_tag": "BLOCK 14 ALERT", "urgent_body_html": "<strong>[Block 14 Favorite #766 [ITz] (36.9% cheers) is heavily overbet!]</strong> Auditing all 16 Block 14 alliances with live MightPulse data + PCS/DTV reveals that <strong>#919 [OBV] is the #1 verified full-roster powerhouse (32.45% win prob / Fair 3.08x)</strong> yet sits at <strong>32.42x popularity odds (3.08% cheers)</strong>! Plus, watch out for kingdom-tag shell rosters <strong>#908 [908] / #867 [867]</strong>.", "headline_html": "[BLOCK 14 SHOWDOWN] Catch the <span class=\"hl-red\">3.08x Fair vs 32.4x Popularity</span> Gap!<br>Verified Powerhouse <span class=\"hl-gold\">#919 [OBV]</span> Delivers 5.19x Expected Value!", "lead_html": "This Swordland League <strong>Block 14 (#766–#919)</strong> cheer event pays a flat <strong>16x on the champion (break-even win rate: 6.25%)</strong>. Using our two-axis model—pure combat density <strong>PCS (0–1000)</strong> and deployable troop volume <strong>DTV / EGC_M</strong>—plus exact dynamic programming (DP) across the screenshot bracket (Seeds 1–16), we derived each alliance's true <strong>Fair Odds (1 / Win Prob)</strong>.<br>We also flagged <strong>5 low-headcount shell/placeholder alliances (#908, #867, #795, #812, #799)</strong> with only 2–11 members right now, calculating both their Home#1 alliance and domestic Top-30 All-Star ceilings.", "lead_note_tpl": "* Notice: Depending on when API data was fetched ({fetched_at}) vs. match day, participating players may change due to alliance transfers or merges. Please treat this report strictly as a reference.", "sec_picks": "🎯 Block 14 Top 4 Value Picks (16x Championship Cheer)", "sec_picks_sub": "* Break-even for 16x fixed payout is 6.25% (EV ≥ 1.00 = positive value)", "pick_subtitles": {"16": "🥇 Top Pick ◎ | #1 Verified Full Roster & Massive Value", "14": "🥈 Contender ○ | Kingdom All-Star Titan (Roster Alert)", "13": "🥉 Dark Horse ▲ | 100% Pure Underdog (1.79% Cheers)", "2": "☆ Top-Half Ace | Verified #1 in Top Half & KvK #43"}, "pick_comments": {"16": "93 verified members with zero Flag D gaps. Ranks #1 among confirmed rosters in PCS30 (764.8), Top4 (992.2), Quad-A depth (30/30), EGC (15,798M), and Top1 MT (3,551). Despite sitting in tough QF4, its 3.08% popularity yields a massive 5.19x EV.", "14": "Currently shows 5 shell members under kingdom tag [908]. Home #1 [REV] alone scores PCS30 807.4 / Top4 993.5, and a domestic Top-30 All-Star roster reaches PCS30 894.7 / MT1 3,560. Facing #867 in R16 and #919 [OBV] in QF4 is the main hurdle.", "13": "Kingdom-tag shell [867]. Home #1 [ERA] posts PCS30 752.9 with 30 Quad-A players; an All-Star pool hits PCS30 851.9 / EGC 14,662M with zero Flag D gaps. At 55.9x popularity vs 7.34x fair odds, it offers huge upside.", "2": "Strongest verified roster in the Top Half (Seeds 1–8) and #1 KvK battle rank (#43, 78.6% win rate). Beating overbet #766 [ITz] (~68% in R16) avoids the QF4 meat grinder and gives a 37.9% shot at reaching the Semifinals."}, "lbl_fair_odds": "Fair Odds", "lbl_pop_odds": "Pop. Odds", "lbl_ev16": "16x EV", "lbl_win_prob_range": "Win Prob (Std / Range)", "lbl_pcs30_dens": "PCS30 (Density)", "lbl_egc_dtv": "EGC / DTV", "lbl_cheers_share": "Cheers (Share)", "lbl_kvk_flagd": "KvK Rank / Flag D(300M+)", "badge_full": "Verified", "badge_shell": "Shell / Pool Risk", "badge_danger": "Death Block", "badge_trap": "Overbet Trap", "unit_odds": "x", "unit_odds_over": "999x+", "flagd_tpl": "{n}", "sec_r16": "⚔️ Block 14 Round of 16 (R16) Win Probabilities & QF4 Death Block", "sec_r16_sub": "First-round win rates following screenshot order (Seeds 1v2 .. 15v16)", "r16_match_tpl": "R16 Match {m} (QF{q})", "r16_note_html": "<strong>[Biggest Bracket Imbalance]</strong> Bottom quarter <strong>QF4 (Seeds 13–16)</strong> packs three top contenders (#908*, #867*, #919 OBV) into one bracket. Meanwhile, in the Top Half (Seeds 1–8), #780 [BAR] is favored ~68% over 1st-favorite #766 [ITz], giving the BAR/EOA winner a cleaner path to the Final.", "sec_table": "📊 Block 14 All-16 Alliances Two-Axis (PCS/DTV) & Fair Odds Table", "sec_table_sub_html": "Click <span class=\"q-link\">?</span> on any metric header to jump to the #glossary below", "th_rank": "#", "th_mark": "Pick", "th_team": "Seed / Alliance / Roster", "th_fair": "Fair Odds", "th_fair_sub": "(Win Prob)", "th_scen": "Range", "th_scen_sub": "(H1–AS)", "th_pop": "Pop. Odds", "th_pop_sub": "(Cheers/%)", "th_ev": "16x EV", "th_ev_sub": "(Value)", "th_pcs": "PCS30", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "Quad A", "th_quada_sub": "(of 30)", "th_mt1": "Top1 MT", "th_kvk": "KvK Battle", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "marks": {"1": "Top", "2": "2nd", "3": "3rd", "4": "Dark", "5": "5th", "6": "Watch", "9": "Pass"}, "roster_confirmed_tpl": "Full {n}", "roster_shell_tpl": "Shell {n}", "gap_prefix": "Val ", "gap_lt": "<0.01x", "sec_chart": "📈 Two-Axis Combat Map (PCS30 × DTV30 / Bubble = Win Prob)", "sec_chart_sub": "Top-right = highest combat quality × deployable troop volume", "chart_ds_full": "Verified Full-Roster", "chart_ds_shell": "Shell / Pool-Modeled (*)", "chart_x": "PCS30 (Pure Combat Density)", "chart_y": "DTV30 (Deployable Volume & Tier)", "chart_tt_win": "Win", "chart_tt_fair": "Fair", "chart_tt_pop": "Cheers", "sec_danger": "⚠️ Overbet Traps & Audit Cautions", "sec_danger_sub": "2 popular entries to avoid", "danger1_html": "<strong>#1 Popular #766 [ITz] (6.99M cheers / 36.91%) → Extreme Trap</strong><br>Solid 92-member roster (PCS30 718.4 / Top4 955.2), but draws <strong>#780 [BAR] (67.8% favored) in Round 1</strong>. Overall title odds drop to <strong>2.28% (Fair 43.9x / EV 0.36)</strong>—a classic top-left UI click bias.", "danger2_html": "<strong>#2 Popular #795 [795]* (2.44M cheers / 12.88%) → High Trap</strong><br>Even pooling #795's domestic Top-30 All-Stars caps out at <strong>PCS30 696.7 / EGC 11.8B</strong>, leaving just <strong>0.20%–0.47% title probability (EV 0.03)</strong>.", "caution_title": "Notice & Model Assumptions (Reference Only)", "caution_body_tpl": "Figures are mechanical estimates from MightPulse API data fetched at {fetched_at}. Participating players may change before match day due to transfers or alliance merges, and final outcomes depend on shell-roster turnout (*), online attendance, and in-match tactics (bell towers, undercellars). Please use this strictly as a reference.", "sec_shell": "🔍 Shell / Low-Headcount Seeds (2–11 Members) Potential Check", "sec_shell_sub": "Home #1 Alliance vs Domestic Top-30 All-Star Pool ceiling", "sh_th_seed": "Seed / Tag", "sh_th_now": "Live Roster", "sh_th_type": "Tag Type / Model Rule", "sh_th_h1": "Home #1 Alliance Actual", "sh_th_as": "Domestic Top-30 All-Star Ceiling", "sh_th_range": "Title Prob Range (H1–AS)", "sh_type_king": "Kingdom-Tag Shell (70% AllStar blend)", "sh_type_gen": "General Shell (Conservative Home#1)", "sec_glossary": "📘 Metrics & Formula Glossary (#glossary)", "sec_glossary_sub_html": "Canonical Spec: <code>docs/guides/KINGSHOT_PVP_SCORING_SPEC.md</code>", "glossary_cards": [{"h": "PCS (Pure Combat Quality Score / 0–1000)", "b_html": "<strong>Def:</strong> Cap-normalized 6-tower Mystic Trial progress (CC 26% / Col 20% / MF 18% / KN 14% / RS 14% / FoL 8%) blended 88/12 with stove-neutralized <code>migrant_score</code>.<br><strong>Use:</strong> Measures true per-troop combat multiplier without troop-bloat distortion."}, {"h": "DTV / EGC_M (Deployable Volume & Quality)", "b_html": "<strong>Def:</strong> Non-linear base deduction <code>BasePower = 5.79 × wps^0.318</code> isolates troop power and TG tier quality. <code>EGC_M = Troop_M × (TG/8)²</code>.<br><strong>Use:</strong> Gauges 60-minute endurance without running dry of troops."}, {"h": "Quad-A Count (Frontline Aces / PCS≥600 & DTV≥60)", "b_html": "<strong>Def:</strong> Number of top-30 members meeting both combat-quality and troop-volume thresholds.<br><strong>Use:</strong> Swordland has 11 buildings + 4 undercellars; 25–30 Quad-A players dominate multi-front control."}, {"h": "Fair Odds (= 1 / Win Prob)", "b_html": "<strong>Def:</strong> Implied fair multiplier from exact 16-team bracket DP.<br><strong>Use:</strong> When Fair Odds &lt; Popularity Odds, the crowd is underpricing that alliance."}, {"h": "16x Expected Value (EV = 16 × Win Prob)", "b_html": "<strong>Def:</strong> Expected return per coin bet on a flat 16x payout (break-even = 6.25%).<br><strong>Use:</strong> Focus solely on positive-EV contenders (OBV, 908, 867, BAR)."}, {"h": "Flag D (300M+) / Shell Risk", "b_html": "<strong>Def:</strong> <code>Flag D</code> flags uncrawled 300M+ players (hidden strength). Shell alliances (*) currently hold 2–11 members, creating turnout variance."}], "footer_left_html": "Published by Swordland Sports Analytics | Engine: <code>scripts/pvp_two_axis_scorer.py</code>", "footer_right_tpl": "* Statistical forecast based on API data as of {fetched_at}. Participating players may shift depending on API fetch timing; please use as reference only.", "meta_mid": "Fetched: 2026-11-16T18:22:52+09:00 | Scope: Block 14 (#766–#919 / Legion 1, 16 Alliances / Total Cheers 18,945,904)", "lead_note": "* Notice: Depending on when API data was fetched (2026-11-16T18:22:52+09:00) vs. match day, participating players may change due to alliance transfers or merges. Please treat this report strictly as a reference.", "caution_body": "Figures are mechanical estimates from MightPulse API data fetched at 2026-11-16T18:22:52+09:00. Participating players may change before match day due to transfers or alliance merges, and final outcomes depend on shell-roster turnout (*), online attendance, and in-match tactics (bell towers, undercellars). Please use this strictly as a reference.", "footer_right": "* Statistical forecast based on API data as of 2026-11-16T18:22:52+09:00. Participating players may shift depending on API fetch timing; please use as reference only."}, "ar": {"page_title": "سبورتس سوردلاند إكسترا | [المجموعة 14] توقعات الـ16 فريقًا (16x) وتقييم PCS/DTV", "meta_left_html": "<strong>سبورتس سوردلاند</strong> عدد خاص | <strong>[المجموعة 14]</strong> الـ16 فريقًا (16x) تقييم المحورين والاحتمالات العادلة", "meta_right_html": "المحرك المعتمد: <code>pvp_two_axis_scorer.py</code> وحساب الشجرة الدقيق", "meta_mid_tpl": "وقت الجلب: {fetched_at} | النطاق: المجموعة 14 (#766–#919 / الفيلق 1 / إجمالي التشجيع {total_cheers})", "sub_kanji": "دوري سوردلاند كينغ شوت | المجموعة 14: الاحتمالات العادلة للبطولة", "paper_title": "سبورتس سوردلاند", "block14_title": "المجموعة 14", "block14_sub": "#766–#919 (الفيلق 1 / أفضل 16)", "gogai": "عاجل", "urgent_tag": "تنبيه المجموعة 14", "urgent_body_html": "<strong>[المرشح الأول جماهيريًا #766 [ITz] (36.9% تشجيع) مبالغ في تقديره بشدة!]</strong> بعد فحص جميع تحالفات المجموعة 14 الـ16 ببيانات MightPulse وتقييم PCS/DTV، يتصدر <strong>#919 [OBV]</strong> التحالفات المكتملة القوة (احتمال فوز 32.45% / مضاعف عادل 3.08x) رغم حصوله على 3.08% فقط من الأصوات! كما نرصد تهديد تكتل نجوم المملكة في <strong>#908 [908] و #867 [867]</strong>.", "headline_html": "[قمة المجموعة 14] اقتنص فجوة <span class=\"hl-red\">3.08x العادل مقابل 32.4x الشعبي</span>!<br>الأقوى المؤكد <span class=\"hl-gold\">#919 [OBV]</span> يحقق قيمة متوقعة 5.19x!", "lead_html": "تمنح مسابقة تشجيع بطل <strong>المجموعة 14 (#766–#919)</strong> عائدًا ثابتًا <strong>16x (نقطة التعادل 6.25%)</strong>. باستخدام نموذج المحورين—كثافة القتال النقية <strong>PCS (0–1000)</strong> وحجم القوات الفعلي <strong>DTV / EGC_M</strong>—مع البرمجة الديناميكية الدقيقة لمسار البطولة (Seed 1–16)، حسبنا <strong>الاحتمالات العادلة (Fair Odds)</strong> لكل تحالف.<br>كما رصدنا <strong>5 تحالفات مؤقتة/قشرية (#908, #867, #795, #812, #799)</strong> تضم 2 إلى 11 عضوًا حاليًا، وحسبنا سقفها بين التحالف الأول بالمملكة ومنتخب نجوم المملكة.", "lead_note_tpl": "* تنبيه: قد يتغير اللاعبون المشاركون تبعًا لتوقيت جلب بيانات الـAPI ({fetched_at}) بسبب الانتقالات أو الاندماجات قبل المباراة. يُرجى استخدام هذه التوقعات كمرجع استرشادي فقط.", "sec_picks": "🎯 أفضل 4 ترشيحات ذات قيمة في المجموعة 14 (عائد 16x)", "sec_picks_sub": "* نقطة التعادل لعائد 16x هي 6.25% (EV ≥ 1.00 = قيمة إيجابية)", "pick_subtitles": {"16": "🥇 الخيار الأول ◎ | أقوى قائمة مكتملة وأكبر فجوة قيمة", "14": "🥈 المنافس ○ | عملاق نجوم المملكة (تنبيه القائمة)", "13": "🥉 الحصان الأسود ▲ | نقاء 100% وشعبية 1.79% فقط", "2": "☆ بطل النصف العلوي | الأفضل مؤكدًا في النصف العلوي (#43 KvK)"}, "pick_comments": {"16": "93 عضوًا مؤكدًا بدون أي فجوات Flag D. يتصدر التحالفات المؤكدة في PCS30 (764.8) وTop4 (992.2) وعمق الفئة A (30/30) وEGC (15,798M) وMT1 (3,551). رغم وقوعه في QF4 الصعبة، تمنحه شعبية 3.08% قيمة متوقعة هائلة 5.19x.", "14": "يضم حاليًا 5 أعضاء فقط بوسم المملكة [908]. التحالف الأول [REV] وحده يحقق PCS30 807.4، ومع تجميع نجوم المملكة يصل إلى 894.7 وMT1 3,560. التحدي الرئيسي هو مواجهة #867 ثم #919 [OBV].", "13": "تحالف بوسم المملكة [867]. تحالف [ERA] الأول يحقق PCS30 752.9 مع 30 لاعبًا بالفئة A، وتشكيلة النجوم تصل إلى PCS30 851.9 وEGC 14,662M بصفر فجوات Flag D. مضاعفه العادل 7.34x مقابل 55.9x شعبيًا.", "2": "أقوى قائمة مؤكدة في النصف العلوي (Seeds 1–8) والأول في تصنيف KvK (#43 بنسبة فوز 78.6%). الفوز على #766 [ITz] (~68% في دور الـ16) يجنّبه صدام QF4 القاتل."}, "lbl_fair_odds": "المضاعف العادل", "lbl_pop_odds": "مضاعف الجمهور", "lbl_ev16": "قيمة 16x", "lbl_win_prob_range": "احتمال اللقب (قياسي / مدى)", "lbl_pcs30_dens": "PCS30 (الكثافة)", "lbl_egc_dtv": "EGC / DTV", "lbl_cheers_share": "التشجيع (النسبة)", "lbl_kvk_flagd": "ترتيب KvK / Flag D", "badge_full": "قائمة مؤكدة", "badge_shell": "قائمة مؤقتة/قشرية", "badge_danger": "مجموعة الموت", "badge_trap": "فخ شعبية", "unit_odds": "x", "unit_odds_over": "999x+", "flagd_tpl": "{n}", "sec_r16": "⚔️ توقعات دور الـ16 (R16) بالمجموعة 14 وبنية مجموعة الموت QF4", "sec_r16_sub": "احتمالات الفوز بالجولة الأولى حسب ترتيب الصور (1 ضد 2 .. 15 ضد 16)", "r16_match_tpl": "مباراة {m} (ربع {q})", "r16_note_html": "<strong>[أكبر اختلال بالجدول]</strong> الربع السفلي <strong>QF4 (Seeds 13–16)</strong> يجمع 3 من أقوى المرشحين (#908*, #867*, #919 OBV) معًا. في المقابل يتفوق #780 [BAR] بنسبة ~68% على #766 [ITz] في النصف العلوي بمسار أسهل نحو النهائي.", "sec_table": "📊 جدول تقييم المحورين (PCS/DTV) والاحتمالات العادلة لجميع فرق المجموعة 14", "sec_table_sub_html": "اضغط <span class=\"q-link\">?</span> للانتقال إلى شرح المصطلحات والمعادلات أدناه", "th_rank": "#", "th_mark": "رمز", "th_team": "الترتيب / التحالف / القائمة", "th_fair": "العادل", "th_fair_sub": "(احتمال)", "th_scen": "المدى", "th_scen_sub": "(H1–AS)", "th_pop": "الجمهور", "th_pop_sub": "(أصوات/%)", "th_ev": "قيمة 16x", "th_ev_sub": "(الجدوى)", "th_pcs": "PCS30", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "فئة A", "th_quada_sub": "(من 30)", "th_mt1": "Top1 MT", "th_kvk": "قتال KvK", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "marks": {"1": "أساسي", "2": "منافس", "3": "حصان", "4": "مميز", "5": "خامس", "6": "حذر", "9": "تجاهل"}, "roster_confirmed_tpl": "مكتمل {n}", "roster_shell_tpl": "مؤقت {n}", "gap_prefix": "فارق ", "gap_lt": "<0.01x", "sec_chart": "📈 خريطة المحورين (PCS30 × DTV30 / الحجم = احتمال اللقب)", "sec_chart_sub": "أعلى اليمين = أعلى جودة قتالية × أكبر حجم قوات", "chart_ds_full": "تحالفات مكتملة القائمة", "chart_ds_shell": "بذور مؤقتة/تجميعية (*)", "chart_x": "PCS30 (كثافة القتال النقية)", "chart_y": "DTV30 (حجم وجودة القوات)", "chart_tt_win": "فوز", "chart_tt_fair": "عادل", "chart_tt_pop": "شعبية", "sec_danger": "⚠️ أفخاخ الشعبية وتنبيهات المراجعة", "sec_danger_sub": "مرشحان مبالغ في دعمهما", "danger1_html": "<strong>الأول جماهيريًا #766 [ITz] (6.99M / 36.91%) → فخ خطير</strong><br>قائمة قوية من 92 عضوًا، لكنه يصطدم بـ<strong>#780 [BAR] (الأوفر حظًا 67.8%) في الجولة الأولى</strong>، فتنخفض فرص لقبه إلى <strong>2.28% (مضاعف عادل 43.9x / EV 0.36)</strong>.", "danger2_html": "<strong>الثاني جماهيريًا #795 [795]* (2.44M / 12.88%) → فخ مرتفع</strong><br>حتى مع تجميع أفضل 30 لاعبًا بالمملكة لا يتجاوز <strong>PCS30 696.7 / EGC 11.8B</strong>، ما يعطي احتمال لقب <strong>0.20%–0.47% فقط (EV 0.03)</strong>.", "caution_title": "ملاحظات هامة وافتراضات النموذج (للاسترشاد فقط)", "caution_body_tpl": "هذه الأرقام تقديرات آلية بناءً على بيانات MightPulse API المجلوبة بتاريخ {fetched_at}. قد يتغير المشاركون الفعليون قبل البطولة نتيجة الانتقالات أو الدمج، وتعتمد النتيجة على حضور القوائم المؤقتة (*) والتكتيك داخل المعركة. يُرجى اعتمادها كمرجع فقط.", "sec_shell": "🔍 فحص إمكانات القوائم المؤقتة (2–11 عضوًا حالياً)", "sec_shell_sub": "مقارنة التحالف الأول بالمملكة بسقف منتخب نجوم المملكة", "sh_th_seed": "التحالف", "sh_th_now": "الأعضاء حاليًا", "sh_th_type": "نوع الوسم / افتراض النموذج", "sh_th_h1": "التحالف الأول بالمملكة (Home#1)", "sh_th_as": "سقف نجوم المملكة (AllStar-Pool)", "sh_th_range": "مدى احتمال اللقب (H1–AS)", "sh_type_king": "وسم برقم المملكة (تجميع مرجح)", "sh_type_gen": "وسم عام (تقدير متحفظ Home#1)", "sec_glossary": "📘 قاموس المؤشرات والمعادلات (#glossary)", "sec_glossary_sub_html": "المرجع الرسمي: <code>docs/guides/KINGSHOT_PVP_SCORING_SPEC.md</code>", "glossary_cards": [{"h": "PCS (جودة القتال النقية / 0–1000)", "b_html": "<strong>التعريف:</strong> تطبيع تقدم الأبراج الستة (CC 26% / Col 20% / MF 18% / KN 14% / RS 14% / FoL 8%) مع دمج <code>migrant_score</code> بنسبة 12%.<br><strong>الفائدة:</strong> يقيس قوة الجندي الحقيقية بعيدًا عن تضخم العدد."}, {"h": "DTV / EGC_M (الحجم الفعلي للقوات)", "b_html": "<strong>التعريف:</strong> عزل قوة الجنود عبر معادلة <code>5.79 × wps^0.318</code> وحساب المكافئ <code>EGC_M = Troop_M × (TG/8)²</code>.<br><strong>الفائدة:</strong> يقيس القدرة على الصمود طوال 60 دقيقة."}, {"h": "فئة A (نخبة الميدان / PCS≥600 & DTV≥60)", "b_html": "<strong>التعريف:</strong> عدد الأعضاء من أفضل 30 الذين يجتازون حدي الجودة والحجم.<br><strong>الفائدة:</strong> امتلاك 25–30 لاعبًا يضمن السيطرة المتزامنة على المنشآت الـ11."}, {"h": "المضاعف العادل (Fair Odds = 1 / احتمال اللقب)", "b_html": "<strong>التعريف:</strong> المضاعف الحقيقي الناتج عن حساب الشجرة الكاملة.<br><strong>الفائدة:</strong> عندما يكون أقل من مضاعف الجمهور فهناك فرصة قيمة مهملة."}, {"h": "القيمة المتوقعة 16x (EV = 16 × الاحتمال)", "b_html": "<strong>التعريف:</strong> العائد المتوقع لكل عملة في نظام 16x (نقطة التعادل 6.25%).<br><strong>الفائدة:</strong> التركيز على ذوي EV &gt; 1.00 (OBV, 908, 867, BAR)."}, {"h": "Flag D (300M+) ومخاطر القوائم المؤقتة", "b_html": "<strong>التعريف:</strong> <code>Flag D</code> يرصد لاعبي +300M غير المفحوصين، بينما تعكس القوائم المؤقتة (*) احتمالات التجمع قبل المباراة."}], "footer_left_html": "إصدار قسم تحليلات سبورتس سوردلاند | المحرك: <code>scripts/pvp_two_axis_scorer.py</code>", "footer_right_tpl": "* توقعات إحصائية مبنية على بيانات API بتاريخ {fetched_at}. قد يتغير المشاركون حسب توقيت الجلب؛ يُرجى اعتبارها مرجعًا فقط.", "meta_mid": "وقت الجلب: 2026-11-16T18:22:52+09:00 | النطاق: المجموعة 14 (#766–#919 / الفيلق 1 / إجمالي التشجيع 18,945,904)", "lead_note": "* تنبيه: قد يتغير اللاعبون المشاركون تبعًا لتوقيت جلب بيانات الـAPI (2026-11-16T18:22:52+09:00) بسبب الانتقالات أو الاندماجات قبل المباراة. يُرجى استخدام هذه التوقعات كمرجع استرشادي فقط.", "caution_body": "هذه الأرقام تقديرات آلية بناءً على بيانات MightPulse API المجلوبة بتاريخ 2026-11-16T18:22:52+09:00. قد يتغير المشاركون الفعليون قبل البطولة نتيجة الانتقالات أو الدمج، وتعتمد النتيجة على حضور القوائم المؤقتة (*) والتكتيك داخل المعركة. يُرجى اعتمادها كمرجع فقط.", "footer_right": "* توقعات إحصائية مبنية على بيانات API بتاريخ 2026-11-16T18:22:52+09:00. قد يتغير المشاركون حسب توقيت الجلب؛ يُرجى اعتبارها مرجعًا فقط."}, "tr": {"page_title": "Swordland Spor Ekstra | [14. Blok] Son 16 (16x) PCS/DTV & Adil Oran Tahmini", "meta_left_html": "<strong>Swordland Spor</strong> Özel Sayı | <strong>[14. Blok]</strong> Son 16 (16x) İki Eksenli (PCS/DTV) &amp; Adil Oranlar", "meta_right_html": "Ana Motor: <code>pvp_two_axis_scorer.py</code> &amp; Kesin Turnuva DP", "meta_mid_tpl": "Veri Zamanı: {fetched_at} | Kapsam: 14. Blok (#766–#919 / Birlik 1, 16 İttifak / Toplam Destek {total_cheers})", "sub_kanji": "KINGSHOT SWORDLAND LİGİ | 14. BLOK ŞAMPİYONLUK ADİL ORANLARI", "paper_title": "SWORDLAND SPOR", "block14_title": "14. BLOK", "block14_sub": "#766–#919 (Birlik 1 / Son 16)", "gogai": "EKSTRA", "urgent_tag": "14. BLOK ACİL", "urgent_body_html": "<strong>[14. Blok 1. Favorisi #766 [ITz] (%36.9 destek) aşırı fiyatlanmış tuzak!]</strong> Tüm 16 ittifakın MightPulse + PCS/DTV analizi sonucunda, <strong>#919 [OBV]</strong> onaylı tam kadrolar içinde açık ara 1. sıradayken (%32.45 şampiyonluk / Adil 3.08x), halk desteğinde sadece <strong>%3.08 (32.42x)</strong> oranında kaldı! Ayrıca krallık etiketli <strong>#908 [908] ve #867 [867]</strong> All-Star riskine dikkat!", "headline_html": "[14. BLOK FİNALİ] <span class=\"hl-red\">3.08x Adil vs 32.4x Popüler</span> Dev Fırsatı Yakala!<br>Onaylı Lider <span class=\"hl-gold\">#919 [OBV]</span> 5.19x Beklenen Değerle Zirvede!", "lead_html": "Bu Swordland Ligi <strong>14. Blok (#766–#919)</strong> tahmin etkinliği şampiyonu bilene sabit <strong>16x ödül (başabaş eşiği: %6.25)</strong> verir. İki eksenli modelimiz—saf savaş yoğunluğu <strong>PCS (0–1000)</strong> ve konuşlandırılabilir asker gücü <strong>DTV / EGC_M</strong>—ile ekran sırasına göre (Seed 1–16) kesin dinamik programlama (DP) uygulayarak gerçek <strong>Adil Oranları (1 / Kazanma Olasılığı)</strong> hesapladık.<br>Ayrıca şu an yalnızca 2–11 üyeye sahip <strong>5 boş/geçici kadroyu (#908, #867, #795, #812, #799)</strong> tespit edip Home#1 ve krallık Top-30 All-Star tavanlarını çıkardık.", "lead_note_tpl": "* Not: API verisinin çekildiği zamana ({fetched_at}) ve maç saatine bağlı olarak ittifak içi transfer veya birleşmelerle kadrolar değişebilir. Lütfen bu analizi yalnızca referans olarak kullanın.", "sec_picks": "🎯 14. Blok En İyi 4 Değer Seçimi (16x Şampiyonluk Desteği)", "sec_picks_sub": "* 16x sabit ödemede başabaş noktası %6.25'tir (EV ≥ 1.00 = pozitif değer)", "pick_subtitles": {"16": "🥇 Ana Seçim ◎ | Onaylı 1 Numara & Dev Değer Boşluğu", "14": "🥈 Rakip ○ | Krallık All-Star Devi (Kadro Uyarısı)", "13": "🥉 Sürpriz ▲ | %100 Saf Sürpriz (%1.79 Destek)", "2": "☆ Üst Grup Yıldızı | Üst Dal Onaylı Lideri & KvK #43"}, "pick_comments": {"16": "93 onaylı üye ve sıfır Flag D eksiği. PCS30 (764.8), Top4 (992.2), A-Kadro derinliği (30/30), EGC (15,798M) ve Top1 MT (3,551) değerlerinde tam kadroların lideri. Zorlu QF4'e rağmen %3.08 popülerlik ile 5.19x EV sunar.", "14": "Şu an [908] etiketi altında 5 hesap görünüyor. Ana ittifak [REV] tek başına PCS30 807.4, krallık Top-30 All-Star kadrosu ise PCS30 894.7 / MT1 3,560 seviyesine çıkıyor. R16'da #867 ve QF4'te #919 OBV engeli tek risk.", "13": "Krallık etiketli [867]. Ana ittifak [ERA] PCS30 752.9 (30 A-Kadro), All-Star havuzu ise sıfır Flag D ile PCS30 851.9 / EGC 14,662M ulaşıyor. 55.9x popülerliğe karşı 7.34x adil oran.", "2": "Üst gruptaki (Seed 1–8) en güçlü tam kadro ve #43 KvK savaş derecesi (%78.6 galibiyet). İlk turda #766 [ITz]'yi (~%68) geçerse QF4 ölüm grubundan uzak kalıp finale yürüyebilir."}, "lbl_fair_odds": "Adil Oran", "lbl_pop_odds": "Halk Oranı", "lbl_ev16": "16x EV", "lbl_win_prob_range": "Kazanma (Std / Aralık)", "lbl_pcs30_dens": "PCS30 (Yoğunluk)", "lbl_egc_dtv": "EGC / DTV", "lbl_cheers_share": "Destek (Pay)", "lbl_kvk_flagd": "KvK Sırası / Flag D", "badge_full": "Tam Kadro", "badge_shell": "Geçici/All-Star Riski", "badge_danger": "Ölüm Grubu", "badge_trap": "Aşırı Popüler Tuzak", "unit_odds": "x", "unit_odds_over": "999x+", "flagd_tpl": "{n}", "sec_r16": "⚔️ 14. Blok Son 16 (R16) Galibiyet Olasılıkları & QF4 Ölüm Grubu", "sec_r16_sub": "Ekran sırasına göre (Seed 1v2 .. 15v16) ilk tur oranları", "r16_match_tpl": "R16 Maç {m} (QF{q})", "r16_note_html": "<strong>[En Büyük Fikstür Dengesizliği]</strong> Alt gruptaki <strong>QF4 (Seed 13–16)</strong> üç dev adayı (#908*, #867*, #919 OBV) erken çarpıştırıyor. Üst grupta ise #780 [BAR], 1. favori #766 [ITz]'ye karşı ~%68 önde olup daha rahat bir yarı final yoluna sahip.", "sec_table": "📊 14. Blok Tüm 16 İttifak İki Eksenli (PCS/DTV) & Adil Oran Tablosu", "sec_table_sub_html": "Formül açıklamaları için tablo başlığındaki <span class=\"q-link\">?</span> simgesine tıklayın", "th_rank": "#", "th_mark": "Not", "th_team": "Seed / İttifak / Kadro", "th_fair": "Adil Oran", "th_fair_sub": "(Şans)", "th_scen": "Aralık", "th_scen_sub": "(H1–AS)", "th_pop": "Halk Oranı", "th_pop_sub": "(Oy/%)", "th_ev": "16x EV", "th_ev_sub": "(Değer)", "th_pcs": "PCS30", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "A-Kadro", "th_quada_sub": "(30'da)", "th_mt1": "Top1 MT", "th_kvk": "KvK Savaş", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "marks": {"1": "Favori", "2": "Rakip", "3": "Sürpriz", "4": "Özel", "5": "5.", "6": "Takip", "9": "Pas"}, "roster_confirmed_tpl": "Tam {n}", "roster_shell_tpl": "Geçici {n}", "gap_prefix": "Fırsat ", "gap_lt": "<0.01x", "sec_chart": "📈 İki Eksenli Güç Haritası (PCS30 × DTV30 / Balon = Şampiyonluk)", "sec_chart_sub": "Sağ üst = en yüksek savaş yoğunluğu × en yüksek asker hacmi", "chart_ds_full": "Onaylı Tam Kadrolar", "chart_ds_shell": "Geçici/All-Star Modelli (*)", "chart_x": "PCS30 (Saf Savaş Yoğunluğu)", "chart_y": "DTV30 (Konuşlandırılabilir Hacim)", "chart_tt_win": "Şans", "chart_tt_fair": "Adil", "chart_tt_pop": "Destek", "sec_danger": "⚠️ Aşırı Popüler Tuzaklar & Denetim Notları", "sec_danger_sub": "Uzak durulması gereken 2 popüler aday", "danger1_html": "<strong>1. Favori #766 [ITz] (6.99M oy / %36.91) → Büyük Tuzak</strong><br>92 kişilik iyi kadrosuna rağmen <strong>ilk turda #780 [BAR] (%67.8 favori) ile eşleşiyor</strong>. Şampiyonluk ihtimali yalnızca <strong>%2.28 (Adil 43.9x / EV 0.36)</strong>; sol üst kutu tıklama yanlılığının tipik örneği.", "danger2_html": "<strong>2. Favori #795 [795]* (2.44M oy / %12.88) → Yüksek Tuzak</strong><br>Krallık Top-30 All-Star havuzu toplansa bile <strong>PCS30 696.7 / EGC 11.8B</strong> sınırında kalıyor; şampiyonluk şansı <strong>%0.20–%0.47 (EV 0.03)</strong>.", "caution_title": "Önemli Uyarı & Model Varsayımları (Yalnızca Referans)", "caution_body_tpl": "Bu değerler {fetched_at} tarihli MightPulse API verilerine dayalı mekanik tahminlerdir. API çekim zamanına bağlı olarak transfer veya birleşmelerle gerçek oyuncular değişebilir; ayrıca geçici kadroların (*) katılımı ve maç içi taktikler sonucu etkiler. Lütfen yalnızca referans olarak kullanın.", "sec_shell": "🔍 Geçici / Düşük Üyeli Kadroların (2–11 Üye) Potansiyel Analizi", "sec_shell_sub": "Ana 1. İttifak vs Krallık Top-30 All-Star tavanı", "sh_th_seed": "Aday", "sh_th_now": "Mevcut Üye", "sh_th_type": "Etiket Tipi / Model Kuralı", "sh_th_h1": "Ana 1. İttifak (Home#1)", "sh_th_as": "Krallık Top-30 All-Star Tavanı", "sh_th_range": "Şampiyonluk Aralığı (H1–AS)", "sh_type_king": "Krallık Numarası Etiketi (%70 AllStar)", "sh_type_gen": "Genel Etiket (Muhafazakar Home#1)", "sec_glossary": "📘 Göstergeler ve Formül Sözlüğü (#glossary)", "sec_glossary_sub_html": "Resmi Şartname: <code>docs/guides/KINGSHOT_PVP_SCORING_SPEC.md</code>", "glossary_cards": [{"h": "PCS (Saf Savaş Kalitesi / 0–1000)", "b_html": "<strong>Tanım:</strong> 6 kule ilerlemesinin (CC 26% / Col 20% / MF 18% / KN 14% / RS 14% / FoL 8%) ve <code>migrant_score</code> (%12) bileşimi.<br><strong>Kullanım:</strong> Asker şişirmesinden bağımsız saf savaş gücünü ölçer."}, {"h": "DTV / EGC_M (Asker Hacmi & Kalitesi)", "b_html": "<strong>Tanım:</strong> <code>5.79 × wps^0.318</code> düşümüyle tahmini asker gücü ve TG8 eşdeğeri <code>EGC_M = Troop_M × (TG/8)²</code>.<br><strong>Kullanım:</strong> 60 dakikalık savaşta asker dayanıklılığını ölçer."}, {"h": "A-Kadranı (Ön Cephe Asları / PCS≥600 & DTV≥60)", "b_html": "<strong>Tanım:</strong> İlk 30 içinde hem kalite hem hacim eşiğini aşan oyuncu sayısı.<br><strong>Kullanım:</strong> 11 bina + 4 mahzen kontrolünde belirleyicidir."}, {"h": "Adil Oran (Fair Odds = 1 / Şans)", "b_html": "<strong>Tanım:</strong> 16'lı turnuva ağacından çıkan teorik adil çarpan.<br><strong>Kullanım:</strong> Halk oranından küçükse değer fırsatı vardır."}, {"h": "16x Beklenen Değer (EV = 16 × Şans)", "b_html": "<strong>Tanım:</strong> 16x sabit ödülde birim bahis getirisi (başabaş %6.25).<br><strong>Kullanım:</strong> Yalnızca EV &gt; 1.00 adaylara (OBV, 908, 867, BAR) odaklanın."}, {"h": "Flag D (300M+) / Geçici Kadro Riski", "b_html": "<strong>Tanım:</strong> <code>Flag D</code> taranmamış 300M+ oyuncuları, yıldız (*) ise maç öncesi birleşebilecek geçici kadroları gösterir."}], "footer_left_html": "Yayıncı: Swordland Spor Analiz | Motor: <code>scripts/pvp_two_axis_scorer.py</code>", "footer_right_tpl": "* {fetched_at} tarihli API verisine dayalı istatistiksel tahmindir. API çekim zamanına göre oyuncular değişebilir; yalnızca referans amaçlıdır.", "meta_mid": "Veri Zamanı: 2026-11-16T18:22:52+09:00 | Kapsam: 14. Blok (#766–#919 / Birlik 1, 16 İttifak / Toplam Destek 18,945,904)", "lead_note": "* Not: API verisinin çekildiği zamana (2026-11-16T18:22:52+09:00) ve maç saatine bağlı olarak ittifak içi transfer veya birleşmelerle kadrolar değişebilir. Lütfen bu analizi yalnızca referans olarak kullanın.", "caution_body": "Bu değerler 2026-11-16T18:22:52+09:00 tarihli MightPulse API verilerine dayalı mekanik tahminlerdir. API çekim zamanına bağlı olarak transfer veya birleşmelerle gerçek oyuncular değişebilir; ayrıca geçici kadroların (*) katılımı ve maç içi taktikler sonucu etkiler. Lütfen yalnızca referans olarak kullanın.", "footer_right": "* 2026-11-16T18:22:52+09:00 tarihli API verisine dayalı istatistiksel tahmindir. API çekim zamanına göre oyuncular değişebilir; yalnızca referans amaçlıdır."}, "zh": {"page_title": "圣剑体育 号外｜【第14战区】16强(16x) 双轴评估(PCS/DTV)＆公平赔率完全预测", "meta_left_html": "<strong>圣剑体育</strong> 特别号外｜<strong>【第14战区】</strong>16强(16x) 双轴评估(PCS/DTV)＋公平赔率完整版", "meta_right_html": "官方核心引擎：<code>pvp_two_axis_scorer.py</code> ＆ 精确淘汰赛DP", "meta_mid_tpl": "数据抓取时间：{fetched_at} ｜ 范围：第14战区（#766〜#919 / 军团1·16支联盟 / 总助威 {total_cheers}）", "sub_kanji": "KINGSHOT 圣剑联赛｜第14战区 16强夺冠公平赔率预测", "paper_title": "圣剑体育", "block14_title": "第14战区", "block14_sub": "#766〜#919（军团1·16强）", "gogai": "号外", "urgent_tag": "第14战区急报", "urgent_body_html": "<strong>【第14战区头号热门 #766 [ITz]（支持率36.9%）存在严重高估陷阱！】</strong> 经 MightPulse 最新数据与 PvP 双轴评估（PCS/DTV）全量审计，<strong>#919 [OBV] 稳居已确认完整阵容实力第一（夺冠概率32.45% / 公平赔率3.08倍）</strong>，却仅获 <strong>3.08% 支持率（人气赔率32.42倍）</strong>，出现巨大价值偏差！同时警示王国编号空壳标签 <strong>#908 [908] / #867 [867]</strong> 的全明星合流威胁！", "headline_html": "【第14战区决战】锁定<span class=\"hl-red\">「公平3.08倍 vs 人气32.4倍」</span>超级价差！<br>已确认最强 <span class=\"hl-gold\">#919 [OBV]</span> 期望收益高达5.19倍！", "lead_html": "本届圣剑联赛<strong>第14战区（#766〜#919）</strong>冠军竞猜为固定<strong>16倍赔率（盈亏平衡胜率 6.25%）</strong>。本报结合排除虚高兵力的纯战斗密度 <strong>PCS（0–1000）</strong> 与实战兵力 <strong>DTV / EGC_M</strong> 双轴评分，并按截图顺位（Seed 1〜16）通过精确动态规划（DP）模拟首轮至决赛全路径，算出每支联盟的真实<strong>「公平赔率（1 / 夺冠概率）」</strong>。<br>同时查明目前仅有2〜11名在籍成员的<strong>5支「空壳/临时标签」（#908, #867, #795, #812, #799）</strong>，分别测算其本服第一盟（Home#1）与王国Top30全明星上限（AllStar-Pool）。", "lead_note_tpl": "※ 重要提示：受API数据抓取时间（{fetched_at}）与开赛时间的间隔影响，各联盟可能因成员转会或合流而更换实际出战阵容。本文结论仅供竞猜参考。", "sec_picks": "🎯 第14战区 本报重点推荐 TOP 4 高期望值标的（16x冠军竞猜）", "sec_picks_sub": "* 16倍固定返还的盈亏平衡点为胜率 6.25%（EV ≥ 1.00 即为正期望）", "pick_subtitles": {"16": "🥇 头号本命 ◎｜已确认阵容最强 ＆ 极致价值差", "14": "🥈 强力对抗 ○｜王国全明星巨无霸（注意名单）", "13": "🥉 黑马单穴 ▲｜100%纯度超级冷门（人气1.79%）", "2": "☆ 上半区核心｜上半区确认最强＆KvK #43胜者"}, "pick_comments": {"16": "93名实测成员且零 Flag D 缺口。PCS30 (764.8)、Top4 (992.2)、A象限满员(30/30)、EGC (15,798M)、Top1 MT (3,551) 全面领跑已确认联盟。虽身处QF4死亡半区，但3.08%极低人气带来5.19倍超高期望。", "14": "当前[908]标签下仅挂名5人，但本服第一盟[REV]单盟即达PCS30 807.4 / Top4 993.5，若集结全服Top30可达PCS30 894.7 / MT1 3,560。唯一难点在于首轮碰#867、八强战碰#919 OBV。", "13": "同为王国编号标签[867]。本服第一盟[ERA]达PCS30 752.9且30人全A象限，全明星合流可达PCS30 851.9 / EGC 14,662M且零Flag D。人气55.9倍对应公平7.34倍，赔率优势超7.6倍。", "2": "上半区（Seed 1〜8）已确认阵容最强者，KvK战斗排名#43（胜率78.6%）居全16队之首。首轮约68%概率击败头号热门[ITz]后可避开QF4死斗，半决赛晋级率达37.9%。"}, "lbl_fair_odds": "公平赔率", "lbl_pop_odds": "人气赔率", "lbl_ev16": "16x期望值", "lbl_win_prob_range": "夺冠概率（标准/区间）", "lbl_pcs30_dens": "PCS30（战斗密度）", "lbl_egc_dtv": "有效兵力 EGC / DTV", "lbl_cheers_share": "助威数（占比）", "lbl_kvk_flagd": "KvK排名 / Flag D", "badge_full": "完整名单", "badge_shell": "空壳/合流预期", "badge_danger": "死亡半区", "badge_trap": "高估热门陷阱", "unit_odds": "倍", "unit_odds_over": "999倍+", "flagd_tpl": "{n}人", "sec_r16": "⚔️ 第14战区 16强首轮（R16）胜率预测 ＆ 死亡半区「QF4」解析", "sec_r16_sub": "按截图顺位（Seed 1v2 .. 15v16）计算的首轮胜率（标准模型）", "r16_match_tpl": "R16 第{m}场（QF{q}区）", "r16_note_html": "<strong>【对阵表最大结构偏差】</strong>下半区 <strong>QF4（Seed 13〜16）</strong> 集中了 #908*、#867*、#919 [OBV] 三大夺冠热门，形成惨烈<strong>「死亡半区」</strong>。反观上半区（Seed 1〜8），#780 [BAR] 首轮约68%优势压制头号热门 #766 [ITz]，胜者（BAR 或 EOA）晋级决赛之路明显更平坦。", "sec_table": "📊 第14战区 全16强双轴评估（PCS / DTV）＆ 公平赔率总览表", "sec_table_sub_html": "点击指标表头的 <span class=\"q-link\">?</span> 可跳转至底部术语与公式说明", "th_rank": "名次", "th_mark": "标记", "th_team": "顺位 / 联盟 / 名单", "th_fair": "公平赔率", "th_fair_sub": "(夺冠率)", "th_scen": "区间波动", "th_scen_sub": "(H1〜AS)", "th_pop": "人气赔率", "th_pop_sub": "(助威/率)", "th_ev": "16x期望", "th_ev_sub": "(价值比)", "th_pcs": "PCS30", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "A象限", "th_quada_sub": "(前30中)", "th_mt1": "Top1 MT", "th_kvk": "KvK战绩", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "marks": {"1": "本命", "2": "对抗", "3": "黑马", "4": "重点", "5": "连下", "6": "留意", "9": "放弃"}, "roster_confirmed_tpl": "确认 {n}人", "roster_shell_tpl": "暂 {n}人", "gap_prefix": "价值 ", "gap_lt": "<0.01x", "sec_chart": "📈 双轴战力分布图（PCS30 × DTV30 / 气泡＝夺冠概率）", "sec_chart_sub": "越靠右上＝「高战斗倍率 × 高实战兵量」真强队", "chart_ds_full": "已确认完整名单联盟", "chart_ds_shell": "空壳/合流模型推演 (*)", "chart_x": "PCS30（纯战斗密度）", "chart_y": "DTV30（可出战兵量与兵质）", "chart_tt_win": "夺冠", "chart_tt_fair": "公平", "chart_tt_pop": "人气支持", "sec_danger": "⚠️ 危险热门陷阱 ＆ 审计注意事项", "sec_danger_sub": "建议规避的两大高估热门", "danger1_html": "<strong>人气第1 #766 [ITz]（699万助威 / 36.91%）→ 极高风险陷阱</strong><br>92人名单本身不弱（PCS30 718.4 / Top4 955.2），但<strong>首轮即撞上强敌 #780 [BAR]（67.8%胜率方）</strong>。最终夺冠率仅 <strong>2.28%（公平43.9倍 / 期望0.36）</strong>，属于典型的左上角首图点击偏差。", "danger2_html": "<strong>人气第2 #795 [795]*（244万助威 / 12.88%）→ 高风险陷阱</strong><br>即使集结 #795 本服Top30全明星，上限也仅 <strong>PCS30 696.7 / EGC 11.8B</strong>，夺冠概率仅 <strong>0.20%〜0.47%（期望0.03）</strong>。", "caution_title": "注意事项与模型前提（仅供参考）", "caution_body_tpl": "本预测基于 {fetched_at} 抓取的 MightPulse API 数据自动计算。因API抓取时机不同，各联盟赛前可能发生转会或合流导致实际出战选手变化；此外空壳5队（*号）的最终集结人数及当日上线率、战术执行也会影响结果。数据仅供参考，请酌情决策。", "sec_shell": "🔍 空壳/低人数标签（在籍2〜11人）5支队伍潜力核查", "sec_shell_sub": "本服第一盟（Home#1）与王国Top30全明星上限对比", "sh_th_seed": "对象顺位", "sh_th_now": "当前在籍", "sh_th_type": "标签类型 / 模型处理", "sh_th_h1": "本服第一盟 (Home#1) 实测", "sh_th_as": "王国Top30全明星上限 (AllStar-Pool)", "sh_th_range": "夺冠概率区间 (H1〜AS)", "sh_type_king": "王国编号集结标签（高概率合流）", "sh_type_gen": "普通标签空壳（保守按Home#1）", "sec_glossary": "📘 指标与公式术语词典（#glossary）", "sec_glossary_sub_html": "规范文档：<code>docs/guides/KINGSHOT_PVP_SCORING_SPEC.md</code>", "glossary_cards": [{"h": "PCS（纯战斗质量分 / 0–1000）", "b_html": "<strong>定义:</strong> 秘境试炼6塔上限归一化（CC 26% / Col 20% / MF 18% / KN 14% / RS 14% / FoL 8%）并与熔炉中和后的 <code>migrant_score</code> 按88:12融合。<br><strong>用途:</strong> 剔除造兵虚胖，识别单兵质量与集结车头强度。"}, {"h": "DTV / EGC_M（出战兵量与有效战力）", "b_html": "<strong>定义:</strong> 通过非线性扣减 <code>BasePower = 5.79 × wps^0.318</code> 分离兵力与TG兵质，折算 <code>EGC_M = Troop_M × (TG/8)²</code>。<br><strong>用途:</strong> 衡量60分钟持久战的持续增援能力。"}, {"h": "A象限人数（核心主力 / PCS≥600 & DTV≥60）", "b_html": "<strong>定义:</strong> 前30名中同时达标战斗密度与兵量的成员数。<br><strong>用途:</strong> 圣剑战需同时争夺11座建筑与4座地下室，A象限25〜30人极具统治力。"}, {"h": "公平赔率（Fair Odds = 1 / 夺冠概率）", "b_html": "<strong>定义:</strong> 由16强全路径概率推导出的理论合理赔率。<br><strong>用途:</strong> 当公平赔率低于人气赔率时，说明市场低估了该队。"}, {"h": "16x期望收益（EV = 16 × 夺冠概率）", "b_html": "<strong>定义:</strong> 16倍固定回报下每1枚代币的期望返还（盈亏线 6.25%）。<br><strong>用途:</strong> 集中投资 EV &gt; 1.00 的核心强队（OBV、908、867、BAR）。"}, {"h": "Flag D (300M+) / 空壳风险", "b_html": "<strong>定义:</strong> <code>Flag D</code> 表示尚未抓取塔数与移民分的300M+潜伏战力；空壳（*）表示当前仅2〜11人，需关注赛前集结情况。"}], "footer_left_html": "出品：圣剑体育 数据分析局 ｜ 核心算法：<code>scripts/pvp_two_axis_scorer.py</code>", "footer_right_tpl": "※本预测基于 {fetched_at} 公开API数据生成。因API抓取时间不同，实际出战选手可能有所变动，仅供游戏竞猜参考。", "meta_mid": "数据抓取时间：2026-11-16T18:22:52+09:00 ｜ 范围：第14战区（#766〜#919 / 军团1·16支联盟 / 总助威 18,945,904）", "lead_note": "※ 重要提示：受API数据抓取时间（2026-11-16T18:22:52+09:00）与开赛时间的间隔影响，各联盟可能因成员转会或合流而更换实际出战阵容。本文结论仅供竞猜参考。", "caution_body": "本预测基于 2026-11-16T18:22:52+09:00 抓取的 MightPulse API 数据自动计算。因API抓取时机不同，各联盟赛前可能发生转会或合流导致实际出战选手变化；此外空壳5队（*号）的最终集结人数及当日上线率、战术执行也会影响结果。数据仅供参考，请酌情决策。", "footer_right": "※本预测基于 2026-11-16T18:22:52+09:00 公开API数据生成。因API抓取时间不同，实际出战选手可能有所变动，仅供游戏竞猜参考。"}, "ko": {"page_title": "성검 스포츠 호외｜【제14블록】16강(16x) 2축 평가(PCS/DTV) & 페어 오즈 완전 예측", "meta_left_html": "<strong>성검 스포츠</strong> 특별 호외｜<strong>【제14블록】</strong>16강(16x) 2축 평가(PCS/DTV) + 페어 오즈 완전판", "meta_right_html": "표준 엔진: <code>pvp_two_axis_scorer.py</code> &amp; 정밀 브래킷 DP", "meta_mid_tpl": "데이터 수집 시점: {fetched_at} ｜ 대상: 제14블록 (#766~#919 / 군단1·16개 연맹 / 총 응원 {total_cheers})", "sub_kanji": "KINGSHOT 성검 리그｜제14블록 16강 우승 페어 오즈", "paper_title": "성검 스포츠", "block14_title": "제14블록", "block14_sub": "#766~#919 (군단1·16강)", "gogai": "호외", "urgent_tag": "제14블록 특보", "urgent_body_html": "<strong>【제14블록 인기 1위 #766 [ITz] (지지율 36.9%)는 위험한 과열 함정!】</strong> 제14블록 16개 연맹 전체를 MightPulse 최신 데이터 × PvP 2축 평가(PCS/DTV)로 전수 감사한 결과, <strong>#919 [OBV]가 확정 로스터 최강(우승 확률 32.45% / 페어 3.08배)</strong>임에도 인기 배당 <strong>32.42배(지지율 3.08%)</strong>에 방치되는 극심한 왜곡이 발생! 또한 왕국 번호 껍데기 태그 <strong>#908 [908] / #867 [867]</strong>의 올스타 합류 위협을 포착했습니다!", "headline_html": "【제14블록 결전】노려라 <span class=\"hl-red\">「페어 3.08배 vs 인기 32.4배」</span> 초대형 갭!<br>확정 최강 <span class=\"hl-gold\">#919 [OBV]</span> 기댓값 5.19배의 부동 본명!", "lead_html": "이번 성검 리그 <strong>제14블록(#766~#919)</strong> 우승 예측은 적중 시 일률 <strong>16배(손익분기 승률 6.25%)</strong> 토너먼트입니다. 본지는 병력 뻥튀기를 제외한 순수 전투 밀도 <strong>PCS(0–1000)</strong>와 실전 병력량 <strong>DTV / EGC_M</strong> 2축 평가에 스크린샷 순서(Seed 1~16) 기준 1회전~결승 전 경로 정밀 동적 계획법(DP)을 적용해 본래의 적정 배당<strong>「페어 오즈(1 / 우승 확률)」</strong>를 산출했습니다.<br>아울러 현재 인원이 2~11명뿐인 <strong>5개 「껍데기/임시 태그」(#908, #867, #795, #812, #799)</strong>를 발견해 본국 1위 연맹(Home#1)과 국내 Top30 올스타 상한(AllStar-Pool)을 함께 분석했습니다.", "lead_note_tpl": "※ 안내: API 데이터 수집 시점({fetched_at})과 실제 대회 시점 차이로 연맹 간 이동·합류에 따라 출전 선수가 달라질 수 있습니다. 본 자료는 어디까지나 참고용으로만 활용해 주세요.", "sec_picks": "🎯 제14블록 본지 추천·기댓값 TOP 4 포커스 (16x 우승 응원)", "sec_picks_sub": "* 16배 고정 배당 손익분기점은 승률 6.25% (EV ≥ 1.00 = 플러스 기댓값)", "pick_subtitles": {"16": "🥇 본명 ◎｜확정 풀로스터 최강 & 극강의 밸류 갭", "14": "🥈 대항 ○｜왕국 올스타 괴물 (로스터 주의)", "13": "🥉 복병 ▲｜순도 100% 초고배당 다크호스 (인기 1.79%)", "2": "☆ 상단 브래킷 에이스｜상단 확정 최강 & KvK #43 승자"}, "pick_comments": {"16": "확정 93명·Flag D 0명의 무결점 로스터. PCS30(764.8), Top4(992.2), A사분면 전원(30/30), EGC(15,798M), Top1 MT(3,551층) 모두 확정 연맹 1위. 죽음의 QF4에도 불구 인기 3.08%로 기댓값 5.19배.", "14": "현재 [908] 태그 등록 인원은 5명이나 왕국 번호 태그. 본국 1위 [REV] 단독으로도 PCS30 807.4 / Top4 993.5, 올스타 집결 시 PCS30 894.7 / MT1 3,560층의 괴물. R16 #867·QF4 #919 OBV 연전이 변수.", "13": "동일하게 왕국 번호 태그 [867]. 본국 1위 [ERA] PCS30 752.9(A사분면 30명), 올스타 집결 시 Flag D 0명의 PCS30 851.9 / EGC 14,662M. 인기 55.9배 대비 페어 7.34배.", "2": "상단 대진(Seed 1~8) 확정 로스터 최상위이자 KvK 전투 랭킹 #43(승률 78.6%) 1위. 1회전서 인기 1위 [ITz]를 약 68%로 꺾으면 QF4 혈전을 피해 결승 직행이 유력합니다."}, "lbl_fair_odds": "페어 오즈", "lbl_pop_odds": "인기 오즈", "lbl_ev16": "16x 기댓값", "lbl_win_prob_range": "우승 확률 (표준 / 범위)", "lbl_pcs30_dens": "PCS30 (전투 밀도)", "lbl_egc_dtv": "실효 병력 EGC / DTV", "lbl_cheers_share": "응원 수 (점유율)", "lbl_kvk_flagd": "KvK 전투 / Flag D", "badge_full": "확정 명단", "badge_shell": "껍데기/집결 예상", "badge_danger": "죽음의 블록", "badge_trap": "과열 인기 함정", "unit_odds": "배", "unit_odds_over": "999배+", "flagd_tpl": "{n}명", "sec_r16": "⚔️ 제14블록 토너먼트 1회전(R16) 승률 예측 & 죽음의 블록 「QF4」 구조", "sec_r16_sub": "스크린샷 순서(Seed 1v2 .. 15v16) 기준 1회전 승률 (표준 모델)", "r16_match_tpl": "R16 제{m}경기 (QF{q} 블록)", "r16_note_html": "<strong>【브래킷 최대 구조 왜곡】</strong> 하단 <strong>QF4(Seed 13~16)</strong>에 #908*, #867*, #919 [OBV] 우승 후보 TOP3가 몰리는 <strong>「죽음의 블록」</strong>이 형성되었습니다. 반면 상단(Seed 1~8)은 #780 [BAR]가 인기 1위 #766 [ITz]를 약 68%로 제압하고 수월하게 결승에 오를 수 있는 구도입니다.", "sec_table": "📊 제14블록 전 16연맹 2축 평가(PCS / DTV) & 페어 오즈 완전 출마표", "sec_table_sub_html": "각 지표 헤더의 <span class=\"q-link\">?</span>를 클릭하면 하단 용어·수식 해설로 이동합니다", "th_rank": "순위", "th_mark": "표식", "th_team": "시드 / 연맹 / 명단", "th_fair": "페어 오즈", "th_fair_sub": "(우승확률)", "th_scen": "시나리오 폭", "th_scen_sub": "(H1~AS)", "th_pop": "인기 오즈", "th_pop_sub": "(응원/비율)", "th_ev": "16x 기댓값", "th_ev_sub": "(밸류 배율)", "th_pcs": "PCS30", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "A사분면", "th_quada_sub": "(30명 중)", "th_mt1": "Top1 MT", "th_kvk": "KvK 전투", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "marks": {"1": "본명", "2": "대항", "3": "복병", "4": "특주", "5": "연하", "6": "경계", "9": "보류"}, "roster_confirmed_tpl": "확정 {n}명", "roster_shell_tpl": "임시 {n}명", "gap_prefix": "밸류 ", "gap_lt": "<0.01x", "sec_chart": "📈 2축 전력 분포도 (PCS30 × DTV30 / 버블 = 우승 확률)", "sec_chart_sub": "우상단일수록 「고전투배율 × 대규모 실병력」 진짜 강팀", "chart_ds_full": "확정 풀로스터 연맹", "chart_ds_shell": "껍데기/집결 추정 시드 (*)", "chart_x": "PCS30 (순수 전투 밀도)", "chart_y": "DTV30 (출격 가능 병량·병질)", "chart_tt_win": "우승", "chart_tt_fair": "페어", "chart_tt_pop": "인기 지지", "sec_danger": "⚠️ 위험한 인기마 & 감사 주의사항", "sec_danger_sub": "피해야 할 과열 인기 2개 진영", "danger1_html": "<strong>인기 1위 #766 [ITz] (699만 응원 / 36.91%) → 위험도: 극대</strong><br>92명 확정 전력 자체는 준수하나(PCS30 718.4 / Top4 955.2), <strong>1회전부터 강적 #780 [BAR](승률 67.8% 우위)와 격돌</strong>. 우승 확률은 단 <strong>2.28%(페어 43.9배 / EV 0.36)</strong>로 전형적인 좌측 상단 클릭 편향 함정입니다.", "danger2_html": "<strong>인기 2위 #795 [795]* (244만 응원 / 12.88%) → 위험도: 대</strong><br>#795 국내 Top30 올스타를 모두 모아도 상한이 <strong>PCS30 696.7 / EGC 11.8B</strong>에 그쳐 우승 확률이 <strong>0.20%~0.47%(EV 0.03)</strong>에 불과합니다.", "caution_title": "주의사항 및 모델 전제 (참고용)", "caution_body_tpl": "본 호외는 {fetched_at} 시점의 MightPulse API 데이터 기반 기계적 시산입니다. API 수집 시기에 따라 연맹 이동·합류로 실제 출전 선수가 바뀔 수 있으며, 임시 로스터 5개 연맹(*)의 최종 집결 규모 및 당일 접속률·전술(종루·지하창고 등)에 따라 결과는 달라집니다. 반드시 참고용으로만 활용해 주세요.", "sec_shell": "🔍 임시·소수 인원 시드 (재적 2~11명) 5개 진영 잠재력 검증", "sec_shell_sub": "본국 1위 연맹(Home#1) vs 국내 Top30 올스타 상한(AllStar-Pool)", "sh_th_seed": "대상 시드", "sh_th_now": "현재 인원", "sh_th_type": "태그 유형 / 모델 처리", "sh_th_h1": "본국 1위 연맹 (Home#1) 실측", "sh_th_as": "국내 Top30 올스타 상한 (AllStar-Pool)", "sh_th_range": "우승 확률 범위 (H1~AS)", "sh_type_king": "왕국 번호 집결 태그 (고확률 합류)", "sh_type_gen": "일반 태그 껍데기 (보수적 Home#1)", "sec_glossary": "📘 지표·수식 용어집 (#glossary)", "sec_glossary_sub_html": "표준 사양서: <code>docs/guides/KINGSHOT_PVP_SCORING_SPEC.md</code>", "glossary_cards": [{"h": "PCS (순수 전투 품질 점수 / 0–1000)", "b_html": "<strong>정의:</strong> 비경 시련 6개 탑 상한 정규화(CC 26% / Col 20% / MF 18% / KN 14% / RS 14% / FoL 8%)에 용광로 중화 <code>migrant_score</code> 12%를 결합한 1병당 순수 전투 밀도.<br><strong>활용:</strong> 병력 수 부풀리기를 배제한 집결·주둔 승부력 측정."}, {"h": "DTV / EGC_M (출격 병량 & 실효 전력)", "b_html": "<strong>정의:</strong> 비선형 차감 <code>BasePower = 5.79 × wps^0.318</code>으로 순수 병력 및 TG8 환산 전력 <code>EGC_M = Troop_M × (TG/8)²</code> 산출.<br><strong>활용:</strong> 60분 장기 소모전 버티기 능력 평가."}, {"h": "A사분면 인원 (선봉 에이스 / PCS≥600 & DTV≥60)", "b_html": "<strong>정의:</strong> 상위 30명 중 전투 밀도와 병량 기준을 모두 충족한 핵심 인원 수.<br><strong>활용:</strong> 11개 거점 + 4개 지하창고 동시 점령전의 핵심 전력."}, {"h": "페어 오즈 (Fair Odds = 1 / 우승 확률)", "b_html": "<strong>정의:</strong> 16강 전체 대진 경로 확률의 역수로 구한 이론 적정 배당.<br><strong>활용:</strong> 인기 배당보다 페어 오즈가 작을수록 저평가된 꿀배당입니다."}, {"h": "16x 기댓값 (EV = 16 × 우승 확률)", "b_html": "<strong>정의:</strong> 16배 고정 배당 기준 1코인당 기대 회수율(손익분기 6.25%).<br><strong>활용:</strong> EV &gt; 1.00 상위 후보(OBV, 908, 867, BAR)에 집중 투자."}, {"h": "Flag D (300M+) / 껍데기 리스크", "b_html": "<strong>정의:</strong> <code>Flag D</code>는 탑·이민점수 미수집 300M+ 숨은 전력 수, 별표(*)는 경기 직전 합류 변동성이 있는 임시 로스터를 뜻합니다."}], "footer_left_html": "발행: 성검 스포츠 데이터 분석국 ｜ 표준 엔진: <code>scripts/pvp_two_axis_scorer.py</code>", "footer_right_tpl": "※본 자료는 {fetched_at} 시점 API 데이터 기반 통계 예측입니다. API 수집 시기에 따라 출전 선수가 달라질 수 있으므로 참고용으로만 봐주세요.", "meta_mid": "데이터 수집 시점: 2026-11-16T18:22:52+09:00 ｜ 대상: 제14블록 (#766~#919 / 군단1·16개 연맹 / 총 응원 18,945,904)", "lead_note": "※ 안내: API 데이터 수집 시점(2026-11-16T18:22:52+09:00)과 실제 대회 시점 차이로 연맹 간 이동·합류에 따라 출전 선수가 달라질 수 있습니다. 본 자료는 어디까지나 참고용으로만 활용해 주세요.", "caution_body": "본 호외는 2026-11-16T18:22:52+09:00 시점의 MightPulse API 데이터 기반 기계적 시산입니다. API 수집 시기에 따라 연맹 이동·합류로 실제 출전 선수가 바뀔 수 있으며, 임시 로스터 5개 연맹(*)의 최종 집결 규모 및 당일 접속률·전술(종루·지하창고 등)에 따라 결과는 달라집니다. 반드시 참고용으로만 활용해 주세요.", "footer_right": "※본 자료는 2026-11-16T18:22:52+09:00 시점 API 데이터 기반 통계 예측입니다. API 수집 시기에 따라 출전 선수가 달라질 수 있으므로 참고용으로만 봐주세요."}};
+    const PTS = [{"label": "#766[ITz]", "x": 718.4, "y": 85.0, "r": 5.254, "pop": 36.91, "champ": 2.28, "fair": 43.91, "is_shell": false}, {"label": "#780[BAR]", "x": 731.1, "y": 87.8, "r": 10.798, "pop": 10.16, "champ": 12.36, "fair": 8.09, "is_shell": false}, {"label": "#792[LUX]", "x": 692.3, "y": 87.8, "r": 5, "pop": 4.02, "champ": 0.84, "fair": 119.46, "is_shell": false}, {"label": "#795[795]*", "x": 696.7, "y": 85.8, "r": 5, "pop": 12.88, "champ": 0.2, "fair": 504.72, "is_shell": true}, {"label": "#799[NOT]*", "x": 636.8, "y": 82.1, "r": 5, "pop": 2.56, "champ": 0.04, "fair": 2817.75, "is_shell": true}, {"label": "#801[EOA]", "x": 731.2, "y": 86.3, "r": 9.0105, "pop": 9.2, "champ": 9.11, "fair": 10.98, "is_shell": false}, {"label": "#801[LOC]", "x": 624.2, "y": 80.3, "r": 5, "pop": 2.04, "champ": 0.04, "fair": 2394.83, "is_shell": false}, {"label": "#812[VHS]*", "x": 656.0, "y": 84.4, "r": 5, "pop": 1.22, "champ": 0.16, "fair": 628.16, "is_shell": true}, {"label": "#815[ATM]", "x": 706.1, "y": 90.5, "r": 5.2485, "pop": 4.35, "champ": 2.27, "fair": 44.07, "is_shell": false}, {"label": "#836[KOR]", "x": 726.0, "y": 86.3, "r": 6.3265, "pop": 1.59, "champ": 4.23, "fair": 23.64, "is_shell": false}, {"label": "#856[PAX]", "x": 647.9, "y": 82.6, "r": 5, "pop": 1.73, "champ": 0.06, "fair": 1813.63, "is_shell": false}, {"label": "#865[UTD]", "x": 674.0, "y": 83.0, "r": 5, "pop": 0.79, "champ": 0.11, "fair": 889.71, "is_shell": false}, {"label": "#867[867]*", "x": 851.9, "y": 88.5, "r": 11.496500000000001, "pop": 1.79, "champ": 13.63, "fair": 7.34, "is_shell": true}, {"label": "#908[908]*", "x": 894.7, "y": 88.3, "r": 16.2265, "pop": 6.84, "champ": 22.23, "fair": 4.5, "is_shell": true}, {"label": "#914[RAC]", "x": 661.0, "y": 82.4, "r": 5, "pop": 0.85, "champ": 0.0, "fair": 9999.0, "is_shell": false}, {"label": "#919[OBV]", "x": 764.8, "y": 90.3, "r": 21.847500000000004, "pop": 3.08, "champ": 32.45, "fair": 3.08, "is_shell": false}];
+    let chartInst = null;
+
+    function formatOdds(val, langPack) {
+      const num = Number(val);
+      if (num >= 1000) return langPack.unit_odds_over;
+      if (num >= 100) return num.toFixed(0) + langPack.unit_odds;
+      return num.toFixed(2) + langPack.unit_odds;
+    }
+
+    function renderChart(langPack) {
+      const ctx = document.getElementById('twoAxisChart');
+      if (!ctx || !window.Chart) return;
+      if (chartInst) chartInst.destroy();
+      chartInst = new Chart(ctx, {
+        type: 'bubble',
+        data: {
+          datasets: [
+            {
+              label: langPack.chart_ds_full,
+              data: PTS.filter(p => !p.is_shell).map(p => ({ x: p.x, y: p.y, r: p.r, meta: p })),
+              backgroundColor: 'rgba(15, 76, 129, 0.72)',
+              borderColor: '#0f4c81',
+              borderWidth: 1.5
+            },
+            {
+              label: langPack.chart_ds_shell,
+              data: PTS.filter(p => p.is_shell).map(p => ({ x: p.x, y: p.y, r: p.r, meta: p })),
+              backgroundColor: 'rgba(201, 23, 30, 0.70)',
+              borderColor: '#c9171e',
+              borderWidth: 1.5
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { title: { display: true, text: langPack.chart_x }, min: 580, max: 930 },
+            y: { title: { display: true, text: langPack.chart_y }, min: 75, max: 94 }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (c) => {
+                  const m = c.raw.meta;
+                  return `${m.label}: PCS=${m.x}, DTV=${m.y}, ${langPack.chart_tt_win}=${m.champ}% (${langPack.chart_tt_fair} ${m.fair}${langPack.unit_odds} / ${langPack.chart_tt_pop} ${m.pop}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function applyLang(lang) {
+      if (!I18N[lang]) lang = 'ja';
+      const L = I18N[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+      document.title = L.page_title;
+
+      document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang-btn') === lang);
+      });
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const k = el.getAttribute('data-i18n');
+        if (L[k] !== undefined) el.textContent = L[k];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const k = el.getAttribute('data-i18n-html');
+        if (L[k] !== undefined) el.innerHTML = L[k];
+      });
+      document.querySelectorAll('[data-pick-sub]').forEach(el => {
+        const k = el.getAttribute('data-pick-sub');
+        if (L.pick_subtitles[k]) el.textContent = L.pick_subtitles[k];
+      });
+      document.querySelectorAll('[data-pick-com]').forEach(el => {
+        const k = el.getAttribute('data-pick-com');
+        if (L.pick_comments[k]) el.textContent = L.pick_comments[k];
+      });
+      document.querySelectorAll('[data-r16-m]').forEach(el => {
+        const m = el.getAttribute('data-r16-m');
+        const q = el.getAttribute('data-r16-q');
+        el.textContent = L.r16_match_tpl.replace('{m}', m).replace('{q}', q);
+      });
+      document.querySelectorAll('[data-mark-key]').forEach(el => {
+        const k = el.getAttribute('data-mark-key');
+        if (L.marks[k]) el.textContent = L.marks[k];
+      });
+      document.querySelectorAll('[data-roster-full]').forEach(el => {
+        el.textContent = L.roster_confirmed_tpl.replace('{n}', el.getAttribute('data-roster-full'));
+      });
+      document.querySelectorAll('[data-roster-shell]').forEach(el => {
+        el.textContent = L.roster_shell_tpl.replace('{n}', el.getAttribute('data-roster-shell'));
+      });
+      document.querySelectorAll('[data-flagd]').forEach(el => {
+        el.textContent = L.flagd_tpl.replace('{n}', el.getAttribute('data-flagd'));
+      });
+      document.querySelectorAll('[data-odds]').forEach(el => {
+        el.textContent = formatOdds(el.getAttribute('data-odds'), L);
+      });
+      document.querySelectorAll('[data-gap-val]').forEach(el => {
+        el.textContent = L.gap_prefix + el.getAttribute('data-gap-val') + 'x';
+      });
+      document.querySelectorAll('[data-gap-lt]').forEach(el => {
+        el.textContent = L.gap_prefix + L.gap_lt;
+      });
+      document.querySelectorAll('[data-gloss-h]').forEach(el => {
+        const idx = Number(el.getAttribute('data-gloss-h'));
+        if (L.glossary_cards[idx]) el.textContent = L.glossary_cards[idx].h;
+      });
+      document.querySelectorAll('[data-gloss-b]').forEach(el => {
+        const idx = Number(el.getAttribute('data-gloss-b'));
+        if (L.glossary_cards[idx]) el.innerHTML = L.glossary_cards[idx].b_html;
+      });
+
+      renderChart(L);
+      try { localStorage.setItem('seiken_block14_lang', lang); } catch (e) {}
+    }
+
+    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+      btn.addEventListener('click', () => applyLang(btn.getAttribute('data-lang-btn')));
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const urlLang = params.get('lang');
+    let initLang = 'ja';
+    if (urlLang && I18N[urlLang]) {
+      initLang = urlLang;
+    } else {
+      try {
+        const saved = localStorage.getItem('seiken_block14_lang');
+        if (saved && I18N[saved]) initLang = saved;
+      } catch (e) {}
+    }
+    applyLang(initLang);
+  </script>
+</body>
+</html>
