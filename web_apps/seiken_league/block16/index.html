@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="ja" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>聖剣スポーツ｜第16ブロック・キングランク（#761–#915）</title>
+<style>
+    :root {
+      --paper-bg: #f5f2eb;
+      --paper-line: #dcd5c5;
+      --ink: #111111;
+      --muted: #555555;
+      --red: #c9171e;
+      --blue: #0f4c81;
+      --gold: #b5850b;
+      --green: #1b5e20;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #1a1a1a;
+      color: var(--ink);
+      font-family: 'Zen Kaku Gothic New', 'Noto Sans SC', 'Noto Sans KR', 'Noto Sans Arabic', 'Yu Gothic', sans-serif;
+      padding: 18px 10px;
+      line-height: 1.55;
+    }
+    html[dir="rtl"] body {
+      font-family: 'Noto Sans Arabic', 'Zen Kaku Gothic New', sans-serif;
+    }
+    .newspaper-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      background: var(--paper-bg);
+      padding: 24px 36px 28px;
+      box-shadow: 0 12px 45px rgba(0,0,0,0.65);
+      border: 3px solid var(--ink);
+    }
+    .lang-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--paper-line);
+    }
+    .lang-bar-label { font-size: 12px; color: var(--muted); font-weight: 700; margin-inline-end: 4px; }
+    .lang-btn {
+      background: #fff;
+      color: var(--ink);
+      border: 1.5px solid #999;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .lang-btn:hover { border-color: var(--ink); background: #fff8e1; }
+    .lang-btn.active {
+      background: var(--ink);
+      color: #ffd75e;
+      border-color: var(--ink);
+    }
+    .header-meta {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+      border-bottom: 1px solid var(--paper-line);
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+    }
+    .masthead {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 4px double var(--ink);
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .paper-title {
+      font-family: 'Shippori Mincho', 'Noto Sans SC', 'Noto Sans KR', 'Noto Sans Arabic', serif;
+      font-size: 50px;
+      font-weight: 900;
+      line-height: 1.05;
+    }
+    .paper-title .sub-kanji {
+      display: block;
+      font-size: 15px;
+      color: var(--red);
+      letter-spacing: 2px;
+      font-family: 'Zen Kaku Gothic New', 'Noto Sans SC', 'Noto Sans KR', 'Noto Sans Arabic', sans-serif;
+      margin-bottom: 4px;
+    }
+    .masthead-badges { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .block14-badge {
+      background: linear-gradient(135deg, #111111, #2b2b2b);
+      color: #ffd75e;
+      font-weight: 900;
+      font-size: 24px;
+      padding: 8px 20px;
+      border: 3px solid #c9171e;
+      box-shadow: 4px 4px 0 #c9171e;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .block14-badge small {
+      display: block;
+      font-size: 11px;
+      color: #ffffff;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+    .gogai-badge {
+      background: var(--red);
+      color: #fff;
+      font-weight: 900;
+      font-size: 24px;
+      padding: 6px 20px;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px var(--red);
+      transform: rotate(-2deg);
+    }
+    .urgent-banner {
+      background: #fff1f1;
+      border: 2px dashed var(--red);
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .urgent-tag {
+      background: var(--red);
+      color: #fff;
+      font-weight: 900;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .headline-section {
+      background: #fff;
+      border: 2px solid var(--ink);
+      padding: 22px 24px;
+      margin-bottom: 24px;
+      box-shadow: 5px 5px 0 var(--ink);
+    }
+    .main-headline {
+      font-family: 'Shippori Mincho', 'Noto Sans SC', 'Noto Sans KR', 'Noto Sans Arabic', serif;
+      font-size: 32px;
+      font-weight: 900;
+      line-height: 1.28;
+      margin-bottom: 12px;
+    }
+    .hl-red { color: var(--red); background: linear-gradient(transparent 62%, #ffd4d4 62%); padding: 0 4px; }
+    .hl-gold { color: #7a5800; background: linear-gradient(transparent 62%, #ffefc2 62%); padding: 0 4px; }
+    .lead-text {
+      font-size: 14.5px;
+      color: #2b2b2b;
+      border-inline-start: 4px solid var(--red);
+      padding-inline-start: 14px;
+      line-height: 1.75;
+    }
+    .lead-note { display: block; margin-top: 8px; font-size: 12.5px; color: #555; font-weight: 700; }
+    .section-bar {
+      background: var(--ink);
+      color: #fff;
+      font-weight: 900;
+      font-size: 19px;
+      padding: 9px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .section-bar small { font-size: 12px; font-weight: 500; color: #ddd; }
+    .picks-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+    .pick-card {
+      background: #fff;
+      border: 2px solid var(--ink);
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.14);
+      display: flex;
+      flex-direction: column;
+    }
+    .pick-header { padding: 9px 12px; font-weight: 900; font-size: 13px; }
+    .pick-header.rank1 { background: linear-gradient(135deg, #d4a62a, #f2d97d); color: #111; }
+    .pick-header.rank2 { background: linear-gradient(135deg, #0f4c81, #2b6cb0); color: #fff; }
+    .pick-header.rank3 { background: linear-gradient(135deg, #2e7d32, #43a047); color: #fff; }
+    .pick-header.rank4 { background: linear-gradient(135deg, #6d4c41, #8d6e63); color: #fff; }
+    .pick-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; flex-grow: 1; }
+    .matchup-box { background: #f8f5ee; border: 1px solid var(--paper-line); padding: 9px; text-align: center; border-radius: 4px; }
+    .team-title { font-size: 15px; margin-bottom: 6px; }
+    .odds-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; border-top: 1px solid #e2dccb; padding-top: 6px; }
+    .odds-strip small { display: block; font-size: 10px; color: var(--muted); }
+    .odds-strip strong { font-size: 14px; }
+    .text-red { color: var(--red); }
+    .text-green { color: var(--green); }
+    .stats-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+    .stats-table th, .stats-table td { padding: 4px 3px; border-bottom: 1px solid #eee; }
+    .stats-table th { text-align: start; color: var(--muted); font-weight: 500; }
+    .stats-table td { text-align: end; font-weight: 700; }
+    .comment-box {
+      font-size: 12px;
+      background: #fffdf0;
+      border-inline-start: 3px solid var(--gold);
+      padding: 8px;
+      margin-top: auto;
+    }
+    .box-panel {
+      background: #fff;
+      border: 2px solid var(--ink);
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+    .panel-title {
+      font-size: 20px;
+      font-weight: 900;
+      border-inline-start: 6px solid var(--red);
+      padding-inline-start: 10px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .panel-title small { font-size: 12px; color: var(--muted); font-weight: 500; }
+    .r16-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .match-card { border: 1.5px solid #333; background: #faf8f3; border-radius: 4px; overflow: hidden; }
+    .match-head { background: #222; color: #fff; font-size: 11px; font-weight: 700; padding: 4px 8px; }
+    .match-team { display: flex; justify-content: space-between; padding: 6px 8px; font-size: 12.5px; border-top: 1px solid #e3ddd0; }
+    .match-team.fav { background: #eef6ff; font-weight: 900; color: var(--blue); }
+    .badge-full { display: inline-block; background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
+    .badge-shell { display: inline-block; background: #fff8e1; color: #8d6e00; border: 1px solid #ffe082; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
+    .badge-hub { display: inline-block; background: #e3f2fd; color: #0d47a1; border: 1px solid #90caf9; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
+    .badge-danger { display: inline-block; background: var(--red); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 2px; }
+    .badge-trap { display: inline-block; background: #fbe9e7; color: #bf360c; border: 1px solid #ffab91; font-size: 10px; padding: 1px 5px; border-radius: 3px; font-weight: 700; }
+    .table-wrap { overflow-x: auto; }
+    .race-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .race-table th {
+      background: #222;
+      color: #fff;
+      padding: 8px 6px;
+      border: 1px solid #444;
+      text-align: center;
+      font-size: 11.5px;
+      white-space: nowrap;
+    }
+    .race-table td {
+      padding: 7px 6px;
+      border: 1px solid #ddd;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .race-table tr:nth-child(even) { background: #faf8f5; }
+    .race-table tr:hover { background: #fff9e6; }
+    .text-left { text-align: start !important; }
+    .q-link {
+      display: inline-block;
+      background: #555;
+      color: #fff;
+      border-radius: 50%;
+      width: 15px;
+      height: 15px;
+      line-height: 15px;
+      font-size: 10px;
+      text-decoration: none;
+      margin-inline-start: 3px;
+    }
+    .q-link:hover { background: var(--gold); color: #111; }
+    .stamp { font-size: 19px; font-weight: 900; }
+    .mark-honmei { color: var(--red); }
+    .mark-taikou { color: var(--blue); }
+    .mark-tanana { color: var(--green); }
+    .mark-tokuchu { color: #8b5a00; }
+    .mark-renge { color: #6a1b9a; }
+    .mark-kike { color: #666; }
+    .mark-none { color: #aaa; }
+    .odds-fair { color: var(--red); font-size: 13.5px; }
+    .ev-plus { background: #edf7ed; color: var(--green); }
+    .ev-minus { color: #666; }
+    .two-col { display: grid; grid-template-columns: 1.25fr 1fr; gap: 20px; margin-bottom: 24px; }
+    .caution-callout { background: #eef5fb; border-inline-start: 4px solid var(--blue); padding: 10px; }
+    .danger-callout-1 { background: #fbe9e7; border-inline-start: 4px solid var(--red); padding: 10px; }
+    .danger-callout-2 { background: #fff3e0; border-inline-start: 4px solid #ef6c00; padding: 10px; }
+    .glossary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; font-size: 12.5px; }
+    .gloss-card { background: #faf8f3; border: 1px solid var(--paper-line); padding: 12px; border-radius: 4px; }
+    .gloss-card h4 { color: var(--blue); margin-bottom: 5px; font-size: 13.5px; }
+    .paper-footer {
+      border-top: 2px solid var(--ink);
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+    @media (max-width: 1080px) {
+      .picks-grid, .r16-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col, .glossary-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .picks-grid, .r16-grid { grid-template-columns: 1fr; }
+      .paper-title { font-size: 34px; }
+    }
+  
+    .paper-title, .main-headline { font-family: "Yu Mincho", Georgia, "Noto Sans Arabic", serif; }
+    .lang-bar a { margin-inline-end: auto; color: var(--blue); }
+    .lang-bar button[aria-pressed=true] { background: var(--ink); color: #ffd75e; }
+    .block16-section { margin-block: 20px; }
+    .table-wrap { max-width: 100%; }
+    .race-table [scope=row] { background: inherit; color: var(--ink); }
+    .odds-strip > div { min-width: 0; overflow-wrap: anywhere; }
+    .axis-chart { direction: ltr; unicode-bidi: isolate; padding: 12px 20px 8px; }
+    .plot { position: relative; height: 244px; margin: 8px 20px 25px 37px;
+      border-left: 1px solid #5d5851; border-bottom: 1px solid #5d5851;
+      background: repeating-linear-gradient(to top, transparent 0 calc(14.2857% - 1px), #ddd7cb calc(14.2857% - 1px) 14.2857%),
+                  repeating-linear-gradient(to right, transparent 0 calc(16.6667% - 1px), #ddd7cb calc(16.6667% - 1px) 16.6667%); }
+    .tick-x, .tick-y { position: absolute; font-size: 10px; color: var(--muted); white-space: nowrap; }
+    .tick-x { bottom: -19px; transform: translateX(-50%); }
+    .tick-y { right: calc(100% + 6px); transform: translateY(50%); }
+    .plot-point { position: absolute; width: var(--size); height: var(--size); border-radius: 50%;
+      transform: translate(-50%, 50%); background: #2163a3aa; border: 1px solid #174e7e; cursor: pointer; }
+    .plot-point:hover, .plot-point:focus-visible { z-index: 1; background: #c9171ec9; outline: 2px solid #111; }
+    .axis-x { text-align: center; }
+    .chart-detail { min-height: 1.6em; font-size: 13px; font-weight: 700; overflow-wrap: anywhere; }
+    .plot-note { margin-block: 4px 8px; font-size: 13px; }
+    @media (max-width: 640px) {
+      .newspaper-container { padding: 12px; }
+      .block14-badge { white-space: normal; }
+      .headline-section { padding: 12px; }
+      .main-headline { font-size: 25px; }
+      .urgent-banner { flex-wrap: wrap; }
+      .axis-chart { padding-inline: 2px; }
+    }
+</style>
+</head>
+<body>
+<main class="newspaper-container">
+<nav class="lang-bar"><a id="previous" href="../index.html"><span data-i18n="previous">第14ブロック</span></a><div><button class="lang-btn" type="button" data-lang-btn="ja">日本語</button><button class="lang-btn" type="button" data-lang-btn="en">English</button><button class="lang-btn" type="button" data-lang-btn="ar">العربية</button><button class="lang-btn" type="button" data-lang-btn="tr">Türkçe</button><button class="lang-btn" type="button" data-lang-btn="zh">简体中文</button><button class="lang-btn" type="button" data-lang-btn="ko">한국어</button></div></nav>
+<div class="header-meta"><span><span data-i18n="snapshot">データ取得時点</span> <time dir="ltr">2026-11-19T00:30:27+09:00</time></span></div>
+<header class="masthead"><div class="paper-title"><span class="sub-kanji">KINGSHOT SWORDLAND LEAGUE</span><span data-i18n="paper">聖剣スポーツ</span></div>
+<div class="masthead-badges"><div class="block14-badge"><span data-i18n="block">第16ブロック・キングランク</span> <small><bdi>#761–#915</bdi></small></div>
+<div class="gogai-badge"><span data-i18n="gogai">号外</span></div></div></header>
+<div class="urgent-banner"><span class="urgent-tag"><span data-i18n="block">第16ブロック・キングランク</span></span><p><span data-i18n="sensitivity">戦力差が勝敗に出にくい想定や本戦の組み分けでも、優勝確率は変わります。</span></p></div>
+<section class="headline-section"><h1 class="main-headline"><span data-i18n="block">第16ブロック・キングランク</span> <bdi>#761–#915</bdi><br>
+<span class="hl-red"><span data-i18n="forecast">昇格戦とリーグ優勝予想</span></span></h1><p class="lead-text"><span data-i18n="model">A〜Dの各勝者が本戦へ。神話側に入る2グループが未確定のため、6通りを等重みで集計したモデル推定です。16倍は配当の仮定です。</span></p></section>
+<section class="block16-section"><h2 class="section-bar"><span data-i18n="block">第16ブロック・キングランク</span> · <span data-i18n="picks">注目の4枠</span></h2><div class="picks-grid"><article class="pick-card"><header class="pick-header rank1">◎ <span data-i18n="mark1">本命</span></header><div class="pick-body"><div class="matchup-box"><div class="team-title"><bdi>#850 [850]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small></div><div class="odds-strip"><div><small><span data-i18n="probability">優勝確率</span></small><strong><bdi>38.24%</bdi></strong></div><div><small><span data-i18n="th_fair">フェアオッズ</span></small><strong><bdi>2.61×</bdi></strong></div><div><small><span data-i18n="th_ev">16x期待値</span></small><strong><bdi>6.12×</bdi></strong></div></div></div><table class="stats-table"><tr><th scope="row"><span data-i18n="th_pcs">PCS30</span></th><td><bdi>906.4</bdi></td></tr><tr><th scope="row"><span data-i18n="th_dtv">DTV30</span></th><td><bdi>91.7 / 14.86B</bdi></td></tr><tr><th scope="row"><span data-i18n="th_kvk">KvK戦闘</span></th><td><bdi>#50 / 79%</bdi></td></tr><tr><th scope="row"><span data-i18n="th_flagd">Flag D</span></th><td><bdi>30</bdi></td></tr></table></div></article><article class="pick-card"><header class="pick-header rank2">○ <span data-i18n="mark2">対抗</span></header><div class="pick-body"><div class="matchup-box"><div class="team-title"><bdi>#900 [24K]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></div><div class="odds-strip"><div><small><span data-i18n="probability">優勝確率</span></small><strong><bdi>25.68%</bdi></strong></div><div><small><span data-i18n="th_fair">フェアオッズ</span></small><strong><bdi>3.89×</bdi></strong></div><div><small><span data-i18n="th_ev">16x期待値</span></small><strong><bdi>4.11×</bdi></strong></div></div></div><table class="stats-table"><tr><th scope="row"><span data-i18n="th_pcs">PCS30</span></th><td><bdi>838.3</bdi></td></tr><tr><th scope="row"><span data-i18n="th_dtv">DTV30</span></th><td><bdi>85.8 / 15.58B</bdi></td></tr><tr><th scope="row"><span data-i18n="th_kvk">KvK戦闘</span></th><td><bdi>#37 / 77%</bdi></td></tr><tr><th scope="row"><span data-i18n="th_flagd">Flag D</span></th><td><bdi>0</bdi></td></tr></table></div></article><article class="pick-card"><header class="pick-header rank3">▲ <span data-i18n="mark3">単穴</span></header><div class="pick-body"><div class="matchup-box"><div class="team-title"><bdi>#826 [826]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small></div><div class="odds-strip"><div><small><span data-i18n="probability">優勝確率</span></small><strong><bdi>18.38%</bdi></strong></div><div><small><span data-i18n="th_fair">フェアオッズ</span></small><strong><bdi>5.44×</bdi></strong></div><div><small><span data-i18n="th_ev">16x期待値</span></small><strong><bdi>2.94×</bdi></strong></div></div></div><table class="stats-table"><tr><th scope="row"><span data-i18n="th_pcs">PCS30</span></th><td><bdi>826.8</bdi></td></tr><tr><th scope="row"><span data-i18n="th_dtv">DTV30</span></th><td><bdi>91.8 / 15.54B</bdi></td></tr><tr><th scope="row"><span data-i18n="th_kvk">KvK戦闘</span></th><td><bdi>#531 / 57%</bdi></td></tr><tr><th scope="row"><span data-i18n="th_flagd">Flag D</span></th><td><bdi>0</bdi></td></tr></table></div></article><article class="pick-card"><header class="pick-header rank4">☆ <span data-i18n="mark4">特注</span></header><div class="pick-body"><div class="matchup-box"><div class="team-title"><bdi>#761 [aWp]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></div><div class="odds-strip"><div><small><span data-i18n="probability">優勝確率</span></small><strong><bdi>8.72%</bdi></strong></div><div><small><span data-i18n="th_fair">フェアオッズ</span></small><strong><bdi>11.47×</bdi></strong></div><div><small><span data-i18n="th_ev">16x期待値</span></small><strong><bdi>1.40×</bdi></strong></div></div></div><table class="stats-table"><tr><th scope="row"><span data-i18n="th_pcs">PCS30</span></th><td><bdi>730.5</bdi></td></tr><tr><th scope="row"><span data-i18n="th_dtv">DTV30</span></th><td><bdi>90.5 / 14.98B</bdi></td></tr><tr><th scope="row"><span data-i18n="th_kvk">KvK戦闘</span></th><td><bdi>#347 / 57%</bdi></td></tr><tr><th scope="row"><span data-i18n="th_flagd">Flag D</span></th><td><bdi>6</bdi></td></tr></table></div></article></div></section>
+<section class="block16-section box-panel"><h2 class="panel-title"><span data-i18n="block">第16ブロック・キングランク</span> · <span data-i18n="opening">昇格戦 残り8カード</span></h2><div class="r16-grid"><article class="match-card"><header class="match-head"><bdi>A · S01 / S02</bdi></header><div class="match-team fav"><span><bdi>#900 [24K]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>90.00%</bdi></strong></div><div class="match-team"><span><bdi>#841 [KOR]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>10.00%</bdi></strong></div></article><article class="match-card"><header class="match-head"><bdi>A · S03 / S04</bdi></header><div class="match-team fav"><span><bdi>#791 [NwO]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>62.43%</bdi></strong></div><div class="match-team"><span><bdi>#833 [TRX]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>37.57%</bdi></strong></div></article><article class="match-card"><header class="match-head"><bdi>B · S05 / S06</bdi></header><div class="match-team fav"><span><bdi>#761 [aWp]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>95.46%</bdi></strong></div><div class="match-team"><span><bdi>#824 [MMR]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>4.54%</bdi></strong></div></article><article class="match-card"><header class="match-head"><bdi>B · S07 / S08</bdi></header><div class="match-team fav"><span><bdi>#816 [EGG]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>71.01%</bdi></strong></div><div class="match-team"><span><bdi>#790 [LmN]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>28.99%</bdi></strong></div></article><article class="match-card"><header class="match-head"><bdi>C · S09 / S10</bdi></header><div class="match-team fav"><span><bdi>#850 [850]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small></span><strong><bdi>86.66%</bdi></strong></div><div class="match-team"><span><bdi>#915 [915]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small></span><strong><bdi>13.34%</bdi></strong></div></article><article class="match-card"><header class="match-head"><bdi>C · S11 / S12</bdi></header><div class="match-team fav"><span><bdi>#848 [007]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>69.31%</bdi></strong></div><div class="match-team"><span><bdi>#847 [ACD]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small></span><strong><bdi>30.69%</bdi></strong></div></article><article class="match-card"><header class="match-head"><bdi>D · S13 / S14</bdi></header><div class="match-team fav"><span><bdi>#813 [NDO]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>86.70%</bdi></strong></div><div class="match-team"><span><bdi>#823 [ROK]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>13.30%</bdi></strong></div></article><article class="match-card"><header class="match-head"><bdi>D · S15 / S16</bdi></header><div class="match-team fav"><span><bdi>#826 [826]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small></span><strong><bdi>83.32%</bdi></strong></div><div class="match-team"><span><bdi>#875 [INV]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></span><strong><bdi>16.68%</bdi></strong></div></article></div></section>
+<section class="block16-section box-panel"><h2 class="panel-title"><span data-i18n="block">第16ブロック・キングランク</span> · <span data-i18n="standings">全16枠の予想</span></h2>
+<div class="table-wrap" tabindex="0"><table class="race-table"><thead><tr><th scope="col"><span data-i18n="th_rank">順</span></th><th scope="col"><span data-i18n="th_mark">印</span></th><th scope="col"><span data-i18n="alliance">同盟</span><br><small><span data-i18n="legion">軍団</span></small></th><th scope="col"><span data-i18n="th_fair">フェアオッズ</span> <a class="q-link" href="#glossary">?</a><br><small><span data-i18n="probability">優勝確率</span></small></th><th scope="col"><span data-i18n="th_scen">A〜D突破率</span></th><th scope="col"><span data-i18n="th_ev">16x期待値</span> <a class="q-link" href="#glossary">?</a></th><th scope="col"><span data-i18n="th_pcs">PCS30</span> <a class="q-link" href="#glossary">?</a></th><th scope="col"><span data-i18n="th_top4">Top4 PCS</span></th><th scope="col"><span data-i18n="th_dtv">DTV30</span> <a class="q-link" href="#glossary">?</a><br><small><span data-i18n="th_egc">(EGC_M)</span></small></th><th scope="col"><span data-i18n="th_quada">A象限</span> <a class="q-link" href="#glossary">?</a><br><small><span data-i18n="th_quada_sub">(30名中)</span></small></th><th scope="col"><span data-i18n="th_mt1">Top1 MT</span></th><th scope="col"><span data-i18n="th_kvk">KvK戦闘</span></th><th scope="col"><span data-i18n="th_flagd">Flag D</span> <a class="q-link" href="#glossary">?</a><br><small><span data-i18n="th_flagd_sub">(300M+)</span></small></th></tr></thead><tbody><tr data-seed="9"><td>1</td><td><span class="stamp mark-honmei">◎</span><br><small><span data-i18n="mark1">本命</span></small></td><th scope="row" class="text-left"><bdi>S09</bdi> <bdi>#850 [850]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small></th><td><strong class="odds-fair" data-metric="fair"><bdi>2.61×</bdi></strong><br><small data-metric="prob"><bdi>38.24%</bdi></small></td><td data-metric="group"><bdi>73.34%</bdi></td><td class="ev-plus" data-metric="ev"><bdi>6.12×</bdi></td><td data-metric="pcs"><bdi>906.4</bdi></td><td data-metric="top4"><bdi>996.2</bdi></td><td data-metric="dtv"><bdi>91.7</bdi><br><small><bdi>14.86B</bdi></small></td><td data-metric="quad"><bdi>30/30</bdi></td><td data-metric="mt"><bdi>3263</bdi></td><td data-metric="kvk"><bdi>#50 / 79%</bdi></td><td data-metric="flag"><bdi>30</bdi></td></tr><tr data-seed="1"><td>2</td><td><span class="stamp mark-taikou">○</span><br><small><span data-i18n="mark2">対抗</span></small></td><th scope="row" class="text-left"><bdi>S01</bdi> <bdi>#900 [24K]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>3.89×</bdi></strong><br><small data-metric="prob"><bdi>25.68%</bdi></small></td><td data-metric="group"><bdi>74.40%</bdi></td><td class="ev-plus" data-metric="ev"><bdi>4.11×</bdi></td><td data-metric="pcs"><bdi>838.3</bdi></td><td data-metric="top4"><bdi>997.0</bdi></td><td data-metric="dtv"><bdi>85.8</bdi><br><small><bdi>15.58B</bdi></small></td><td data-metric="quad"><bdi>29/30</bdi></td><td data-metric="mt"><bdi>3767</bdi></td><td data-metric="kvk"><bdi>#37 / 77%</bdi></td><td data-metric="flag"><bdi>0</bdi></td></tr><tr data-seed="15"><td>3</td><td><span class="stamp mark-tanana">▲</span><br><small><span data-i18n="mark3">単穴</span></small></td><th scope="row" class="text-left"><bdi>S15</bdi> <bdi>#826 [826]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small></th><td><strong class="odds-fair" data-metric="fair"><bdi>5.44×</bdi></strong><br><small data-metric="prob"><bdi>18.38%</bdi></small></td><td data-metric="group"><bdi>66.53%</bdi></td><td class="ev-plus" data-metric="ev"><bdi>2.94×</bdi></td><td data-metric="pcs"><bdi>826.8</bdi></td><td data-metric="top4"><bdi>991.5</bdi></td><td data-metric="dtv"><bdi>91.8</bdi><br><small><bdi>15.54B</bdi></small></td><td data-metric="quad"><bdi>30/30</bdi></td><td data-metric="mt"><bdi>3360</bdi></td><td data-metric="kvk"><bdi>#531 / 57%</bdi></td><td data-metric="flag"><bdi>0</bdi></td></tr><tr data-seed="5"><td>4</td><td><span class="stamp mark-tokuchu">☆</span><br><small><span data-i18n="mark4">特注</span></small></td><th scope="row" class="text-left"><bdi>S05</bdi> <bdi>#761 [aWp]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>11.47×</bdi></strong><br><small data-metric="prob"><bdi>8.72%</bdi></small></td><td data-metric="group"><bdi>66.61%</bdi></td><td class="ev-plus" data-metric="ev"><bdi>1.40×</bdi></td><td data-metric="pcs"><bdi>730.5</bdi></td><td data-metric="top4"><bdi>993.0</bdi></td><td data-metric="dtv"><bdi>90.5</bdi><br><small><bdi>14.98B</bdi></small></td><td data-metric="quad"><bdi>30/30</bdi></td><td data-metric="mt"><bdi>3509</bdi></td><td data-metric="kvk"><bdi>#347 / 57%</bdi></td><td data-metric="flag"><bdi>6</bdi></td></tr><tr data-seed="11"><td>5</td><td><span class="stamp mark-renge">△</span><br><small><span data-i18n="mark5">連下</span></small></td><th scope="row" class="text-left"><bdi>S11</bdi> <bdi>#848 [007]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>39.79×</bdi></strong><br><small data-metric="prob"><bdi>2.51%</bdi></small></td><td data-metric="group"><bdi>16.40%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.40×</bdi></td><td data-metric="pcs"><bdi>762.5</bdi></td><td data-metric="top4"><bdi>994.8</bdi></td><td data-metric="dtv"><bdi>86.0</bdi><br><small><bdi>13.36B</bdi></small></td><td data-metric="quad"><bdi>29/30</bdi></td><td data-metric="mt"><bdi>3363</bdi></td><td data-metric="kvk"><bdi>#730 / 57%</bdi></td><td data-metric="flag"><bdi>0</bdi></td></tr><tr data-seed="13"><td>6</td><td><span class="stamp mark-kike">×</span><br><small><span data-i18n="mark6">警戒</span></small></td><th scope="row" class="text-left"><bdi>S13</bdi> <bdi>#813 [NDO]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>54.65×</bdi></strong><br><small data-metric="prob"><bdi>1.83%</bdi></small></td><td data-metric="group"><bdi>24.90%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.29×</bdi></td><td data-metric="pcs"><bdi>742.3</bdi></td><td data-metric="top4"><bdi>928.5</bdi></td><td data-metric="dtv"><bdi>86.1</bdi><br><small><bdi>11.70B</bdi></small></td><td data-metric="quad"><bdi>30/30</bdi></td><td data-metric="mt"><bdi>2939</bdi></td><td data-metric="kvk"><bdi>#17 / 86%</bdi></td><td data-metric="flag"><bdi>4</bdi></td></tr><tr data-seed="7"><td>7</td><td><span class="stamp mark-kike">×</span><br><small><span data-i18n="mark6">警戒</span></small></td><th scope="row" class="text-left"><bdi>S07</bdi> <bdi>#816 [EGG]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>60.79×</bdi></strong><br><small data-metric="prob"><bdi>1.65%</bdi></small></td><td data-metric="group"><bdi>26.80%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.26×</bdi></td><td data-metric="pcs"><bdi>731.9</bdi></td><td data-metric="top4"><bdi>978.2</bdi></td><td data-metric="dtv"><bdi>87.6</bdi><br><small><bdi>11.94B</bdi></small></td><td data-metric="quad"><bdi>27/30</bdi></td><td data-metric="mt"><bdi>3251</bdi></td><td data-metric="kvk"><bdi>#82 / 79%</bdi></td><td data-metric="flag"><bdi>0</bdi></td></tr><tr data-seed="3"><td>8</td><td><span class="stamp mark-kike">×</span><br><small><span data-i18n="mark6">警戒</span></small></td><th scope="row" class="text-left"><bdi>S03</bdi> <bdi>#791 [NwO]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>75.57×</bdi></strong><br><small data-metric="prob"><bdi>1.32%</bdi></small></td><td data-metric="group"><bdi>15.51%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.21×</bdi></td><td data-metric="pcs"><bdi>737.5</bdi></td><td data-metric="top4"><bdi>978.0</bdi></td><td data-metric="dtv"><bdi>88.0</bdi><br><small><bdi>12.22B</bdi></small></td><td data-metric="quad"><bdi>30/30</bdi></td><td data-metric="mt"><bdi>3351</bdi></td><td data-metric="kvk"><bdi>#977 / 50%</bdi></td><td data-metric="flag"><bdi>0</bdi></td></tr><tr data-seed="10"><td>9</td><td><span class="stamp mark-none">無</span><br><small><span data-i18n="mark9">見送り</span></small></td><th scope="row" class="text-left"><bdi>S10</bdi> <bdi>#915 [915]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small></th><td><strong class="odds-fair" data-metric="fair"><bdi>160.19×</bdi></strong><br><small data-metric="prob"><bdi>0.62%</bdi></small></td><td data-metric="group"><bdi>6.28%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.10×</bdi></td><td data-metric="pcs"><bdi>792.1</bdi></td><td data-metric="top4"><bdi>931.5</bdi></td><td data-metric="dtv"><bdi>86.9</bdi><br><small><bdi>12.18B</bdi></small></td><td data-metric="quad"><bdi>29/30</bdi></td><td data-metric="mt"><bdi>3040</bdi></td><td data-metric="kvk"><bdi>#829 / 54%</bdi></td><td data-metric="flag"><bdi>0</bdi></td></tr><tr data-seed="16"><td>10</td><td><span class="stamp mark-none">無</span><br><small><span data-i18n="mark9">見送り</span></small></td><th scope="row" class="text-left"><bdi>S16</bdi> <bdi>#875 [INV]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>293.72×</bdi></strong><br><small data-metric="prob"><bdi>0.34%</bdi></small></td><td data-metric="group"><bdi>7.70%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.05×</bdi></td><td data-metric="pcs"><bdi>714.8</bdi></td><td data-metric="top4"><bdi>966.0</bdi></td><td data-metric="dtv"><bdi>87.6</bdi><br><small><bdi>12.25B</bdi></small></td><td data-metric="quad"><bdi>27/30</bdi></td><td data-metric="mt"><bdi>3289</bdi></td><td data-metric="kvk"><bdi>#1088 / 50%</bdi></td><td data-metric="flag"><bdi>0</bdi></td></tr><tr data-seed="4"><td>11</td><td><span class="stamp mark-none">無</span><br><small><span data-i18n="mark9">見送り</span></small></td><th scope="row" class="text-left"><bdi>S04</bdi> <bdi>#833 [TRX]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>353.70×</bdi></strong><br><small data-metric="prob"><bdi>0.28%</bdi></small></td><td data-metric="group"><bdi>6.56%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.05×</bdi></td><td data-metric="pcs"><bdi>729.6</bdi></td><td data-metric="top4"><bdi>925.2</bdi></td><td data-metric="dtv"><bdi>85.6</bdi><br><small><bdi>11.77B</bdi></small></td><td data-metric="quad"><bdi>28/30</bdi></td><td data-metric="mt"><bdi>3174</bdi></td><td data-metric="kvk"><bdi>#597 / 57%</bdi></td><td data-metric="flag"><bdi>9</bdi></td></tr><tr data-seed="12"><td>12</td><td><span class="stamp mark-none">無</span><br><small><span data-i18n="mark9">見送り</span></small></td><th scope="row" class="text-left"><bdi>S12</bdi> <bdi>#847 [ACD]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small></th><td><strong class="odds-fair" data-metric="fair"><bdi>455.00×</bdi></strong><br><small data-metric="prob"><bdi>0.22%</bdi></small></td><td data-metric="group"><bdi>3.98%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.04×</bdi></td><td data-metric="pcs"><bdi>749.8</bdi></td><td data-metric="top4"><bdi>939.5</bdi></td><td data-metric="dtv"><bdi>83.0</bdi><br><small><bdi>10.47B</bdi></small></td><td data-metric="quad"><bdi>29/30</bdi></td><td data-metric="mt"><bdi>3008</bdi></td><td data-metric="kvk"><bdi>#379 / 64%</bdi></td><td data-metric="flag"><bdi>23</bdi></td></tr><tr data-seed="8"><td>13</td><td><span class="stamp mark-none">無</span><br><small><span data-i18n="mark9">見送り</span></small></td><th scope="row" class="text-left"><bdi>S08</bdi> <bdi>#790 [LmN]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>987.63×</bdi></strong><br><small data-metric="prob"><bdi>0.10%</bdi></small></td><td data-metric="group"><bdi>6.10%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.02×</bdi></td><td data-metric="pcs"><bdi>677.6</bdi></td><td data-metric="top4"><bdi>947.8</bdi></td><td data-metric="dtv"><bdi>87.0</bdi><br><small><bdi>11.71B</bdi></small></td><td data-metric="quad"><bdi>23/30</bdi></td><td data-metric="mt"><bdi>3276</bdi></td><td data-metric="kvk"><bdi>#281 / 64%</bdi></td><td data-metric="flag"><bdi>0</bdi></td></tr><tr data-seed="2"><td>14</td><td><span class="stamp mark-none">無</span><br><small><span data-i18n="mark9">見送り</span></small></td><th scope="row" class="text-left"><bdi>S02</bdi> <bdi>#841 [KOR]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>1,020.51×</bdi></strong><br><small data-metric="prob"><bdi>0.10%</bdi></small></td><td data-metric="group"><bdi>3.53%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.02×</bdi></td><td data-metric="pcs"><bdi>705.3</bdi></td><td data-metric="top4"><bdi>895.0</bdi></td><td data-metric="dtv"><bdi>86.9</bdi><br><small><bdi>11.64B</bdi></small></td><td data-metric="quad"><bdi>30/30</bdi></td><td data-metric="mt"><bdi>3095</bdi></td><td data-metric="kvk"><bdi>#1787 / 43%</bdi></td><td data-metric="flag"><bdi>0</bdi></td></tr><tr data-seed="14"><td>15</td><td><span class="stamp mark-none">無</span><br><small><span data-i18n="mark9">見送り</span></small></td><th scope="row" class="text-left"><bdi>S14</bdi> <bdi>#823 [ROK]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>28,457.68×</bdi></strong><br><small data-metric="prob"><bdi>0.00%</bdi></small></td><td data-metric="group"><bdi>0.88%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.00×</bdi></td><td data-metric="pcs"><bdi>642.9</bdi></td><td data-metric="top4"><bdi>931.8</bdi></td><td data-metric="dtv"><bdi>87.0</bdi><br><small><bdi>12.62B</bdi></small></td><td data-metric="quad"><bdi>13/30</bdi></td><td data-metric="mt"><bdi>3400</bdi></td><td data-metric="kvk"><bdi>#1248 / 50%</bdi></td><td data-metric="flag"><bdi>3</bdi></td></tr><tr data-seed="6"><td>16</td><td><span class="stamp mark-none">無</span><br><small><span data-i18n="mark9">見送り</span></small></td><th scope="row" class="text-left"><bdi>S06</bdi> <bdi>#824 [MMR]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small></th><td><strong class="odds-fair" data-metric="fair"><bdi>176,244.88×</bdi></strong><br><small data-metric="prob"><bdi>0.00%</bdi></small></td><td data-metric="group"><bdi>0.49%</bdi></td><td class="ev-minus" data-metric="ev"><bdi>0.00×</bdi></td><td data-metric="pcs"><bdi>642.7</bdi></td><td data-metric="top4"><bdi>857.8</bdi></td><td data-metric="dtv"><bdi>85.2</bdi><br><small><bdi>10.38B</bdi></small></td><td data-metric="quad"><bdi>17/30</bdi></td><td data-metric="mt"><bdi>2860</bdi></td><td data-metric="kvk"><bdi>#769 / 50%</bdi></td><td data-metric="flag"><bdi>11</bdi></td></tr></tbody></table></div>
+<p class="plot-note"><span data-i18n="duplicate">所属30名未満の枠は、王国内の戦力上位5同盟（50億以上）の名簿を重複除外し、上位30名で評価。実際の合流も登録者も未確認です。単独シナリオでは対象枠すべてを現同盟の実測名簿に戻します。</span></p></section>
+<section class="block16-section box-panel"><h2 class="panel-title"><span data-i18n="proxy">合流未確認・予測不安定</span></h2><p><span data-i18n="proxy_note">所属30名未満の枠は、王国内の戦力上位5同盟（50億以上）の名簿を重複除外し、上位30名で評価。実際の合流も登録者も未確認です。単独シナリオでは対象枠すべてを現同盟の実測名簿に戻します。</span></p><article class="comment-box" data-proxy="9"><h3><bdi>#850 [850]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small> · <bdi>1</bdi> <span data-i18n="listed_members">名（API実測）</span></h3><p><strong><span data-i18n="solo">現同盟単独</span></strong> <bdi>PCS 8.0 · DTV 0.0</bdi> · <span data-i18n="match_probability">対戦勝率</span> <bdi>8.22%</bdi> · <span data-i18n="group_probability">A〜D突破率</span> <bdi>0.00%</bdi> · <span data-i18n="probability">優勝確率</span> <bdi>0.00%</bdi></p><p><strong><span data-i18n="pooled">王国基準（合流想定）</span></strong> <bdi>PCS 906.4 · DTV 91.7</bdi> · <span data-i18n="match_probability">対戦勝率</span> <bdi>86.66%</bdi> · <span data-i18n="group_probability">A〜D突破率</span> <bdi>73.34%</bdi> · <span data-i18n="probability">優勝確率</span> <bdi>38.24%</bdi></p></article><article class="comment-box" data-proxy="10"><h3><bdi>#915 [915]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small> · <bdi>5</bdi> <span data-i18n="listed_members">名（API実測）</span></h3><p><strong><span data-i18n="solo">現同盟単独</span></strong> <bdi>PCS 186.0 · DTV 0.0</bdi> · <span data-i18n="match_probability">対戦勝率</span> <bdi>91.78%</bdi> · <span data-i18n="group_probability">A〜D突破率</span> <bdi>0.01%</bdi> · <span data-i18n="probability">優勝確率</span> <bdi>0.00%</bdi></p><p><strong><span data-i18n="pooled">王国基準（合流想定）</span></strong> <bdi>PCS 792.1 · DTV 86.9</bdi> · <span data-i18n="match_probability">対戦勝率</span> <bdi>13.34%</bdi> · <span data-i18n="group_probability">A〜D突破率</span> <bdi>6.28%</bdi> · <span data-i18n="probability">優勝確率</span> <bdi>0.62%</bdi></p></article><article class="comment-box" data-proxy="12"><h3><bdi>#847 [ACD]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small> · <bdi>4</bdi> <span data-i18n="listed_members">名（API実測）</span></h3><p><strong><span data-i18n="solo">現同盟単独</span></strong> <bdi>PCS 27.0 · DTV 0.0</bdi> · <span data-i18n="match_probability">対戦勝率</span> <bdi>0.00%</bdi> · <span data-i18n="group_probability">A〜D突破率</span> <bdi>0.00%</bdi> · <span data-i18n="probability">優勝確率</span> <bdi>0.00%</bdi></p><p><strong><span data-i18n="pooled">王国基準（合流想定）</span></strong> <bdi>PCS 749.8 · DTV 83.0</bdi> · <span data-i18n="match_probability">対戦勝率</span> <bdi>30.69%</bdi> · <span data-i18n="group_probability">A〜D突破率</span> <bdi>3.98%</bdi> · <span data-i18n="probability">優勝確率</span> <bdi>0.22%</bdi></p></article><article class="comment-box" data-proxy="15"><h3><bdi>#826 [826]</bdi> <small class="badge-full"><span data-i18n="legion">軍団</span> 1</small> <small class="badge-shell"><span data-i18n="proxy">合流未確認・予測不安定</span></small> · <bdi>1</bdi> <span data-i18n="listed_members">名（API実測）</span></h3><p><strong><span data-i18n="solo">現同盟単独</span></strong> <bdi>PCS 450.0 · DTV 34.8</bdi> · <span data-i18n="match_probability">対戦勝率</span> <bdi>0.01%</bdi> · <span data-i18n="group_probability">A〜D突破率</span> <bdi>0.00%</bdi> · <span data-i18n="probability">優勝確率</span> <bdi>0.00%</bdi></p><p><strong><span data-i18n="pooled">王国基準（合流想定）</span></strong> <bdi>PCS 826.8 · DTV 91.8</bdi> · <span data-i18n="match_probability">対戦勝率</span> <bdi>83.32%</bdi> · <span data-i18n="group_probability">A〜D突破率</span> <bdi>66.53%</bdi> · <span data-i18n="probability">優勝確率</span> <bdi>18.38%</bdi></p></article></section>
+<section class="block16-section box-panel"><h2 class="panel-title"><span data-i18n="block">第16ブロック・キングランク</span> · <span data-i18n="map_title">2軸戦力マップ</span></h2>
+<p class="plot-note"><span data-i18n="map_note">横軸 PCS30・縦軸 DTV30。円の大きさは基本ケースの優勝確率。Sは同盟単独、ASは王国全体を使った参考シナリオ。</span></p>
+<div class="axis-chart"><div><span data-i18n="chart_y">DTV30（出撃可能兵量・兵質）</span></div>
+<div class="plot"><span class="tick-x" style="left:0.0000%">400</span><span class="tick-x" style="left:16.6667%">500</span><span class="tick-x" style="left:33.3333%">600</span><span class="tick-x" style="left:50.0000%">700</span><span class="tick-x" style="left:66.6667%">800</span><span class="tick-x" style="left:83.3333%">900</span><span class="tick-x" style="left:100.0000%">1000</span><span class="tick-y" style="bottom:0.0000%">30</span><span class="tick-y" style="bottom:14.2857%">40</span><span class="tick-y" style="bottom:28.5714%">50</span><span class="tick-y" style="bottom:42.8571%">60</span><span class="tick-y" style="bottom:57.1429%">70</span><span class="tick-y" style="bottom:71.4286%">80</span><span class="tick-y" style="bottom:85.7143%">90</span><span class="tick-y" style="bottom:100.0000%">100</span><button class="plot-point" type="button" data-seed="9" data-description="850 [850] S09 · PCS30 906.4 · DTV30 91.7 · 38.24%" aria-label="850 [850] S09 · PCS30 906.4 · DTV30 91.7 · 38.24%" title="850 [850] S09 · PCS30 906.4 · DTV30 91.7 · 38.24%" style="left:84.400%;bottom:88.143%;--size:30.55px"></button><button class="plot-point" type="button" data-seed="1" data-description="900 [24K] S01 · PCS30 838.3 · DTV30 85.8 · 25.68%" aria-label="900 [24K] S01 · PCS30 838.3 · DTV30 85.8 · 25.68%" title="900 [24K] S01 · PCS30 838.3 · DTV30 85.8 · 25.68%" style="left:73.050%;bottom:79.714%;--size:27.20px"></button><button class="plot-point" type="button" data-seed="15" data-description="826 [826] S15 · PCS30 826.8 · DTV30 91.8 · 18.38%" aria-label="826 [826] S15 · PCS30 826.8 · DTV30 91.8 · 18.38%" title="826 [826] S15 · PCS30 826.8 · DTV30 91.8 · 18.38%" style="left:71.133%;bottom:88.286%;--size:24.86px"></button><button class="plot-point" type="button" data-seed="5" data-description="761 [aWp] S05 · PCS30 730.5 · DTV30 90.5 · 8.72%" aria-label="761 [aWp] S05 · PCS30 730.5 · DTV30 90.5 · 8.72%" title="761 [aWp] S05 · PCS30 730.5 · DTV30 90.5 · 8.72%" style="left:55.083%;bottom:86.429%;--size:20.86px"></button><button class="plot-point" type="button" data-seed="11" data-description="848 [007] S11 · PCS30 762.5 · DTV30 86.0 · 2.51%" aria-label="848 [007] S11 · PCS30 762.5 · DTV30 86.0 · 2.51%" title="848 [007] S11 · PCS30 762.5 · DTV30 86.0 · 2.51%" style="left:60.417%;bottom:80.000%;--size:16.76px"></button><button class="plot-point" type="button" data-seed="13" data-description="813 [NDO] S13 · PCS30 742.3 · DTV30 86.1 · 1.83%" aria-label="813 [NDO] S13 · PCS30 742.3 · DTV30 86.1 · 1.83%" title="813 [NDO] S13 · PCS30 742.3 · DTV30 86.1 · 1.83%" style="left:57.050%;bottom:80.143%;--size:16.06px"></button><button class="plot-point" type="button" data-seed="7" data-description="816 [EGG] S07 · PCS30 731.9 · DTV30 87.6 · 1.65%" aria-label="816 [EGG] S07 · PCS30 731.9 · DTV30 87.6 · 1.65%" title="816 [EGG] S07 · PCS30 731.9 · DTV30 87.6 · 1.65%" style="left:55.317%;bottom:82.286%;--size:15.85px"></button><button class="plot-point" type="button" data-seed="3" data-description="791 [NwO] S03 · PCS30 737.5 · DTV30 88.0 · 1.32%" aria-label="791 [NwO] S03 · PCS30 737.5 · DTV30 88.0 · 1.32%" title="791 [NwO] S03 · PCS30 737.5 · DTV30 88.0 · 1.32%" style="left:56.250%;bottom:82.857%;--size:15.45px"></button><button class="plot-point" type="button" data-seed="10" data-description="915 [915] S10 · PCS30 792.1 · DTV30 86.9 · 0.62%" aria-label="915 [915] S10 · PCS30 792.1 · DTV30 86.9 · 0.62%" title="915 [915] S10 · PCS30 792.1 · DTV30 86.9 · 0.62%" style="left:65.350%;bottom:81.286%;--size:14.37px"></button><button class="plot-point" type="button" data-seed="16" data-description="875 [INV] S16 · PCS30 714.8 · DTV30 87.6 · 0.34%" aria-label="875 [INV] S16 · PCS30 714.8 · DTV30 87.6 · 0.34%" title="875 [INV] S16 · PCS30 714.8 · DTV30 87.6 · 0.34%" style="left:52.467%;bottom:82.286%;--size:13.75px"></button><button class="plot-point" type="button" data-seed="4" data-description="833 [TRX] S04 · PCS30 729.6 · DTV30 85.6 · 0.28%" aria-label="833 [TRX] S04 · PCS30 729.6 · DTV30 85.6 · 0.28%" title="833 [TRX] S04 · PCS30 729.6 · DTV30 85.6 · 0.28%" style="left:54.933%;bottom:79.429%;--size:13.60px"></button><button class="plot-point" type="button" data-seed="12" data-description="847 [ACD] S12 · PCS30 749.8 · DTV30 83.0 · 0.22%" aria-label="847 [ACD] S12 · PCS30 749.8 · DTV30 83.0 · 0.22%" title="847 [ACD] S12 · PCS30 749.8 · DTV30 83.0 · 0.22%" style="left:58.300%;bottom:75.714%;--size:13.41px"></button><button class="plot-point" type="button" data-seed="8" data-description="790 [LmN] S08 · PCS30 677.6 · DTV30 87.0 · 0.10%" aria-label="790 [LmN] S08 · PCS30 677.6 · DTV30 87.0 · 0.10%" title="790 [LmN] S08 · PCS30 677.6 · DTV30 87.0 · 0.10%" style="left:46.267%;bottom:81.429%;--size:12.95px"></button><button class="plot-point" type="button" data-seed="2" data-description="841 [KOR] S02 · PCS30 705.3 · DTV30 86.9 · 0.10%" aria-label="841 [KOR] S02 · PCS30 705.3 · DTV30 86.9 · 0.10%" title="841 [KOR] S02 · PCS30 705.3 · DTV30 86.9 · 0.10%" style="left:50.883%;bottom:81.286%;--size:12.94px"></button><button class="plot-point" type="button" data-seed="14" data-description="823 [ROK] S14 · PCS30 642.9 · DTV30 87.0 · 0.00%" aria-label="823 [ROK] S14 · PCS30 642.9 · DTV30 87.0 · 0.00%" title="823 [ROK] S14 · PCS30 642.9 · DTV30 87.0 · 0.00%" style="left:40.483%;bottom:81.429%;--size:12.18px"></button><button class="plot-point" type="button" data-seed="6" data-description="824 [MMR] S06 · PCS30 642.7 · DTV30 85.2 · 0.00%" aria-label="824 [MMR] S06 · PCS30 642.7 · DTV30 85.2 · 0.00%" title="824 [MMR] S06 · PCS30 642.7 · DTV30 85.2 · 0.00%" style="left:40.450%;bottom:78.857%;--size:12.07px"></button></div>
+<div class="axis-x"><span data-i18n="chart_x">PCS30（純粋戦闘密度）</span></div></div>
+<p class="chart-detail" role="status" dir="ltr"></p></section>
+<section class="block16-section box-panel" id="glossary"><h2 class="panel-title"><span data-i18n="method">予想の前提</span></h2>
+<div class="glossary-grid"><article class="gloss-card"><h4><span data-i18n="gloss_h0">PCS（Pure Combat Quality Score / 0–1000）</span></h4><div data-verified-html="gloss_b0"><strong>定義:</strong> 秘境試練6塔の到達階数をキャップ正規化（護符CC 26% / 英雄Col 20% / 領主装備MF 18% / 研究KN 14% / 総合RS 14% / ペットFoL 8%）し、火炉中立化 <code>migrant_score</code> を12%ブレンドした「1兵あたりの純粋戦闘密度」。<br><strong>生かし方:</strong> 兵数水増しに騙されず、集結・駐屯で勝てる「砲台の質」を見抜く。</div></article><article class="gloss-card"><h4><span data-i18n="gloss_h1">DTV / EGC_M（出撃兵量・実効戦力）</span></h4><div data-verified-html="gloss_b1"><strong>定義:</strong> 非線形ベース控除 <code>BasePower = 5.79 × wps^0.318</code> で建物・研究等の非兵士戦力を引き算し、推定兵士戦力と兵質(TG)から算出した継戦兵量スコア（0–100）。<code>EGC_M</code> は TG8換算の実効戦力 <code>Troop_M × (TG/8)²</code>。<br><strong>生かし方:</strong> 60分間の長期消耗戦で「兵切れせず増援し続けられるか」を測る。</div></article><article class="gloss-card"><h4><span data-i18n="gloss_h2">A象限人数（砲台エース層 / PCS≥600 &amp; DTV≥60）</span></h4><div data-verified-html="gloss_b2"><strong>定義:</strong> 戦闘密度・兵量ともに前線基準を超える主力メンバー数（上位30名中）。<br><strong>生かし方:</strong> 聖剣の戦いは11施設＋4地下倉庫の同時展開戦。A象限が25〜30名揃う同盟は多方面同時制圧で崩れない。</div></article></div>
+<p class="plot-note"><span data-i18n="glossary">フェアオッズは「1 ÷ 優勝確率」、16倍の期待払戻倍率は「優勝確率 × 16」です。優勝確率は小数に直して計算します。</span></p><p class="caution-callout"><span data-i18n="caution">MightPulseなどの公開APIの取得時点から移籍や合流があると、実際の出場選手が変わる場合があります。予想は参考としてご覧ください。</span></p></section>
+</main>
+<script>
+const packs = {"ja": {"paper": "聖剣スポーツ", "block": "第16ブロック・キングランク", "forecast": "昇格戦とリーグ優勝予想", "picks": "注目の4枠", "opening": "昇格戦 残り8カード", "standings": "全16枠の予想", "slot": "枠", "alliance": "同盟", "legion": "軍団", "probability": "優勝確率", "odds": "フェアオッズ", "payout": "期待払戻倍率", "rating": "戦力指数", "method": "予想の前提", "snapshot": "データ取得時点", "previous": "第14ブロック", "model": "A〜Dの各勝者が本戦へ。神話側に入る2グループが未確定のため、6通りを等重みで集計したモデル推定です。16倍は配当の仮定です。", "sensitivity": "戦力差が勝敗に出にくい想定や本戦の組み分けでも、優勝確率は変わります。", "caution": "MightPulseなどの公開APIの取得時点から移籍や合流があると、実際の出場選手が変わる場合があります。予想は参考としてご覧ください。", "glossary": "フェアオッズは「1 ÷ 優勝確率」、16倍の期待払戻倍率は「優勝確率 × 16」です。優勝確率は小数に直して計算します。", "duplicate": "所属30名未満の枠は、王国内の戦力上位5同盟（50億以上）の名簿を重複除外し、上位30名で評価。実際の合流も登録者も未確認です。単独シナリオでは対象枠すべてを現同盟の実測名簿に戻します。", "proxy": "合流未確認・予測不安定", "solo": "現同盟単独", "pooled": "王国基準（合流想定）", "match_probability": "対戦勝率", "group_probability": "A〜D突破率", "listed_members": "名（API実測）", "proxy_note": "所属30名未満の枠は、王国内の戦力上位5同盟（50億以上）の名簿を重複除外し、上位30名で評価。実際の合流も登録者も未確認です。単独シナリオでは対象枠すべてを現同盟の実測名簿に戻します。", "map_note": "横軸 PCS30・縦軸 DTV30。円の大きさは基本ケースの優勝確率。Sは同盟単独、ASは王国全体を使った参考シナリオ。", "th_rank": "順", "th_mark": "印", "th_fair": "フェアオッズ", "th_scen": "A〜D突破率", "th_ev": "16x期待値", "th_pcs": "PCS30", "th_pcs_sub": "(単一/鯖AS)", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "A象限", "th_quada_sub": "(30名中)", "th_mt1": "Top1 MT", "th_kvk": "KvK戦闘", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "chart_x": "PCS30（純粋戦闘密度）", "chart_y": "DTV30（出撃可能兵量・兵質）", "gogai": "号外", "mark1": "本命", "mark2": "対抗", "mark3": "単穴", "mark4": "特注", "mark5": "連下", "mark6": "警戒", "mark9": "見送り", "map_title": "2軸戦力マップ", "gloss_h0": "PCS（Pure Combat Quality Score / 0–1000）", "gloss_b0": "\u003cstrong>定義:\u003c/strong> 秘境試練6塔の到達階数をキャップ正規化（護符CC 26% / 英雄Col 20% / 領主装備MF 18% / 研究KN 14% / 総合RS 14% / ペットFoL 8%）し、火炉中立化 \u003ccode>migrant_score\u003c/code> を12%ブレンドした「1兵あたりの純粋戦闘密度」。\u003cbr>\u003cstrong>生かし方:\u003c/strong> 兵数水増しに騙されず、集結・駐屯で勝てる「砲台の質」を見抜く。", "gloss_h1": "DTV / EGC_M（出撃兵量・実効戦力）", "gloss_b1": "\u003cstrong>定義:\u003c/strong> 非線形ベース控除 \u003ccode>BasePower = 5.79 × wps^0.318\u003c/code> で建物・研究等の非兵士戦力を引き算し、推定兵士戦力と兵質(TG)から算出した継戦兵量スコア（0–100）。\u003ccode>EGC_M\u003c/code> は TG8換算の実効戦力 \u003ccode>Troop_M × (TG/8)²\u003c/code>。\u003cbr>\u003cstrong>生かし方:\u003c/strong> 60分間の長期消耗戦で「兵切れせず増援し続けられるか」を測る。", "gloss_h2": "A象限人数（砲台エース層 / PCS≥600 & DTV≥60）", "gloss_b2": "\u003cstrong>定義:\u003c/strong> 戦闘密度・兵量ともに前線基準を超える主力メンバー数（上位30名中）。\u003cbr>\u003cstrong>生かし方:\u003c/strong> 聖剣の戦いは11施設＋4地下倉庫の同時展開戦。A象限が25〜30名揃う同盟は多方面同時制圧で崩れない。"}, "en": {"paper": "Swordland Sports", "block": "Block 16 · King Rank", "forecast": "Qualifier and league title forecast", "picks": "Four leading picks", "opening": "Eight remaining qualifier matches", "standings": "Forecast for all 16 slots", "slot": "Slot", "alliance": "Alliance", "legion": "Legion", "probability": "Title probability", "odds": "Fair odds", "payout": "Expected gross return", "rating": "Power rating", "method": "Model assumptions", "snapshot": "Data snapshot", "previous": "Block 14", "model": "Each A–D winner reaches the Championship. The two Mythic entries are unknown, so the model weights all six possible group pairings equally. The 16× payout is hypothetical.", "sensitivity": "Title probabilities vary with the Championship seeding and how strongly rating differences affect match results.", "caution": "The actual entrants may differ from the MightPulse and other public API snapshots due to transfers or roster changes. Treat the estimates as a guide.", "glossary": "Fair odds equal 1 divided by title probability. At a 16× payout, the expected gross return multiplier equals title probability multiplied by 16. Use the probability as a decimal.", "duplicate": "For slots with fewer than 30 listed members, take the top 30 after deduplicating the rosters of up to five strongest kingdom alliances with at least 5B power. Transfers and registered entrants are unconfirmed. The solo scenario uses each affected alliance’s current roster.", "proxy": "Roster unconfirmed · uncertain forecast", "solo": "Current alliance only", "pooled": "Kingdom roster scenario", "match_probability": "Match win", "group_probability": "Group win", "listed_members": "listed API members", "proxy_note": "For slots with fewer than 30 listed members, take the top 30 after deduplicating the rosters of up to five strongest kingdom alliances with at least 5B power. Transfers and registered entrants are unconfirmed. The solo scenario uses each affected alliance’s current roster.", "map_note": "PCS30 × DTV30. Bubble size shows baseline title probability. S uses the alliance snapshot; AS is a kingdom-wide reference scenario.", "th_rank": "#", "th_mark": "Pick", "th_fair": "Fair Odds", "th_scen": "Group win", "th_ev": "16x EV", "th_pcs": "PCS30", "th_pcs_sub": "(Solo/AS)", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "Quad A", "th_quada_sub": "(of 30)", "th_mt1": "Top1 MT", "th_kvk": "KvK Battle", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "chart_x": "PCS30 (Pure Combat Density)", "chart_y": "DTV30 (Deployable Volume & Tier)", "gogai": "REVISED", "mark1": "Top", "mark2": "2nd", "mark3": "3rd", "mark4": "Dark", "mark5": "5th", "mark6": "Watch", "mark9": "Pass", "map_title": "Two-axis power map", "gloss_h0": "PCS (Pure Combat Quality Score / 0–1000)", "gloss_b0": "\u003cstrong>Def:\u003c/strong> Cap-normalized 6-tower Mystic Trial progress (CC 26% / Col 20% / MF 18% / KN 14% / RS 14% / FoL 8%) blended 88/12 with stove-neutralized \u003ccode>migrant_score\u003c/code>.\u003cbr>\u003cstrong>Use:\u003c/strong> Measures true per-troop combat multiplier without troop-bloat distortion.", "gloss_h1": "DTV / EGC_M (Deployable Volume & Quality)", "gloss_b1": "\u003cstrong>Def:\u003c/strong> Non-linear base deduction \u003ccode>BasePower = 5.79 × wps^0.318\u003c/code> isolates troop power and TG tier quality. \u003ccode>EGC_M = Troop_M × (TG/8)²\u003c/code>.\u003cbr>\u003cstrong>Use:\u003c/strong> Gauges 60-minute endurance without running dry of troops.", "gloss_h2": "Quad-A Count (Frontline Aces / PCS≥600 & DTV≥60)", "gloss_b2": "\u003cstrong>Def:\u003c/strong> Number of top-30 members meeting both combat-quality and troop-volume thresholds.\u003cbr>\u003cstrong>Use:\u003c/strong> Swordland has 11 buildings + 4 undercellars; 25–30 Quad-A players dominate multi-front control."}, "ar": {"paper": "أخبار دوري أرض السيف", "block": "المجموعة 16 · رتبة الملك", "forecast": "توقعات التأهل ولقب الدوري", "picks": "أبرز أربعة مرشحين", "opening": "مباريات التأهل الثماني المتبقية", "standings": "توقعات جميع المشاركين", "slot": "المقعد", "alliance": "التحالف", "legion": "الفيلق", "probability": "احتمال الفوز باللقب", "odds": "المضاعف العادل", "payout": "العائد الإجمالي المتوقع", "rating": "مؤشر القوة", "method": "افتراضات النموذج", "snapshot": "وقت جمع البيانات", "previous": "المجموعة 14", "model": "يتأهل فائز كل مجموعة من A إلى D. لعدم تأكد مقعدي الفئة الأسطورية، نساوي بين الاحتمالات الستة للتوزيع. عائد 16 ضعفًا افتراضي.", "sensitivity": "يتغير احتمال اللقب حسب توزيع الفرق ومدى تأثير فرق القوة على النتيجة.", "caution": "قد تختلف التشكيلات الفعلية عن بيانات MightPulse وغيرها من الواجهات العامة بسبب انتقال اللاعبين أو تغيّر القوائم منذ جمع البيانات. تُستخدم هذه التقديرات للاسترشاد.", "glossary": "معامل العائد العادل هو 1 مقسومًا على احتمال التتويج. وعند افتراض عائد قدره 16 ضعفًا، يكون معامل العائد الإجمالي المتوقع هو احتمال التتويج مضروبًا في 16. يُكتب الاحتمال في الحساب على صورة عدد عشري.", "duplicate": "للتشكيلات التي تضم أقل من 30 عضوًا، نستخدم أفضل 30 بعد إزالة التكرار من قوائم أقوى خمسة تحالفات في المملكة بقوة لا تقل عن 5 مليارات. الانتقالات والتسجيل غير مؤكدين. السيناريو المنفرد يستخدم قائمة كل تحالف الحالية.", "proxy": "التشكيلة غير مؤكدة · توقع غير مستقر", "solo": "التحالف الحالي وحده", "pooled": "سيناريو تشكيلة المملكة", "match_probability": "فوز المباراة", "group_probability": "فوز المجموعة", "listed_members": "عضوًا في بيانات API", "proxy_note": "للتشكيلات التي تضم أقل من 30 عضوًا، نستخدم أفضل 30 بعد إزالة التكرار من قوائم أقوى خمسة تحالفات في المملكة بقوة لا تقل عن 5 مليارات. الانتقالات والتسجيل غير مؤكدين. السيناريو المنفرد يستخدم قائمة كل تحالف الحالية.", "map_note": "PCS30 × DTV30. حجم الدائرة يوضح احتمال اللقب الأساسي. S لبيانات التحالف، وAS سيناريو مرجعي على مستوى المملكة.", "th_rank": "#", "th_mark": "رمز", "th_fair": "العادل", "th_scen": "فوز المجموعة", "th_ev": "قيمة 16x", "th_pcs": "PCS30", "th_pcs_sub": "(منفرد/مملكة)", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "فئة A", "th_quada_sub": "(من 30)", "th_mt1": "Top1 MT", "th_kvk": "قتال KvK", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "chart_x": "PCS30 (كثافة القتال النقية)", "chart_y": "DTV30 (حجم وجودة القوات)", "gogai": "منقح", "mark1": "أساسي", "mark2": "منافس", "mark3": "مركز", "mark4": "حصان", "mark5": "خامس", "mark6": "حذر", "mark9": "تجاهل", "map_title": "خريطة القوة ثنائية المحور", "gloss_h0": "PCS (جودة القتال النقية / 0–1000)", "gloss_b0": "\u003cstrong>التعريف:\u003c/strong> تطبيع الأبراج الستة (CC 26% / Col 20% / MF 18% / KN 14% / RS 14% / FoL 8%) مع دمج \u003ccode>migrant_score\u003c/code> بنسبة 12%.\u003cbr>\u003cstrong>الفائدة:\u003c/strong> يقيس قوة الجندي الحقيقية.", "gloss_h1": "DTV / EGC_M (الحجم الفعلي للقوات)", "gloss_b1": "\u003cstrong>التعريف:\u003c/strong> عزل قوة الجنود عبر \u003ccode>5.79 × wps^0.318\u003c/code> وحساب \u003ccode>EGC_M = Troop_M × (TG/8)²\u003c/code>.\u003cbr>\u003cstrong>الفائدة:\u003c/strong> يقيس القدرة على الصمود 60 دقيقة.", "gloss_h2": "فئة A (نخبة الميدان / PCS≥600 & DTV≥60)", "gloss_b2": "\u003cstrong>التعريف:\u003c/strong> عدد الأعضاء من أفضل 30 الذين يجتازون حدي الجودة والحجم.\u003cbr>\u003cstrong>الفائدة:\u003c/strong> السيطرة المتزامنة على المنشآت الـ11."}, "tr": {"paper": "Kılıç Diyarı Spor", "block": "16. Blok · Kral Rütbesi", "forecast": "Elemeler ve lig şampiyonluğu tahmini", "picks": "Öne çıkan dört aday", "opening": "Kalan sekiz eleme maçı", "standings": "16 katılımın tahmini", "slot": "Sıra", "alliance": "İttifak", "legion": "Lejyon", "probability": "Şampiyonluk olasılığı", "odds": "Adil oran", "payout": "Beklenen brüt getiri", "rating": "Güç puanı", "method": "Model varsayımları", "snapshot": "Veri zamanı", "previous": "14. Blok", "model": "A–D grup birincileri finallere gider. Mitik gruba girecek iki ekip belirsiz; altı olası dağılım eşit ağırlıklıdır. 16× varsayımsal ödemedir.", "sensitivity": "Şampiyonluk olasılığı, eşleşmelere ve güç farkının maç sonuçlarına etkisine bağlıdır.", "caution": "Transferler ve kadro değişiklikleri nedeniyle fiilen katılan oyuncular MightPulse ve diğer açık API’lerde veri alındığı anda görünen kadrolardan farklı olabilir. Tahminleri referans olarak değerlendirin.", "glossary": "Adil oran, 1’in şampiyonluk olasılığına bölünmesiyle bulunur. Ödeme 16 kat ise beklenen brüt geri dönüş çarpanı, şampiyonluk olasılığı ile 16’nın çarpımıdır. Hesapta olasılığı ondalık sayı olarak kullanın.", "duplicate": "Listede 30'dan az oyuncu varsa, krallığın en az 5 milyar güce sahip en güçlü beş ittifakının benzersiz oyuncularından en iyi 30'u kullanılır. Transfer ve kayıt kadrosu belirsizdir. Tek ittifak senaryosu güncel kadroları kullanır.", "proxy": "Kadro belirsiz · tahmin oynak", "solo": "Yalnızca mevcut ittifak", "pooled": "Krallık kadrosu senaryosu", "match_probability": "Maçı kazanma", "group_probability": "Grubu kazanma", "listed_members": "API üyesi", "proxy_note": "Listede 30'dan az oyuncu varsa, krallığın en az 5 milyar güce sahip en güçlü beş ittifakının benzersiz oyuncularından en iyi 30'u kullanılır. Transfer ve kayıt kadrosu belirsizdir. Tek ittifak senaryosu güncel kadroları kullanır.", "map_note": "PCS30 × DTV30. Daire boyutu temel şampiyonluk olasılığını gösterir. S ittifakı, AS krallık genelindeki referans senaryoyu kullanır.", "th_rank": "#", "th_mark": "Not", "th_fair": "Adil Oran", "th_scen": "Grubu kazanma", "th_ev": "16x EV", "th_pcs": "PCS30", "th_pcs_sub": "(Tek/AS)", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "A-Kadro", "th_quada_sub": "(30'da)", "th_mt1": "Top1 MT", "th_kvk": "KvK Savaş", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "chart_x": "PCS30 (Saf Savaş Yoğunluğu)", "chart_y": "DTV30 (Asker Hacmi & Kalitesi)", "gogai": "REVİZE", "mark1": "Favori", "mark2": "Rakip", "mark3": "Merkez", "mark4": "Sürpriz", "mark5": "5.", "mark6": "Takip", "mark9": "Pas", "map_title": "İki eksenli güç haritası", "gloss_h0": "PCS (Saf Savaş Kalitesi / 0–1000)", "gloss_b0": "\u003cstrong>Tanım:\u003c/strong> 6 kule ilerlemesinin (CC 26% / Col 20% / MF 18% / KN 14% / RS 14% / FoL 8%) ve \u003ccode>migrant_score\u003c/code> (%12) bileşimi.\u003cbr>\u003cstrong>Kullanım:\u003c/strong> Asker şişirmesinden bağımsız saf savaş gücünü ölçer.", "gloss_h1": "DTV / EGC_M (Asker Hacmi & Kalitesi)", "gloss_b1": "\u003cstrong>Tanım:\u003c/strong> \u003ccode>5.79 × wps^0.318\u003c/code> düşümüyle tahmini asker gücü ve \u003ccode>EGC_M = Troop_M × (TG/8)²\u003c/code>.\u003cbr>\u003cstrong>Kullanım:\u003c/strong> 60 dakikalık savaş dayanıklılığını ölçer.", "gloss_h2": "A-Kadranı (Ön Cephe Asları / PCS≥600 & DTV≥60)", "gloss_b2": "\u003cstrong>Tanım:\u003c/strong> İlk 30 içinde hem kalite hem hacim eşiğini aşan oyuncu sayısı.\u003cbr>\u003cstrong>Kullanım:\u003c/strong> 11 bina + 4 mahzen kontrolünde belirleyicidir."}, "zh": {"paper": "圣剑体育", "block": "第16赛区 · 王者段位", "forecast": "晋级赛与联赛冠军预测", "picks": "四大热门", "opening": "晋级赛剩余8场", "standings": "全部16个席位预测", "slot": "席位", "alliance": "联盟", "legion": "军团", "probability": "夺冠概率", "odds": "公平赔率", "payout": "预期总返还倍数", "rating": "战力指数", "method": "模型假设", "snapshot": "数据采集时间", "previous": "第14赛区", "model": "A–D的各组冠军进入决赛阶段。神话组两席未确定，模型对6种分组等权处理。16倍为假设返还。", "sensitivity": "决赛分组与实力差对比赛的影响都会改变夺冠概率。", "caution": "自MightPulse等公开API采集数据以来，成员转会或阵容调整可能导致实际参赛名单变化。预测仅供参考。", "glossary": "公平赔率等于1除以夺冠概率。假定16倍返还，预期总返还倍数等于夺冠概率乘以16。计算时将百分比换算成小数。", "duplicate": "不足30人的席位取本王国战力至少50亿的前五同盟成员，去重后按前30人估算。合流及报名名单尚未确认。单独情景使用各相关同盟当前成员。", "proxy": "合流未确认 · 预测不稳定", "solo": "当前同盟单独估算", "pooled": "王国基准（假设合流）", "match_probability": "单场胜率", "group_probability": "小组出线率", "listed_members": "名 API 实测成员", "proxy_note": "不足30人的席位取本王国战力至少50亿的前五同盟成员，去重后按前30人估算。合流及报名名单尚未确认。单独情景使用各相关同盟当前成员。", "map_note": "横轴PCS30、纵轴DTV30，气泡大小代表基础夺冠概率。S为单同盟，AS为整个王国的参考情景。", "th_rank": "名次", "th_mark": "标记", "th_fair": "公平赔率", "th_scen": "小组出线率", "th_ev": "16x期望", "th_pcs": "PCS30", "th_pcs_sub": "(单/全服)", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "A象限", "th_quada_sub": "(前30)", "th_mt1": "Top1 MT", "th_kvk": "KvK战绩", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "chart_x": "PCS30（纯战斗密度）", "chart_y": "DTV30（可出战兵量与兵质）", "gogai": "修正版", "mark1": "本命", "mark2": "对抗", "mark3": "枢纽", "mark4": "黑马", "mark5": "5位", "mark6": "留意", "mark9": "放弃", "map_title": "双轴战力图", "gloss_h0": "PCS（纯战斗质量分 / 0–1000）", "gloss_b0": "\u003cstrong>定义:\u003c/strong> 秘境试炼6塔归一化（CC 26% / Col 20% / MF 18% / KN 14% / RS 14% / FoL 8%）与熔炉中和 \u003ccode>migrant_score\u003c/code> 按88:12融合。\u003cbr>\u003cstrong>用途:\u003c/strong> 剔除造兵虚胖。", "gloss_h1": "DTV / EGC_M（出战兵量与有效战力）", "gloss_b1": "\u003cstrong>定义:\u003c/strong> 扣减 \u003ccode>5.79 × wps^0.318\u003c/code> 分离兵力与TG兵质，折算 \u003ccode>EGC_M = Troop_M × (TG/8)²\u003c/code>。\u003cbr>\u003cstrong>用途:\u003c/strong> 评估60分钟持久战续航。", "gloss_h2": "A象限人数（核心主力 / PCS≥600 & DTV≥60）", "gloss_b2": "\u003cstrong>定义:\u003c/strong> 前30名中同时达标战斗密度与兵量的成员数。\u003cbr>\u003cstrong>用途:\u003c/strong> 11建筑+4地下室多线作战核心。"}, "ko": {"paper": "성검 스포츠", "block": "제16블록 · 킹 랭크", "forecast": "승격전 및 리그 우승 예측", "picks": "주목할 네 후보", "opening": "남은 승격전 8경기", "standings": "전체 16개 출전 슬롯 예측", "slot": "슬롯", "alliance": "연맹", "legion": "군단", "probability": "우승 확률", "odds": "공정 배당", "payout": "기대 총환급 배수", "rating": "전력 지수", "method": "모델 가정", "snapshot": "데이터 수집 시각", "previous": "제14블록", "model": "A–D 각 조 1위가 본선에 진출합니다. 신화조 두 자리가 미정이라 6가지 편성을 동일 가중치로 계산합니다. 16배는 가정입니다.", "sensitivity": "본선 조 편성과 전력 차가 경기 결과에 미치는 영향에 따라 우승 확률이 달라집니다.", "caution": "MightPulse 등 공개 API에서 데이터를 수집한 뒤 이적이나 명단 변경이 생기면 실제 출전 선수가 달라질 수 있습니다. 예측은 참고용입니다.", "glossary": "공정 배당은 1을 우승 확률로 나눈 값입니다. 배당이 16배라면 기대 총환급 배율은 우승 확률에 16을 곱한 값입니다. 계산에는 우승 확률을 소수로 환산해 사용합니다.", "duplicate": "30명 미만 출전 슬롯은 전력 50억 이상인 왕국 상위 5개 연맹 명단을 중복 제거한 뒤 상위 30명으로 평가합니다. 실제 합류와 등록 명단은 미확인입니다. 단독 시나리오는 해당 연맹의 현재 명단을 사용합니다.", "proxy": "합류 미확인 · 예측 불안정", "solo": "현재 연맹 단독", "pooled": "왕국 합류 가정", "match_probability": "경기 승률", "group_probability": "조 통과 확률", "listed_members": "명 (API 확인)", "proxy_note": "30명 미만 출전 슬롯은 전력 50억 이상인 왕국 상위 5개 연맹 명단을 중복 제거한 뒤 상위 30명으로 평가합니다. 실제 합류와 등록 명단은 미확인입니다. 단독 시나리오는 해당 연맹의 현재 명단을 사용합니다.", "map_note": "가로축 PCS30, 세로축 DTV30. 원 크기는 기본 우승 확률입니다. S는 단일 연맹, AS는 왕국 전체를 가정한 참고 시나리오입니다.", "th_rank": "순위", "th_mark": "표식", "th_fair": "페어 오즈", "th_scen": "조 통과 확률", "th_ev": "16x 기댓값", "th_pcs": "PCS30", "th_pcs_sub": "(단일/AS)", "th_top4": "Top4 PCS", "th_dtv": "DTV30", "th_egc": "(EGC_M)", "th_quada": "A사분면", "th_quada_sub": "(30명 중)", "th_mt1": "Top1 MT", "th_kvk": "KvK 전투", "th_flagd": "Flag D", "th_flagd_sub": "(300M+)", "chart_x": "PCS30 (순수 전투 밀도)", "chart_y": "DTV30 (출격 가능 병량·병질)", "gogai": "개정판", "mark1": "본명", "mark2": "대항", "mark3": "허브", "mark4": "복병", "mark5": "5위", "mark6": "경계", "mark9": "보류", "map_title": "2축 전력 지도", "gloss_h0": "PCS (순수 전투 품질 점수 / 0–1000)", "gloss_b0": "\u003cstrong>정의:\u003c/strong> 6개 탑 상한 정규화(CC 26% / Col 20% / MF 18% / KN 14% / RS 14% / FoL 8%)에 중화 \u003ccode>migrant_score\u003c/code> 12% 결합.\u003cbr>\u003cstrong>활용:\u003c/strong> 병력 수 부풀리기 배제.", "gloss_h1": "DTV / EGC_M (출격 병량 & 실효 전력)", "gloss_b1": "\u003cstrong>정의:\u003c/strong> \u003ccode>5.79 × wps^0.318\u003c/code> 차감 및 \u003ccode>EGC_M = Troop_M × (TG/8)²\u003c/code> 산출.\u003cbr>\u003cstrong>활용:\u003c/strong> 60분 소모전 버티기 평가.", "gloss_h2": "A사분면 인원 (선봉 에이스 / PCS≥600 & DTV≥60)", "gloss_b2": "\u003cstrong>정의:\u003c/strong> 상위 30명 중 전투 밀도·병량 기준 동시 충족 인원.\u003cbr>\u003cstrong>활용:\u003c/strong> 11개 거점 동시 점령 핵심 전력."}};
+const buttons = document.querySelectorAll('[data-lang-btn]');
+function setLanguage(lang) {
+  const pack = packs[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.title = pack.paper + ' | ' + pack.block + ' (#761–#915)';
+  document.querySelectorAll('[data-verified-html]').forEach(el => { el.innerHTML = pack[el.dataset.verifiedHtml]; });
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = pack[el.dataset.i18n]; });
+  buttons.forEach(btn => btn.setAttribute('aria-pressed', String(btn.dataset.langBtn === lang)));
+  document.getElementById('previous').href = '../index.html?lang=' + lang;
+}
+const details = document.querySelector('.chart-detail');
+document.querySelectorAll('.plot-point').forEach(point => {
+  ['click', 'focus', 'mouseenter'].forEach(eventName => {
+    point.addEventListener(eventName, () => { details.textContent = point.dataset.description; });
+  });
+});
+const url = new URL(location.href);
+const requested = url.searchParams.get('lang');
+setLanguage(Object.hasOwn(packs, requested) ? requested : 'ja');
+buttons.forEach(btn => btn.addEventListener('click', () => {
+  const lang = btn.dataset.langBtn;
+  url.searchParams.set('lang', lang);
+  history.replaceState(null, '', url);
+  setLanguage(lang);
+}));
+</script>
+</body>
+</html>
