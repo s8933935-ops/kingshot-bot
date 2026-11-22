@@ -1,0 +1,416 @@
+{
+  "meta": {
+    "lang": "tr",
+    "dir": "ltr",
+    "page_title": "[#898 SGR Üyelere Özel] Kılıç Ligi Yükselme Maçı 3: SGR vs GOD Tam Strateji & UI Rehberi"
+  },
+  "nav": {
+    "brand": "⚔️ #898 [SGR] Kılıç Ligi 1. Lejyon Portalı",
+    "summary": "Kazanma Planı",
+    "roster": "25 Kişi Arama",
+    "glossary": "Metrikler",
+    "basic_ui": "UI & Yasaklılar",
+    "tactical_map": "Taktik Harita",
+    "timeline": "Faz 1–3 Akışı",
+    "enemy_risk": "Rakip Analizi"
+  },
+  "hero": {
+    "pill": "İttifak İçi Paylaşım (noindex) | Grup 14 Yükselme Maçı 3 | Doğrulanmış 25 Aktif + 8 Yedek",
+    "h1_html": "Kılıç Ligi 3. Maç: <span style=\"color:#38bdf8\">#898 [SGR] Lejyon 1</span> vs <span style=\"color:#f43f5e\">#913 [GOD] Lejyon 1</span>",
+    "sub_html": "GOD orta kademe TG8 derinliğinde (22 vs 8) ve asker hacminde (1.42x) önde olsa da, <strong>SGR Top-4 Ana Ralli Liderlerinde 830.5 vs 724.5 (+106.0 PCS) ezici üstünlüğe sahip!</strong> Sahanın en güçlü mızrağı <strong>Ryo (PCS 952)</strong> ve kalkanı <strong>Lesser (PCS 836 / 637.9M)</strong> etrafında 8 TG8'i saflaştırıp <strong>Çan Kulesi + Kraliyet Ahırı + %50 Ganimet Baskını</strong> ile kazanacağız.",
+    "self_lbl": "Bizim Takım (Sol / Mavi / Lejyon 1)",
+    "self_val": "#898 [SGR] (25 Aktif + 8 Yedek)",
+    "self_sub": "Top-4 Ort. PCS 830.5 (+106 fark) | 8 Elit TG8",
+    "opp_lbl": "Rakip (Sağ / Kırmızı / Lejyon 1)",
+    "opp_val": "#913 [GOD] (İlk 30)",
+    "opp_sub": "Ort. PCS 617.4 | 15 A-Sınıfı | 22 TG8 (Sıfır TG6-)",
+    "core_lbl": "SGR Kazanma Çekirdeği",
+    "core_val": "Top-4 Ezici Güç × TG8 Saflığı × Hareketlilik",
+    "core_sub": "Çoklu cephe yıpranmasından kaçın; 1–2 kritik bina + %50 ganimet çal"
+  },
+  "sec_titles": {
+    "s01": "30 Saniyede Güç Analizi & Kazanma Planı",
+    "s02": "Kendi Grubunu ve Görevini Ara (Doğrulanmış 25 Aktif + 8 Yedek)",
+    "s03": "[Yeni Başlayanlar] Terimler, Formüller ve Saha Kullanımı",
+    "s04": "[Temel UI] Maç Öncesi Kontrol & Slot 1 (En Sol) Kahraman Kuralı",
+    "s05": "[Kılıç Haritası] İnteraktif Taktik Harita & Tesis Kuralları",
+    "s06": "Maç Zaman Çizelgesi (Kalan Süre) & %50 Ganimet Baskını",
+    "s07_prefix": "Rakip",
+    "s07_suffix": "Tehdit Analizi & Veri Şeffaflığı"
+  },
+  "kpis": [
+    {
+      "label": "Top 1–4 Ralli Lideri Ort. PCS",
+      "sub": "SGR +106.0 puan önde! (Ryo 952 / Lesser 836 / Daryu 776 / Hinata 758)"
+    },
+    {
+      "label": "Genel / #5–#10 Orta Kademe PCS",
+      "sub": "GOD orta/alt katmanda derin — geniş yıpranmadan kaçın, lokal odaklan"
+    },
+    {
+      "label": "Tahmini Asker Gücü (Troop)",
+      "sub": "GOD ~1.42x daha kalın (uzun çok cepheli savaş yasak)"
+    },
+    {
+      "label": "TG8 Eşdeğer Dayanıklılık (EGC)",
+      "sub": "GOD'da 22 TG8 ve sıfır TG6-. SGR'nin 8 TG8'ini saf tutmak hayati"
+    }
+  ],
+  "ok_heading": "✅ DOĞRU: Kazandıran Altın Strateji (Asimetrik Mobil Savaş)",
+  "ng_heading": "❌ YANLIŞ: Kesinlikle Kaçınılması Gereken Yenilgi Hataları",
+  "ok_bullets": [
+    "<strong>Tüm 8 TG8'i (Grup ① 5 + Grup ② 3: ROCK / Neptuneman / Guruguru) ana binalarda toplayarak</strong> GOD #1'i (PCS 802) bile kırabilecek lokal üstünlük kur.",
+    "Faz 1 başında <strong>Çan Kulesi (Ele Geçirme -%50)</strong> ve <strong>Kraliyet Ahırı (Ücretsiz Işınlanma -%50)</strong> alarak GOD'ın 30 kişilik kütlesini hızla boz.",
+    "<strong>12 adet TG6 ve altı oyuncuyu (Grup ④ ve ⑤) ana TG8 garnizonlarından tamamen ayır</strong>; boş manastır, sahte ralli, <strong>%50 ganimet baskını</strong> ve 1 askerlik yeraltı mahzenine yönlendir."
+  ],
+  "ng_bullets": [
+    "<strong>4–6 binayı aynı anda cepheden savunmak</strong> (Kritik Hata: GOD'ın 22 TG8'lik derinliği geniş savaşta ezer).",
+    "<strong>Büyük TG6 hesaplarını (Ednan / kusabito / Kapibara) veya TG5-'leri ana TG8 garnizonuna sokmak</strong> (dayanıklılığı <code>~0.5625x</code>'e düşürür).",
+    "Saldırı rallisi Slot 1'ine <strong>Long Fei / Jabel / Helga / Zoe / Sophia</strong> (veya savunma kahramanları <strong>Saul / Eric / Fahd</strong>) koymak."
+  ],
+  "charts": {
+    "pcs_title": "Saf Savaş Puanı (PCS) Kademe Karşılaştırması",
+    "troop_title": "Asker Miktarı (Troop) & TG8 Eşdeğer Güç (EGC) Karşılaştırması",
+    "pcs_labels": [
+      "Genel Ort.",
+      "İlk 1–4 Ana Topçu",
+      "#5–#10 2. Dalga",
+      "#11 ve Sonrası"
+    ],
+    "troop_labels": [
+      "Tahmini Asker (Troop M)",
+      "TG8 Eşdeğeri (EGC M)"
+    ]
+  },
+  "roster": {
+    "search_placeholder": "Adını ara (ör. Ryo, Lesser, Daryu, Hinata, ROCK, Ponta...)",
+    "tabs": {
+      "all": "Aktif Tümü (25)",
+      "band1": "Grup ① Ana Liderler (5)",
+      "band2": "Grup ② Elit TG8 (3)",
+      "band3": "Grup ③ TG7 Mobil (5)",
+      "band4": "Grup ④ TG6 Ayrı Hat (3)",
+      "band5": "Grup ⑤ Baskın & Ganimet (9)"
+    },
+    "glossary_hint_html": "* Her metriğin anlamını, formülünü ve savaş içi kullanımını hemen aşağıdaki <a href=\"#glossary\" style=\"color:#7dd3fc\"><strong>03 Yeni Başlayanlar İçin 'Terimler &amp; Formüller Rehberi'</strong></a> bölümünden veya başlıklardaki <span class=\"q-dot\">?</span> simgesine dokunarak görebilirsin.",
+    "th": {
+      "rank": "#",
+      "player": "Oyuncu Adı",
+      "band": "Grup",
+      "tg": "TG (Ocak)",
+      "pcs": "Kalite PCS",
+      "join": "Katılım Join",
+      "dtv": "Stamina DTV",
+      "troop": "Tahmini Asker",
+      "mission": "Kılıçdiyarı Görevi & Dikkat Edilecekler"
+    },
+    "no_match": "Eşleşen üye bulunamadı",
+    "fat_warn_badge": "⚠TG6 Yüksek Asker",
+    "reserve_title": "🔄 Doğrulanmış Yedek Kadro Önceliği (8 Yedek)",
+    "reserve_desc_html": "Oyun içi doğrulamada <strong>25 Aktif / 8 Yedek</strong> kayıtlıdır (Freyd ve Goripon bu maçta yok). Eksik olursa <strong>Bonkura (PCS 512 / TG7 / 271.3M)</strong> ve <strong>Style D (PCS 470 / TG6)</strong> öncelikli çağrılır:",
+    "bands": {
+      "band2_label": "Grup ② Elit TG8 Katılımcı",
+      "band2_mission": "Grup ① için kesin TG8 saldırı/savunma desteği (Join 642–674). Ana garnizon saflığının bel kemiği.",
+      "band3_label": "Grup ③ TG7 Mobil & Kutsal Alan",
+      "band3_mission": "Dış kutsal alanlar/manastırlar ve geçici dolgu; TG8 gelince hemen çık (dans).",
+      "band4_label": "Grup ④ TG6 Ayrı Hat",
+      "band4_mission": "[Ana TG8 garnizonuna GİRME (~0.5625x seyrelme)] Ayrı manastır, sahte ralli ve %50 ganimet baskını.",
+      "band5_label": "Grup ⑤ Mobil & Ganimet",
+      "band5_mission": "Ana garnizona girme. Boş bina kapma, %50 ganimet toplama, 1 askerlik mahzen ve şaşırtmaya odaklan."
+    },
+    "custom": {
+      "リョ〜〜〜朕": [
+        "Grup ① #1 Ana Mızrak",
+        "Sahanın en güçlü saldırganı (PCS 952 / 609.1M). GOD #1'e +150 puan fark atar. Tapınak ve yüksek puanlı binaları yıkma kozu."
+      ],
+      "レッサー": [
+        "Grup ① #1 Savunma Çapası",
+        "Sahanın en güçlü tankı (PCS 836 / 637.9M / DTV 100.0). Çan Kulesi veya Tapınak ana savunma lideri."
+      ],
+      "だりゅDaryu": [
+        "Grup ① #2 Ağır Top",
+        "Ağır TG8 yıldızı (PCS 776 / 596.0M / DTV 99.6). Ryo ile çifte ralli ortağı."
+      ],
+      "Hinata": [
+        "Grup ① Hassas Top",
+        "PCS 758 / 413.4M — GOD #2 Sakhazan'dan (712) güçlü. Kraliyet Ahırı ve Reform Salonu lideri."
+      ],
+      "ルーク": [
+        "Grup ① #5 Top / Lider Destek",
+        "PCS 647 / 343.2M. 12 dk çıkış rotasyonlarında yedek lider ve en iyi TG8 katılımcı."
+      ]
+    }
+  },
+  "glossary": {
+    "intro_html": "Oyun içi 'Toplam Güç (Power)' değeri <strong>sadece çok sayıda asker basarak kolayca şişirilebildiği için</strong>, ralli veya garnizon liderini yalnızca Power'a göre seçmek 'göründüğü kadar sert vurmayan' birliklerin ana kaleleri eritmesine yol açar. Bu nedenle portalımızda <strong>MightPulse (Mistik Sınav 6 Kule + Göç Puanı + Ocak Sv.)</strong> verilerini kullanarak herkesin net görebileceği <strong>'asker başına gerçek kalite' ve 'sefer dayanıklılığı'</strong> 5 ayrı metriğe bölünmüştür.",
+    "use_prefix": "🎯 Savaşta Nasıl Kullanılır: ",
+    "cards": {
+      "tg": {
+        "title": "① TG (Ocak) — Saf Altın Asker Nesli",
+        "range": "TG1 – TG8",
+        "easy_html": "<strong>Kısa Özet: Askerin nesil seviyesi (temel stat ve zırh tabanı).</strong><br>Ocak Seviyesi (Stove Lv) 60–70 arası Saf Altın (Truegold) TG6–TG8 askerlere karşılık gelir. Aynı 100 bin askerde bile TG8 ile TG6 arasında temel can ve saldırı farkı çok büyüktür.",
+        "formula_html": "TG = clip(floor((Ocak_Lv - 30) / 5), 1, 8)<br>• Lv.60–64 = TG6 | Lv.65–69 = TG7 | Lv.70 = TG8<br>• Karışma riski tahmini EGC_M = Tahmini Asker × (TG / 8)² (TG6 yaklaşık 0.5625x *model hesabı)",
+        "use_html": "Garnizon 15 yürüyüşle sınırlıdır. SGR'nin <strong>8 TG8 oyuncusunu</strong> ana binalarda toplayıp TG6- karışımını kesinlikle önleyin."
+      },
+      "pcs": {
+        "title": "② Kalite PCS — Saf Savaş Puanı",
+        "range": "0 – 1,000 Puan",
+        "easy_html": "<strong>Kısa Özet: 'Asker sayısından bağımsız, birim başı saf savaş gücü (ralli/garnizon liderliği uygunluğu).'</strong><br>Tılsım, Lord Ekipmanı, Kahraman, Araştırma ve Evcil Hayvan'dan hesaplanır; asker azalsa da düşmez. <strong>600+ puan (özellikle 700+) ana topçu ve garnizon lideri adayıdır</strong>.",
+        "formula_html": "1) Mistik Sınav 6 Kule üst limit CAP ile 0–1 aralığına normalize edilir<br>CAP = &#123;Tılsım CC:400, Ekipman MF:440, Araştırma KN:320, Pet FoL:340, Kahraman Col:800, Genel RS:840&#125;<br>2) Savaş ağırlıklı bileşim Q_core = 0.26×CC + 0.20×Col + 0.18×MF + 0.14×KN + 0.14×RS + 0.08×FoL<br>3) Göç puanındaki Ocak çarpanı nötrleştirilir (TC=min(Ocak,70), wps=Göç/TC+2226) ve sadece 12% katılır<br>PCS = 1000 × clip(0.88 × Q_core + 0.12 × clip(wps/42000, 0, 1), 0, 1)",
+        "use_html": "Ralli gücü liderden gelir. SGR <strong>Top-4'te +106.0 puan önde (830.5 vs 724.5)</strong>, bu yüzden çatışmayı mutlaka Top-4 liderliğindeki lokal noktalara çekin."
+      },
+      "join": {
+        "title": "③ Katılım Join — Ralli/Garnizona Katılma Puanı",
+        "range": "0 – 1,000 Puan",
+        "easy_html": "<strong>Kısa Özet: 'Başkasının rallisine veya garnizonuna katılırken (joiner) verdiğin katkı.'</strong><br>Katılımcı olduğunda senin Araştırma veya Lord Ekipmanın devreye girmez; sadece <strong>'En Soldaki (Slot 1) Kahramanın 1. Becerisi' ve 'gönderdiğin askerin TG seviyesi'</strong> savaşta işler.",
+        "formula_html": "PCS_joiner = 1000 × (0.45×n_Col[Kahraman] + 0.15×n_RS[Genel] + 0.10×n_CC + 0.05×n_MF + 0.25×(TG / 8))<br>* Kahraman, Genel Kule ve TG nesli ağırlığı 85% ile katılım uygunluğu ölçülür",
+        "use_html": "Grup ② TG8 destekleri (<code>ROCK</code> / <code>Neptuneman</code> / <code>Guruguru</code>) ve Grup ① çapraz katılımı maksimum hasar üretir."
+      },
+      "troop": {
+        "title": "④ Tahmini Asker Gücü (Troop Power)",
+        "range": "Birim: M (Milyon Güç)",
+        "easy_html": "<strong>Kısa Özet: 'Toplam Güç'ten bina ve araştırma gibi sabit gücü çıkarınca kalan, şu an sahada kullanabileceğin asker miktarı.'</strong><br>Kraliyet Savaşı veya yakın zamandaki çatışmalarda asker kaybettiysen toplam Power yüksek görünse bile Troop düşük çıkar.",
+        "formula_html": "1) Sabit temel güç (üs yasası modeli): BasePower_M = 5.79 × (wps ^ 0.318)<br>* Yüksek güç bandında yanlış eksiltme olmaması için alt zarf eğrisiyle doğrusal olmayan tahmin<br>2) Tahmini asker: TroopPower_M = max(ToplamGüç_M - BasePower_M, 0)<br>3) Asker oranı phi = TroopPower_M / ToplamGüç_M",
+        "use_html": "Tahmini asker: <strong>6,494.3M vs 9,233.0M (1.42x)</strong>. GOD'ın orta kademe tanklarına karşı geniş yıpranmadan kaçının."
+      },
+      "dtv": {
+        "title": "⑤ Birlik Dayanıklılığı DTV — Savaş Boyu Sefer Staminası",
+        "range": "0 – 100 Puan (Hedef 60+)",
+        "easy_html": "<strong>Kısa Özet: '1 saatlik Kılıçdiyarı boyunca cepheye kesintisiz asker gönderebilme dayanıklılığı.'</strong><br>Sadece asker sayısına değil; <strong>TG nesil katsayısı, tahmini asker miktarı ve güç içi asker oranına</strong> bakarak arka arkaya savaşlara dayanma gücünü 0–100 arası gösterir.",
+        "formula_html": "• Asker miktarı çarpanı a = clip(ln(1 + TroopPower_M / 20) / ln(31), 0, 1)  [600M'de 1.0]<br>• Asker oranı çarpanı s = clip((phi - 0.15) / 0.65, 0.02, 1.0)<br>• Nesil taban katsayısı qf = max(1 - 0.04 × (8 - TG), 0.60)<br>DTV = 100 × qf × (a ^ 0.6) × (s ^ 0.4)",
+        "use_html": "SGR İlk 13'ün tamamı DTV 72–100 bandında. 3 adet <code>FAT_WARN</code> ve 9 Quad-D oyuncuyu ayrı hat ve ganimet baskınına ayırın."
+      }
+    },
+    "dict_heading": "📖 Yeni Başlayanlar İçin: Kılıçdiyarı Önemli Kurallar & Terimler Sözlüğü",
+    "dict": [
+      {
+        "title": "🗺️ 4 Kadran (Grup Dağılım Haritası)",
+        "body_html": "<code>PCS≧600 &amp; DTV≧60</code> = <strong>A Kadranı (Ana Topçu)</strong>, <code>DTV≧60</code> = <strong>B Kadranı (Katılım/Baskın)</strong>, <code>PCS≧600</code> ama az asker = <strong>C Kadranı (Buff Slot/Toparlanma)</strong>, ikisi de düşük = <strong>D Kadranı (Toplama/Boş Kapma)</strong>."
+      },
+      {
+        "title": "🧬 Slot 1 (En Sol Kahraman) & Farklı Buff Çarpımı",
+        "body_html": "Ralli ve garnizonda katılımcılardan yalnızca <strong>en soldaki kahramanın 1. Sefer Becerisi (en yüksek 4 kişi)</strong> aktif olur! Aynı buff'ı yığmak yerine 'Saldırı +25% × Ölümcüllük +25% × Düşmanın Aldığı Hasar +25%' karışımı hasarı katlar."
+      },
+      {
+        "title": "📦 Tutulan Puanın 50% Ganimet Düşmesi (Escrow)",
+        "body_html": "Kılıçdiyarı'nda bir bina tutulurken biriken ittifak puanının <strong>50%'si bina üzerinde saklanır</strong>. Evre 1'den itibaren her an aktiftir; binayı düşürdüğünde bu puan rakipten silinip etrafa sandık olarak saçılır ve <strong>iki ittifak da toplayabilir</strong>."
+      },
+      {
+        "title": "⏱️ Ekrandaki 'Kalan Süre' Sayacına Dikkat",
+        "body_html": "Savaş ekranının üstündeki sayaç <strong>60:00 → 00:00 şeklinde geri sayar</strong>. 15:00 geçmiş süre = <strong>45:00 kalan süre</strong> demektir. <strong>22:00 kalan süreden sonra haritadan çıkma</strong> (12 dakikalık tekrar giriş beklemesi yüzünden dönemezsin)."
+      },
+      {
+        "title": "🏆 Kılıçdiyarı Liginde 'Puan Farkı' da Önemlidir",
+        "body_html": "Sadece kazanmak değil, lig sıralamasında <strong>Bizim Puanımız − Rakip Puanı (puan farkı)</strong> da belirleyicidir. Geride olsan bile son 10 dakikadan 00:00'a kadar tek bir sandık ve Yeraltı Mahzeni bile toplamaya devam et."
+      },
+      {
+        "title": "🔍 Flag B–D (Eksik Ölçüm Notları)",
+        "body_html": "MightPulse'ta 6 Kule veya Göç Puanı kısmen görünmeyen üyeler 'Flag B/C' olarak matematiksel tamamlanmıştır; ikisi de görünmeyenler ise 'Flag D (hesap dışı / ayrı uyarı)' şeklinde şeffafça belirtilmiştir."
+      }
+    ]
+  },
+  "basic_ui": {
+    "tag_gen": "Taktik Görsel",
+    "tag_real": "Oyun İçi UI",
+    "cards": [
+      "<strong>Savaştan 15 Dakika Önce: Revirdeki Yaralıları Mutlaka '0' Yap!</strong><br>Şehrindeki <img src=\"assets/ui/icon_infirmary.png\" alt=\"Revir\"> Revirde tek bir yaralı asker bile kalırsa Kılıçdiyarı savaş alanına giremezsin. Önceden tüm yaralıları iyileştir, dışarıdaki tüm kıtaları ve takviyeleri geri çek.",
+      "<strong>Katılım Saati ve TG Neslini (Asker Kalitesini) Kontrol Et</strong><br>Seçilen saat diliminde vaktinde hazır ol. TG8 (Ocak 70), TG7 (65-69) veya TG6 (60-64) olduğunu bil; TG6 ve altıysan ana TG8 garnizonlarına katılmayıp ayrık görev yap.",
+      "<strong>Neden TG6 ile TG8 Karıştırılmamalı?</strong><br>Saf Altın ile güçlendirilmiş <img src=\"assets/ui/icon_truegold_crucible.png\" alt=\"Saf Altın Potası\"> TG8 garnizonuna (sınır 15 kişi) TG6 karışırsa model hesabına göre dayanıklılık verimi <strong>0.5625x seviyesine</strong> düşer. Sadece boş slot varken TG7 geçici destek atar, TG8 ulaştığı an yer değişir ('Dans').",
+      "<strong>Katılırken Yalnızca 'Slot 1 (En Sol) Kahramanın Sağ Üst 1. Sefer Becerisi' Çalışır!</strong><br>Chenko'nun 'Stand of Arms Lv.5 (Ölümcüllük +25%)' becerisi gibi, tüm katılımcıların ilk 4 buff slotu bu en soldaki kahramanın 1. becerisiyle belirlenir.",
+      "<strong><img src=\"assets/ui/icon_command_center.png\" alt=\"Command Center\"> Ralliye Katılım</strong><br>Grup ① rallilerine (Ryo / Lesser / Daryu / Hinata / Luke) daima kayıtlı Saldırı Slot-1 şablonuyla tek dokunuşla katılın.",
+      "<strong><img src=\"assets/ui/icon_embassy.png\" alt=\"Embassy\"> Garnizon Değişimi</strong><br>Ana çapa <code>Lesser (637.9M)</code> & <code>Daryu (596.0M)</code> + Grup ② TG8 ve savunma kahramanlarıdır (Gordon/Howard/Saul)."
+    ],
+    "hero_title": "Birebir Uygula: 'Slot 1 (En Sol)' Önerilen Kahramanlar vs Kesinlikle Yasak (Tuzak) Kahramanlar",
+    "hero_desc_html": "Saldırı rallilerinde <strong>'Saldırı × Ölümcüllük × Rakibin Aldığı Hasar Artışı'</strong> çarpanlarını birleştirmek ana topçunun hasarını uçurur (savunma ve hasar azaltma becerileri düşmanı eritmediği için <strong>yalnızca Savunma</strong> içindir). Savaş öncesi Dizilim 1 (Saldırı Katılım), 2 (Savunma), 3 (Hızlı Toplama) olarak kaydet.",
+    "hero_atk_title": "⚔️ Saldırı Rallisi Altın Katılımcı Havuzu (En Sola Bunlardan 1 Kişi Koy)",
+    "hero_def_title": "🛡️ Savunma Garnizonu Önerilen En Sol (1. Becerisi Dayanıklılık Odaklı)",
+    "hero_ban_title": "💣 Kesinlikle Yasak (Katılımda Slot 1'e Koyma — Buff Bozar)",
+    "heroes": {
+      "chenko": [
+        "Chenko",
+        "Kesin Ölümcüllük +25%"
+      ],
+      "yeonwoo": [
+        "Yeonwoo",
+        "Kesin Ölümcüllük +25%"
+      ],
+      "amane": [
+        "Amane",
+        "Kesin Saldırı +25%"
+      ],
+      "margot": [
+        "Margot",
+        "Kesin Saldırı +25%"
+      ],
+      "vivian": [
+        "Vivian",
+        "Rakip Hasar Alımı +25%"
+      ],
+      "hilde": [
+        "Hilde",
+        "Saldırı +10% / Savunma +15%"
+      ],
+      "petra": [
+        "Petra ⚠",
+        "Rallide maks 1 kişi (%50 şans +50% hasar)"
+      ],
+      "gordon": [
+        "Gordon",
+        "Müttefik Can +25%"
+      ],
+      "howard": [
+        "Howard",
+        "Alınan Hasar -20%"
+      ],
+      "saul": [
+        "Saul",
+        "Savunma +10% / Can +15% (Yalnızca Garnizon Savunması)"
+      ],
+      "eric": [
+        "Eric",
+        "Rakip Saldırısı -20% (Yalnızca Garnizon Savunması)"
+      ],
+      "fahd": [
+        "Fahd",
+        "Rakip Hasarı -20% (Yalnızca Garnizon Savunması)"
+      ],
+      "long-fei": [
+        "Long Fei",
+        "Saldırı Rallisinde YASAK"
+      ],
+      "jabel": [
+        "Jabel",
+        "Şansa bağlı — slot yakar"
+      ],
+      "helga": [
+        "Helga",
+        "Katılımda YASAK"
+      ],
+      "zoe": [
+        "Zoe",
+        "Şansa bağlı — slot bozar"
+      ],
+      "sophia": [
+        "Sophia",
+        "Katılımda YASAK"
+      ]
+    }
+  },
+  "map": {
+    "board_title": "SGR Taktik Hareket Haritası (11 Tesis + 4 Yeraltı Mahzeni)",
+    "board_hint": "* Düğmelerle her evrenin öncelikli hedeflerini değiştirebilirsin",
+    "btn_p1": "Evre 1 Açılış (Kalan 60:00–45:00)",
+    "btn_p2": "Evre 2 Merkez Açılışı (Kalan 45:00–20:00)",
+    "btn_p3": "Final Evresi Ganimet Baskını (Kalan 20:00–00:00)",
+    "pins": {
+      "swordshrine": "① Kılıç Tapınağı (Swordshrine 15:00)",
+      "mercenary": "② Paralı Asker (15:00)",
+      "reformation": "③ Islah Salonu (15:00/+15%)",
+      "bell": "⑦ Çan Kulesi (Ele Geç. -50%)★",
+      "ne_abbey": "⑪ KD Manastırı",
+      "w_sanctum": "⑤ Batı Kutsal Alanı",
+      "ce_abbey": "⑨ Orta-Doğu Manastırı",
+      "cw_abbey": "⑧ Orta-Batı Manastırı",
+      "e_sanctum": "④ Doğu Kutsal Alanı",
+      "sw_abbey": "⑩ GB Manastırı",
+      "stables": "⑥ Kraliyet Ahırları (Işın. -50%)★",
+      "undercellar": "Yeraltı Mahzeni"
+    },
+    "facilities": [
+      {
+        "title": "Kraliyet Ahırları (0:00 Açılır ★En Yüksek Öncelik)",
+        "body_html": "İlk ele geçirme 1,200 / +240/dk. Ücretsiz ışınlanma bekleme süresini <strong>-50% (10 dk → 5 dk)</strong> kısaltır. Baskın ve sandık toplama temposunu ikiye katlar (acil durumda Gelişmiş Işınlanma da kullanılabilir)."
+      },
+      {
+        "title": "Kılıç Tapınağı / Swordshrine (15:00 Geçen / 45:00 Kalan)",
+        "body_html": "İlk <strong>9,000</strong> / Dakikada <strong>+1,800</strong>. Rakibin en üst düzey asıyla kafa kafaya çarpışmadan zayıf anları, çift rallileri ve son dakika baskınlarını hedefle."
+      },
+      {
+        "title": "Kutsal Alan / Sanctum (0:00 Açılır • Doğu & Batı 2 Bina)",
+        "body_html": "İlk <strong>6,000</strong> / Dakikada <strong>+1,200</strong>. Orta oyunun ana puan kaynağıdır. Rakibin zayıf bıraktığı kanadı sürekli geri al."
+      },
+      {
+        "title": "Islah Salonu / Reformation Hall (15:00 Açılır)",
+        "body_html": "İlk 3,000 / +600/dk. Tüm savaş alanına <strong>Verilen Hasar +15% &amp; Alınan Hasar -15%</strong> buff'ı verir. Ana topçu çarpışmalarından önce mutlaka tutulmalı."
+      },
+      {
+        "title": "Paralı Asker Kampı / Mercenary Camp (15:00 Açılır)",
+        "body_html": "İlk 3,000 / +600/dk. Ele geçirildiğinde <strong>yaklaşık 7 dakikada bir</strong> rakibin tuttuğu binalara otomatik saldırıp garnizonu yıpratır. Dost rallisiyle zamanlamak çok etkilidir."
+      },
+      {
+        "title": "Çan Kulesi (🔔 0:00) & Manastırlar (4 Bina 0:00)",
+        "body_html": "<strong>Çan Kulesi ele geçirme sayacını -50% (3:00 → 1:30)</strong> kısaltır (İlk 1,200 / +240/dk). <strong>4 Manastır</strong> ise İlk 3,000 / +600/dk ile baskın ve çok cepheli baskının temelidir."
+      }
+    ],
+    "ui_caps": [
+      "Kılıç Tapınağı (Swordshrine) puan tablosu (9,000 / +1,800/dk)",
+      "Kraliyet Ahırları etkisi (<img src=\"assets/ui/icon_teleport.png\" alt=\"Işınlanma\"> Ücretsiz Işınlanma CD -50%)",
+      "Kılıçdiyarı bina garnizon listesi (11/15 slot ve Slot 1 kahraman kontrolü)",
+      "Savaş haritasında ittifak kümeleşmesi ve seri yürüyüşler"
+    ],
+    "phases": {
+      "p1": {
+        "desc": "<strong>Faz 1 (Kalan 60:00–45:00) Açılış</strong>: Grup ①② hemen <strong>⑦ Çan Kulesi (-%50)</strong> ve <strong>⑥ Kraliyet Ahırı (-%50)</strong> alır. Grup ③④⑤ dış alanları çevirir.",
+        "labels": [
+          "Grup ①② Çan Kulesi",
+          "Grup ①② Ahır",
+          "Grup ③ Batı",
+          "Grup ④⑤ Manastır"
+        ]
+      },
+      "p2": {
+        "desc": "<strong>Faz 2 (Kalan 45:00–20:00) Merkez Açılışı</strong>: <strong>① Tapınak, ② Paralı Asker & ③ Reform Salonu</strong> açılır! Top-4 (+106 PCS) ve 8 TG8'i merkezde toplayın (<strong>Kalan 22:00 sonrası 12dk çıkış yasak</strong>).",
+        "labels": [
+          "Top-4 Çifte Ralli",
+          "② Paralı Asker",
+          "③ Reform +%15",
+          "Grup ③ Doğu"
+        ]
+      },
+      "p3": {
+        "desc": "<strong>Son Oyun (Kalan 20:00–00:00) Ganimet Baskını</strong>: Grup ④⑤ sahte ralli atarken Ryo + Daryu çifte ralliyle en dolu binayı düşürür, %50 ganimet ve 4 mahzeni 00:00'a kadar süpürür!",
+        "labels": [
+          "Ryo Yıkım Vuruşu",
+          "Sahte Ralli",
+          "Grup ④⑤ Ganimet"
+        ]
+      }
+    }
+  },
+  "timeline": {
+    "c1_html": "<strong>Üstünlüğü Koruma & Geri Dönüş Kozu: Ganimet Baskını (50% Emanet Yağması)</strong><br>Evre 1'den itibaren bina tutma puanının <strong>50%'si her an tesis üzerinde birikir</strong>; bina düştüğünde rakipten düşülüp etrafa sandık olarak saçılır. Puanın dolduğu son bölümde sahte rallilerle rakibi dağıt, Grup 1 tek vuruşla düşürsün ve baskın grupları sandıkları süpürsün!",
+    "c2_html": "<strong>Haritaya Düşen Ganimetler (159 / 45 / 401 vb.) & Ücretsiz Işınlanma Sayacı</strong><br>Sağ üstte <strong>kalan süre (ör. 00:47:43)</strong>, sağ altta Battle Map büyüteci (Yeraltı Mahzeni arama), sol altta ücretsiz ışınlanma beklemesi yer alır. Mahzenler <strong>1 askerle sıfır kayıpla</strong> toplanabilir!",
+    "p1_title": "Evre 1 (Geçen 0:00–15:00 | Kalan 60:00–45:00)",
+    "p1_html": "<strong>En Yüksek Öncelik: Çan Kulesi (-50%) & Kraliyet Ahırları (Işınlanma CD -50%).</strong><br>İlk ele geçirme bonusu yalnızca <strong>sayaç tamamen dolunca (3 dk / Çan Kulesi'nde 1 dk 30 sn)</strong> alınır, bu yüzden takviyeyi kesme! Grup 4-5 dış Kutsal Alan ve Manastırları aynı anda tutarak ücretsiz ışınlanmaları boşa harcamadan saklar.",
+    "p2_title": "Evre 2 (Geçen 15:00–40:00 | Kalan 45:00–20:00)",
+    "p2_html": "<strong>Merkez Açılışı & Lokal Hakimiyet.</strong><br>5 binada dağılmayın. 8 TG8'i Top-4 arkasında toplayıp Tapınak ve Reform Salonu'nu alın. <strong>Kalan 22:00 sonrası çıkış yasak!</strong>",
+    "p3_title": "Final Evresi (Geçen 40:00–60:00 | Kalan 20:00–00:00)",
+    "p3_html": "<strong>Sahte Ralli + %50 Ganimet Baskını + 1 Asker Mahzen.</strong><br>GOD takviyelerini şaşırtıp Ryo + Daryu çifte rallisiyle yüksek puanlı binayı yıkın ve 00:00'a kadar tüm kutuları toplayın."
+  },
+  "enemy": {
+    "top_heading": "GOD Tehdit Hattı (İlk 8)",
+    "th": {
+      "rank": "#",
+      "player": "Oyuncu",
+      "tg": "Ocak(TG)",
+      "pcs": "PCS",
+      "dtv": "DTV",
+      "troop": "Tahmini Troop"
+    },
+    "top_note": "*GOD #1 (PCS 802) güçlü ama Ryo (952) ve Lesser (836) ondan üstün. Asıl tehdit art arda 15 A-Sınıfı TG8 (#1–#15) ve #10 Nicky (573.7M) / #9 ~Deadpool~ (442.9M) gibi tanklardır.",
+    "notes_heading": "🔎 GOD Detaylı Analiz & Veri Şeffaflığı",
+    "notes_desc_html": "GOD İlk 30'un tamamı <strong>Flag A (%100 ölçülmüş, gizli balina yok)</strong>: <strong>22 TG8 + 8 TG7 (sıfır TG6-)</strong>. Geniş yıpranmadan kaçınıp SGR Top-4 farkını 1–2 binaya odaklayın.",
+    "chips": [
+      "#1 ᎠᎪᏔᏩᏚᎢᎽᏞᎬ (PCS 802 / TG8 / 454.9M)",
+      "#2 Sakhazan (PCS 712 / TG8 / 418.1M)",
+      "#9 ~Deadpool~ (PCS 658 / TG8 / 442.9M)",
+      "#10 Nickyᶠᵘᶰ (PCS 650 / TG8 / 573.7M)",
+      "GOD İlk 30: 22 TG8 / 8 TG7 / 0 TG6-",
+      "GOD Sınıfları: 15 A / 15 B / 0 D",
+      "Ölçülmemiş 300M+ (Flag D): Her iki tarafta 0"
+    ]
+  },
+  "footer": {
+    "html": "<strong>Veri Açıklaması</strong>: PCS/DTV puanları MightPulse API (<code>2026-11-22 18:00 JST</code>) ve oyun içi Lejyon 1 kadro görüntüsü (25 Aktif / 8 Yedek) ile hesaplanmıştır.<br>Son Güncelleme: 2026-11-22 JST | #898 [SGR] Strateji Masası"
+  }
+}

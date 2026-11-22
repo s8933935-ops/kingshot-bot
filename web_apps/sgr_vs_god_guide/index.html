@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <link rel="icon" href="data:,">
+  <title>【#898 SGR メンバー共有用】聖剣頂上リーグ 昇格戦第3試合 SGR vs GOD 完全作戦＆基礎UIマニュアル</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+Arabic:wght@400;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg-0: #090d16;
+      --bg-1: #111827;
+      --bg-card: rgba(20, 29, 47, 0.9);
+      --bg-glass: rgba(15, 23, 42, 0.78);
+      --border: rgba(245, 158, 11, 0.25);
+      --border-strong: rgba(245, 158, 11, 0.55);
+      --gold: #f59e0b;
+      --gold-lt: #fde68a;
+      --blue: #38bdf8;
+      --blue-bg: rgba(56, 189, 248, 0.14);
+      --purple: #a855f7;
+      --red: #ef4444;
+      --red-bg: rgba(239, 68, 68, 0.14);
+      --green: #10b981;
+      --green-bg: rgba(16, 185, 129, 0.14);
+      --amber-bg: rgba(245, 158, 11, 0.14);
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans JP', 'Noto Sans Arabic', sans-serif;
+      background: var(--bg-0);
+      color: var(--text);
+      line-height: 1.7;
+      background-image:
+        radial-gradient(circle at 12% 15%, rgba(56, 189, 248, 0.10) 0%, transparent 42%),
+        radial-gradient(circle at 88% 35%, rgba(168, 85, 247, 0.10) 0%, transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(245, 158, 11, 0.07) 0%, transparent 45%);
+      background-attachment: fixed;
+    }
+    html[dir="rtl"] body {
+      font-family: 'Noto Sans Arabic', 'Noto Sans JP', sans-serif;
+    }
+    .t-formula, .map-board-wrap, canvas, code {
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+    .t-formula { text-align: left; }
+
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(9, 13, 22, 0.90);
+      border-bottom: 1px solid var(--border);
+    }
+    .top-nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 9px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .brand-tag { font-weight: 900; font-size: 0.9rem; color: var(--gold-lt); letter-spacing: 0.03em; }
+    .nav-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      max-width: 100%;
+      min-width: 0;
+    }
+    .nav-links { display: flex; gap: 6px; flex-wrap: wrap; min-width: 0; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: 0.18s ease;
+    }
+    .nav-links a:hover {
+      color: var(--gold-lt);
+      border-color: var(--border-strong);
+      background: rgba(245, 158, 11, 0.1);
+    }
+    .lang-bar {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+      flex-wrap: wrap;
+      max-width: 100%;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      padding: 3px;
+      direction: ltr;
+      flex-shrink: 0;
+    }
+    .lang-btn {
+      border: none;
+      background: transparent;
+      color: #cbd5e1;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 0.15s;
+      white-space: nowrap;
+      font-family: 'Noto Sans JP', 'Noto Sans Arabic', sans-serif;
+    }
+    .lang-btn:hover { color: #ffffff; background: rgba(255, 255, 255, 0.08); }
+    .lang-btn.active {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #090d16;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+    }
+    .hero-lang-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .hero-lang-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      background: rgba(9, 13, 22, 0.85);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 5px 8px;
+      direction: ltr;
+    }
+    .hero-lang-bar .lang-lbl {
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--gold-lt);
+      padding-inline: 4px;
+    }
+    .hero-lang-bar .lang-btn { font-size: 0.8rem; padding: 5px 11px; }
+
+    @media (max-width: 640px) {
+      .top-nav-inner { padding: 8px 12px; gap: 6px; }
+      .nav-right { width: 100%; justify-content: space-between; }
+      .nav-links {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        max-width: 100%;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+      .nav-links a { white-space: nowrap; flex: 0 0 auto; font-size: 0.76rem; padding: 4px 8px; }
+      .lang-btn { font-size: 0.72rem; padding: 3px 7px; }
+      .grid-2, .grid-3, .glossary-grid { grid-template-columns: 1fr; }
+    }
+
+    .container { max-width: 1180px; margin: 0 auto; padding: 20px 16px 84px; }
+    .hero {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      margin-bottom: 28px;
+      min-height: 360px;
+      display: flex;
+      align-items: flex-end;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 35%;
+      filter: brightness(0.62) saturate(1.1);
+    }
+    .hero-overlay {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: 28px 28px 28px;
+      background: linear-gradient(180deg, rgba(9, 13, 22, 0.12) 0%, rgba(9, 13, 22, 0.84) 52%, rgba(9, 13, 22, 0.96) 100%);
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(245, 158, 11, 0.18);
+      border: 1px solid var(--border-strong);
+      color: var(--gold-lt);
+    }
+    .hero h1 {
+      font-size: clamp(1.45rem, 3.2vw, 2.3rem);
+      font-weight: 900;
+      line-height: 1.28;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+    }
+    .hero-sub { color: #d1d5db; font-size: 0.95rem; max-width: 880px; }
+    .match-strip {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .match-box {
+      background: rgba(15, 23, 42, 0.86);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .match-box.self { border-color: rgba(56, 189, 248, 0.55); }
+    .match-box.opp { border-color: rgba(168, 85, 247, 0.55); }
+    .match-box .lbl { font-size: 0.75rem; color: var(--muted); font-weight: 700; }
+    .match-box .val { font-size: 1.12rem; font-weight: 900; margin-top: 2px; }
+
+    section { margin-bottom: 42px; scroll-margin-top: 72px; }
+    .sec-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sec-num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #f59e0b, #b45309);
+      color: #090d16;
+      padding: 3px 11px;
+      border-radius: 8px;
+      direction: ltr;
+    }
+    .sec-head h2 { font-size: clamp(1.18rem, 2.3vw, 1.52rem); font-weight: 900; }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+    .grid-2 > *, .grid-3 > *, .grid-4 > *, .kpi-grid > *, .glossary-grid > *, .dict-grid > *, .match-strip > * { min-width: 0; }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .kpi {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .kpi .k-lbl { font-size: 0.76rem; color: var(--muted); font-weight: 700; }
+    .kpi .k-val { font-size: 1.25rem; font-weight: 900; color: var(--gold-lt); margin-top: 2px; direction: ltr; text-align: start; }
+    .kpi .k-sub { font-size: 0.76rem; color: #cbd5e1; margin-top: 2px; }
+
+    .callout { border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; border: 1px solid; }
+    .callout.ok { background: var(--green-bg); border-color: rgba(16, 185, 129, 0.45); }
+    .callout.ng { background: var(--red-bg); border-color: rgba(239, 68, 68, 0.45); }
+    .callout.warn { background: var(--amber-bg); border-color: rgba(245, 158, 11, 0.45); }
+    .callout.info { background: var(--blue-bg); border-color: rgba(56, 189, 248, 0.45); }
+    .callout h3 { font-size: 1rem; font-weight: 900; margin-bottom: 6px; }
+    .callout ul { padding-inline-start: 18px; font-size: 0.9rem; }
+    .callout li + li { margin-top: 4px; }
+
+    .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+    .search-input {
+      flex: 1 1 220px;
+      min-width: 200px;
+      padding: 9px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border-strong);
+      background: #0b1120;
+      color: var(--text);
+      font-size: 0.92rem;
+    }
+    .tab-btn {
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.85);
+      color: #d1d5db;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .tab-btn.active, .tab-btn:hover { background: var(--gold); color: #090d16; border-color: var(--gold); }
+    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.86rem; min-width: 720px; }
+    th, td { padding: 9px 10px; text-align: start; border-bottom: 1px solid rgba(255, 255, 255, 0.06); vertical-align: middle; }
+    th {
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--gold-lt);
+      font-weight: 800;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.03); }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; white-space: nowrap; }
+    #oppNotesList .badge { white-space: normal; max-width: 100%; border-radius: 10px; line-height: 1.4; text-align: start; }
+    .b-band1 { background: rgba(56, 189, 248, 0.22); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.5); }
+    .b-band2 { background: rgba(16, 185, 129, 0.22); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.5); }
+    .b-band3 { background: rgba(168, 85, 247, 0.22); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.5); }
+    .b-band4 { background: rgba(245, 158, 11, 0.22); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.5); }
+    .b-band5 { background: rgba(239, 68, 68, 0.22); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.5); }
+
+    .ui-shot {
+      background: rgba(11, 17, 32, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .ui-shot > img { width: 100%; max-height: 310px; object-fit: contain; background: #060911; display: block; }
+    .ui-shot .cap img { width: 18px; height: 18px; display: inline-block; vertical-align: text-bottom; }
+    .ui-shot .cap { padding: 10px 12px; font-size: 0.82rem; color: #d1d5db; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+    .ui-tag { display: inline-block; font-size: 0.68rem; font-weight: 800; padding: 1px 7px; border-radius: 6px; margin-inline-end: 6px; vertical-align: middle; }
+    .tag-real { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.45); }
+    .tag-gen { background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.45); }
+
+    .hero-strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px; margin-top: 10px; }
+    .hero-chip {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px;
+      text-align: center;
+    }
+    .hero-chip.ban { border-color: rgba(239, 68, 68, 0.65); background: rgba(127, 29, 29, 0.25); }
+    .hero-chip.limit { border-color: rgba(245, 158, 11, 0.65); background: rgba(120, 53, 15, 0.25); }
+    .hero-chip img { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.15); }
+    .hero-chip .h-name { font-size: 0.8rem; font-weight: 800; margin-top: 4px; }
+    .hero-chip .h-eff { font-size: 0.7rem; color: var(--muted); line-height: 1.3; margin-top: 2px; }
+
+    .map-board-wrap { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-strong); background: #060911; direction: ltr; }
+    .map-board-wrap img.base { width: 100%; display: block; filter: brightness(0.84); }
+    .map-svg-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .map-pin { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.16s ease; }
+    .map-pin:hover { transform: translate(-50%, -50%) scale(1.1); z-index: 10; }
+    .map-pin img { width: clamp(28px, 4.4vw, 50px); height: clamp(28px, 4.4vw, 50px); object-fit: contain; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.9)); }
+    .map-pin .m-lbl {
+      margin-top: 1px;
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-size: clamp(0.6rem, 1.05vw, 0.76rem);
+      font-weight: 900;
+      background: rgba(9, 13, 22, 0.9);
+      border: 1px solid rgba(245, 158, 11, 0.55);
+      color: #fef08a;
+      white-space: nowrap;
+      direction: auto;
+    }
+    .map-pin.priority .m-lbl { background: rgba(14, 116, 144, 0.95); border-color: #38bdf8; color: #ffffff; }
+    .bell-emblem {
+      width: clamp(28px, 4.4vw, 46px);
+      height: clamp(28px, 4.4vw, 46px);
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 30%, #38bdf8, #0e7490 70%, #082f49);
+      border: 2px solid #fde68a;
+      display: grid;
+      place-items: center;
+      font-size: clamp(14px, 2.2vw, 22px);
+      box-shadow: 0 3px 12px rgba(56, 189, 248, 0.55);
+    }
+    .phase-detail-box { margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border); font-size: 0.88rem; }
+
+    .th-help { color: var(--gold-lt); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+    .th-help:hover { color: #38bdf8; text-decoration: underline; }
+    .q-dot {
+      display: inline-grid;
+      place-items: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      font-size: 0.65rem;
+      font-weight: 900;
+      background: rgba(56, 189, 248, 0.22);
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      color: #bae6fd;
+    }
+    .glossary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+    .term-card {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px 16px;
+      scroll-margin-top: 72px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .term-card .t-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .term-card .t-title { font-size: 1.02rem; font-weight: 900; color: var(--gold-lt); }
+    .term-card .t-range {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #7dd3fc;
+    }
+    .term-card .t-easy {
+      font-size: 0.85rem;
+      color: #f3f4f6;
+      background: rgba(30, 41, 59, 0.72);
+      border-inline-start: 3px solid var(--gold);
+      padding: 7px 10px;
+      border-radius: 6px;
+    }
+    .term-card .t-formula {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.76rem;
+      line-height: 1.55;
+      color: #bae6fd;
+      background: #060911;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 8px;
+      padding: 8px 10px;
+      overflow-x: auto;
+    }
+    .term-card .t-use { font-size: 0.82rem; color: #d1d5db; }
+    .dict-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(235px, 1fr)); gap: 10px; margin-top: 14px; }
+    .dict-item { background: rgba(15, 23, 42, 0.78); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 11px 13px; font-size: 0.8rem; color: #d1d5db; }
+    .dict-item > strong:first-child { display: block; color: var(--gold-lt); font-size: 0.86rem; margin-bottom: 3px; }
+    .fac-card {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.86);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+    .fac-card img { width: 58px; height: 58px; object-fit: contain; flex-shrink: 0; border-radius: 8px; background: #080c15; }
+    .fac-card h4 { font-size: 0.9rem; font-weight: 900; color: var(--gold-lt); }
+    .fac-card p { font-size: 0.78rem; color: #d1d5db; margin-top: 2px; }
+    footer { border-top: 1px solid var(--border); padding-top: 20px; margin-top: 40px; font-size: 0.8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+  <nav class="top-nav">
+    <div class="top-nav-inner">
+      <div class="brand-tag" data-t="nav.brand">⚔️ #898 [SGR] 聖剣頂上リーグ 軍団1作戦ポータル</div>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="#summary" data-t="nav.summary">勝利の結論</a>
+          <a href="#roster" data-t="nav.roster">参戦25名 班検索</a>
+          <a href="#glossary" data-t="nav.glossary">用語＆計算式</a>
+          <a href="#basic-ui" data-t="nav.basic_ui">基礎UI・禁止英雄</a>
+          <a href="#tactical-map" data-t="nav.tactical_map">聖剣マップ＆施設</a>
+          <a href="#timeline" data-t="nav.timeline">Phase 1〜3動線</a>
+          <a href="#enemy-risk" data-t="nav.enemy_risk">相手分析＆開示</a>
+        </div>
+        <div class="lang-bar" role="group" aria-label="Language Switcher">
+          
+  <button class="lang-btn active" type="button" data-lang-btn="ja">🇯🇵 日本語</button>
+  <button class="lang-btn" type="button" data-lang-btn="en">🇬🇧 EN</button>
+  <button class="lang-btn" type="button" data-lang-btn="ar">🇸🇦 العربية</button>
+  <button class="lang-btn" type="button" data-lang-btn="tr">🇹🇷 TR</button>
+
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <header class="hero">
+      <img class="hero-bg" src="assets/generated/banner_swordland_showdown.jpg" alt="聖剣頂上リーグ SGR vs GOD イメージバナー">
+      <div class="hero-overlay">
+        <div class="hero-lang-strip">
+          <span class="pill" data-t="hero.pill">同盟メンバー限定共有（noindex）｜第14ブロック 昇格戦第3試合｜ゲーム内参戦25名＋控え8名実測反映</span>
+          <div class="hero-lang-bar" role="group" aria-label="Primary Language Switcher">
+            <span class="lang-lbl">🌐 Lang:</span>
+            
+  <button class="lang-btn active" type="button" data-lang-btn="ja">🇯🇵 日本語</button>
+  <button class="lang-btn" type="button" data-lang-btn="en">🇬🇧 EN</button>
+  <button class="lang-btn" type="button" data-lang-btn="ar">🇸🇦 العربية</button>
+  <button class="lang-btn" type="button" data-lang-btn="tr">🇹🇷 TR</button>
+
+          </div>
+        </div>
+        <h1 data-th="hero.h1_html">聖剣頂上リーグ 昇格戦第3試合：<span style="color:#38bdf8">#898 [SGR] 軍団1</span> vs <span style="color:#f43f5e">#913 [GOD] 軍団1</span></h1>
+        <p class="hero-sub" data-th="hero.sub_html">総兵量とTG8層（22名 vs 8名）ではGODが上回りますが、<strong>SGRのTop 4主砲平均PCSは 830.5 vs 724.5（+106.0点差）と圧倒的優位！</strong>盤面最強の矛<strong>『リョ〜〜〜朕 (PCS 952)』</strong>と最強の盾<strong>『レッサー (PCS 836 / 637.9M)』</strong>を軸に、<strong>TG8全8名を主力拠点へ完全純化し、鐘楼＆王立厩舎からの非対称機動戦＋終盤50%輜重ハイスト</strong>で押し切ります。</p>
+        <div class="match-strip">
+          <div class="match-box self">
+            <div class="lbl" data-t="hero.self_lbl">自チーム（左・青・軍団1）</div>
+            <div class="val" style="color:#7dd3fc" data-t="hero.self_val">#898 [SGR] (参戦25名＋控え8名)</div>
+            <div class="lbl" data-t="hero.self_sub">Top4平均PCS 830.5（+106点圧倒）｜TG8精鋭 8名</div>
+          </div>
+          <div class="match-box opp">
+            <div class="lbl" data-t="hero.opp_lbl">対戦相手（右・赤・軍団1）</div>
+            <div class="val" style="color:#e9d5ff" data-t="hero.opp_val">#913 [GOD] (Top30)</div>
+            <div class="lbl" data-t="hero.opp_sub">平均PCS 617.4 ｜ 象限A 15名 ｜ TG8 22名（TG6以下ゼロ）</div>
+          </div>
+          <div class="match-box">
+            <div class="lbl" data-t="hero.core_lbl">SGR 勝ち筋コア</div>
+            <div class="val" style="color:#fcd34d" data-t="hero.core_val">Top4圧倒火力 × TG8純化 × 非対称機動戦</div>
+            <div class="lbl" data-t="hero.core_sub">多点正面消耗を避け、鐘楼・厩舎と高価値1〜2拠点＋輜重強奪で勝つ</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="summary">
+      <div class="sec-head"><span class="sec-num">01</span><h2 data-t="sec_titles.s01">30秒でわかる戦力診断と勝ち筋</h2></div>
+      <div class="kpi-grid"><div class="kpi"><div class="k-lbl" data-t="kpis.0.label">Top 1〜4 主砲 平均 PCS（質）</div><div class="k-val" style="color:#6ee7b7">830.5 <span style="font-size:0.85rem;color:#9ca3af">vs 724.5</span></div><div class="k-sub" data-t="kpis.0.sub">SGRが +106.0点 圧倒！（リョ952・レッサー836・だりゅ776・Hinata758）</div></div>
+<div class="kpi"><div class="k-lbl" data-t="kpis.1.label">全体 / #5〜#10 中堅 PCS</div><div class="k-val" style="color:#f59e0b">535.0 / 578.7 <span style="font-size:0.85rem;color:#9ca3af">vs 617.4 / 662.5</span></div><div class="k-sub" data-t="kpis.1.sub">中堅〜下位層はGODが厚い（全面殴り合い厳禁・局地集中が鉄則）</div></div>
+<div class="kpi"><div class="k-lbl" data-t="kpis.2.label">推定保有兵士戦力 (Troop)</div><div class="k-val">6,494.3M <span style="font-size:0.85rem;color:#9ca3af">vs 9,233.0M</span></div><div class="k-sub" data-t="kpis.2.sub">GODが約1.42倍厚い（長期の多点消耗戦は避ける）</div></div>
+<div class="kpi"><div class="k-lbl" data-t="kpis.3.label">TG8換算 実効耐久 (EGC)</div><div class="k-val">5,416.5M <span style="font-size:0.85rem;color:#9ca3af">vs 8,727.2M</span></div><div class="k-sub" data-t="kpis.3.sub">GODはTG8が22名・TG6以下ゼロ。SGRはTG8精鋭8名の純化が生命線</div></div></div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="callout ok"><h3 data-t="ok_heading">✅ OK：勝てる黄金パターン（非対称機動戦）</h3><ul><li data-th="ok_bullets.0"><strong>Top 4主砲（リョ〜〜〜朕・レッサー・だりゅDaryu・Hinata）＋ルーク＋班② TG8精鋭3名（ROCK・ネプチューンマン・ぐるぐる）＝ TG8全8名を主力拠点へ集中</strong>し、GOD首位『ᎠᎪᏔᏩᏚᎢᎽᏞᎬ (PCS 802)』すら弾き返す局地絶対優位を作る。</li>
+<li data-th="ok_bullets.1">開始直後に <strong>鐘楼（占領時間 -50%）</strong> と <strong>王立厩舎（無料移転CD -50%）</strong> を確保し、機動速度と塗り替え回転数でGODの30名物量展開を翻弄する。</li>
+<li data-th="ok_bullets.2"><strong>TG6以下（班④3名＋班⑤9名＝12名）を主力TG8駐屯から完全分離</strong>し、無人修道院の即踏み・おとり集結・<strong>終盤50%エスクロー輜重ハイスト</strong>・1兵地下貯蔵庫回収に特化させる。</li></ul></div>
+        <div class="callout ng"><h3 data-t="ng_heading">❌ NG：絶対に避けるべき負けパターン</h3><ul><li data-th="ng_bullets.0"><strong>4〜6拠点を同時に正面防衛して主力を分散させる</strong>（最重要NG：GODはA象限15名・TG8 22名のため、分散戦では中堅層差で押し切られる）。</li>
+<li data-th="ng_bullets.1"><strong>TG6大兵（Ednan・kusabito・カピバラ）やTG5以下を主力TG8駐屯へ混ぜる</strong>（モデル換算で <code>0.5625倍目安</code> 以下へ耐久希釈。必ず別レーン・おとり・輜重回収へ分離）。</li>
+<li data-th="ng_bullets.2">攻撃集結の左端に <strong>ロン・フェイ / ジェイブル / ヘルガ / ゾーイ / ソフィア</strong>（＋防御特化の <strong>サウル / エリック / ファハド</strong>）を入れて火力乗算枠を潰す。</li></ul></div>
+      </div>
+      <div class="grid-2">
+        <div class="card"><h3 style="font-size:0.95rem;margin-bottom:10px;color:var(--gold-lt)" data-t="charts.pcs_title">純粋戦闘スコア PCS（質）の帯域比較</h3><canvas id="pcsChart" height="200"></canvas></div>
+        <div class="card"><h3 style="font-size:0.95rem;margin-bottom:10px;color:var(--gold-lt)" data-t="charts.troop_title">兵量（Troop）＆ TG8換算実効戦力（EGC）比較</h3><canvas id="troopChart" height="200"></canvas></div>
+      </div>
+    </section>
+
+    <section id="roster">
+      <div class="sec-head"><span class="sec-num">02</span><h2 data-t="sec_titles.s02">自分の担当班・ミッション検索（SGR 実戦参戦25名＋控え8名）</h2></div>
+      <div class="card">
+        <div class="filter-bar">
+          <input id="rosterSearch" class="search-input" type="text" placeholder="自分の名前を検索（例：リョ、レッサー、だりゅ、Hinata、ルーク、ROCK、ぽんた...）" data-t-ph="roster.search_placeholder">
+          <button class="tab-btn active" data-band="all" data-t="roster.tabs.all">参戦全員 (25)</button>
+<button class="tab-btn" data-band="band1" data-t="roster.tabs.band1">班① 主砲エース (5)</button>
+<button class="tab-btn" data-band="band2" data-t="roster.tabs.band2">班② TG8精鋭合流 (3)</button>
+<button class="tab-btn" data-band="band3" data-t="roster.tabs.band3">班③ TG7遊撃 (5)</button>
+<button class="tab-btn" data-band="band4" data-t="roster.tabs.band4">班④ TG6大兵分離 (3)</button>
+<button class="tab-btn" data-band="band5" data-t="roster.tabs.band5">班⑤ 遊撃・輜重回収 (9)</button>
+        </div>
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:10px" data-th="roster.glossary_hint_html">※各指標の意味・計算式・戦場での使い方は、すぐ下の <a href="#glossary" style="color:#7dd3fc"><strong>03 初心者向け「専門用語・計算式ガイド」</strong></a> または見出しの <span class="q-dot">?</span> をタップして確認できます。</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-t="roster.th.rank">#</th>
+                <th data-t="roster.th.player">プレイヤー名</th>
+                <th data-t="roster.th.band">担当班</th>
+                <th><a class="th-help" href="#g-tg"><span data-t="roster.th.tg">TG(火炉)</span><span class="q-dot">?</span></a></th>
+                <th><a class="th-help" href="#g-pcs"><span data-t="roster.th.pcs">戦闘質 PCS</span><span class="q-dot">?</span></a></th>
+                <th><a class="th-help" href="#g-join"><span data-t="roster.th.join">合流 Join</span><span class="q-dot">?</span></a></th>
+                <th><a class="th-help" href="#g-dtv"><span data-t="roster.th.dtv">兵余裕 DTV</span><span class="q-dot">?</span></a></th>
+                <th><a class="th-help" href="#g-troop"><span data-t="roster.th.troop">推定兵力</span><span class="q-dot">?</span></a></th>
+                <th data-t="roster.th.mission">聖剣内ミッション・注意点</th>
+              </tr>
+            </thead>
+            <tbody id="rosterBody"></tbody>
+          </table>
+        </div>
+        <div class="callout info" style="margin-top:14px;margin-bottom:0"><h3 data-t="roster.reserve_title">🔄 欠席者が出た場合の「控え登録メンバー 繰上げ候補（8名）」</h3><p style="font-size:0.84rem;color:#e5e7eb"><span data-th="roster.reserve_desc_html">ゲーム内実測で <strong>参戦25名（上限30）・控え8名</strong> が登録済みです（なおAPI上位の Freyd / ゴリポン らは今回未参戦）。欠員が出た場合は TG7・高PCS の <strong>ぼんくら (PCS 512 / TG7 / 271.3M)</strong>・<strong>Style Ｄ (PCS 470 / TG6)</strong> から優先繰上げしてください：</span><br><code>ぼんくら (TG7 / PCS 512 / 271.3M) / Style Ｄ (TG6 / PCS 470 / 140.4M) / Mafia boss (TG5 / PCS 369 / 52.1M) / TS TOM 7509 (TG5 / PCS 302 / 26.6M) / べーやん2 (TG4 / PCS 273 / 48.7M) / 日向小次郎 kojiyo (TG1 / PCS 238 / 0.0M) / にくまん (TG1 / PCS 214 / 0.0M) / ふうにゃん (TG4 / PCS 197 / 51.2M)</code></p></div>
+      </div>
+    </section>
+
+    
+    <section id="glossary">
+      <div class="sec-head">
+        <span class="sec-num">03</span>
+        <h2 data-t="sec_titles.s03">【初心者歓迎】専門用語・計算式・指標の活かし方ガイド</h2>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <p style="font-size:0.88rem;color:#e5e7eb" data-th="glossary.intro_html">ゲーム内の「総戦力（Power）」は <strong>兵士をたくさん抱えるだけで簡単に水増しできる</strong> ため、総戦力だけで砲台や駐屯を決めると「見た目ほど強くない部隊」が主力拠点を溶かしてしまいます。そこで本ポータルでは、<strong>MightPulse（秘境試練6塔 ＋ 移民スコア ＋ 火炉Lv）</strong> を使い、誰が見ても納得できるよう <strong>「1兵あたりの強さ（質）」と「動員できる兵隊量（余裕度）」</strong> を5つの指標に分解して算出しています。</p>
+      </div>
+      <div class="glossary-grid">
+        <article id="g-tg" class="term-card">
+          <div class="t-head">
+            <span class="t-title" data-t="glossary.cards.tg.title">① TG(火炉) — 真金世代ティア</span>
+            <span class="t-range" data-t="glossary.cards.tg.range">TG1 〜 TG8</span>
+          </div>
+          <div class="t-easy" data-th="glossary.cards.tg.easy_html"><strong>一言イメージ：兵隊の世代ランク（装備・基礎ステータスの土台）。</strong><br>火炉Lv（Stove Lv）60〜70 が真金兵士 TG6〜TG8 に該当します。同じ10万兵でも TG8 と TG6 では基礎耐久と攻撃力に明確な世代差が出ます。</div>
+          <div class="t-formula" data-th="glossary.cards.tg.formula_html">TG = clip(floor((火炉Lv - 30) / 5), 1, 8)<br>・Lv.60〜64 ＝ TG6 ｜ Lv.65〜69 ＝ TG7 ｜ Lv.70 ＝ TG8<br>・混入リスク目安 EGC_M ＝ 推定兵力 × (TG / 8)² （TG6は0.5625倍目安※モデル換算）</div>
+          <div class="t-use"><strong data-t="glossary.use_prefix">🎯 実戦での活かし方：</strong><span data-th="glossary.cards.tg.use_html">駐屯拠点には定員15名制限があるため、SGRは <strong>班①②のTG8精鋭8名を主力拠点へ完全集中</strong> させます。GODはTG8が22名・TG6以下ゼロのため、SGRがTG6以下（12名）を主力へ混ぜると耐久効率が急落します。空き枠は班③(TG7)で一時補助し、TG8着弾で即交代（「ダンス」）を徹底しましょう。</span></div>
+        </article>
+        <article id="g-pcs" class="term-card">
+          <div class="t-head">
+            <span class="t-title" data-t="glossary.cards.pcs.title">② 戦闘質 PCS — 純粋戦闘スコア</span>
+            <span class="t-range" data-t="glossary.cards.pcs.range">0 〜 1,000 点</span>
+          </div>
+          <div class="t-easy" data-th="glossary.cards.pcs.easy_html"><strong>一言イメージ：「兵数を抜いた1兵あたりの純粋な強さ（砲台向き度）」。</strong><br>護符・領主装備・英雄・研究・ペットから算出しており、兵が増えても下がらず、兵がゼロでも高い数値が出ます。<strong>600点以上（特に700点超）が主砲・駐屯リーダー候補</strong>です。</div>
+          <div class="t-formula" data-th="glossary.cards.pcs.formula_html">1) 秘境試練6塔を各上限 CAP で0〜1に正規化（桁差バイアス除去）<br>CAP = &#123;護符CC:400, 装備MF:440, 研究KN:320, ペットFoL:340, 英雄Col:800, 総合RS:840&#125;<br>2) 実戦重み合成 Q_core = 0.26×CC + 0.20×Col + 0.18×MF + 0.14×KN + 0.14×RS + 0.08×FoL<br>3) 移民スコアの火炉倍率を除算中立化（TC=min(Stove,70), wps=Mig/TC+2226）し 12% のみ統合<br>PCS = 1000 × clip(0.88 × Q_core + 0.12 × clip(wps/42000, 0, 1), 0, 1)</div>
+          <div class="t-use"><strong data-t="glossary.use_prefix">🎯 実戦での活かし方：</strong><span data-th="glossary.cards.pcs.use_html">集結・駐屯は「リーダー1人の倍率」が全員の兵に乗ります。SGRは <strong>Top 4 平均 PCS 830.5 vs GOD 724.5（+106.0点圧倒）</strong>。一方で #5〜10（578.7 vs 662.5）・#11+（438.7 vs 582.4）はGODが厚いため、<strong>必ずTop4が頭を張る局地戦</strong>へ持ち込むことが勝利の絶対条件です。</span></div>
+        </article>
+        <article id="g-join" class="term-card">
+          <div class="t-head">
+            <span class="t-title" data-t="glossary.cards.join.title">③ 合流 Join — 乗る時専用スコア</span>
+            <span class="t-range" data-t="glossary.cards.join.range">0 〜 1,000 点</span>
+          </div>
+          <div class="t-easy" data-th="glossary.cards.join.easy_html"><strong>一言イメージ：「自分が砲台の集結・駐屯へ合流（乗る）ときの貢献度」。</strong><br>自分が合流側（ジョイナー）に回る時は、自分の研究や領主装備は戦闘に使われず、<strong>「一番左（Slot 1）の英雄スキル」と「送る兵のTG」</strong> だけが戦場に効きます。</div>
+          <div class="t-formula" data-th="glossary.cards.join.formula_html">PCS_joiner = 1000 × (0.45×n_Col[英雄] + 0.15×n_RS[総合] + 0.10×n_CC + 0.05×n_MF + 0.25×(TG / 8))<br>※英雄・総合塔・TG世代の比重 85% で合流適正を評価</div>
+          <div class="t-use"><strong data-t="glossary.use_prefix">🎯 実戦での活かし方：</strong><span data-th="glossary.cards.join.use_html">戦闘質 PCS が500台でも <strong>TG8 × 英雄育成（Join 642〜674）</strong> の高い班②（<code>ROCK</code> / <code>ネプチューンマン</code> / <code>ぐるぐる</code>）に加え、班①の <code>リョ(942)</code>・<code>レッサー(881)</code>・<code>だりゅ(838)</code>・<code>Hinata(830)</code>・<code>ルーク(741)</code> が相互合流することで最高火力を引き出せます。</span></div>
+        </article>
+        <article id="g-troop" class="term-card">
+          <div class="t-head">
+            <span class="t-title" data-t="glossary.cards.troop.title">④ 推定兵力（Troop Power）</span>
+            <span class="t-range" data-t="glossary.cards.troop.range">単位：M（百万戦力）</span>
+          </div>
+          <div class="t-easy" data-th="glossary.cards.troop.easy_html"><strong>一言イメージ：「総戦力から建物・研究などの固定戦力を引き算した、いま動く兵隊の数」。</strong><br>王城戦や直近の戦闘で兵を消耗している場合、総戦力（Power）は高く見えても推定兵力（Troop）が小さく出ます。</div>
+          <div class="t-formula" data-th="glossary.cards.troop.formula_html">1) 固定ベース戦力（冪乗則モデル）：BasePower_M = 5.79 × (wps ^ 0.318)<br>※高戦力帯で兵枯渇と誤認しないよう下側包絡線で非線形推定<br>2) 推定兵力：TroopPower_M = max(総戦力M - BasePower_M, 0)<br>3) 兵比率 phi = TroopPower_M / 総戦力M</div>
+          <div class="t-use"><strong data-t="glossary.use_prefix">🎯 実戦での活かし方：</strong><span data-th="glossary.cards.troop.use_html">推定総兵力は <strong>SGR 6,494.3M（25名） vs GOD 9,233.0M（30名）＝約1.42倍差</strong>。GODは中堅の <code>Nickyᶠᵘᶰ (573.7M)</code> や <code>~Deadpool~ (442.9M)</code> ら厚い兵量タンクが複数いるため、正面の多点消耗戦を避け、Top4の圧倒的火力差で敵兵を効率よく削る戦術が必須です。</span></div>
+        </article>
+        <article id="g-dtv" class="term-card">
+          <div class="t-head">
+            <span class="t-title" data-t="glossary.cards.dtv.title">⑤ 兵余裕 DTV — 出撃スタミナ余裕度</span>
+            <span class="t-range" data-t="glossary.cards.dtv.range">0 〜 100 点（目安60+）</span>
+          </div>
+          <div class="t-easy" data-th="glossary.cards.dtv.easy_html"><strong>一言イメージ：「聖剣1時間を通して前線に兵を出し続けられるスタミナ余裕」。</strong><br>ただ兵が多いだけでなく、<strong>TG世代係数・推定兵量・総力内の兵比率</strong> を組み合わせて「連戦に耐えられるか」を0〜100点で示します。</div>
+          <div class="t-formula" data-th="glossary.cards.dtv.formula_html">・兵量因子 a = clip(ln(1 + TroopPower_M / 20) / ln(31), 0, 1)  [600Mで1.0]<br>・兵比率因子 s = clip((phi - 0.15) / 0.65, 0.02, 1.0)<br>・世代床係数 qf = max(1 - 0.04 × (8 - TG), 0.60)<br>DTV = 100 × qf × (a ^ 0.6) × (s ^ 0.4)</div>
+          <div class="t-use"><strong data-t="glossary.use_prefix">🎯 実戦での活かし方：</strong><span data-th="glossary.cards.dtv.use_html">SGR上位13名（班①②③）は全員 DTV 72〜100 と高水準。一方、<strong>TG6大兵（<code>FAT_WARN</code>）の3名（<code>Ednan</code> / <code>kusabito</code> / <code>カピバラ</code>）</strong> とD象限9名は主力TG8駐屯から分離し、別レーン＆終盤ハイスト要員として活かすのが最適解です。</span></div>
+        </article></div>
+      <div class="card" style="margin-top:14px">
+        <h3 style="font-size:0.96rem;color:var(--gold-lt);margin-bottom:4px" data-t="glossary.dict_heading">📖 初心者向け：聖剣リーグ 重要ルール・用語ミニ辞典</h3>
+        <div class="dict-grid"><div class="dict-item"><strong data-t="glossary.dict.0.title">🗺️ 4象限（班分けの地図）</strong><span data-th="glossary.dict.0.body_html"><code>PCS≧600 &amp; DTV≧60</code> が <strong>A象限（主砲）</strong>、<code>DTV≧60</code> が <strong>B象限（合流・陽動）</strong>、<code>PCS≧600</code> だが兵少が <strong>C象限（頭枠・回復）</strong>、両方控えめが <strong>D象限（回収・空き踏み）</strong> です。</span></div>
+<div class="dict-item"><strong data-t="glossary.dict.1.title">🧬 Slot 1（一番左英雄）＆ 異種乗算</strong><span data-th="glossary.dict.1.body_html">集結・駐屯に乗るスキルは参加者の <strong>一番左の英雄・第1遠征スキル（上位4名まで）</strong> だけ！同じバフばかりより「攻撃+25% × 殺傷+25% × 敵被ダメ増」を混ぜるほど倍率が伸びます。</span></div>
+<div class="dict-item"><strong data-t="glossary.dict.2.title">📦 保有50%輜重ドロップ（エスクロー）</strong><span data-th="glossary.dict.2.body_html">聖剣では拠点を保持している間に貯まる同盟ポイントの <strong>50%が拠点上に保管</strong> されます。Phase 1から常に有効で、落城させると相手から引かれて周囲に箱が散らばり、<strong>どちらの同盟でも拾えます</strong>。</span></div>
+<div class="dict-item"><strong data-t="glossary.dict.3.title">⏱️ 画面の「残り時間」見間違い注意</strong><span data-th="glossary.dict.3.body_html">戦場上部のタイマーは <strong>60:00 → 00:00 のカウントダウン</strong> です。経過15分＝<strong>残り45:00</strong>、残り<strong>22:00以降は12分退場禁止</strong>（戻ってこられなくなるため）を徹底しましょう。</span></div>
+<div class="dict-item"><strong data-t="glossary.dict.4.title">🏆 聖剣リーグは「得失点差」も重要</strong><span data-th="glossary.dict.4.body_html">勝敗だけでなく、シーズン昇格順位には <strong>自軍ポイント − 相手ポイント（得失点差）</strong> も効きます。万一ビハインドでも、残り10分〜終了0秒まで箱・地下貯蔵庫を1つでも多く拾い切る価値があります。</span></div>
+<div class="dict-item"><strong data-t="glossary.dict.5.title">🔍 Flag B〜D（未計測フラグ注記）</strong><span data-th="glossary.dict.5.body_html">MightPulse上で6塔や移民スコアが一部未取得のメンバーは「Flag B/C」で数学的に補完、両方未取得は「Flag D（算出対象外・別表警告）」として開示しています。</span></div></div>
+      </div>
+    </section>
+
+    
+    <section id="basic-ui">
+      <div class="sec-head">
+        <span class="sec-num">04</span>
+        <h2 data-t="sec_titles.s04">【基礎UI図解】開戦前チェック ＆ プリセットSlot 1（一番左）の鉄則</h2>
+      </div>
+      <div class="grid-3" style="margin-bottom:18px"><div class="ui-shot"><img src="assets/generated/infirmary_ready_scene.jpg" alt="医務室"><div class="cap"><span class="ui-tag tag-gen" data-t="basic_ui.tag_gen">戦術イメージ</span><span data-th="basic_ui.cards.0"><strong>開戦15分前：医務室の負傷兵を必ず「0」に！</strong><br>自都市の <img src="assets/ui/icon_infirmary.png" alt="医務室"> 医務室に負傷兵が1兵でも残っていると、聖剣戦場そのものへ入場できません。事前に全治療し、出撃中マーチ・増援もすべて帰還させておきます。</span></div></div><div class="ui-shot"><img src="assets/swordland/ui_entry_timezone_ja.png" alt="軍団1エントリー"><div class="cap"><span class="ui-tag tag-real" data-t="basic_ui.tag_real">実機UI</span><span data-th="basic_ui.cards.1"><strong>参戦枠とTG世代（兵質）の確認</strong><br>エントリー時間帯確定後は時間厳守。自分が TG8（火炉70）か TG7（65-69）か TG6（60-64）かを把握し、TG6以下の方は主力TG8駐屯へ合流しないよう分離行動します。</span></div></div><div class="ui-shot"><img src="assets/ui/ui_tg8_refinement_ja.png" alt="精製黄金TG8"><div class="cap"><span class="ui-tag tag-real" data-t="basic_ui.tag_real">実機UI</span><span data-th="basic_ui.cards.2"><strong>なぜTG6とTG8を混ぜてはいけない？</strong><br>精製黄金で鍛えた <img src="assets/ui/icon_truegold_crucible.png" alt="るつぼ"> TG8 駐屯拠点（上限15名）にTG6が混ざると、本作戦モデル換算の耐久効率が <strong>0.5625倍目安</strong> に低下。枠に空きがある間だけTG7で一時埋めし、TG8着弾で即交代（「ダンス」）を行います。</span></div></div></div>
+      <div class="grid-3" style="margin-bottom:18px"><div class="ui-shot"><img src="assets/ui/ui_chenko_skill1_crop.jpg" alt="チェンコ"><div class="cap"><span class="ui-tag tag-real" data-t="basic_ui.tag_real">実機UI</span><span data-th="basic_ui.cards.3"><strong>合流時に発動するのは「一番左（Slot 1）英雄の右上・第1遠征スキル」のみ！</strong><br>チェンコの『Stand of Arms Lv.5（殺傷力+25%）』のように、合流メンバー全員の上位4枠がこの「左端英雄の第1スキル」で決まります。</span></div></div><div class="ui-shot"><img src="assets/ui/ui_rally_panel.png" alt="Rally"><div class="cap"><span class="ui-tag tag-real" data-t="basic_ui.tag_real">実機UI</span><span data-th="basic_ui.cards.4"><strong><img src="assets/ui/icon_command_center.png" alt="指揮センター"> 集結（Rally）参加時の注意</strong><br>班①（リョ〜〜〜朕・レッサー・だりゅDaryu・Hinata・ルーク）が立てた集結へ乗る時は、必ず保存しておいた「攻撃合流プリセット」で1タップ送信。余計な英雄を左に置くと他人のバフ枠を弾き出します。</span></div></div><div class="ui-shot"><img src="assets/ui/ui_garrison_list.png" alt="Garrison"><div class="cap"><span class="ui-tag tag-real" data-t="basic_ui.tag_real">実機UI</span><span data-th="basic_ui.cards.5"><strong><img src="assets/ui/icon_embassy.png" alt="大使館"> 防衛駐屯（Garrison）の差し替え</strong><br>重要拠点を守る際は班①<code>レッサー (637.9M)</code>・<code>だりゅ (596.0M)</code>＋班② TG8精鋭（<code>ROCK</code>・<code>ネプチューンマン</code>・<code>ぐるぐる</code>）＋防衛向き左端英雄（ゴードン/ハワード/サウル等）が核。空き枠は班③(TG7)で一時補助し、TG8到着と同時に即交代させます。</span></div></div></div>
+      <div class="card">
+        <h3 style="font-size:1.05rem;font-weight:900;color:var(--gold-lt);margin-bottom:6px" data-t="basic_ui.hero_title">そのまま真似する「Slot 1（一番左）」推奨英雄 vs 絶対禁止（地雷）英雄</h3>
+        <p style="font-size:0.86rem;color:#d1d5db" data-th="basic_ui.hero_desc_html">攻撃集結では <strong>「攻撃力 × 殺傷力 × 敵被ダメ増」の異種乗算</strong> を組むと主砲の火力が跳ね上がります（防御・被ダメ軽減系は敵を削れないため<strong>防衛専用</strong>に分離）。開戦前にプリセット1（攻撃合流）・2（防衛）・3（高速回収）へ登録してください。</p>
+        <h4 style="margin-top:14px;font-size:0.9rem;color:#7dd3fc" data-t="basic_ui.hero_atk_title">⚔️ 攻撃集結 黄金ジョイナー枠（この中から一番左に1名配置）</h4>
+        <div class="hero-strip"><div class="hero-chip"><img src="assets/heroes/chenko.png" alt="チェンコ"><div class="h-name" data-t="basic_ui.heroes.chenko.0">チェンコ</div><div class="h-eff" data-t="basic_ui.heroes.chenko.1">確定 殺傷+25%</div></div>
+<div class="hero-chip"><img src="assets/heroes/yeonwoo.png" alt="インウー"><div class="h-name" data-t="basic_ui.heroes.yeonwoo.0">インウー</div><div class="h-eff" data-t="basic_ui.heroes.yeonwoo.1">確定 殺傷+25%</div></div>
+<div class="hero-chip"><img src="assets/heroes/amane.png" alt="アマネ"><div class="h-name" data-t="basic_ui.heroes.amane.0">アマネ</div><div class="h-eff" data-t="basic_ui.heroes.amane.1">確定 攻撃+25%</div></div>
+<div class="hero-chip"><img src="assets/heroes/margot.png" alt="マーゴ"><div class="h-name" data-t="basic_ui.heroes.margot.0">マーゴ</div><div class="h-eff" data-t="basic_ui.heroes.margot.1">確定 攻撃+25%</div></div>
+<div class="hero-chip"><img src="assets/heroes/vivian.png" alt="ヴィヴィアン"><div class="h-name" data-t="basic_ui.heroes.vivian.0">ヴィヴィアン</div><div class="h-eff" data-t="basic_ui.heroes.vivian.1">敵被ダメ+25%</div></div>
+<div class="hero-chip"><img src="assets/heroes/hilde.png" alt="ヒルダ"><div class="h-name" data-t="basic_ui.heroes.hilde.0">ヒルダ</div><div class="h-eff" data-t="basic_ui.heroes.hilde.1">攻撃+10%/防御+15%</div></div>
+<div class="hero-chip limit"><img src="assets/heroes/petra.png" alt="ペトラ ⚠"><div class="h-name" data-t="basic_ui.heroes.petra.0">ペトラ ⚠</div><div class="h-eff" style="color:#fcd34d" data-t="basic_ui.heroes.petra.1">1集結1名のみ（確率50%被ダメ+50%）</div></div></div>
+        <div class="grid-2" style="margin-top:16px">
+          <div>
+            <h4 style="font-size:0.9rem;color:#6ee7b7" data-t="basic_ui.hero_def_title">🛡️ 防衛駐屯 推奨左端（第1スキルが耐久・軽減特化）</h4>
+            <div class="hero-strip"><div class="hero-chip"><img src="assets/heroes/gordon.png" alt="ゴードン"><div class="h-name" data-t="basic_ui.heroes.gordon.0">ゴードン</div><div class="h-eff" data-t="basic_ui.heroes.gordon.1">味方体力+25%</div></div>
+<div class="hero-chip"><img src="assets/heroes/howard.png" alt="ハワード"><div class="h-name" data-t="basic_ui.heroes.howard.0">ハワード</div><div class="h-eff" data-t="basic_ui.heroes.howard.1">被ダメ-20%</div></div>
+<div class="hero-chip"><img src="assets/heroes/saul.png" alt="サウル"><div class="h-name" data-t="basic_ui.heroes.saul.0">サウル</div><div class="h-eff" data-t="basic_ui.heroes.saul.1">防御+10%/HP+15%（防衛向け）</div></div>
+<div class="hero-chip"><img src="assets/heroes/eric.png" alt="エリック"><div class="h-name" data-t="basic_ui.heroes.eric.0">エリック</div><div class="h-eff" data-t="basic_ui.heroes.eric.1">敵攻撃-20%（防衛向け）</div></div>
+<div class="hero-chip"><img src="assets/heroes/fahd.png" alt="ファハド"><div class="h-name" data-t="basic_ui.heroes.fahd.0">ファハド</div><div class="h-eff" data-t="basic_ui.heroes.fahd.1">敵与ダメ-20%（防衛向け）</div></div></div>
+          </div>
+          <div>
+            <h4 style="font-size:0.9rem;color:#fca5a5" data-t="basic_ui.hero_ban_title">💣 絶対禁止（合流Slot 1に入れると地雷）</h4>
+            <div class="hero-strip"><div class="hero-chip ban"><img src="assets/heroes/long-fei.png" alt="ロン・フェイ"><div class="h-name" data-t="basic_ui.heroes.long-fei.0">ロン・フェイ</div><div class="h-eff" style="color:#fca5a5" data-t="basic_ui.heroes.long-fei.1">攻撃集結 NG</div></div>
+<div class="hero-chip ban"><img src="assets/heroes/jabel.png" alt="ジェイブル"><div class="h-name" data-t="basic_ui.heroes.jabel.0">ジェイブル</div><div class="h-eff" style="color:#fca5a5" data-t="basic_ui.heroes.jabel.1">確率発動で枠汚染</div></div>
+<div class="hero-chip ban"><img src="assets/heroes/helga.png" alt="ヘルガ"><div class="h-name" data-t="basic_ui.heroes.helga.0">ヘルガ</div><div class="h-eff" style="color:#fca5a5" data-t="basic_ui.heroes.helga.1">合流時 NG</div></div>
+<div class="hero-chip ban"><img src="assets/heroes/zoe.png" alt="ゾーイ"><div class="h-name" data-t="basic_ui.heroes.zoe.0">ゾーイ</div><div class="h-eff" style="color:#fca5a5" data-t="basic_ui.heroes.zoe.1">確率・枠潰し</div></div>
+<div class="hero-chip ban"><img src="assets/heroes/sophia.png" alt="ソフィア"><div class="h-name" data-t="basic_ui.heroes.sophia.0">ソフィア</div><div class="h-eff" style="color:#fca5a5" data-t="basic_ui.heroes.sophia.1">合流時 NG</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="tactical-map">
+      <div class="sec-head">
+        <span class="sec-num">05</span>
+        <h2 data-t="sec_titles.s05">【聖剣UI】インタラクティブ戦術マップ ＆ 全施設ルール</h2>
+      </div>
+      <div class="card" style="margin-bottom:18px">
+        <div class="filter-bar" style="justify-content:space-between">
+          <div>
+            <strong style="color:var(--gold-lt)" data-t="map.board_title">SGR 作戦動線マップ（11拠点 ＋ 地下貯蔵庫4箇所の実配置）</strong>
+            <span style="font-size:0.78rem;color:var(--muted);margin-inline-start:8px" data-t="map.board_hint">※ボタンで各時間帯の狙いを切り替えられます</span>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="tab-btn active" data-phase="p1" data-t="map.btn_p1">Phase 1 初動 (残り60:00〜45:00)</button>
+            <button class="tab-btn" data-phase="p2" data-t="map.btn_p2">Phase 2 中央開放 (残り45:00〜20:00)</button>
+            <button class="tab-btn" data-phase="p3" data-t="map.btn_p3">終盤勝負帯 輜重ハイスト (残り20:00〜00:00)</button>
+          </div>
+        </div>
+
+        <div class="map-board-wrap">
+          <img class="base" src="assets/generated/swordland_tactical_map_base.jpg" alt="Swordland Tactical Map">
+          <svg id="mapSvg" class="map-svg-overlay" viewBox="0 0 1000 562" preserveAspectRatio="none"></svg>
+
+          <div class="map-pin priority" style="left:50%;top:50%"><img src="assets/swordland/facility_swordshrine.png" alt="Swordshrine"><span class="m-lbl" data-t="map.pins.swordshrine">① 聖剣祭壇 (15:00開放)</span></div>
+          <div class="map-pin" style="left:50%;top:24%"><img src="assets/swordland/facility_mercenary.png" alt="Mercenary Camp"><span class="m-lbl" data-t="map.pins.mercenary">② 傭兵駐屯地 (15:00)</span></div>
+          <div class="map-pin" style="left:50%;top:77%"><img src="assets/swordland/facility_reformation.png" alt="Hall of Reformation"><span class="m-lbl" data-t="map.pins.reformation">③ 教化の間 (15:00/+15%)</span></div>
+          <div class="map-pin priority" style="left:34%;top:13%"><div class="bell-emblem" aria-label="Bell Tower">🔔</div><span class="m-lbl" data-t="map.pins.bell">⑦ 鐘楼 (占領-50%)★</span></div>
+          <div class="map-pin" style="left:66%;top:13%"><img src="assets/swordland/facility_abbey.png" alt="NE Abbey"><span class="m-lbl" data-t="map.pins.ne_abbey">⑪ 北東・修道院</span></div>
+          <div class="map-pin" style="left:25%;top:40%"><img src="assets/swordland/facility_sanctum.png" alt="W Sanctum"><span class="m-lbl" data-t="map.pins.w_sanctum">⑤ 西・聖域</span></div>
+          <div class="map-pin" style="left:77%;top:43%"><img src="assets/swordland/facility_abbey.png" alt="CE Abbey"><span class="m-lbl" data-t="map.pins.ce_abbey">⑨ 中東・修道院</span></div>
+          <div class="map-pin" style="left:22%;top:60%"><img src="assets/swordland/facility_abbey.png" alt="CW Abbey"><span class="m-lbl" data-t="map.pins.cw_abbey">⑧ 中西・修道院</span></div>
+          <div class="map-pin" style="left:74%;top:61%"><img src="assets/swordland/facility_sanctum.png" alt="E Sanctum"><span class="m-lbl" data-t="map.pins.e_sanctum">④ 東・聖域</span></div>
+          <div class="map-pin" style="left:34%;top:88%"><img src="assets/swordland/facility_abbey.png" alt="SW Abbey"><span class="m-lbl" data-t="map.pins.sw_abbey">⑩ 南西・修道院</span></div>
+          <div class="map-pin priority" style="left:66%;top:88%"><img src="assets/swordland/facility_royal_stables.png" alt="Royal Stables"><span class="m-lbl" data-t="map.pins.stables">⑥ 王立厩舎 (移転-50%)★</span></div>
+          <div class="map-pin" style="left:36%;top:30%"><img src="assets/swordland/facility_undercellar.png" alt="Undercellar"><span class="m-lbl" style="font-size:0.62rem" data-t="map.pins.undercellar">地下貯蔵庫</span></div>
+          <div class="map-pin" style="left:64%;top:30%"><img src="assets/swordland/facility_undercellar.png" alt="Undercellar"><span class="m-lbl" style="font-size:0.62rem" data-t="map.pins.undercellar">地下貯蔵庫</span></div>
+          <div class="map-pin" style="left:36%;top:70%"><img src="assets/swordland/facility_undercellar.png" alt="Undercellar"><span class="m-lbl" style="font-size:0.62rem" data-t="map.pins.undercellar">地下貯蔵庫</span></div>
+          <div class="map-pin" style="left:64%;top:70%"><img src="assets/swordland/facility_undercellar.png" alt="Undercellar"><span class="m-lbl" style="font-size:0.62rem" data-t="map.pins.undercellar">地下貯蔵庫</span></div>
+        </div>
+        <div id="phaseDetailBox" class="phase-detail-box"></div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:16px"><div class="fac-card"><img src="assets/swordland/facility_royal_stables.png" alt=""><div><h4 data-t="map.facilities.0.title">王立厩舎 (0:00開放 ★最優先)</h4><p data-th="map.facilities.0.body_html">初回1,200 / +240/m。無料移転CDが <strong>-50%（10分→5分）</strong>。遊撃と輜重回収の回転数が倍増（緊急時は高級移転アイテムも併用可）。</p></div></div>
+<div class="fac-card"><img src="assets/swordland/facility_swordshrine.png" alt=""><div><h4 data-t="map.facilities.1.title">聖剣祭壇 (15:00開放 / 残り45:00)</h4><p data-th="map.facilities.1.body_html">初回 <strong>9,000</strong> / 毎分 <strong>+1,800</strong>。相手最上位エースとの正面消耗戦を避け、手薄な隙間やダブル集結・終盤スイングを狙います。</p></div></div>
+<div class="fac-card"><img src="assets/swordland/facility_sanctum.png" alt=""><div><h4 data-t="map.facilities.2.title">聖域 / サンクタム (0:00開放・東西2棟)</h4><p data-th="map.facilities.2.body_html">初回 <strong>6,000</strong> / 毎分 <strong>+1,200</strong>。中盤の主力ポイント源。相手が手薄な側を常に踏み替えます。</p></div></div>
+<div class="fac-card"><img src="assets/swordland/facility_reformation.png" alt=""><div><h4 data-t="map.facilities.3.title">教化の間 / 宗教改革所 (15:00開放)</h4><p data-th="map.facilities.3.body_html">初回3,000 / +600/m。戦場全体へ <strong>与ダメ+15% ＆ 被ダメ軽減-15%</strong> バフを付与。主砲対決前に確保したい拠点。</p></div></div>
+<div class="fac-card"><img src="assets/swordland/facility_mercenary.png" alt=""><div><h4 data-t="map.facilities.4.title">傭兵駐屯地 / キャンプ (15:00開放)</h4><p data-th="map.facilities.4.body_html">初回3,000 / +600/m。占領すると <strong>約7分間隔</strong> で敵保持拠点を自動攻撃して駐屯を削ります。味方集結と噛み合わせるのが強力。</p></div></div>
+<div class="fac-card"><img src="assets/swordland/facility_abbey.png" alt=""><div><h4 data-t="map.facilities.5.title">鐘楼（🔔 0:00）＆ 修道院（4棟 0:00）</h4><p data-th="map.facilities.5.body_html"><strong>鐘楼は占領カウント時間 -50%（3:00→1:30）</strong>・初回1,200/+240/m。<strong>修道院4棟</strong>は初回3,000/+600/mで遊撃・多面圧迫の要。</p></div></div></div>
+      <div class="grid-4"><div class="ui-shot"><img src="assets/swordland/ui_rules_swordshrine.png" alt=""><div class="cap"><span class="ui-tag tag-real" data-t="basic_ui.tag_real">実機UI</span><span data-th="map.ui_caps.0">聖剣祭壇の獲得ポイント表（9,000 / +1,800/m）</span></div></div>
+<div class="ui-shot"><img src="assets/swordland/ui_rules_stables_buff.png" alt=""><div class="cap"><span class="ui-tag tag-real" data-t="basic_ui.tag_real">実機UI</span><span data-th="map.ui_caps.1">王立厩舎の効果（<img src="assets/ui/icon_teleport.png" alt="移転"> 無料移転CD -50%）</span></div></div>
+<div class="ui-shot"><img src="assets/swordland/ui_swordshrine_garrison_crop.jpg" alt=""><div class="cap"><span class="ui-tag tag-real" data-t="basic_ui.tag_real">実機UI</span><span data-th="map.ui_caps.2">聖剣拠点の駐屯リスト（11/15枠・左端英雄並び確認）</span></div></div>
+<div class="ui-shot"><img src="assets/swordland/ui_battle_cluster_march.png" alt=""><div class="cap"><span class="ui-tag tag-real" data-t="basic_ui.tag_real">実機UI</span><span data-th="map.ui_caps.3">戦場マップでの同盟クラスタ集中と連撃マーチ</span></div></div></div>
+    </section>
+
+
+    <section id="timeline">
+      <div class="sec-head"><span class="sec-num">06</span><h2 data-t="sec_titles.s06">聖剣タイムライン（残り時間基準）＆ 輜重ハイスト逆転法</h2></div>
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="ui-shot"><img src="assets/generated/baggage_heist_scene.jpg" alt="Baggage Heist"><div class="cap"><span class="ui-tag tag-gen" data-t="basic_ui.tag_gen">戦術イメージ</span><span data-th="timeline.c1_html"><strong>優勢維持・逆転の切り札：輜重ハイスト（保有50%エスクロー強奪）</strong><br>Phase 1 から拠点保持ポイントの <strong>50%は常に施設上に保管</strong> されており、落城させると敵から減算されて周囲に箱が散乱します。貯まりきった終盤におとり集結で敵を散らし、班①の一撃で落として遊撃班が一気に拾います！</span></div></div>
+        <div class="ui-shot"><img src="assets/swordland/ui_swordland_field_crop.jpg" alt="Escrow Field UI"><div class="cap"><span class="ui-tag tag-real" data-t="basic_ui.tag_real">実機UI</span><span data-th="timeline.c2_html"><strong>実際の戦場に落ちた輜重（159 / 45 / 401 等）＆ 無料移転タイマー</strong><br>右上に <strong>残り時間（例 00:47:43）</strong>、右下に Battle Map 虫眼鏡（地下貯蔵庫探し）、左下に無料移転クールダウン。貯蔵庫は <strong>1兵〜最小限マーチ</strong> で兵損ゼロ採集が可能です！</span></div></div>
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3 style="color:#7dd3fc;font-size:1rem;margin-bottom:6px" data-t="timeline.p1_title">Phase 1（経過0:00〜15:00｜残り60:00〜45:00）</h3><p style="font-size:0.86rem" data-th="timeline.p1_html"><strong>最優先：鐘楼（-50%）＆ 王立厩舎（移転CD-50%）確保。</strong><br>初回占領は <strong>カウント完了（3分／鐘楼で1分30秒）</strong> まで守って初めて初回ボーナスが入るため増援を切らさない！班④⑤は外周聖域・修道院を同時踏みし、無料移転を無駄撃ちせず温存。</p></div>
+        <div class="card"><h3 style="color:#fcd34d;font-size:1rem;margin-bottom:6px" data-t="timeline.p2_title">Phase 2（経過15:00〜40:00｜残り45:00〜20:00）</h3><p style="font-size:0.86rem" data-th="timeline.p2_html"><strong>祭壇・教化・傭兵一斉開放 ＆ 局地圧倒フェーズ。</strong><br>GODの30名物量に4〜6拠点同時で付き合わず、『リョ〜〜〜朕』『レッサー』『だりゅDaryu』『Hinata』が <strong>聖剣祭壇・教化の間</strong> にTG8全8名を集中して圧倒的な質差（+106点）を叩きつけます。<strong>※残り22:00（経過38:00）以降は12分CDで戻れないため退場禁止！</strong></p></div>
+        <div class="card"><h3 style="color:#fca5a5;font-size:1rem;margin-bottom:6px" data-t="timeline.p3_title">終盤勝負帯（経過40:00〜60:00｜残り20:00〜00:00）</h3><p style="font-size:0.86rem" data-th="timeline.p3_html"><strong>おとり集結 ＋ 輜重ハイスト ＋ 1兵地下貯蔵庫回収。</strong><br>班④⑤のおとり攻撃でGODの増援判断を散らし、高蓄積拠点を『リョ〜〜〜朕』＋『だりゅDaryu』のダブル集結で落城 → 散乱する50%エスクロー箱と地下貯蔵庫を回収。<strong>リーグ順位は得失点差も効くため終了0秒まで全拾い徹底！</strong></p></div>
+      </div>
+    </section>
+
+    <section id="enemy-risk">
+      <div class="sec-head">
+        <span class="sec-num">07</span>
+        <h2><span data-t="sec_titles.s07_prefix">相手方</span> <code>#913 [GOD]</code> <span data-t="sec_titles.s07_suffix">要警戒メンバー ＆ データ開示（透明性）</span></h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3 style="font-size:0.95rem;color:#e9d5ff;margin-bottom:10px" data-t="enemy.top_heading">GOD 主砲・要警戒ライン（Top 8）</h3>
+          <div class="table-wrap">
+            <table style="min-width:460px">
+              <thead>
+                <tr>
+                  <th data-t="enemy.th.rank">#</th>
+                  <th data-t="enemy.th.player">プレイヤー</th>
+                  <th data-t="enemy.th.tg">Stv(TG)</th>
+                  <th data-t="enemy.th.pcs">PCS</th>
+                  <th data-t="enemy.th.dtv">DTV</th>
+                  <th data-t="enemy.th.troop">推定Troop</th>
+                </tr>
+              </thead>
+              <tbody id="oppTopBody"></tbody>
+            </table>
+          </div>
+          <p style="font-size:0.78rem;color:var(--muted);margin-top:8px" data-t="enemy.top_note">※GODの首位『ᎠᎪᏔᏩᏚᎢᎽᏞᎬ (PCS 802)』は強力ですが、SGR首位リョ(952)・2位レッサー(836)が上回ります。本当の脅威は #1〜#15 全員が A象限・TG8（PCS 625〜802）で揃い、さらに #10『Nickyᶠᵘᶰ (573.7M)』・#9『~Deadpool~ (442.9M)』ら厚い兵量タンクが中堅に並んでいる点です。</p>
+        </div>
+        <div class="card">
+          <h3 style="font-size:0.95rem;color:#fcd34d;margin-bottom:10px" data-t="enemy.notes_heading">🔎 GOD 詳細戦力分析 ＆ データ信頼性開示</h3>
+          <p style="font-size:0.82rem;color:#d1d5db;margin-bottom:8px" data-th="enemy.notes_desc_html">GOD 上位30名は <strong>全員 Flag A（100%計測済み・未クロール300M+ ゼロ）</strong> で隠しクジラはいません。特徴は <strong>TG8 22名＋TG7 8名（TG6以下ゼロ・FAT_WARNゼロ・D象限ゼロ）</strong> という極めて均質で厚い中堅層。正面の多点消耗戦を避け、SGR Top4の絶対火力差を1〜2拠点に集中させるのが最善策です。</p>
+          <div id="oppNotesList" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer><p data-th="footer.html"><strong>データ・作成開示</strong>：戦力・2軸スコア（PCS / DTV）は MightPulse API 実測値（<code>2026-11-22T18:00+09:00</code> 時点）およびゲーム内「軍団1参戦メンバー」実画面（参戦25名・控え8名）から決定論スクリプトで自動算出しています。当日の部隊回復数・英雄専用装備Lv・バフアイテム発動状況はゲーム内点呼を優先してください。<br>最終更新：2026-11-22 JST ｜ #898 [SGR] 聖剣作戦室</p></footer>
+  </main>
+
+  <script>
+    
+    const I18N_BUNDLES = {"ja": {"meta": {"lang": "ja", "dir": "ltr", "page_title": "【#898 SGR メンバー共有用】聖剣頂上リーグ 昇格戦第3試合 SGR vs GOD 完全作戦＆基礎UIマニュアル"}, "nav": {"brand": "⚔️ #898 [SGR] 聖剣頂上リーグ 軍団1作戦ポータル", "summary": "勝利の結論", "roster": "参戦25名 班検索", "glossary": "用語＆計算式", "basic_ui": "基礎UI・禁止英雄", "tactical_map": "聖剣マップ＆施設", "timeline": "Phase 1〜3動線", "enemy_risk": "相手分析＆開示"}, "hero": {"pill": "同盟メンバー限定共有（noindex）｜第14ブロック 昇格戦第3試合｜ゲーム内参戦25名＋控え8名実測反映", "h1_html": "聖剣頂上リーグ 昇格戦第3試合：<span style=\"color:#38bdf8\">#898 [SGR] 軍団1</span> vs <span style=\"color:#f43f5e\">#913 [GOD] 軍団1</span>", "sub_html": "総兵量とTG8層（22名 vs 8名）ではGODが上回りますが、<strong>SGRのTop 4主砲平均PCSは 830.5 vs 724.5（+106.0点差）と圧倒的優位！</strong>盤面最強の矛<strong>『リョ〜〜〜朕 (PCS 952)』</strong>と最強の盾<strong>『レッサー (PCS 836 / 637.9M)』</strong>を軸に、<strong>TG8全8名を主力拠点へ完全純化し、鐘楼＆王立厩舎からの非対称機動戦＋終盤50%輜重ハイスト</strong>で押し切ります。", "self_lbl": "自チーム（左・青・軍団1）", "self_val": "#898 [SGR] (参戦25名＋控え8名)", "self_sub": "Top4平均PCS 830.5（+106点圧倒）｜TG8精鋭 8名", "opp_lbl": "対戦相手（右・赤・軍団1）", "opp_val": "#913 [GOD] (Top30)", "opp_sub": "平均PCS 617.4 ｜ 象限A 15名 ｜ TG8 22名（TG6以下ゼロ）", "core_lbl": "SGR 勝ち筋コア", "core_val": "Top4圧倒火力 × TG8純化 × 非対称機動戦", "core_sub": "多点正面消耗を避け、鐘楼・厩舎と高価値1〜2拠点＋輜重強奪で勝つ"}, "sec_titles": {"s01": "30秒でわかる戦力診断と勝ち筋", "s02": "自分の担当班・ミッション検索（SGR 実戦参戦25名＋控え8名）", "s03": "【初心者歓迎】専門用語・計算式・指標の活かし方ガイド", "s04": "【基礎UI図解】開戦前チェック ＆ プリセットSlot 1（一番左）の鉄則", "s05": "【聖剣UI】インタラクティブ戦術マップ ＆ 全施設ルール", "s06": "聖剣タイムライン（残り時間基準）＆ 輜重ハイスト逆転法", "s07_prefix": "相手方", "s07_suffix": "要警戒メンバー ＆ データ開示（透明性）"}, "kpis": [{"label": "Top 1〜4 主砲 平均 PCS（質）", "sub": "SGRが +106.0点 圧倒！（リョ952・レッサー836・だりゅ776・Hinata758）"}, {"label": "全体 / #5〜#10 中堅 PCS", "sub": "中堅〜下位層はGODが厚い（全面殴り合い厳禁・局地集中が鉄則）"}, {"label": "推定保有兵士戦力 (Troop)", "sub": "GODが約1.42倍厚い（長期の多点消耗戦は避ける）"}, {"label": "TG8換算 実効耐久 (EGC)", "sub": "GODはTG8が22名・TG6以下ゼロ。SGRはTG8精鋭8名の純化が生命線"}], "ok_heading": "✅ OK：勝てる黄金パターン（非対称機動戦）", "ng_heading": "❌ NG：絶対に避けるべき負けパターン", "ok_bullets": ["<strong>Top 4主砲（リョ〜〜〜朕・レッサー・だりゅDaryu・Hinata）＋ルーク＋班② TG8精鋭3名（ROCK・ネプチューンマン・ぐるぐる）＝ TG8全8名を主力拠点へ集中</strong>し、GOD首位『ᎠᎪᏔᏩᏚᎢᎽᏞᎬ (PCS 802)』すら弾き返す局地絶対優位を作る。", "開始直後に <strong>鐘楼（占領時間 -50%）</strong> と <strong>王立厩舎（無料移転CD -50%）</strong> を確保し、機動速度と塗り替え回転数でGODの30名物量展開を翻弄する。", "<strong>TG6以下（班④3名＋班⑤9名＝12名）を主力TG8駐屯から完全分離</strong>し、無人修道院の即踏み・おとり集結・<strong>終盤50%エスクロー輜重ハイスト</strong>・1兵地下貯蔵庫回収に特化させる。"], "ng_bullets": ["<strong>4〜6拠点を同時に正面防衛して主力を分散させる</strong>（最重要NG：GODはA象限15名・TG8 22名のため、分散戦では中堅層差で押し切られる）。", "<strong>TG6大兵（Ednan・kusabito・カピバラ）やTG5以下を主力TG8駐屯へ混ぜる</strong>（モデル換算で <code>0.5625倍目安</code> 以下へ耐久希釈。必ず別レーン・おとり・輜重回収へ分離）。", "攻撃集結の左端に <strong>ロン・フェイ / ジェイブル / ヘルガ / ゾーイ / ソフィア</strong>（＋防御特化の <strong>サウル / エリック / ファハド</strong>）を入れて火力乗算枠を潰す。"], "charts": {"pcs_title": "純粋戦闘スコア PCS（質）の帯域比較", "troop_title": "兵量（Troop）＆ TG8換算実効戦力（EGC）比較", "pcs_labels": ["全体平均", "Top 1〜4 主砲", "#5〜#10 第2陣", "#11以降"], "troop_labels": ["推定保有兵士 (Troop M)", "TG8換算実効 (EGC M)"]}, "roster": {"search_placeholder": "自分の名前を検索（例：リョ、レッサー、だりゅ、Hinata、ルーク、ROCK、ぽんた...）", "tabs": {"all": "参戦全員 (25)", "band1": "班① 主砲エース (5)", "band2": "班② TG8精鋭合流 (3)", "band3": "班③ TG7遊撃 (5)", "band4": "班④ TG6大兵分離 (3)", "band5": "班⑤ 遊撃・輜重回収 (9)"}, "glossary_hint_html": "※各指標の意味・計算式・戦場での使い方は、すぐ下の <a href=\"#glossary\" style=\"color:#7dd3fc\"><strong>03 初心者向け「専門用語・計算式ガイド」</strong></a> または見出しの <span class=\"q-dot\">?</span> をタップして確認できます。", "th": {"rank": "#", "player": "プレイヤー名", "band": "担当班", "tg": "TG(火炉)", "pcs": "戦闘質 PCS", "join": "合流 Join", "dtv": "兵余裕 DTV", "troop": "推定兵力", "mission": "聖剣内ミッション・注意点"}, "no_match": "該当するメンバーがいません", "fat_warn_badge": "⚠TG6大兵", "reserve_title": "🔄 欠席者が出た場合の「控え登録メンバー 繰上げ候補（8名）」", "reserve_desc_html": "ゲーム内実測で <strong>参戦25名（上限30）・控え8名</strong> が登録済みです（なおAPI上位の Freyd / ゴリポン らは今回未参戦）。欠員が出た場合は TG7・高PCS の <strong>ぼんくら (PCS 512 / TG7 / 271.3M)</strong>・<strong>Style Ｄ (PCS 470 / TG6)</strong> から優先繰上げしてください：", "bands": {"band2_label": "班② TG8精鋭合流", "band2_mission": "班①（主砲5名）への確定攻撃/防衛ジョイナー（全員TG8・Join 642〜674）。TG8全8名純化の要として主力拠点の質を維持。", "band3_label": "班③ TG7遊撃・サンクタム", "band3_mission": "外周聖域・修道院の確保＆班①②回復中の時間稼ぎ。主力駐屯に空きがある時だけ一時穴埋めし、TG8到着で即交代（ダンス）。", "band4_label": "班④ TG6分離レーン", "band4_mission": "【主力TG8駐屯へ混入禁止（0.5625倍目安）】別レーンの修道院争奪・おとり集結・敵拠点圧迫＆終盤50%輜重ハイスト待機に専念。", "band5_label": "班⑤ 遊撃・輜重回収", "band5_mission": "主力駐屯へ入らず、①空き修道院即踏み ②50%輜重ハイスト回収 ③1兵地下貯蔵庫採集 ④おとり陽動に特化。"}, "custom": {"リョ〜〜〜朕": ["班① 絶対エース主砲", "盤面最強の矛（PCS 952 / Join 942 / 兵609.1M）。GOD首位『ᎠᎪᏔᏩᏚᎢᎽᏞᎬ (PCS 802)』を+150点圧倒。聖剣祭壇・高蓄積施設を一撃で剥がす切り札。"], "レッサー": ["班① 最強防衛アンカー", "盤面最強の盾（PCS 836 / 最多兵力 637.9M / DTV 100.0）。GOD首位をも質・兵量で上回る不動の駐屯核。鐘楼または祭壇の長期防衛アンカー最有力。"], "だりゅDaryu": ["班① 第2主砲・同時集結核", "PCS 776 / Join 838 / 兵596.0M（DTV 99.6）の重装TG8エース。リョとのダブル集結・同時2拠点圧迫の片翼を担う。"], "Hinata": ["班① 精密主砲・厩舎核", "PCS 758 / Join 830 / 兵413.4M。GOD 2番手『Sakhazan (712)』を上回るTop4火力。王立厩舎・教化の間の確保と先制集結の中核。"], "ルーク": ["班① 第5砲台・TG8合流長", "PCS 647 / Join 741 / 兵343.2M。Top4が12分退場回復中の代理砲台、平常時は主力集結の最上位TG8ジョイナーとして火力を底上げ。"]}}, "glossary": {"intro_html": "ゲーム内の「総戦力（Power）」は <strong>兵士をたくさん抱えるだけで簡単に水増しできる</strong> ため、総戦力だけで砲台や駐屯を決めると「見た目ほど強くない部隊」が主力拠点を溶かしてしまいます。そこで本ポータルでは、<strong>MightPulse（秘境試練6塔 ＋ 移民スコア ＋ 火炉Lv）</strong> を使い、誰が見ても納得できるよう <strong>「1兵あたりの強さ（質）」と「動員できる兵隊量（余裕度）」</strong> を5つの指標に分解して算出しています。", "use_prefix": "🎯 実戦での活かし方：", "cards": {"tg": {"title": "① TG(火炉) — 真金世代ティア", "range": "TG1 〜 TG8", "easy_html": "<strong>一言イメージ：兵隊の世代ランク（装備・基礎ステータスの土台）。</strong><br>火炉Lv（Stove Lv）60〜70 が真金兵士 TG6〜TG8 に該当します。同じ10万兵でも TG8 と TG6 では基礎耐久と攻撃力に明確な世代差が出ます。", "formula_html": "TG = clip(floor((火炉Lv - 30) / 5), 1, 8)<br>・Lv.60〜64 ＝ TG6 ｜ Lv.65〜69 ＝ TG7 ｜ Lv.70 ＝ TG8<br>・混入リスク目安 EGC_M ＝ 推定兵力 × (TG / 8)² （TG6は0.5625倍目安※モデル換算）", "use_html": "駐屯拠点には定員15名制限があるため、SGRは <strong>班①②のTG8精鋭8名を主力拠点へ完全集中</strong> させます。GODはTG8が22名・TG6以下ゼロのため、SGRがTG6以下（12名）を主力へ混ぜると耐久効率が急落します。空き枠は班③(TG7)で一時補助し、TG8着弾で即交代（「ダンス」）を徹底しましょう。"}, "pcs": {"title": "② 戦闘質 PCS — 純粋戦闘スコア", "range": "0 〜 1,000 点", "easy_html": "<strong>一言イメージ：「兵数を抜いた1兵あたりの純粋な強さ（砲台向き度）」。</strong><br>護符・領主装備・英雄・研究・ペットから算出しており、兵が増えても下がらず、兵がゼロでも高い数値が出ます。<strong>600点以上（特に700点超）が主砲・駐屯リーダー候補</strong>です。", "formula_html": "1) 秘境試練6塔を各上限 CAP で0〜1に正規化（桁差バイアス除去）<br>CAP = &#123;護符CC:400, 装備MF:440, 研究KN:320, ペットFoL:340, 英雄Col:800, 総合RS:840&#125;<br>2) 実戦重み合成 Q_core = 0.26×CC + 0.20×Col + 0.18×MF + 0.14×KN + 0.14×RS + 0.08×FoL<br>3) 移民スコアの火炉倍率を除算中立化（TC=min(Stove,70), wps=Mig/TC+2226）し 12% のみ統合<br>PCS = 1000 × clip(0.88 × Q_core + 0.12 × clip(wps/42000, 0, 1), 0, 1)", "use_html": "集結・駐屯は「リーダー1人の倍率」が全員の兵に乗ります。SGRは <strong>Top 4 平均 PCS 830.5 vs GOD 724.5（+106.0点圧倒）</strong>。一方で #5〜10（578.7 vs 662.5）・#11+（438.7 vs 582.4）はGODが厚いため、<strong>必ずTop4が頭を張る局地戦</strong>へ持ち込むことが勝利の絶対条件です。"}, "join": {"title": "③ 合流 Join — 乗る時専用スコア", "range": "0 〜 1,000 点", "easy_html": "<strong>一言イメージ：「自分が砲台の集結・駐屯へ合流（乗る）ときの貢献度」。</strong><br>自分が合流側（ジョイナー）に回る時は、自分の研究や領主装備は戦闘に使われず、<strong>「一番左（Slot 1）の英雄スキル」と「送る兵のTG」</strong> だけが戦場に効きます。", "formula_html": "PCS_joiner = 1000 × (0.45×n_Col[英雄] + 0.15×n_RS[総合] + 0.10×n_CC + 0.05×n_MF + 0.25×(TG / 8))<br>※英雄・総合塔・TG世代の比重 85% で合流適正を評価", "use_html": "戦闘質 PCS が500台でも <strong>TG8 × 英雄育成（Join 642〜674）</strong> の高い班②（<code>ROCK</code> / <code>ネプチューンマン</code> / <code>ぐるぐる</code>）に加え、班①の <code>リョ(942)</code>・<code>レッサー(881)</code>・<code>だりゅ(838)</code>・<code>Hinata(830)</code>・<code>ルーク(741)</code> が相互合流することで最高火力を引き出せます。"}, "troop": {"title": "④ 推定兵力（Troop Power）", "range": "単位：M（百万戦力）", "easy_html": "<strong>一言イメージ：「総戦力から建物・研究などの固定戦力を引き算した、いま動く兵隊の数」。</strong><br>王城戦や直近の戦闘で兵を消耗している場合、総戦力（Power）は高く見えても推定兵力（Troop）が小さく出ます。", "formula_html": "1) 固定ベース戦力（冪乗則モデル）：BasePower_M = 5.79 × (wps ^ 0.318)<br>※高戦力帯で兵枯渇と誤認しないよう下側包絡線で非線形推定<br>2) 推定兵力：TroopPower_M = max(総戦力M - BasePower_M, 0)<br>3) 兵比率 phi = TroopPower_M / 総戦力M", "use_html": "推定総兵力は <strong>SGR 6,494.3M（25名） vs GOD 9,233.0M（30名）＝約1.42倍差</strong>。GODは中堅の <code>Nickyᶠᵘᶰ (573.7M)</code> や <code>~Deadpool~ (442.9M)</code> ら厚い兵量タンクが複数いるため、正面の多点消耗戦を避け、Top4の圧倒的火力差で敵兵を効率よく削る戦術が必須です。"}, "dtv": {"title": "⑤ 兵余裕 DTV — 出撃スタミナ余裕度", "range": "0 〜 100 点（目安60+）", "easy_html": "<strong>一言イメージ：「聖剣1時間を通して前線に兵を出し続けられるスタミナ余裕」。</strong><br>ただ兵が多いだけでなく、<strong>TG世代係数・推定兵量・総力内の兵比率</strong> を組み合わせて「連戦に耐えられるか」を0〜100点で示します。", "formula_html": "・兵量因子 a = clip(ln(1 + TroopPower_M / 20) / ln(31), 0, 1)  [600Mで1.0]<br>・兵比率因子 s = clip((phi - 0.15) / 0.65, 0.02, 1.0)<br>・世代床係数 qf = max(1 - 0.04 × (8 - TG), 0.60)<br>DTV = 100 × qf × (a ^ 0.6) × (s ^ 0.4)", "use_html": "SGR上位13名（班①②③）は全員 DTV 72〜100 と高水準。一方、<strong>TG6大兵（<code>FAT_WARN</code>）の3名（<code>Ednan</code> / <code>kusabito</code> / <code>カピバラ</code>）</strong> とD象限9名は主力TG8駐屯から分離し、別レーン＆終盤ハイスト要員として活かすのが最適解です。"}}, "dict_heading": "📖 初心者向け：聖剣リーグ 重要ルール・用語ミニ辞典", "dict": [{"title": "🗺️ 4象限（班分けの地図）", "body_html": "<code>PCS≧600 &amp; DTV≧60</code> が <strong>A象限（主砲）</strong>、<code>DTV≧60</code> が <strong>B象限（合流・陽動）</strong>、<code>PCS≧600</code> だが兵少が <strong>C象限（頭枠・回復）</strong>、両方控えめが <strong>D象限（回収・空き踏み）</strong> です。"}, {"title": "🧬 Slot 1（一番左英雄）＆ 異種乗算", "body_html": "集結・駐屯に乗るスキルは参加者の <strong>一番左の英雄・第1遠征スキル（上位4名まで）</strong> だけ！同じバフばかりより「攻撃+25% × 殺傷+25% × 敵被ダメ増」を混ぜるほど倍率が伸びます。"}, {"title": "📦 保有50%輜重ドロップ（エスクロー）", "body_html": "聖剣では拠点を保持している間に貯まる同盟ポイントの <strong>50%が拠点上に保管</strong> されます。Phase 1から常に有効で、落城させると相手から引かれて周囲に箱が散らばり、<strong>どちらの同盟でも拾えます</strong>。"}, {"title": "⏱️ 画面の「残り時間」見間違い注意", "body_html": "戦場上部のタイマーは <strong>60:00 → 00:00 のカウントダウン</strong> です。経過15分＝<strong>残り45:00</strong>、残り<strong>22:00以降は12分退場禁止</strong>（戻ってこられなくなるため）を徹底しましょう。"}, {"title": "🏆 聖剣リーグは「得失点差」も重要", "body_html": "勝敗だけでなく、シーズン昇格順位には <strong>自軍ポイント − 相手ポイント（得失点差）</strong> も効きます。万一ビハインドでも、残り10分〜終了0秒まで箱・地下貯蔵庫を1つでも多く拾い切る価値があります。"}, {"title": "🔍 Flag B〜D（未計測フラグ注記）", "body_html": "MightPulse上で6塔や移民スコアが一部未取得のメンバーは「Flag B/C」で数学的に補完、両方未取得は「Flag D（算出対象外・別表警告）」として開示しています。"}]}, "basic_ui": {"tag_gen": "戦術イメージ", "tag_real": "実機UI", "cards": ["<strong>開戦15分前：医務室の負傷兵を必ず「0」に！</strong><br>自都市の <img src=\"assets/ui/icon_infirmary.png\" alt=\"医務室\"> 医務室に負傷兵が1兵でも残っていると、聖剣戦場そのものへ入場できません。事前に全治療し、出撃中マーチ・増援もすべて帰還させておきます。", "<strong>参戦枠とTG世代（兵質）の確認</strong><br>エントリー時間帯確定後は時間厳守。自分が TG8（火炉70）か TG7（65-69）か TG6（60-64）かを把握し、TG6以下の方は主力TG8駐屯へ合流しないよう分離行動します。", "<strong>なぜTG6とTG8を混ぜてはいけない？</strong><br>精製黄金で鍛えた <img src=\"assets/ui/icon_truegold_crucible.png\" alt=\"るつぼ\"> TG8 駐屯拠点（上限15名）にTG6が混ざると、本作戦モデル換算の耐久効率が <strong>0.5625倍目安</strong> に低下。枠に空きがある間だけTG7で一時埋めし、TG8着弾で即交代（「ダンス」）を行います。", "<strong>合流時に発動するのは「一番左（Slot 1）英雄の右上・第1遠征スキル」のみ！</strong><br>チェンコの『Stand of Arms Lv.5（殺傷力+25%）』のように、合流メンバー全員の上位4枠がこの「左端英雄の第1スキル」で決まります。", "<strong><img src=\"assets/ui/icon_command_center.png\" alt=\"指揮センター\"> 集結（Rally）参加時の注意</strong><br>班①（リョ〜〜〜朕・レッサー・だりゅDaryu・Hinata・ルーク）が立てた集結へ乗る時は、必ず保存しておいた「攻撃合流プリセット」で1タップ送信。余計な英雄を左に置くと他人のバフ枠を弾き出します。", "<strong><img src=\"assets/ui/icon_embassy.png\" alt=\"大使館\"> 防衛駐屯（Garrison）の差し替え</strong><br>重要拠点を守る際は班①<code>レッサー (637.9M)</code>・<code>だりゅ (596.0M)</code>＋班② TG8精鋭（<code>ROCK</code>・<code>ネプチューンマン</code>・<code>ぐるぐる</code>）＋防衛向き左端英雄（ゴードン/ハワード/サウル等）が核。空き枠は班③(TG7)で一時補助し、TG8到着と同時に即交代させます。"], "hero_title": "そのまま真似する「Slot 1（一番左）」推奨英雄 vs 絶対禁止（地雷）英雄", "hero_desc_html": "攻撃集結では <strong>「攻撃力 × 殺傷力 × 敵被ダメ増」の異種乗算</strong> を組むと主砲の火力が跳ね上がります（防御・被ダメ軽減系は敵を削れないため<strong>防衛専用</strong>に分離）。開戦前にプリセット1（攻撃合流）・2（防衛）・3（高速回収）へ登録してください。", "hero_atk_title": "⚔️ 攻撃集結 黄金ジョイナー枠（この中から一番左に1名配置）", "hero_def_title": "🛡️ 防衛駐屯 推奨左端（第1スキルが耐久・軽減特化）", "hero_ban_title": "💣 絶対禁止（合流Slot 1に入れると地雷）", "heroes": {"chenko": ["チェンコ", "確定 殺傷+25%"], "yeonwoo": ["インウー", "確定 殺傷+25%"], "amane": ["アマネ", "確定 攻撃+25%"], "margot": ["マーゴ", "確定 攻撃+25%"], "vivian": ["ヴィヴィアン", "敵被ダメ+25%"], "hilde": ["ヒルダ", "攻撃+10%/防御+15%"], "petra": ["ペトラ ⚠", "1集結1名のみ（確率50%被ダメ+50%）"], "gordon": ["ゴードン", "味方体力+25%"], "howard": ["ハワード", "被ダメ-20%"], "saul": ["サウル", "防御+10%/HP+15%（防衛向け）"], "eric": ["エリック", "敵攻撃-20%（防衛向け）"], "fahd": ["ファハド", "敵与ダメ-20%（防衛向け）"], "long-fei": ["ロン・フェイ", "攻撃集結 NG"], "jabel": ["ジェイブル", "確率発動で枠汚染"], "helga": ["ヘルガ", "合流時 NG"], "zoe": ["ゾーイ", "確率・枠潰し"], "sophia": ["ソフィア", "合流時 NG"]}}, "map": {"board_title": "SGR 作戦動線マップ（11拠点 ＋ 地下貯蔵庫4箇所の実配置）", "board_hint": "※ボタンで各時間帯の狙いを切り替えられます", "btn_p1": "Phase 1 初動 (残り60:00〜45:00)", "btn_p2": "Phase 2 中央開放 (残り45:00〜20:00)", "btn_p3": "終盤勝負帯 輜重ハイスト (残り20:00〜00:00)", "pins": {"swordshrine": "① 聖剣祭壇 (15:00開放)", "mercenary": "② 傭兵駐屯地 (15:00)", "reformation": "③ 教化の間 (15:00/+15%)", "bell": "⑦ 鐘楼 (占領-50%)★", "ne_abbey": "⑪ 北東・修道院", "w_sanctum": "⑤ 西・聖域", "ce_abbey": "⑨ 中東・修道院", "cw_abbey": "⑧ 中西・修道院", "e_sanctum": "④ 東・聖域", "sw_abbey": "⑩ 南西・修道院", "stables": "⑥ 王立厩舎 (移転-50%)★", "undercellar": "地下貯蔵庫"}, "facilities": [{"title": "王立厩舎 (0:00開放 ★最優先)", "body_html": "初回1,200 / +240/m。無料移転CDが <strong>-50%（10分→5分）</strong>。遊撃と輜重回収の回転数が倍増（緊急時は高級移転アイテムも併用可）。"}, {"title": "聖剣祭壇 (15:00開放 / 残り45:00)", "body_html": "初回 <strong>9,000</strong> / 毎分 <strong>+1,800</strong>。相手最上位エースとの正面消耗戦を避け、手薄な隙間やダブル集結・終盤スイングを狙います。"}, {"title": "聖域 / サンクタム (0:00開放・東西2棟)", "body_html": "初回 <strong>6,000</strong> / 毎分 <strong>+1,200</strong>。中盤の主力ポイント源。相手が手薄な側を常に踏み替えます。"}, {"title": "教化の間 / 宗教改革所 (15:00開放)", "body_html": "初回3,000 / +600/m。戦場全体へ <strong>与ダメ+15% ＆ 被ダメ軽減-15%</strong> バフを付与。主砲対決前に確保したい拠点。"}, {"title": "傭兵駐屯地 / キャンプ (15:00開放)", "body_html": "初回3,000 / +600/m。占領すると <strong>約7分間隔</strong> で敵保持拠点を自動攻撃して駐屯を削ります。味方集結と噛み合わせるのが強力。"}, {"title": "鐘楼（🔔 0:00）＆ 修道院（4棟 0:00）", "body_html": "<strong>鐘楼は占領カウント時間 -50%（3:00→1:30）</strong>・初回1,200/+240/m。<strong>修道院4棟</strong>は初回3,000/+600/mで遊撃・多面圧迫の要。"}], "ui_caps": ["聖剣祭壇の獲得ポイント表（9,000 / +1,800/m）", "王立厩舎の効果（<img src=\"assets/ui/icon_teleport.png\" alt=\"移転\"> 無料移転CD -50%）", "聖剣拠点の駐屯リスト（11/15枠・左端英雄並び確認）", "戦場マップでの同盟クラスタ集中と連撃マーチ"], "phases": {"p1": {"desc": "<strong>Phase 1（経過0:00〜15:00｜ゲーム内残り 60:00〜45:00）初動方針</strong>：班①②が上ルート <strong>⑦ 鐘楼（占領時間-50%）</strong> と右下 <strong>⑥ 王立厩舎（移転CD-50%）</strong> を最優先確保（初回カウント完了まで維持）。班③④⑤は外周聖域・修道院を踏み回し、GOD 30名の足並みを乱します。", "labels": ["班①② 鐘楼最優先", "班①② 王立厩舎へ", "班③ 西・聖域", "班④⑤ 修道院遊撃"]}, "p2": {"desc": "<strong>Phase 2（経過15:00〜40:00｜残り 45:00〜20:00）中央開放＆局地制圧</strong>：<strong>① 聖剣祭壇・② 傭兵駐屯地・③ 教化の間</strong> が同時開放！GODの多点圧迫に付き合わず、『リョ〜〜〜朕』『レッサー』『だりゅDaryu』『Hinata』のTop4圧倒火力（+106点差）で <strong>祭壇＋教化の間</strong> の局地制圧を狙います（<strong>※残り22:00以降は12分退場禁止</strong>）。", "labels": ["Top4 ダブル集結", "②傭兵(15:00開放)", "③教化 +15%(15:00)", "班③ 東聖域・遊撃"]}, "p3": {"desc": "<strong>終盤勝負帯（経過40:00〜60:00｜残り 20:00〜00:00）輜重ハイスト</strong>：GODが高蓄積した拠点へ <strong>班④⑤のおとり集結 ＋ 班①（リョ・だりゅ）のダブル本命撃</strong> を時間差着弾。落城時に放出される50%エスクロー輜重と <strong>4箇所の地下貯蔵庫（1兵採集）</strong> を総取りして勝ち切ります！", "labels": ["リョ主砲で落城", "おとり同時集結", "班④⑤ 輜重＆貯蔵庫回収"]}}}, "timeline": {"c1_html": "<strong>優勢維持・逆転の切り札：輜重ハイスト（保有50%エスクロー強奪）</strong><br>Phase 1 から拠点保持ポイントの <strong>50%は常に施設上に保管</strong> されており、落城させると敵から減算されて周囲に箱が散乱します。貯まりきった終盤におとり集結で敵を散らし、班①の一撃で落として遊撃班が一気に拾います！", "c2_html": "<strong>実際の戦場に落ちた輜重（159 / 45 / 401 等）＆ 無料移転タイマー</strong><br>右上に <strong>残り時間（例 00:47:43）</strong>、右下に Battle Map 虫眼鏡（地下貯蔵庫探し）、左下に無料移転クールダウン。貯蔵庫は <strong>1兵〜最小限マーチ</strong> で兵損ゼロ採集が可能です！", "p1_title": "Phase 1（経過0:00〜15:00｜残り60:00〜45:00）", "p1_html": "<strong>最優先：鐘楼（-50%）＆ 王立厩舎（移転CD-50%）確保。</strong><br>初回占領は <strong>カウント完了（3分／鐘楼で1分30秒）</strong> まで守って初めて初回ボーナスが入るため増援を切らさない！班④⑤は外周聖域・修道院を同時踏みし、無料移転を無駄撃ちせず温存。", "p2_title": "Phase 2（経過15:00〜40:00｜残り45:00〜20:00）", "p2_html": "<strong>祭壇・教化・傭兵一斉開放 ＆ 局地圧倒フェーズ。</strong><br>GODの30名物量に4〜6拠点同時で付き合わず、『リョ〜〜〜朕』『レッサー』『だりゅDaryu』『Hinata』が <strong>聖剣祭壇・教化の間</strong> にTG8全8名を集中して圧倒的な質差（+106点）を叩きつけます。<strong>※残り22:00（経過38:00）以降は12分CDで戻れないため退場禁止！</strong>", "p3_title": "終盤勝負帯（経過40:00〜60:00｜残り20:00〜00:00）", "p3_html": "<strong>おとり集結 ＋ 輜重ハイスト ＋ 1兵地下貯蔵庫回収。</strong><br>班④⑤のおとり攻撃でGODの増援判断を散らし、高蓄積拠点を『リョ〜〜〜朕』＋『だりゅDaryu』のダブル集結で落城 → 散乱する50%エスクロー箱と地下貯蔵庫を回収。<strong>リーグ順位は得失点差も効くため終了0秒まで全拾い徹底！</strong>"}, "enemy": {"top_heading": "GOD 主砲・要警戒ライン（Top 8）", "th": {"rank": "#", "player": "プレイヤー", "tg": "Stv(TG)", "pcs": "PCS", "dtv": "DTV", "troop": "推定Troop"}, "top_note": "※GODの首位『ᎠᎪᏔᏩᏚᎢᎽᏞᎬ (PCS 802)』は強力ですが、SGR首位リョ(952)・2位レッサー(836)が上回ります。本当の脅威は #1〜#15 全員が A象限・TG8（PCS 625〜802）で揃い、さらに #10『Nickyᶠᵘᶰ (573.7M)』・#9『~Deadpool~ (442.9M)』ら厚い兵量タンクが中堅に並んでいる点です。", "notes_heading": "🔎 GOD 詳細戦力分析 ＆ データ信頼性開示", "notes_desc_html": "GOD 上位30名は <strong>全員 Flag A（100%計測済み・未クロール300M+ ゼロ）</strong> で隠しクジラはいません。特徴は <strong>TG8 22名＋TG7 8名（TG6以下ゼロ・FAT_WARNゼロ・D象限ゼロ）</strong> という極めて均質で厚い中堅層。正面の多点消耗戦を避け、SGR Top4の絶対火力差を1〜2拠点に集中させるのが最善策です。", "chips": ["#1 ᎠᎪᏔᏩᏚᎢᎽᏞᎬ (PCS 802 / TG8 / 454.9M / 相手筆頭)", "#2 Sakhazan (PCS 712 / TG8 / 418.1M)", "#9 ~Deadpool~ (PCS 658 / TG8 / 442.9M / 重装タンク)", "#10 Nickyᶠᵘᶰ (PCS 650 / TG8 / 573.7M / GOD最多兵力)", "GOD Top30 構成: TG8 22名 / TG7 8名 / TG6以下 0名", "GOD 象限内訳: A象限 15名 / B象限 15名 / D象限 0名", "未クロール300M+ (Flag D): 両軍とも 0名（100%計測済）"]}, "footer": {"html": "<strong>データ・作成開示</strong>：戦力・2軸スコア（PCS / DTV）は MightPulse API 実測値（<code>2026-11-22T18:00+09:00</code> 時点）およびゲーム内「軍団1参戦メンバー」実画面（参戦25名・控え8名）から決定論スクリプトで自動算出しています。当日の部隊回復数・英雄専用装備Lv・バフアイテム発動状況はゲーム内点呼を優先してください。<br>最終更新：2026-11-22 JST ｜ #898 [SGR] 聖剣作戦室"}}, "en": {"meta": {"lang": "en", "dir": "ltr", "page_title": "[#898 SGR Members Only] Swordland League Promotion Match 3: SGR vs GOD Strategy & UI Manual"}, "nav": {"brand": "⚔️ #898 [SGR] Swordland League Legion 1 Portal", "summary": "Win Condition", "roster": "25 Roster Search", "glossary": "Metrics & Math", "basic_ui": "UI & Ban Heroes", "tactical_map": "Tactical Map", "timeline": "Phase 1–3 Flow", "enemy_risk": "Enemy & Data"}, "hero": {"pill": "Alliance Internal Only (noindex) | Block 14 Promotion Match 3 | Verified 25 Active + 8 Reserve", "h1_html": "Swordland League Match 3: <span style=\"color:#38bdf8\">#898 [SGR] Legion 1</span> vs <span style=\"color:#f43f5e\">#913 [GOD] Legion 1</span>", "sub_html": "GOD holds deeper mid-tier TG8 depth (22 vs 8) and 1.42x troop volume, but <strong>SGR dominates Top-4 Rally Power (Avg PCS 830.5 vs 724.5, +106.0 pts)!</strong> Anchor around #1 spear <strong>Ryo (PCS 952)</strong> and #1 shield <strong>Lesser (PCS 836 / 637.9M)</strong>, purify all 8 TG8s into core objectives, and win via <strong>Bell Tower + Royal Stables mobility & late 50% Baggage Heists</strong>.", "self_lbl": "Our Team (Left / Blue / Legion 1)", "self_val": "#898 [SGR] (25 Active + 8 Reserve)", "self_sub": "Top-4 Avg PCS 830.5 (+106.0 lead) | 8 Elite TG8s", "opp_lbl": "Opponent (Right / Red / Legion 1)", "opp_val": "#913 [GOD] (Top 30)", "opp_sub": "Avg PCS 617.4 | 15 Quad-A | 22 TG8s (Zero TG6-)", "core_lbl": "SGR Win Core", "core_val": "Top-4 Dominance × TG8 Purity × Mobility", "core_sub": "Avoid 5-front attrition; crush 1–2 key objectives + steal 50% escrow loot"}, "sec_titles": {"s01": "30-Second Match Diagnosis & Win Condition", "s02": "Find Your Squad & Mission (SGR Verified 25 Active + 8 Reserve)", "s03": "[Beginner Friendly] Metrics, Formulas & Tactical Usage", "s04": "[Basic UI] Pre-Match Checklist & Slot-1 (Leftmost) Hero Rules", "s05": "[Swordland UI] Interactive Tactical Map & Facility Rules", "s06": "Match Timeline (Time Remaining) & 50% Baggage Heist Guide", "s07_prefix": "Opponent", "s07_suffix": "Key Threats & Data Transparency"}, "kpis": [{"label": "Top 1–4 Rally Leaders Avg PCS", "sub": "SGR leads by +106.0 pts! (Ryo 952 / Lesser 836 / Daryu 776 / Hinata 758)"}, {"label": "Overall / #5–#10 Mid-Tier PCS", "sub": "GOD has stronger mid/lower depth — avoid wide attrition, focus locally"}, {"label": "Estimated Troop Power (Troop)", "sub": "GOD is ~1.42x deeper (avoid prolonged multi-front bleed)"}, {"label": "TG8-Equivalent Durability (EGC)", "sub": "GOD has 22 TG8s & zero TG6-. Purifying SGR's 8 TG8s is vital"}], "ok_heading": "✅ DO: Winning Playbook (Asymmetric Mobile Warfare)", "ng_heading": "❌ DON'T: Losing Traps to Avoid", "ok_bullets": ["<strong>Concentrate all 8 TG8s (Band 1 Top-5 + Band 2 3 TG8 joiners: ROCK / Neptuneman / Guruguru)</strong> on core objectives so even GOD #1 (PCS 802) cannot break SGR's Top-4 anchors.", "Secure <strong>Bell Tower (Capture Time -50%)</strong> and <strong>Royal Stables (Free Teleport CD -50%)</strong> immediately in Phase 1 to out-rotate GOD's 30-player mass.", "<strong>Keep all 12 TG6-or-lower players (Band 4 & Band 5) out of core TG8 garrisons</strong>; dedicate them to empty Abbey flips, decoy rallies, <strong>50% Escrow Baggage Heists</strong>, and 1-troop Undercellars."], "ng_bullets": ["<strong>Defending 4–6 buildings head-on simultaneously</strong> (Fatal NG: GOD's 15 Quad-A / 22 TG8 roster wins wide attrition).", "<strong>Mixing TG6 large-troop accounts (Ednan / kusabito / Kapibara) or TG5- into TG8 garrisons</strong> (dilutes durability to <code>~0.5625x</code>).", "Putting <strong>Long Fei / Jabel / Helga / Zoe / Sophia</strong> (or defense-only <strong>Saul / Eric / Fahd</strong>) in Slot 1 of attack rallies."], "charts": {"pcs_title": "Pure Combat Score (PCS) Tier Comparison", "troop_title": "Troop Volume vs TG8-Equivalent Effective Power (EGC)", "pcs_labels": ["Overall Avg", "Top 1-4 Leads", "#5-#10 2nd Wave", "#11+ Depth"], "troop_labels": ["Est. Troops (Troop M)", "TG8-Equiv. (EGC M)"]}, "roster": {"search_placeholder": "Search your name (e.g. Ryo, Lesser, Daryu, Hinata, Luke, ROCK, Ponta...)", "tabs": {"all": "All Active (25)", "band1": "Band 1 Main Cannons (5)", "band2": "Band 2 TG8 Joiners (3)", "band3": "Band 3 TG7 Roamers (5)", "band4": "Band 4 TG6 Split (3)", "band5": "Band 5 Heist & Roam (9)"}, "glossary_hint_html": "* To see what each metric means, how it is calculated, and how to apply it in battle, check <a href=\"#glossary\" style=\"color:#7dd3fc\"><strong>03 Beginner's \"Glossary &amp; Formulas Guide\"</strong></a> below or tap any <span class=\"q-dot\">?</span> icon.", "th": {"rank": "#", "player": "Player", "band": "Squad", "tg": "TG (Furnace)", "pcs": "Combat PCS", "join": "Joiner", "dtv": "Stamina DTV", "troop": "Est. Troops", "mission": "Swordland Mission & Notes"}, "no_match": "No matching members found", "fat_warn_badge": "⚠TG6 Heavy", "reserve_title": "🔄 Verified Reserve Roster Call-Up Priority (8 Reserves)", "reserve_desc_html": "In-game check confirmed <strong>25 Active / 8 Reserves</strong> (note: Freyd & Goripon are not entered this match). If any slot opens, prioritize <strong>Bonkura (PCS 512 / TG7 / 271.3M)</strong> and <strong>Style D (PCS 470 / TG6)</strong> first:", "bands": {"band2_label": "Band 2 Elite TG8 Joiner", "band2_mission": "Dedicated TG8 attack/defense joiners for Band 1 (Join 642–674). Core engine for pure TG8 garrisons.", "band3_label": "Band 3 TG7 Roam & Sanctum", "band3_mission": "Outer Sanctums/Abbeys & temporary fill while Band 1–2 recover. Dance out immediately when TG8 arrives.", "band4_label": "Band 4 TG6 Split Lane", "band4_mission": "[DO NOT mix into TG8 garrisons (~0.5625x dilution)] Separate Abbey flips, decoy rallies & 50% Baggage Heists.", "band5_label": "Band 5 Roam & Loot Heist", "band5_mission": "Stay out of core garrisons. Focus on (1) empty flips (2) 50% Baggage Heist (3) 1-troop Undercellars (4) decoys."}, "custom": {"リョ〜〜〜朕": ["Band 1 #1 Ace Spear", "Strongest attacker on the field (PCS 952 / Join 942 / 609.1M). Beats GOD #1 (PCS 802) by +150 pts. Key breaker for Swordshrine & high-escrow targets."], "レッサー": ["Band 1 #1 Defense Anchor", "Strongest tank on the field (PCS 836 / 637.9M / DTV 100.0). Outclasses GOD #1 in both quality and troops. Primary anchor for Bell Tower or Swordshrine."], "だりゅDaryu": ["Band 1 #2 Heavy Cannon", "Heavy TG8 ace (PCS 776 / Join 838 / 596.0M / DTV 99.6). Core partner for double rallies with Ryo and secondary stronghold defense."], "Hinata": ["Band 1 Precision Cannon", "PCS 758 / Join 830 / 413.4M — stronger than GOD #2 Sakhazan (712). Leads Royal Stables / Reformation Hall pushes."], "ルーク": ["Band 1 #5 Cannon / Lead Joiner", "PCS 647 / Join 741 / 343.2M. Backup rally leader during 12m exit rotations and top TG8 joiner for main rallies."]}}, "glossary": {"intro_html": "In-game \"Power\" is easily <strong>inflated simply by hoarding troops</strong>—picking Leads or Garrisons by raw Power puts \"paper tigers\" in key buildings and melts your main holds. This portal uses <strong>MightPulse (6 Trial Towers + Migration Score + Furnace Lv)</strong> to break every player down into 5 transparent metrics measuring <strong>per-troop quality &amp; deployable troop depth</strong>.", "use_prefix": "🎯 In-Battle Application:", "cards": {"tg": {"title": "① TG (Furnace) — Truegold Tier", "range": "TG1 - TG8", "easy_html": "<strong>Quick Concept: Your troops' generation tier (base stats &amp; gear foundation).</strong><br>Furnace (Stove) Lv.60-70 corresponds to Truegold troops TG6-TG8. For the same 100k march, TG8 has a decisive base HP and Attack gap over TG6.", "formula_html": "TG = clip(floor((Furnace Lv - 30) / 5), 1, 8)<br>· Lv.60-64 = TG6 | Lv.65-69 = TG7 | Lv.70 = TG8<br>· Dilution Risk EGC_M = Est. Troops × (TG / 8)² (TG6 ≈ 0.5625x in our model)", "use_html": "Garrisons cap at 15 marches. Concentrate SGR's <strong>8 TG8s (Band 1–2)</strong> into core defenses. GOD has 22 TG8s and zero TG6-, so mixing TG6- into core garrisons causes severe durability loss. Use Band 3 (TG7) only as temporary fill and dance out when TG8 arrives."}, "pcs": {"title": "② Combat PCS — Pure Combat Score", "range": "0 - 1,000 pts", "easy_html": "<strong>Quick Concept: \"Pure per-troop combat strength independent of troop count (Lead readiness).\"</strong><br>Computed from Charms, Governor Gear, Heroes, Research, and Pets—it never drops when troops die and stays high even at zero troops. <strong>600+ (especially 700+) are prime Rally/Garrison Lead candidates.</strong>", "formula_html": "1) Normalize 6 Trial Towers to 0-1 via CAP (removes scale bias)<br>CAP = &#123;Charms CC:400, GovGear MF:440, Research KN:320, Pets FoL:340, Hero Col:800, Total RS:840&#125;<br>2) Weighted Combat Core Q_core = 0.26×CC + 0.20×Col + 0.18×MF + 0.14×KN + 0.14×RS + 0.08×FoL<br>3) Neutralize Furnace scaling on Migration Score (TC=min(Stove,70), wps=Mig/TC+2226) at 12% weight<br>PCS = 1000 × clip(0.88 × Q_core + 0.12 × clip(wps/42000, 0, 1), 0, 1)", "use_html": "Rally/garrison stats come from the leader. SGR leads <strong>Top-4 Avg PCS 830.5 vs 724.5 (+106.0)</strong>, while GOD leads #5–10 (662.5 vs 578.7) and #11+ (582.4 vs 438.7). Always force localized battles led by SGR Top-4."}, "join": {"title": "③ Joiner Score (Join) — Rally/Garrison Support", "range": "0 - 1,000 pts", "easy_html": "<strong>Quick Concept: \"How much value you bring when joining a Lead's Rally or Garrison.\"</strong><br>As a Joiner, your own Research and Governor Gear don't apply—only your <strong>Slot 1 (Leftmost) Hero's 1st skill &amp; sent troop TG tier</strong> affect the fight.", "formula_html": "PCS_joiner = 1000 × (0.45×n_Col[Hero] + 0.15×n_RS[Total] + 0.10×n_CC + 0.05×n_MF + 0.25×(TG / 8))<br>* Evaluates Joiner value with 85% weight on Hero, Total Tower, and TG Tier", "use_html": "Band 2 TG8 joiners (<code>ROCK</code> / <code>Neptuneman</code> / <code>Guruguru</code>, Join 642–674) plus Band 1 cross-joining (Join 741–942) maximize rally lethality."}, "troop": {"title": "④ Est. Troops (Troop Power)", "range": "Unit: M (Million Power)", "easy_html": "<strong>Quick Concept: \"Active deployable troops left after subtracting fixed Building/Research power.\"</strong><br>If a player burned troops in Kingdom Castle Battle or recent fights, their total Power may look high while their Est. Troops (Troop) are low.", "formula_html": "1) Fixed Base Power (Power-law): BasePower_M = 5.79 × (wps ^ 0.318)<br>* Lower-envelope nonlinear fit prevents misreading high-power accounts as troop-starved<br>2) Est. Troops: TroopPower_M = max(Total Power M - BasePower_M, 0)<br>3) Troop Ratio phi = TroopPower_M / Total Power M", "use_html": "Estimated troops: <strong>SGR 6,494.3M (25) vs GOD 9,233.0M (30) (~1.42x)</strong>. Avoid broad attrition against GOD's mid-tier tanks (<code>Nicky</code> 573.7M / <code>~Deadpool~</code> 442.9M); trade efficiently with Top-4 quality."}, "dtv": {"title": "⑤ Stamina Depth (DTV) — Sustain Index", "range": "0 - 100 pts (60+ benchmark)", "easy_html": "<strong>Quick Concept: \"Stamina to keep feeding troops to the front line for the full 1-hour match.\"</strong><br>Combines <strong>TG tier factor, Est. Troops, and Troop Ratio</strong> into a 0-100 score showing sustained combat endurance.", "formula_html": "· Volume factor a = clip(ln(1 + TroopPower_M / 20) / ln(31), 0, 1)  [1.0 at 600M]<br>· Ratio factor s = clip((phi - 0.15) / 0.65, 0.02, 1.0)<br>· Tier floor factor qf = max(1 - 0.04 × (8 - TG), 0.60)<br>DTV = 100 × qf × (a ^ 0.6) × (s ^ 0.4)", "use_html": "SGR's Top-13 (Bands 1–3) all hold strong DTV 72–100. Separate the 3 <strong>TG6 FAT_WARN</strong> accounts (<code>Ednan</code> / <code>kusabito</code> / <code>Kapibara</code>) and 9 Quad-D roamers into split lanes and late-game heists."}}, "dict_heading": "📖 Beginner's Mini-Glossary: Swordland League Rules & Key Terms", "dict": [{"title": "🗺️ 4 Quadrants (Squad Map)", "body_html": "<code>PCS≧600 &amp; DTV≧60</code> = <strong>Quad-A (Leads)</strong>, <code>DTV≧60</code> = <strong>Quad-B (Joiners/Skirmish)</strong>, <code>PCS≧600</code> w/ low troops = <strong>Quad-C (Buffers/Heal)</strong>, lower on both = <strong>Quad-D (Loot/Open Caps)</strong>."}, {"title": "🧬 Slot 1 (Leftmost Hero) & Mixed Multipliers", "body_html": "Only the <strong>top 4 Joiners' leftmost Hero (1st Expedition Skill)</strong> apply to a Rally/Garrison! Mixing distinct buffs (Attack +25% × Lethality +25% × Enemy Dmg Taken Up) multiplies damage far more than stacking duplicates."}, {"title": "📦 50% Escrow Baggage Drop", "body_html": "While holding a facility in Swordland, <strong>50% of earned Alliance Points are stored in Escrow on the building</strong>. Active from Phase 1: flipping a building deducts those points from the holder and scatters loot boxes around it—<strong>either alliance can pick them up</strong>."}, {"title": "⏱️ Watch the \"Remaining Time\" Clock", "body_html": "The top HUD timer counts <strong>DOWN from 60:00 → 00:00</strong>. 15:00 elapsed = <strong>45:00 remaining</strong>. <strong>Never exit the battlefield after 22:00 remaining</strong>—the 12-min re-entry cooldown locks you out."}, {"title": "🏆 Point Differential Matters in League", "body_html": "Seasonal promotion tiebreakers also count <strong>Point Differential (Our Points − Opponent Points)</strong>. Even if behind (or comfortably ahead), keep scooping every box and Undercellar from 10:00 remaining down to 00:00."}, {"title": "🔍 Flag B-D (Missing Telemetry Disclosure)", "body_html": "Members missing partial 6-Tower or Migration data on MightPulse are mathematically imputed as \"Flag B/C\"; those missing both are disclosed as \"Flag D (Excluded / Separate Warning Table)\"."}]}, "basic_ui": {"tag_gen": "Tactical Visual", "tag_real": "In-Game UI", "cards": ["<strong>15 Mins Before Start: Clear Infirmary to \"0\"!</strong><br>If even 1 wounded troop sits in your city's <img src=\"assets/ui/icon_infirmary.png\" alt=\"Infirmary\"> Infirmary, you cannot enter Swordland. Heal everything beforehand and recall all active marches and reinforcements.", "<strong>Confirm Roster Slot &amp; TG Tier</strong><br>Be punctual once Legion 1 time locks in. Know whether you are TG8 (Furnace 70), TG7 (65-69), or TG6 (60-64); TG6 and below must stay separate and never join main TG8 Garrisons.", "<strong>Why Never Mix TG6 with TG8?</strong><br>When a TG6 joins a <img src=\"assets/ui/icon_truegold_crucible.png\" alt=\"Truegold Crucible\"> TG8 Garrison (15-player cap), our model estimates durability drops to <strong>~0.5625x</strong>. Use TG7s only to fill empty seats temporarily, then 'Dance' (swap out) immediately when a TG8 arrives.", "<strong>Only Your Slot 1 (Leftmost) Hero's Top-Right 1st Expedition Skill Triggers!</strong><br>Just like Chenko's 'Stand of Arms Lv.5 (Lethality +25%)', the top 4 Joiner buff slots for the entire Rally/Garrison are decided solely by that leftmost Hero's 1st skill.", "<strong><img src=\"assets/ui/icon_command_center.png\" alt=\"Command Center\"> Joining Rallies</strong><br>When joining Band 1 rallies (Ryo / Lesser / Daryu / Hinata / Luke), always use your saved Attack Joiner Preset (1-tap). Wrong Slot-1 heroes overwrite top-4 buffs.", "<strong><img src=\"assets/ui/icon_embassy.png\" alt=\"Embassy\"> Garrison Rotation</strong><br>Core anchors are <code>Lesser (637.9M)</code> & <code>Daryu (596.0M)</code> + Band 2 TG8s with defensive Slot-1 heroes (Gordon/Howard/Saul). Band 3 (TG7) fills temporarily and dances out when TG8 lands."], "hero_title": "Copy-Paste \"Slot 1 (Leftmost)\" Recommended Heroes vs Strictly Banned Traps", "hero_desc_html": "For Attack Rallies, stacking <strong>mixed multipliers (Attack × Lethality × Enemy Dmg Taken Up)</strong> skyrockets Lead damage (keep Defense/Mitigation skills strictly <strong>Garrison Defense ONLY</strong> since they add zero kill power). Save Preset 1 (Attack Joiner), Preset 2 (Garrison), and Preset 3 (Fast Loot) before start.", "hero_atk_title": "⚔️ Attack Rally Golden Joiners (Put ONE of these in Slot 1)", "hero_def_title": "🛡️ Garrison Defense Slot 1 (Durability/Mitigation — Attack Slot-1 Banned)", "hero_ban_title": "💣 Strictly BANNED in Slot 1 (Pollutes Buff Slots)", "heroes": {"chenko": ["Chenko", "Guaranteed Lethality +25%"], "yeonwoo": ["Yeonwoo", "Guaranteed Lethality +25%"], "amane": ["Amane", "Guaranteed Attack +25%"], "margot": ["Margot", "Guaranteed Attack +25%"], "vivian": ["Vivian", "Enemy Dmg Taken +25%"], "hilde": ["Hilde", "Atk +10% / Def +15%"], "petra": ["Petra ⚠", "Max 1 per Rally (50% chance +50% Dmg Taken)"], "gordon": ["Gordon", "Allied Health +25%"], "howard": ["Howard", "Dmg Taken -20%"], "saul": ["Saul", "Def +10% / HP +15% (Garrison ONLY)"], "eric": ["Eric", "Enemy Atk -20% (Garrison ONLY)"], "fahd": ["Fahd", "Enemy Dmg Dealt -20% (Garrison ONLY)"], "long-fei": ["Long Fei", "BANNED in Attack Rallies"], "jabel": ["Jabel", "RNG Proc (Pollutes Slots)"], "helga": ["Helga", "BANNED as Joiner"], "zoe": ["Zoe", "RNG Proc / Wastes Slot"], "sophia": ["Sophia", "BANNED as Joiner"]}}, "map": {"board_title": "SGR Tactical Movement Map (11 Facilities + 4 Undercellars)", "board_hint": "* Click buttons to toggle phase objectives", "btn_p1": "Phase 1 Opening (60:00-45:00 Rem.)", "btn_p2": "Phase 2 Center Opens (45:00-20:00 Rem.)", "btn_p3": "Phase 3 Endgame Baggage Heist (20:00-00:00 Rem.)", "pins": {"swordshrine": "① Swordshrine (Opens 15:00)", "mercenary": "② Mercenary Camp (15:00)", "reformation": "③ Reformation (15:00/+15%)", "bell": "⑦ Bell Tower (Cap -50%)★", "ne_abbey": "⑪ NE Abbey", "w_sanctum": "⑤ West Sanctum", "ce_abbey": "⑨ CE Abbey", "cw_abbey": "⑧ CW Abbey", "e_sanctum": "④ East Sanctum", "sw_abbey": "⑩ SW Abbey", "stables": "⑥ Royal Stables (TP -50%)★", "undercellar": "Undercellar"}, "facilities": [{"title": "Royal Stables (Opens 0:00 ★Top Priority)", "body_html": "1st Cap 1,200 / +240/m. Cuts Free Teleport CD by <strong>-50% (10m → 5m)</strong>, doubling skirmish and Baggage collection tempo (keep Advanced Teleports ready for emergencies)."}, {"title": "Swordshrine (Opens 15:00 / 45:00 Rem.)", "body_html": "1st Cap <strong>9,000</strong> / <strong>+1,800/m</strong>. Use SGR's +106 PCS Top-4 lead with Double Rallies and concentrated TG8 purity to seize and hold."}, {"title": "Sanctums (Opens 0:00 · West & East)", "body_html": "1st Cap <strong>6,000</strong> / <strong>+1,200/m</strong>. Core mid-game point engine—constantly flip whichever side GOD leaves thin."}, {"title": "Hall of Reformation (Opens 15:00)", "body_html": "1st Cap 3,000 / +600/m. Grants battlefield-wide <strong>+15% Dmg Dealt &amp; -15% Dmg Taken</strong>. Priority capture before major Lead clashes."}, {"title": "Mercenary Camp (Opens 15:00)", "body_html": "1st Cap 3,000 / +600/m. Once held, auto-attacks enemy-held buildings every <strong>~7 minutes</strong> to chip their Garrisons—lethal when synced with allied Rallies."}, {"title": "Bell Tower (🔔 0:00) & Abbeys (4 Nodes 0:00)", "body_html": "<strong>Bell Tower cuts capture countdown by -50% (3:00 → 1:30)</strong>; 1st Cap 1,200 / +240/m. <strong>4 Abbeys</strong> give 3,000 / +600/m each for multi-lane pressure."}], "ui_caps": ["Swordshrine point breakdown (9,000 / +1,800/m)", "Royal Stables buff (<img src=\"assets/ui/icon_teleport.png\" alt=\"Teleport\"> Free Teleport CD -50%)", "Garrison roster check (11/15 slots &amp; Slot-1 Hero alignment)", "Battlefield alliance cluster positioning &amp; chained marches"], "phases": {"p1": {"desc": "<strong>Phase 1 (0:00–15:00 | 60:00–45:00 left) Opening</strong>: Band 1–2 secure <strong>⑦ Bell Tower (-50% capture time)</strong> and <strong>⑥ Royal Stables (-50% free TP CD)</strong> through initial capture completion. Bands 3–5 roam outer Sanctums & Abbeys to disrupt GOD's 30-player formation.", "labels": ["Band 1–2 Bell Tower", "Band 1–2 Stables", "Band 3 West Sanctum", "Band 4–5 Abbey Roam"]}, "p2": {"desc": "<strong>Phase 2 (15:00–40:00 | 45:00–20:00 left) Center Unlock</strong>: <strong>① Swordshrine, ② Mercenary Camp & ③ Reformation Hall</strong> open! Ignore wide multi-front brawls; concentrate SGR Top-4 (+106 PCS lead) + all 8 TG8s to dominate Swordshrine & Reformation Hall (<strong>*NO 12m exit after 22:00 remaining</strong>).", "labels": ["Top-4 Double Rally", "② Mercenary (15:00)", "③ Reformation +15%", "Band 3 East Roam"]}, "p3": {"desc": "<strong>Endgame (40:00–60:00 | 20:00–00:00 left) Baggage Heist</strong>: Bands 4–5 launch decoy rallies while Band 1 (Ryo + Daryu) double-rally GOD's highest-escrow building. Sweep all dropped 50% Baggage boxes & <strong>4 Undercellars (1-troop)</strong> until 00:00!", "labels": ["Ryo Kill-Shot", "Decoy Rally", "Band 4–5 Loot Sweep"]}}}, "timeline": {"c1_html": "<strong>Win-More &amp; Comeback Trump Card: Baggage Heist (50% Escrow Steal)</strong><br>From Phase 1 onward, <strong>50% of points earned while holding a node stay in Escrow on that building</strong>. Flipping it subtracts that Escrow from the enemy and scatters boxes around—use Decoy Rallies late game to split defenders, crack it with Squad 1, and let skirmishers vacuum the loot!", "c2_html": "<strong>Live Baggage Drops (159 / 45 / 401 etc.) &amp; Free Teleport Timer</strong><br>Top-right shows <strong>Remaining Time (e.g., 00:47:43)</strong>, bottom-right has the Battle Map magnifier (to spot Undercellars), bottom-left shows Free Teleport cooldown. Undercellars take <strong>zero losses with 1-troop marches!</strong>", "p1_title": "Phase 1 (0:00-15:00 Elapsed | 60:00-45:00 Remaining)", "p1_html": "<strong>Top Priority: Lock Bell Tower (-50%) &amp; Royal Stables (TP CD -50%).</strong><br>First-capture bonuses only trigger after holding the full <strong>capture timer (3:00, or 1:30 at Bell Tower)</strong>—keep reinforcements flowing! Squads 4-5 sync outer Sanctums/Abbeys and save Free Teleports.", "p2_title": "Phase 2 (15:00-40:00 Elapsed | 45:00-20:00 Remaining)", "p2_html": "<strong>Center Unlock & Localized Dominance.</strong><br>Do not trade across 5 buildings simultaneously. Concentrate SGR's 8 TG8s behind Ryo / Lesser / Daryu / Hinata to seize Swordshrine & Reformation Hall with our +106 PCS Top-4 lead. <strong>*No 12m healing exit after 22:00 remaining!</strong>", "p3_title": "Endgame Window (40:00-60:00 Elapsed | 20:00-00:00 Remaining)", "p3_html": "<strong>Decoy Rallies + 50% Baggage Heist + 1-Troop Undercellars.</strong><br>Bands 4–5 distract GOD reinforcements while Ryo + Daryu double-rally high-escrow facilities, then sweep all dropped loot and Undercellars through 00:00 for point-differential advantage."}, "enemy": {"top_heading": "GOD Key Threat Line (Top 8)", "th": {"rank": "#", "player": "Player", "tg": "Stv(TG)", "pcs": "PCS", "dtv": "DTV", "troop": "Est. Troop"}, "top_note": "*GOD #1 (PCS 802) is strong, yet SGR #1 Ryo (952) and #2 Lesser (836) surpass him. GOD's real strength is 15 consecutive Quad-A TG8s (#1–#15, PCS 625–802) plus heavy mid-tier tanks like #10 Nicky (573.7M) and #9 ~Deadpool~ (442.9M).", "notes_heading": "🔎 GOD Tactical Breakdown & Data Transparency", "notes_desc_html": "All GOD Top-30 are <strong>Flag A (100% measured, zero uncrawled 300M+)</strong>. Their profile is ultra-uniform: <strong>22 TG8 + 8 TG7 (zero TG6-, zero FAT_WARN, zero Quad-D)</strong>. Avoid wide attrition and concentrate SGR's Top-4 quality edge on 1–2 high-value objectives.", "chips": ["#1 ᎠᎪᏔᏩᏚᎢᎽᏞᎬ (PCS 802 / TG8 / 454.9M / Enemy Ace)", "#2 Sakhazan (PCS 712 / TG8 / 418.1M)", "#9 ~Deadpool~ (PCS 658 / TG8 / 442.9M / Heavy Tank)", "#10 Nickyᶠᵘᶰ (PCS 650 / TG8 / 573.7M / GOD Max Troops)", "GOD Top-30: 22 TG8 / 8 TG7 / 0 TG6-", "GOD Quadrants: 15 Quad-A / 15 Quad-B / 0 Quad-D", "Uncrawled 300M+ (Flag D): 0 on both sides (100% verified)"]}, "footer": {"html": "<strong>Data Disclosure</strong>: PCS/DTV scores are deterministically computed from MightPulse API (<code>2026-11-22 18:00 JST</code>) combined with verified in-game Legion 1 roster capture (25 Active / 8 Reserves). Always prioritize live in-game roll-call for troop recovery and buffs.<br>Updated: 2026-11-22 JST | #898 [SGR] Swordland Strategy Desk"}}, "ar": {"meta": {"lang": "ar", "dir": "rtl", "page_title": "[#898 SGR للأعضاء فقط] دوري السيف المقدس — المباراة 3: SGR ضد GOD الخطة الكاملة"}, "nav": {"brand": "⚔️ #898 [SGR] بوابة خطة الفيلق 1 — دوري السيف", "summary": "خطة الفوز", "roster": "بحث 25 مشارك", "glossary": "المؤشرات والمعادلات", "basic_ui": "الواجهة والأبطال", "tactical_map": "الخريطة التكتيكية", "timeline": "مراحل 1–3", "enemy_risk": "تحليل الخصم"}, "hero": {"pill": "مشاركة داخلية للتحالف فقط (noindex) | المجموعة 14 — مباراة الصعود 3 | 25 مشارك + 8 احتياط", "h1_html": "دوري السيف المقدس (المباراة 3): <span style=\"color:#38bdf8\">#898 [SGR] الفيلق 1</span> ضد <span style=\"color:#f43f5e\">#913 [GOD] الفيلق 1</span>", "sub_html": "يتفوق GOD في عدد جنود TG8 المتوسطين (22 مقابل 8) وحجم القوات (1.42×)، لكن <strong>SGR يكتسح قوة قادة الحشد Top 4 بمتوسط PCS 830.5 مقابل 724.5 (+106.0 نقطة)!</strong> نرتكز على <strong>Ryo (PCS 952)</strong> و<strong>Lesser (PCS 836 / 637.9M)</strong> مع تركيز جميع لاعبي TG8 الـ8 في الأهداف الرئيسية، والسيطرة على <strong>برج الجرس والإسطبلات الملكية وسرقة غنائم 50%</strong>.", "self_lbl": "فريقنا (يسار / أزرق / الفيلق 1)", "self_val": "#898 [SGR] (25 مشارك + 8 احتياط)", "self_sub": "متوسط Top 4: PCS 830.5 (+106 نقطة) | 8 نخبة TG8", "opp_lbl": "الخصم (يمين / أحمر / الفيلق 1)", "opp_val": "#913 [GOD] (أفضل 30)", "opp_sub": "متوسط PCS 617.4 | 15 فئة A | 22 TG8 (صفر TG6-)", "core_lbl": "جوهر فوز SGR", "core_val": "تفوق Top 4 × نقاء TG8 × حرب الحركة", "core_sub": "تجنب الاستنزاف المتعدد والتركيز على 1–2 هدف رئيسي + سرقة الغنائم"}, "sec_titles": {"s01": "تشخيص القوة وخطة الفوز في 30 ثانية", "s02": "ابحث عن فرقتك ومهمتك (25 مشارك فعلي + 8 احتياط)", "s03": "[للمبتدئين] دليل المصطلحات والمعادلات وكيفية استخدامها", "s04": "[واجهة اللعبة] فحص ما قبل المعركة وقواعد البطل الأول (Slot 1)", "s05": "[خريطة السيف] الخريطة التكتيكية التفاعلية وقواعد المنشآت", "s06": "الجدول الزمني (الوقت المتبقي) وخطة سرقة غنائم 50%", "s07_prefix": "تحليل الخصم", "s07_suffix": "أخطر اللاعبين وشفافية البيانات"}, "kpis": [{"label": "متوسط PCS لقادة Top 1–4", "sub": "تفوق كاسح لـ SGR بفارق +106.0 نقطة! (Ryo 952 / Lesser 836 / Daryu 776 / Hinata 758)"}, {"label": "متوسط PCS الإجمالي / #5–#10", "sub": "الخصم أقوى في الصف الثاني — ممنوع القتال المشتت، التركيز الموضعي هو الحل"}, {"label": "قوة القوات المقدرة (Troop)", "sub": "GOD أكبر بـ 1.42× (تجنب معارك الاستنزاف الطويلة)"}, {"label": "المتانة المكافئة لـ TG8 (EGC)", "sub": "GOD يملك 22 TG8 وصفر TG6-. نقاء لاعبي TG8 الـ8 لدينا حاسم"}], "ok_heading": "✅ صح (OK): نمط الفوز الذهبي (حرب المناورة غير المتكافئة)", "ng_heading": "❌ خطأ (NG): أنماط الخسارة الواجب تجنبها تماماً", "ok_bullets": ["<strong>تركيز جميع لاعبي TG8 الـ8 (الفرقة ① 5 + الفرقة ② 3: ROCK / Neptuneman / Guruguru)</strong> في النقاط الرئيسية لصد حتى أقوى لاعب لدى GOD (PCS 802).", "السيطرة الفورية على <strong>برج الجرس (وقت الاحتلال -50%)</strong> و<strong>الإسطبلات الملكية (تهدئة الانتقال المجاني -50%)</strong> في المرحلة 1.", "<strong>فصل جميع لاعبي TG6 وما دون (12 لاعبًا في الفرقتين ④ و⑤) عن حاميات TG8 الرئيسية</strong> وتخصيصهم للأديرة الفارغة والحشود الوهمية و<strong>سرقة غنائم 50%</strong> والأقبية بجندي واحد."], "ng_bullets": ["<strong>الدفاع المباشر عن 4–6 منشآت في وقت واحد</strong> (خطأ قاتل: عمق GOD بـ 22 لاعب TG8 سيتفوق في الاستنزاف).", "<strong>إدخال لاعبي TG6 ذوي القوات الكبيرة (Ednan / kusabito / Kapibara) في حاميات TG8</strong> (يخفض المتانة إلى <code>0.5625×</code>).", "وضع <strong>Long Fei / Jabel / Helga / Zoe / Sophia</strong> (أو أبطال الدفاع <strong>Saul / Eric / Fahd</strong>) في الخانة الأولى لحشود الهجوم."], "charts": {"pcs_title": "مقارنة شرائح جودة القتال الصافية PCS (الجودة)", "troop_title": "مقارنة كمية الجنود (Troop) والقوة الفعلية المكافئة لـ TG8 (EGC)", "pcs_labels": ["المتوسط العام", "Top 1–4 القادة", "#5–#10 الصف الثاني", "#11 فأعلى"], "troop_labels": ["الجنود المقدرون (Troop M)", "الفعالية المكافئة TG8 (EGC M)"]}, "roster": {"search_placeholder": "ابحث عن اسمك (مثال: Ryo, Lesser, Daryu, Hinata, ROCK...)", "tabs": {"all": "جميع المشاركين (25)", "band1": "الفرقة ① القادة الرئيسيون (5)", "band2": "الفرقة ② نخبة TG8 (3)", "band3": "الفرقة ③ مناورة TG7 (5)", "band4": "الفرقة ④ فصل TG6 (3)", "band5": "الفرقة ⑤ غنائم ومناورة (9)"}, "glossary_hint_html": "* لمعرفة معنى كل مؤشر ومعادلته وتطبيقه في الميدان، راجع <a href=\"#glossary\" style=\"color:#7dd3fc\"><strong>03 دليل «المصطلحات والمعادلات» للمبتدئين</strong></a> أدناه أو اضغط على رمز <span class=\"q-dot\">?</span> بجانب العنوان.", "th": {"rank": "#", "player": "اسم اللاعب", "band": "الفصيل", "tg": "TG (الموقد)", "pcs": "الجودة PCS", "join": "الانضمام Join", "dtv": "القدرة DTV", "troop": "الجنود المقدرون", "mission": "المهمة والتنبيهات داخل السيف المقدس"}, "no_match": "لا يوجد عضو مطابق", "fat_warn_badge": "⚠جيش TG6 ضخم", "reserve_title": "🔄 قائمة الاحتياط المسجلين (8 لاعبين) — أولوية الاستدعاء", "reserve_desc_html": "تم التحقق داخل اللعبة من <strong>25 مشاركًا و8 احتياط</strong> (Freyd وGoripon غير مشاركين هذه الجولة). عند غياب أي عضو، الأولوية لـ <strong>Bonkura (PCS 512 / TG7 / 271.3M)</strong> ثم <strong>Style D (PCS 470 / TG6)</strong>:", "bands": {"band2_label": "الفرقة ② منضم نخبة TG8", "band2_mission": "دعم مؤكد لقادة الفرقة ① (جميعهم TG8 / Join 642–674) للحفاظ على نقاء الحاميات الرئيسية.", "band3_label": "الفرقة ③ مناورة TG7", "band3_mission": "السيطرة على المعابد والأديرة الخارجية، وملء الفراغ مؤقتًا فقط ثم الخروج فور وصول TG8.", "band4_label": "الفرقة ④ مسار TG6 المنفصل", "band4_mission": "[ممنوع الدخول لحاميات TG8 (تخفيف 0.5625×)] التركيز على الأديرة المنفصلة والحشود الوهمية وسرقة الغنائم.", "band5_label": "الفرقة ⑤ المناورة وجمع الغنائم", "band5_mission": "عدم دخول الحاميات الرئيسية. التركيز على المنشآت الفارغة، سرقة غنائم 50%، والأقبية بجندي واحد."}, "custom": {"リョ〜〜〜朕": ["الفرقة ① رأس الحربة الأول", "أقوى مهاجم في الساحة (PCS 952 / 609.1M)، يتفوق على أول GOD بـ +150 نقطة. لكسر ضريح السيف والمنشآت العالية."], "レッサー": ["الفرقة ① درع الدفاع الأول", "أقوى مدافع (PCS 836 / 637.9M / DTV 100.0). القائد الأساسي لحامية برج الجرس أو ضريح السيف."], "だりゅDaryu": ["الفرقة ① المدفع الثاني", "قائد TG8 ثقيل (PCS 776 / 596.0M / DTV 99.6) للحشود المزدوجة مع Ryo."], "Hinata": ["الفرقة ① مدفع دقيق", "PCS 758 / 413.4M — أقوى من ثاني GOD (712). لقيادة الإسطبلات وقاعة الإصلاح."], "ルーク": ["الفرقة ① المدفع الخامس", "PCS 647 / 343.2M. قائد احتياطي أثناء استراحة الـ12 دقيقة وأقوى منضم TG8."]}}, "glossary": {"intro_html": "رقم «القوة الإجمالية (Power)» داخل اللعبة <strong>سهل التضخيم بمجرد تكديس أعداد كبيرة من الجنود</strong>، لذا فإن اختيار القادة أو الحامية بناءً على القوة الإجمالية فقط قد يُذيب المنشآت الرئيسية بسبب قوات قوية شكلياً وضعيفة فعلياً. لذلك تعتمد هذه البوابة نظام <strong>MightPulse (أبراج التجارب الستة + نقاط الهجرة + مستوى الموقد)</strong> لتفكيك الأداء إلى 5 مؤشرات شفافة تقيس <strong>«قوة الجندي الواحد (الجودة)» و«سعة الجنود المتاحة للقتال (القدرة)»</strong>.", "use_prefix": "🎯 التطبيق الميداني:", "cards": {"tg": {"title": "① TG (الموقد) — طبقة جيل الذهب الحقيقي", "range": "TG1 – TG8", "easy_html": "<strong>الفكرة باختصار: رتبة جيل الجنود (أساس المتانة والهجوم الخام).</strong><br>مستوى الموقد (Stove Lv) من 60 إلى 70 يقابل جنود الذهب الحقيقي TG6 إلى TG8. حتى مع 100 ألف جندي بالضبط، يظهر فارق جوهري في الصمود والضرر الأساسي بين TG8 وTG6.", "formula_html": "TG = clip(floor((StoveLv - 30) / 5), 1, 8)<br>• Lv.60–64 = TG6 | Lv.65–69 = TG7 | Lv.70 = TG8<br>• تقدير خطر الخلط EGC_M = القوات المقدرة × (TG / 8)² (TG6 يعادل 0.5625 تقريباً حسب النموذج)", "use_html": "بسبب حد 15 مسيرة في الحامية، نركز <strong>جميع لاعبي TG8 الـ8</strong> في النقاط الحاسمة ونمنع خلط TG6-."}, "pcs": {"title": "② جودة القتال PCS — نقاط القتال الصافية", "range": "0 – 1,000 نقطة", "easy_html": "<strong>الفكرة باختصار: «القوة الصافية للجندي الواحد بدون عدد الجنود (مقياس صلاحية القيادة)».</strong><br>تُحسب من التعويذة (CC) ومعدات اللورد (MF) والأبطال (Col) والأبحاث (KN) والمرافق (FoL) والشامل (RS)، ولا تنخفض بزيادة الجنود بل تظل مرتفعة حتى لو كان الجنود صفراً. <strong>من يحقق 600+ (وخاصة 700+) هو مرشح قيادة الحشد والحامية</strong>.", "formula_html": "1) تطبيع أبراج التجارب الـ6 إلى 0–1 عبر الحد الأقصى CAP (لإزالة انحياز الفارق الرقمي)<br>CAP = &#123;CC:400, MF:440, KN:320, FoL:340, Col:800, RS:840&#125;<br>2) دمج الأوزان القتالية Q_core = 0.26×CC + 0.20×Col + 0.18×MF + 0.14×KN + 0.14×RS + 0.08×FoL<br>3) تحييد معامل الموقد في نقاط الهجرة (TC=min(Stove,70), wps=Mig/TC+2226) ودمج 12% فقط<br>PCS = 1000 × clip(0.88 × Q_core + 0.12 × clip(wps/42000, 0, 1), 0, 1)", "use_html": "تتفوق SGR في <strong>Top 4 (830.5 مقابل 724.5، +106 نقاط)</strong> بينما يتفوق GOD في الصف المتوسط، لذا يجب حصر الصدام في نقاط قادتنا الأربعة."}, "join": {"title": "③ جودة الانضمام Join — مقياس المشارك في الحشد", "range": "0 – 1,000 نقطة", "easy_html": "<strong>الفكرة باختصار: «قيمة مساهمتك عندما تنضم إلى حشد أو حامية يقودها قائد».</strong><br>عندما تكون منضماً (Joiner)، لا تدخل أبحاثك ولا معدات اللورد الخاصة بك في الحساب، بل يؤثر في المعركة فقط <strong>«مهارة البطل في أقصى اليسار (Slot 1)» و«مستوى TG للجنود المرسَلين»</strong>.", "formula_html": "PCS_joiner = 1000 × (0.45×n_Col + 0.15×n_RS + 0.10×n_CC + 0.05×n_MF + 0.25×(TG / 8))<br>• تُقيَّم ملاءمة الانضمام بنسبة 85% من الأبطال (Col) والبرج الشامل (RS) وجيل TG", "use_html": "انضمام نخبة TG8 في الفرقة ② (<code>ROCK</code> / <code>Neptuneman</code> / <code>Guruguru</code>) مع تبادل الفرقة ① يحقق أعلى ضرر ممكن."}, "troop": {"title": "④ قوة الجنود المقدرة (Troop Power)", "range": "الوحدة: M (مليون قوة)", "easy_html": "<strong>الفكرة باختصار: «حجم الجنود الجاهزين للتحرك حالياً بعد طرح القوة الثابتة للمباني والأبحاث».</strong><br>إذا استهلكت جنودك في حرب القلعة أو معارك قريبة، قد يبدو إجمالي القوة مرتفعاً بينما تظهر قوة الجنود المقدرة منخفضة.", "formula_html": "1) القوة الأساسية الثابتة (نموذج قانون القوة): BasePower_M = 5.79 × (wps ^ 0.318)<br>• تقدير غير خطي بالحد السفلي لتجنب اعتبار ذوي القوة العالية بلا جنود<br>2) قوة الجنود المقدرة: TroopPower_M = max(TotalPower_M - BasePower_M, 0)<br>3) نسبة الجنود: phi = TroopPower_M / TotalPower_M", "use_html": "إجمالي القوات المقدرة <strong>6,494.3M مقابل 9,233.0M (1.42×)</strong>، لذا نعتمد على الكفاءة العالية وتجنب الاستنزاف الواسع."}, "dtv": {"title": "⑤ قدرة الاستمرار DTV — مخزون نفس القتال", "range": "0 – 100 نقطة (المعيار 60+)", "easy_html": "<strong>الفكرة باختصار: «مدى قدرتك على إرسال الجنود للجبهة طوال ساعة السيف المقدس دون انقطاع».</strong><br>لا يقيس كثرة الجنود وحدها، بل يدمج <strong>معامل جيل TG، وكمية الجنود المقدرة، ونسبة الجنود من القوة الكلية</strong> ليُظهر من 0 إلى 100 مدى تحملك للمعارك المتواصلة.", "formula_html": "• عامل الكمية: a = clip(ln(1 + TroopPower_M / 20) / ln(31), 0, 1)  [1.0 عند 600M]<br>• عامل النسبة: s = clip((phi - 0.15) / 0.65, 0.02, 1.0)<br>• معامل أرضية الجيل: qf = max(1 - 0.04 × (8 - TG), 0.60)<br>DTV = 100 × qf × (a ^ 0.6) × (s ^ 0.4)", "use_html": "أفضل 13 لاعبًا في SGR يملكون DTV بين 72 و100، بينما يتم فصل 3 لاعبي <code>FAT_WARN</code> و9 لاعبي فئة D للمناورة وجمع الغنائم."}}, "dict_heading": "📖 للمبتدئين: قاموس مصغر لأهم قواعد ومصطلحات دوري السيف المقدس", "dict": [{"title": "🗺️ الأرباع الأربعة (خريطة توزيع الأدوار)", "body_html": "<code>PCS≧600 &amp; DTV≧60</code> هم <strong>الربع A (القادة)</strong>، و<code>DTV≧60</code> هم <strong>الربع B (الانضمام والمناوشة)</strong>، و<code>PCS≧600</code> مع جنود أقل هم <strong>الربع C (قيادة قصيرة/التعافي)</strong>، وانخفاض الاثنين معاً هو <strong>الربع D (الجمع واحتلال النقاط الفارغة)</strong>."}, {"title": "🧬 الخانة الأولى Slot 1 (أقصى اليسار) والتضاعف المتنوع", "body_html": "المهارات التي تدخل في الحشد والحامية هي فقط <strong>المهارة الاستكشافية الأولى للبطل في أقصى اليسار عند المشاركين (أعلى 4 مهارات فقط)</strong>! خلط تأثيرات مختلفة مثل «هجوم +25% × فتك +25% × ضرر متلقى على العدو» يرفع المضاعفة أكثر من تكرار نفس البف."}, {"title": "📦 إسقاط 50% من غنائم الرصيد المحفوظ (Escrow)", "body_html": "أثناء السيطرة على أي منشأة في السيف المقدس، يُحتفظ بـ <strong>50% من نقاط التحالف المتراكمة داخل المنشأة نفسها</strong>. هذا النظام فعال منذ Phase 1؛ وعند إسقاط المنشأة تُخصم من الخصم وتتناثر الصناديق حولها، <strong>ويمكن لأي من التحالفين التقاطها</strong>."}, {"title": "⏱️ انتبه لعدم الخلط في «الوقت المتبقي» على الشاشة", "body_html": "المؤقت أعلى ساحة المعركة هو <strong>عدّ تنازلي من 60:00 → 00:00</strong>. مرور 15:00 دقيقة يعني أن المتبقي <strong>45:00</strong>. احفظوا القاعدة: <strong>بعد بقاء 22:00 يُمنع الخروج بعقوبة 12 دقيقة</strong> (لأنك لن تتمكن من العودة إلى المعركة)."}, {"title": "🏆 «فارق النقاط» حاسم أيضاً في دوري السيف المقدس", "body_html": "لا يُحتسب الفوز والخسارة فقط، بل يؤثر <strong>نقاط فريقنا − نقاط الخصم (فارق النقاط)</strong> في ترتيب الصعود بالموسم. حتى لو تأخرنا في النتيجة، يستحق الأمر جمع كل صندوق وكل قبو سري متاح من آخر 10 دقائق حتى الثانية 00:00."}, {"title": "🔍 الأعلام Flag B–D (ملاحظة البيانات غير المقاسة)", "body_html": "الأعضاء الذين لم تُلتقط بعض بياناتهم (الأبراج الستة أو نقاط الهجرة) في MightPulse يتم استكمالهم رياضياً تحت «Flag B/C»، بينما من تغيب كلتا القيمتين لديهم يُعرضون بشفافية تحت «Flag D (مستبعد من الحساب / تنبيه في جدول منفصل)»."}]}, "basic_ui": {"tag_gen": "رسم تكتيكي", "tag_real": "واجهة اللعبة", "cards": ["<strong>قبل البداية بـ 15 دقيقة: صفّر جرحى المستوصف تماماً («0»)!</strong><br>وجود جندي جريح واحد داخل <img src=\"assets/ui/icon_infirmary.png\" alt=\"المستوصف\"> المستوصف يمنعك كلياً من دخول ساحة السيف المقدس. عالج الجميع مسبقاً وأعد كل المسير والجيوش المرسلة.", "<strong>التحقق من مقعد المشاركة وجيل TG (جودة الجنود)</strong><br>بعد تثبيت وقت الدخول، الالتزام بالموعد إلزامي. تأكد هل أنت TG8 (موقد 70) أم TG7 (65-69) أم TG6 (60-64)، وعلى أصحاب TG6 فأدنى الانفصال وعدم الانضمام إلى حاميات TG8 الرئيسية.", "<strong>لماذا يُمنع خلط TG6 مع TG8؟</strong><br>عند دخول TG6 إلى حامية <img src=\"assets/ui/icon_truegold_crucible.png\" alt=\"بوتقة الذهب الحقيقي\"> TG8 (حد أقصى 15 عضواً)، تنخفض كفاءة الصمود وفق نموذجنا إلى نحو <strong>0.5625x</strong>. يُسمح لـ TG7 بسد الفراغ مؤقتاً فقط ثم يُستبدل فوراً عند وصول TG8 («الرقصة»).", "<strong>ما يتفعّل عند الانضمام هو «المهارة الاستكشافية الأولى (أعلى اليمين) لبطل أقصى اليسار (Slot 1)» فقط!</strong><br>تماماً مثل مهارة تشينكو 『Stand of Arms Lv.5 (فتك +25%)』، تتحدد الخانات الأربع الأعلى في الحشد من هذه المهارة الأولى فقط.", "<strong><img src=\"assets/ui/icon_command_center.png\" alt=\"Command Center\"> الانضمام للحشود</strong><br>عند الانضمام لحشود الفرقة ① (Ryo / Lesser / Daryu / Hinata / Luke)، استخدم التشكيلة المحفوظة للبطل الأول بضغطة واحدة.", "<strong><img src=\"assets/ui/icon_embassy.png\" alt=\"Embassy\"> تبديل الحامية</strong><br>الركيزة هي <code>Lesser (637.9M)</code> و<code>Daryu (596.0M)</code> مع الفرقة ② TG8 وأبطال الدفاع (Gordon/Howard/Saul)."], "hero_title": "أبطال الخانة الأولى (Slot 1 - أقصى اليسار): الموصى بنسخهم حرفياً مقابل الممنوعين تماماً (ألغام الحشد)", "hero_desc_html": "في حشود الهجوم، تركيب <strong>التضاعف المتنوع «هجوم × فتك × زيادة ضرر العدو»</strong> يضاعف قوة القائد بشكل هائل (أما أبطال الدفاع وتقليل الضرر فلا يقتلون العدو لذا يُفصلون <strong>للدفاع فقط</strong>). جهّز قبل المعركة: Preset 1 (انضمام هجومي) • Preset 2 (دفاع) • Preset 3 (جمع سريع).", "hero_atk_title": "⚔️ النخبة الذهبية لانضمام الهجوم (اختر واحداً فقط في أقصى اليسار)", "hero_def_title": "🛡️ أبطال اليسار الموصى بهم للدفاع (مهارة أولى لصمود وتقليل ضرر)", "hero_ban_title": "💣 ممنوع تماماً في Slot 1 للانضمام (يفسد الحشد)", "heroes": {"chenko": ["تشينكو (Chenko)", "مضمون فتك +25%"], "yeonwoo": ["يونوو (Yeonwoo)", "مضمون فتك +25%"], "amane": ["أماني (Amane)", "مضمون هجوم +25%"], "margot": ["مارغو (Margot)", "مضمون هجوم +25%"], "vivian": ["فيفيان (Vivian)", "ضرر على العدو +25%"], "hilde": ["هيلدا (Hilde)", "هجوم +10% / دفاع +15%"], "petra": ["بيترا (Petra) ⚠", "بطل واحد فقط بالحشد (احتمال 50% ضرر +50%)"], "gordon": ["غوردون (Gordon)", "صحة الحلفاء +25%"], "howard": ["هوارد (Howard)", "تقليل الضرر -20%"], "saul": ["ساول (Saul)", "دفاع +10% / صحة +15% (للدفاع فقط)"], "eric": ["إريك (Eric)", "هجوم العدو -20% (للدفاع فقط)"], "fahd": ["فهد (Fahd)", "ضرر العدو -20% (للدفاع فقط)"], "long-fei": ["لونغ فاي (Long Fei)", "ممنوع بحشد الهجوم"], "jabel": ["جابيل (Jabel)", "تفعيل احتمالي يلوّث الخانات"], "helga": ["هيلغا (Helga)", "ممنوع عند الانضمام"], "zoe": ["زوي (Zoe)", "احتمالي • يضيّع الخانة"], "sophia": ["صوفيا (Sophia)", "ممنوع عند الانضمام"]}}, "map": {"board_title": "خريطة تحركات SGR التكتيكية (11 منشأة + 4 أقبية)", "board_hint": "* استخدم الأزرار للتبديل بين أهداف كل مرحلة زمنية", "btn_p1": "Phase 1 الافتتاح (المتبقي 60:00–45:00)", "btn_p2": "Phase 2 فتح الوسط (المتبقي 45:00–20:00)", "btn_p3": "المرحلة الحاسمة: سرقة الغنائم (المتبقي 20:00–00:00)", "pins": {"swordshrine": "① مذبح السيف المقدس (يفتح 15:00)", "mercenary": "② معسكر المرتزقة (15:00)", "reformation": "③ قاعة التطهير (15:00/+15%)", "bell": "⑦ برج الجرس (احتلال -50%)★", "ne_abbey": "⑪ الدير الشمالي الشرقي", "w_sanctum": "⑤ الحرم الغربي", "ce_abbey": "⑨ الدير الأوسط الشرقي", "cw_abbey": "⑧ الدير الأوسط الغربي", "e_sanctum": "④ الحرم الشرقي", "sw_abbey": "⑩ الدير الجنوبي الغربي", "stables": "⑥ الإسطبل الملكي (انتقال -50%)★", "undercellar": "القبو السري"}, "facilities": [{"title": "الإسطبل الملكي (يفتح 0:00 ★أولوية قصوى)", "body_html": "أول احتلال 1,200 / +240 كل دقيقة. يقلّص تهدئة الانتقال المجاني بنسبة <strong>-50% (من 10 دقائق إلى 5 دقائق)</strong>، مما يضاعف سرعة المناوشة وجمع الغنائم (ويمكن دعمه بالانتقال المتقدم عند الطوارئ)."}, {"title": "مذبح السيف المقدس (يفتح عند 15:00 المنقضية / المتبقي 45:00)", "body_html": "أول احتلال <strong>9,000</strong> / كل دقيقة <strong>+1,800</strong>. تجنّبوا حرب الاستنزاف المباشرة أمام نخبة الخصم واستهدفوا الثغرات والحشد المزدوج وقلب الكفة في النهاية."}, {"title": "الحرم / Sanctum (يفتح 0:00 • مبنيان شرق وغرب)", "body_html": "أول احتلال <strong>6,000</strong> / كل دقيقة <strong>+1,200</strong>. مصدر النقاط الأساسي في منتصف المعركة؛ بدّلوا السيطرة باستمرار نحو الجهة الأضعف دفاعاً لدى الخصم."}, {"title": "قاعة التطهير / Reformation (يفتح عند 15:00 المنقضية)", "body_html": "أول احتلال 3,000 / +600 كل دقيقة. تمنح ساحة المعركة بالكامل بف <strong>ضرر مُلحق +15% وتقليل ضرر متلقى -15%</strong>. منشأة ضرورية قبل صدام القادة."}, {"title": "معسكر المرتزقة / Camp (يفتح عند 15:00 المنقضية)", "body_html": "أول احتلال 3,000 / +600 كل دقيقة. عند السيطرة عليه يطلق هجوماً تلقائياً كل <strong>حوالي 7 دقائق</strong> على منشأة يسيطر عليها العدو لإنهاك حاميتها. تزامنه مع حشودنا فعّال جداً."}, {"title": "برج الجرس (🔔 0:00) والأديرة (4 مبانٍ 0:00)", "body_html": "<strong>برج الجرس يقلّص زمن عدّ الاحتلال بنسبة -50% (من 3:00 إلى 1:30)</strong> مع 1,200/+240 بالدقيقة. أما <strong>الأديرة الـ4</strong> فتمنح 3,000/+600 بالدقيقة وهي عصب المناوشة والضغط متعدد الجبهات."}], "ui_caps": ["جدول نقاط مذبح السيف المقدس (9,000 / +1,800 بالدقيقة)", "تأثير الإسطبل الملكي (<img src=\"assets/ui/icon_teleport.png\" alt=\"انتقال\"> تهدئة الانتقال المجاني -50%)", "قائمة حامية منشأة السيف المقدس (11/15 خانة • ترتيب أبطال اليسار)", "تجمع عنقود التحالف على خريطة المعركة وتوجيه المسير المتتابع"], "phases": {"p1": {"desc": "<strong>المرحلة 1 (60:00–45:00 متبقي)</strong>: الفرقة ①② تسيطر فورًا على <strong>⑦ برج الجرس (-50%)</strong> و<strong>⑥ الإسطبلات (-50%)</strong>، بينما تناور الفرق ③④⑤ على الأطراف.", "labels": ["برج الجرس ①②", "الإسطبلات ①②", "المعبد الغربي ③", "أديرة ④⑤"]}, "p2": {"desc": "<strong>المرحلة 2 (45:00–20:00 متبقي)</strong>: فتح <strong>① ضريح السيف و② المرتزقة و③ قاعة الإصلاح</strong>! تركيز Top 4 (+106 PCS) والـ8 TG8 للسيطرة الموضعية (<strong>ممنوع الخروج بعد 22:00 متبقي</strong>).", "labels": ["حشد مزدوج Top4", "② المرتزقة", "③ الإصلاح +15%", "مناورة الشرق ③"]}, "p3": {"desc": "<strong>النهاية (20:00–00:00 متبقي)</strong>: حشود وهمية من ④⑤ + حشد مزدوج قاتل من Ryo وDaryu لإسقاط أعلى منشأة نقاط وسرقة غنائم 50% و4 أقبية حتى الثانية الأخيرة!", "labels": ["ضربة Ryo القاضية", "حشد وهمي", "جمع الغنائم ④⑤"]}}}, "timeline": {"c1_html": "<strong>ورقة التفوق وقلب النتيجة: سرقة الغنائم (خطف رصيد الـ50% المحفوظ)</strong><br>منذ Phase 1، يتم تخزين <strong>50% من نقاط السيطرة داخل المنشأة نفسها</strong>، وعند إسقاطها تُخصم من العدو وتتناثر حولها كصناديق. في النهاية المتخمة بالنقاط، نشتت العدو بحشود تمويه، ويسقطها الفصيل ① بضربة واحدة لتنهبها فرق المناوشة فوراً!", "c2_html": "<strong>صناديق الغنائم على أرض المعركة الفعلية (159 / 45 / 401 إلخ) ومؤقت الانتقال المجاني</strong><br>في أعلى اليمين يظهر <strong>الوقت المتبقي (مثال 00:47:43)</strong>، وفي أسفل اليمين عدسة Battle Map (للبحث عن القبو السري)، وفي أسفل اليسار تهدئة الانتقال المجاني. يمكن جمع القبو السري بـ <strong>جندي واحد أو مسير أدنى</strong> دون أي خسائر!", "p1_title": "Phase 1 (المنقضي 0:00–15:00 | المتبقي 60:00–45:00)", "p1_html": "<strong>الأولوية القصوى: تأمين برج الجرس (-50%) والإسطبل الملكي (تهدئة الانتقال -50%).</strong><br>لا تُحتسب مكافأة الاحتلال الأول إلا بالصمود حتى <strong>اكتمال العدّ (3 دقائق / 1:30 في برج الجرس)</strong> لذا حافظوا على تدفق التعزيزات! ويضغط الفصيلان ④⑤ على الحرم والأديرة مع ادخار الانتقال المجاني وعدم هدره.", "p2_title": "Phase 2 (المنقضي 15:00–40:00 | المتبقي 45:00–20:00)", "p2_html": "<strong>فتح الوسط والسيطرة الموضعية.</strong><br>لا تتوزع على 5 منشآت. ركز الـ8 TG8 خلف Top 4 للسيطرة على ضريح السيف وقاعة الإصلاح. <strong>ممنوع الخروج للشفاء بعد 22:00 متبقي!</strong>", "p3_title": "مرحلة الحسم (المنقضي 40:00–60:00 | المتبقي 20:00–00:00)", "p3_html": "<strong>حشود وهمية + سرقة غنائم 50% + أقبية بجندي واحد.</strong><br>شتت تعزيزات GOD ثم أسقط أعلى منشأة بحشد مزدوج واجمع كل الصناديق حتى 00:00 لتوسيع فارق النقاط."}, "enemy": {"top_heading": "أخطر لاعبي GOD (أفضل 8)", "th": {"rank": "#", "player": "اللاعب", "tg": "Stv (TG)", "pcs": "PCS", "dtv": "DTV", "troop": "Troop المقدر"}, "top_note": "*أول GOD (PCS 802) قوي، لكن Ryo (952) وLesser (836) يتفوقان عليه. الخطر الحقيقي هو 15 لاعب فئة A متتاليين ودبابات الصف المتوسط مثل Nicky (573.7M) و~Deadpool~ (442.9M).", "notes_heading": "🔎 تحليل GOD وشفافية البيانات", "notes_desc_html": "جميع أفضل 30 في GOD من <strong>الفئة A (قياس 100% بلا حيتان مخفية)</strong>: <strong>22 TG8 + 8 TG7 (صفر TG6-)</strong>. الحل الأمثل هو التركيز الموضعي وتجنب الاستنزاف المتعدد.", "chips": ["#1 ᎠᎪᏔᏩᏚᎢᎽᏞᎬ (PCS 802 / TG8 / 454.9M)", "#2 Sakhazan (PCS 712 / TG8 / 418.1M)", "#9 ~Deadpool~ (PCS 658 / TG8 / 442.9M)", "#10 Nickyᶠᵘᶰ (PCS 650 / TG8 / 573.7M)", "GOD Top30: 22 TG8 / 8 TG7 / 0 TG6-", "GOD الفئات: 15 A / 15 B / 0 D", "غير مقاس 300M+ (Flag D): 0 للطرفين"]}, "footer": {"html": "<strong>إفصاح البيانات</strong>: تم حساب PCS/DTV تلقائيًا من MightPulse API (<code>2026-11-22 18:00 JST</code>) مع التحقق المباشر من قائمة المشاركين داخل اللعبة (25 مشارك + 8 احتياط).<br>آخر تحديث: 2026-11-22 JST | مكتب خطط #898 [SGR]"}}, "tr": {"meta": {"lang": "tr", "dir": "ltr", "page_title": "[#898 SGR Üyelere Özel] Kılıç Ligi Yükselme Maçı 3: SGR vs GOD Tam Strateji & UI Rehberi"}, "nav": {"brand": "⚔️ #898 [SGR] Kılıç Ligi 1. Lejyon Portalı", "summary": "Kazanma Planı", "roster": "25 Kişi Arama", "glossary": "Metrikler", "basic_ui": "UI & Yasaklılar", "tactical_map": "Taktik Harita", "timeline": "Faz 1–3 Akışı", "enemy_risk": "Rakip Analizi"}, "hero": {"pill": "İttifak İçi Paylaşım (noindex) | Grup 14 Yükselme Maçı 3 | Doğrulanmış 25 Aktif + 8 Yedek", "h1_html": "Kılıç Ligi 3. Maç: <span style=\"color:#38bdf8\">#898 [SGR] Lejyon 1</span> vs <span style=\"color:#f43f5e\">#913 [GOD] Lejyon 1</span>", "sub_html": "GOD orta kademe TG8 derinliğinde (22 vs 8) ve asker hacminde (1.42x) önde olsa da, <strong>SGR Top-4 Ana Ralli Liderlerinde 830.5 vs 724.5 (+106.0 PCS) ezici üstünlüğe sahip!</strong> Sahanın en güçlü mızrağı <strong>Ryo (PCS 952)</strong> ve kalkanı <strong>Lesser (PCS 836 / 637.9M)</strong> etrafında 8 TG8'i saflaştırıp <strong>Çan Kulesi + Kraliyet Ahırı + %50 Ganimet Baskını</strong> ile kazanacağız.", "self_lbl": "Bizim Takım (Sol / Mavi / Lejyon 1)", "self_val": "#898 [SGR] (25 Aktif + 8 Yedek)", "self_sub": "Top-4 Ort. PCS 830.5 (+106 fark) | 8 Elit TG8", "opp_lbl": "Rakip (Sağ / Kırmızı / Lejyon 1)", "opp_val": "#913 [GOD] (İlk 30)", "opp_sub": "Ort. PCS 617.4 | 15 A-Sınıfı | 22 TG8 (Sıfır TG6-)", "core_lbl": "SGR Kazanma Çekirdeği", "core_val": "Top-4 Ezici Güç × TG8 Saflığı × Hareketlilik", "core_sub": "Çoklu cephe yıpranmasından kaçın; 1–2 kritik bina + %50 ganimet çal"}, "sec_titles": {"s01": "30 Saniyede Güç Analizi & Kazanma Planı", "s02": "Kendi Grubunu ve Görevini Ara (Doğrulanmış 25 Aktif + 8 Yedek)", "s03": "[Yeni Başlayanlar] Terimler, Formüller ve Saha Kullanımı", "s04": "[Temel UI] Maç Öncesi Kontrol & Slot 1 (En Sol) Kahraman Kuralı", "s05": "[Kılıç Haritası] İnteraktif Taktik Harita & Tesis Kuralları", "s06": "Maç Zaman Çizelgesi (Kalan Süre) & %50 Ganimet Baskını", "s07_prefix": "Rakip", "s07_suffix": "Tehdit Analizi & Veri Şeffaflığı"}, "kpis": [{"label": "Top 1–4 Ralli Lideri Ort. PCS", "sub": "SGR +106.0 puan önde! (Ryo 952 / Lesser 836 / Daryu 776 / Hinata 758)"}, {"label": "Genel / #5–#10 Orta Kademe PCS", "sub": "GOD orta/alt katmanda derin — geniş yıpranmadan kaçın, lokal odaklan"}, {"label": "Tahmini Asker Gücü (Troop)", "sub": "GOD ~1.42x daha kalın (uzun çok cepheli savaş yasak)"}, {"label": "TG8 Eşdeğer Dayanıklılık (EGC)", "sub": "GOD'da 22 TG8 ve sıfır TG6-. SGR'nin 8 TG8'ini saf tutmak hayati"}], "ok_heading": "✅ DOĞRU: Kazandıran Altın Strateji (Asimetrik Mobil Savaş)", "ng_heading": "❌ YANLIŞ: Kesinlikle Kaçınılması Gereken Yenilgi Hataları", "ok_bullets": ["<strong>Tüm 8 TG8'i (Grup ① 5 + Grup ② 3: ROCK / Neptuneman / Guruguru) ana binalarda toplayarak</strong> GOD #1'i (PCS 802) bile kırabilecek lokal üstünlük kur.", "Faz 1 başında <strong>Çan Kulesi (Ele Geçirme -%50)</strong> ve <strong>Kraliyet Ahırı (Ücretsiz Işınlanma -%50)</strong> alarak GOD'ın 30 kişilik kütlesini hızla boz.", "<strong>12 adet TG6 ve altı oyuncuyu (Grup ④ ve ⑤) ana TG8 garnizonlarından tamamen ayır</strong>; boş manastır, sahte ralli, <strong>%50 ganimet baskını</strong> ve 1 askerlik yeraltı mahzenine yönlendir."], "ng_bullets": ["<strong>4–6 binayı aynı anda cepheden savunmak</strong> (Kritik Hata: GOD'ın 22 TG8'lik derinliği geniş savaşta ezer).", "<strong>Büyük TG6 hesaplarını (Ednan / kusabito / Kapibara) veya TG5-'leri ana TG8 garnizonuna sokmak</strong> (dayanıklılığı <code>~0.5625x</code>'e düşürür).", "Saldırı rallisi Slot 1'ine <strong>Long Fei / Jabel / Helga / Zoe / Sophia</strong> (veya savunma kahramanları <strong>Saul / Eric / Fahd</strong>) koymak."], "charts": {"pcs_title": "Saf Savaş Puanı (PCS) Kademe Karşılaştırması", "troop_title": "Asker Miktarı (Troop) & TG8 Eşdeğer Güç (EGC) Karşılaştırması", "pcs_labels": ["Genel Ort.", "İlk 1–4 Ana Topçu", "#5–#10 2. Dalga", "#11 ve Sonrası"], "troop_labels": ["Tahmini Asker (Troop M)", "TG8 Eşdeğeri (EGC M)"]}, "roster": {"search_placeholder": "Adını ara (ör. Ryo, Lesser, Daryu, Hinata, ROCK, Ponta...)", "tabs": {"all": "Aktif Tümü (25)", "band1": "Grup ① Ana Liderler (5)", "band2": "Grup ② Elit TG8 (3)", "band3": "Grup ③ TG7 Mobil (5)", "band4": "Grup ④ TG6 Ayrı Hat (3)", "band5": "Grup ⑤ Baskın & Ganimet (9)"}, "glossary_hint_html": "* Her metriğin anlamını, formülünü ve savaş içi kullanımını hemen aşağıdaki <a href=\"#glossary\" style=\"color:#7dd3fc\"><strong>03 Yeni Başlayanlar İçin 'Terimler &amp; Formüller Rehberi'</strong></a> bölümünden veya başlıklardaki <span class=\"q-dot\">?</span> simgesine dokunarak görebilirsin.", "th": {"rank": "#", "player": "Oyuncu Adı", "band": "Grup", "tg": "TG (Ocak)", "pcs": "Kalite PCS", "join": "Katılım Join", "dtv": "Stamina DTV", "troop": "Tahmini Asker", "mission": "Kılıçdiyarı Görevi & Dikkat Edilecekler"}, "no_match": "Eşleşen üye bulunamadı", "fat_warn_badge": "⚠TG6 Yüksek Asker", "reserve_title": "🔄 Doğrulanmış Yedek Kadro Önceliği (8 Yedek)", "reserve_desc_html": "Oyun içi doğrulamada <strong>25 Aktif / 8 Yedek</strong> kayıtlıdır (Freyd ve Goripon bu maçta yok). Eksik olursa <strong>Bonkura (PCS 512 / TG7 / 271.3M)</strong> ve <strong>Style D (PCS 470 / TG6)</strong> öncelikli çağrılır:", "bands": {"band2_label": "Grup ② Elit TG8 Katılımcı", "band2_mission": "Grup ① için kesin TG8 saldırı/savunma desteği (Join 642–674). Ana garnizon saflığının bel kemiği.", "band3_label": "Grup ③ TG7 Mobil & Kutsal Alan", "band3_mission": "Dış kutsal alanlar/manastırlar ve geçici dolgu; TG8 gelince hemen çık (dans).", "band4_label": "Grup ④ TG6 Ayrı Hat", "band4_mission": "[Ana TG8 garnizonuna GİRME (~0.5625x seyrelme)] Ayrı manastır, sahte ralli ve %50 ganimet baskını.", "band5_label": "Grup ⑤ Mobil & Ganimet", "band5_mission": "Ana garnizona girme. Boş bina kapma, %50 ganimet toplama, 1 askerlik mahzen ve şaşırtmaya odaklan."}, "custom": {"リョ〜〜〜朕": ["Grup ① #1 Ana Mızrak", "Sahanın en güçlü saldırganı (PCS 952 / 609.1M). GOD #1'e +150 puan fark atar. Tapınak ve yüksek puanlı binaları yıkma kozu."], "レッサー": ["Grup ① #1 Savunma Çapası", "Sahanın en güçlü tankı (PCS 836 / 637.9M / DTV 100.0). Çan Kulesi veya Tapınak ana savunma lideri."], "だりゅDaryu": ["Grup ① #2 Ağır Top", "Ağır TG8 yıldızı (PCS 776 / 596.0M / DTV 99.6). Ryo ile çifte ralli ortağı."], "Hinata": ["Grup ① Hassas Top", "PCS 758 / 413.4M — GOD #2 Sakhazan'dan (712) güçlü. Kraliyet Ahırı ve Reform Salonu lideri."], "ルーク": ["Grup ① #5 Top / Lider Destek", "PCS 647 / 343.2M. 12 dk çıkış rotasyonlarında yedek lider ve en iyi TG8 katılımcı."]}}, "glossary": {"intro_html": "Oyun içi 'Toplam Güç (Power)' değeri <strong>sadece çok sayıda asker basarak kolayca şişirilebildiği için</strong>, ralli veya garnizon liderini yalnızca Power'a göre seçmek 'göründüğü kadar sert vurmayan' birliklerin ana kaleleri eritmesine yol açar. Bu nedenle portalımızda <strong>MightPulse (Mistik Sınav 6 Kule + Göç Puanı + Ocak Sv.)</strong> verilerini kullanarak herkesin net görebileceği <strong>'asker başına gerçek kalite' ve 'sefer dayanıklılığı'</strong> 5 ayrı metriğe bölünmüştür.", "use_prefix": "🎯 Savaşta Nasıl Kullanılır: ", "cards": {"tg": {"title": "① TG (Ocak) — Saf Altın Asker Nesli", "range": "TG1 – TG8", "easy_html": "<strong>Kısa Özet: Askerin nesil seviyesi (temel stat ve zırh tabanı).</strong><br>Ocak Seviyesi (Stove Lv) 60–70 arası Saf Altın (Truegold) TG6–TG8 askerlere karşılık gelir. Aynı 100 bin askerde bile TG8 ile TG6 arasında temel can ve saldırı farkı çok büyüktür.", "formula_html": "TG = clip(floor((Ocak_Lv - 30) / 5), 1, 8)<br>• Lv.60–64 = TG6 | Lv.65–69 = TG7 | Lv.70 = TG8<br>• Karışma riski tahmini EGC_M = Tahmini Asker × (TG / 8)² (TG6 yaklaşık 0.5625x *model hesabı)", "use_html": "Garnizon 15 yürüyüşle sınırlıdır. SGR'nin <strong>8 TG8 oyuncusunu</strong> ana binalarda toplayıp TG6- karışımını kesinlikle önleyin."}, "pcs": {"title": "② Kalite PCS — Saf Savaş Puanı", "range": "0 – 1,000 Puan", "easy_html": "<strong>Kısa Özet: 'Asker sayısından bağımsız, birim başı saf savaş gücü (ralli/garnizon liderliği uygunluğu).'</strong><br>Tılsım, Lord Ekipmanı, Kahraman, Araştırma ve Evcil Hayvan'dan hesaplanır; asker azalsa da düşmez. <strong>600+ puan (özellikle 700+) ana topçu ve garnizon lideri adayıdır</strong>.", "formula_html": "1) Mistik Sınav 6 Kule üst limit CAP ile 0–1 aralığına normalize edilir<br>CAP = &#123;Tılsım CC:400, Ekipman MF:440, Araştırma KN:320, Pet FoL:340, Kahraman Col:800, Genel RS:840&#125;<br>2) Savaş ağırlıklı bileşim Q_core = 0.26×CC + 0.20×Col + 0.18×MF + 0.14×KN + 0.14×RS + 0.08×FoL<br>3) Göç puanındaki Ocak çarpanı nötrleştirilir (TC=min(Ocak,70), wps=Göç/TC+2226) ve sadece 12% katılır<br>PCS = 1000 × clip(0.88 × Q_core + 0.12 × clip(wps/42000, 0, 1), 0, 1)", "use_html": "Ralli gücü liderden gelir. SGR <strong>Top-4'te +106.0 puan önde (830.5 vs 724.5)</strong>, bu yüzden çatışmayı mutlaka Top-4 liderliğindeki lokal noktalara çekin."}, "join": {"title": "③ Katılım Join — Ralli/Garnizona Katılma Puanı", "range": "0 – 1,000 Puan", "easy_html": "<strong>Kısa Özet: 'Başkasının rallisine veya garnizonuna katılırken (joiner) verdiğin katkı.'</strong><br>Katılımcı olduğunda senin Araştırma veya Lord Ekipmanın devreye girmez; sadece <strong>'En Soldaki (Slot 1) Kahramanın 1. Becerisi' ve 'gönderdiğin askerin TG seviyesi'</strong> savaşta işler.", "formula_html": "PCS_joiner = 1000 × (0.45×n_Col[Kahraman] + 0.15×n_RS[Genel] + 0.10×n_CC + 0.05×n_MF + 0.25×(TG / 8))<br>* Kahraman, Genel Kule ve TG nesli ağırlığı 85% ile katılım uygunluğu ölçülür", "use_html": "Grup ② TG8 destekleri (<code>ROCK</code> / <code>Neptuneman</code> / <code>Guruguru</code>) ve Grup ① çapraz katılımı maksimum hasar üretir."}, "troop": {"title": "④ Tahmini Asker Gücü (Troop Power)", "range": "Birim: M (Milyon Güç)", "easy_html": "<strong>Kısa Özet: 'Toplam Güç'ten bina ve araştırma gibi sabit gücü çıkarınca kalan, şu an sahada kullanabileceğin asker miktarı.'</strong><br>Kraliyet Savaşı veya yakın zamandaki çatışmalarda asker kaybettiysen toplam Power yüksek görünse bile Troop düşük çıkar.", "formula_html": "1) Sabit temel güç (üs yasası modeli): BasePower_M = 5.79 × (wps ^ 0.318)<br>* Yüksek güç bandında yanlış eksiltme olmaması için alt zarf eğrisiyle doğrusal olmayan tahmin<br>2) Tahmini asker: TroopPower_M = max(ToplamGüç_M - BasePower_M, 0)<br>3) Asker oranı phi = TroopPower_M / ToplamGüç_M", "use_html": "Tahmini asker: <strong>6,494.3M vs 9,233.0M (1.42x)</strong>. GOD'ın orta kademe tanklarına karşı geniş yıpranmadan kaçının."}, "dtv": {"title": "⑤ Birlik Dayanıklılığı DTV — Savaş Boyu Sefer Staminası", "range": "0 – 100 Puan (Hedef 60+)", "easy_html": "<strong>Kısa Özet: '1 saatlik Kılıçdiyarı boyunca cepheye kesintisiz asker gönderebilme dayanıklılığı.'</strong><br>Sadece asker sayısına değil; <strong>TG nesil katsayısı, tahmini asker miktarı ve güç içi asker oranına</strong> bakarak arka arkaya savaşlara dayanma gücünü 0–100 arası gösterir.", "formula_html": "• Asker miktarı çarpanı a = clip(ln(1 + TroopPower_M / 20) / ln(31), 0, 1)  [600M'de 1.0]<br>• Asker oranı çarpanı s = clip((phi - 0.15) / 0.65, 0.02, 1.0)<br>• Nesil taban katsayısı qf = max(1 - 0.04 × (8 - TG), 0.60)<br>DTV = 100 × qf × (a ^ 0.6) × (s ^ 0.4)", "use_html": "SGR İlk 13'ün tamamı DTV 72–100 bandında. 3 adet <code>FAT_WARN</code> ve 9 Quad-D oyuncuyu ayrı hat ve ganimet baskınına ayırın."}}, "dict_heading": "📖 Yeni Başlayanlar İçin: Kılıçdiyarı Önemli Kurallar & Terimler Sözlüğü", "dict": [{"title": "🗺️ 4 Kadran (Grup Dağılım Haritası)", "body_html": "<code>PCS≧600 &amp; DTV≧60</code> = <strong>A Kadranı (Ana Topçu)</strong>, <code>DTV≧60</code> = <strong>B Kadranı (Katılım/Baskın)</strong>, <code>PCS≧600</code> ama az asker = <strong>C Kadranı (Buff Slot/Toparlanma)</strong>, ikisi de düşük = <strong>D Kadranı (Toplama/Boş Kapma)</strong>."}, {"title": "🧬 Slot 1 (En Sol Kahraman) & Farklı Buff Çarpımı", "body_html": "Ralli ve garnizonda katılımcılardan yalnızca <strong>en soldaki kahramanın 1. Sefer Becerisi (en yüksek 4 kişi)</strong> aktif olur! Aynı buff'ı yığmak yerine 'Saldırı +25% × Ölümcüllük +25% × Düşmanın Aldığı Hasar +25%' karışımı hasarı katlar."}, {"title": "📦 Tutulan Puanın 50% Ganimet Düşmesi (Escrow)", "body_html": "Kılıçdiyarı'nda bir bina tutulurken biriken ittifak puanının <strong>50%'si bina üzerinde saklanır</strong>. Evre 1'den itibaren her an aktiftir; binayı düşürdüğünde bu puan rakipten silinip etrafa sandık olarak saçılır ve <strong>iki ittifak da toplayabilir</strong>."}, {"title": "⏱️ Ekrandaki 'Kalan Süre' Sayacına Dikkat", "body_html": "Savaş ekranının üstündeki sayaç <strong>60:00 → 00:00 şeklinde geri sayar</strong>. 15:00 geçmiş süre = <strong>45:00 kalan süre</strong> demektir. <strong>22:00 kalan süreden sonra haritadan çıkma</strong> (12 dakikalık tekrar giriş beklemesi yüzünden dönemezsin)."}, {"title": "🏆 Kılıçdiyarı Liginde 'Puan Farkı' da Önemlidir", "body_html": "Sadece kazanmak değil, lig sıralamasında <strong>Bizim Puanımız − Rakip Puanı (puan farkı)</strong> da belirleyicidir. Geride olsan bile son 10 dakikadan 00:00'a kadar tek bir sandık ve Yeraltı Mahzeni bile toplamaya devam et."}, {"title": "🔍 Flag B–D (Eksik Ölçüm Notları)", "body_html": "MightPulse'ta 6 Kule veya Göç Puanı kısmen görünmeyen üyeler 'Flag B/C' olarak matematiksel tamamlanmıştır; ikisi de görünmeyenler ise 'Flag D (hesap dışı / ayrı uyarı)' şeklinde şeffafça belirtilmiştir."}]}, "basic_ui": {"tag_gen": "Taktik Görsel", "tag_real": "Oyun İçi UI", "cards": ["<strong>Savaştan 15 Dakika Önce: Revirdeki Yaralıları Mutlaka '0' Yap!</strong><br>Şehrindeki <img src=\"assets/ui/icon_infirmary.png\" alt=\"Revir\"> Revirde tek bir yaralı asker bile kalırsa Kılıçdiyarı savaş alanına giremezsin. Önceden tüm yaralıları iyileştir, dışarıdaki tüm kıtaları ve takviyeleri geri çek.", "<strong>Katılım Saati ve TG Neslini (Asker Kalitesini) Kontrol Et</strong><br>Seçilen saat diliminde vaktinde hazır ol. TG8 (Ocak 70), TG7 (65-69) veya TG6 (60-64) olduğunu bil; TG6 ve altıysan ana TG8 garnizonlarına katılmayıp ayrık görev yap.", "<strong>Neden TG6 ile TG8 Karıştırılmamalı?</strong><br>Saf Altın ile güçlendirilmiş <img src=\"assets/ui/icon_truegold_crucible.png\" alt=\"Saf Altın Potası\"> TG8 garnizonuna (sınır 15 kişi) TG6 karışırsa model hesabına göre dayanıklılık verimi <strong>0.5625x seviyesine</strong> düşer. Sadece boş slot varken TG7 geçici destek atar, TG8 ulaştığı an yer değişir ('Dans').", "<strong>Katılırken Yalnızca 'Slot 1 (En Sol) Kahramanın Sağ Üst 1. Sefer Becerisi' Çalışır!</strong><br>Chenko'nun 'Stand of Arms Lv.5 (Ölümcüllük +25%)' becerisi gibi, tüm katılımcıların ilk 4 buff slotu bu en soldaki kahramanın 1. becerisiyle belirlenir.", "<strong><img src=\"assets/ui/icon_command_center.png\" alt=\"Command Center\"> Ralliye Katılım</strong><br>Grup ① rallilerine (Ryo / Lesser / Daryu / Hinata / Luke) daima kayıtlı Saldırı Slot-1 şablonuyla tek dokunuşla katılın.", "<strong><img src=\"assets/ui/icon_embassy.png\" alt=\"Embassy\"> Garnizon Değişimi</strong><br>Ana çapa <code>Lesser (637.9M)</code> & <code>Daryu (596.0M)</code> + Grup ② TG8 ve savunma kahramanlarıdır (Gordon/Howard/Saul)."], "hero_title": "Birebir Uygula: 'Slot 1 (En Sol)' Önerilen Kahramanlar vs Kesinlikle Yasak (Tuzak) Kahramanlar", "hero_desc_html": "Saldırı rallilerinde <strong>'Saldırı × Ölümcüllük × Rakibin Aldığı Hasar Artışı'</strong> çarpanlarını birleştirmek ana topçunun hasarını uçurur (savunma ve hasar azaltma becerileri düşmanı eritmediği için <strong>yalnızca Savunma</strong> içindir). Savaş öncesi Dizilim 1 (Saldırı Katılım), 2 (Savunma), 3 (Hızlı Toplama) olarak kaydet.", "hero_atk_title": "⚔️ Saldırı Rallisi Altın Katılımcı Havuzu (En Sola Bunlardan 1 Kişi Koy)", "hero_def_title": "🛡️ Savunma Garnizonu Önerilen En Sol (1. Becerisi Dayanıklılık Odaklı)", "hero_ban_title": "💣 Kesinlikle Yasak (Katılımda Slot 1'e Koyma — Buff Bozar)", "heroes": {"chenko": ["Chenko", "Kesin Ölümcüllük +25%"], "yeonwoo": ["Yeonwoo", "Kesin Ölümcüllük +25%"], "amane": ["Amane", "Kesin Saldırı +25%"], "margot": ["Margot", "Kesin Saldırı +25%"], "vivian": ["Vivian", "Rakip Hasar Alımı +25%"], "hilde": ["Hilde", "Saldırı +10% / Savunma +15%"], "petra": ["Petra ⚠", "Rallide maks 1 kişi (%50 şans +50% hasar)"], "gordon": ["Gordon", "Müttefik Can +25%"], "howard": ["Howard", "Alınan Hasar -20%"], "saul": ["Saul", "Savunma +10% / Can +15% (Yalnızca Garnizon Savunması)"], "eric": ["Eric", "Rakip Saldırısı -20% (Yalnızca Garnizon Savunması)"], "fahd": ["Fahd", "Rakip Hasarı -20% (Yalnızca Garnizon Savunması)"], "long-fei": ["Long Fei", "Saldırı Rallisinde YASAK"], "jabel": ["Jabel", "Şansa bağlı — slot yakar"], "helga": ["Helga", "Katılımda YASAK"], "zoe": ["Zoe", "Şansa bağlı — slot bozar"], "sophia": ["Sophia", "Katılımda YASAK"]}}, "map": {"board_title": "SGR Taktik Hareket Haritası (11 Tesis + 4 Yeraltı Mahzeni)", "board_hint": "* Düğmelerle her evrenin öncelikli hedeflerini değiştirebilirsin", "btn_p1": "Evre 1 Açılış (Kalan 60:00–45:00)", "btn_p2": "Evre 2 Merkez Açılışı (Kalan 45:00–20:00)", "btn_p3": "Final Evresi Ganimet Baskını (Kalan 20:00–00:00)", "pins": {"swordshrine": "① Kılıç Tapınağı (Swordshrine 15:00)", "mercenary": "② Paralı Asker (15:00)", "reformation": "③ Islah Salonu (15:00/+15%)", "bell": "⑦ Çan Kulesi (Ele Geç. -50%)★", "ne_abbey": "⑪ KD Manastırı", "w_sanctum": "⑤ Batı Kutsal Alanı", "ce_abbey": "⑨ Orta-Doğu Manastırı", "cw_abbey": "⑧ Orta-Batı Manastırı", "e_sanctum": "④ Doğu Kutsal Alanı", "sw_abbey": "⑩ GB Manastırı", "stables": "⑥ Kraliyet Ahırları (Işın. -50%)★", "undercellar": "Yeraltı Mahzeni"}, "facilities": [{"title": "Kraliyet Ahırları (0:00 Açılır ★En Yüksek Öncelik)", "body_html": "İlk ele geçirme 1,200 / +240/dk. Ücretsiz ışınlanma bekleme süresini <strong>-50% (10 dk → 5 dk)</strong> kısaltır. Baskın ve sandık toplama temposunu ikiye katlar (acil durumda Gelişmiş Işınlanma da kullanılabilir)."}, {"title": "Kılıç Tapınağı / Swordshrine (15:00 Geçen / 45:00 Kalan)", "body_html": "İlk <strong>9,000</strong> / Dakikada <strong>+1,800</strong>. Rakibin en üst düzey asıyla kafa kafaya çarpışmadan zayıf anları, çift rallileri ve son dakika baskınlarını hedefle."}, {"title": "Kutsal Alan / Sanctum (0:00 Açılır • Doğu & Batı 2 Bina)", "body_html": "İlk <strong>6,000</strong> / Dakikada <strong>+1,200</strong>. Orta oyunun ana puan kaynağıdır. Rakibin zayıf bıraktığı kanadı sürekli geri al."}, {"title": "Islah Salonu / Reformation Hall (15:00 Açılır)", "body_html": "İlk 3,000 / +600/dk. Tüm savaş alanına <strong>Verilen Hasar +15% &amp; Alınan Hasar -15%</strong> buff'ı verir. Ana topçu çarpışmalarından önce mutlaka tutulmalı."}, {"title": "Paralı Asker Kampı / Mercenary Camp (15:00 Açılır)", "body_html": "İlk 3,000 / +600/dk. Ele geçirildiğinde <strong>yaklaşık 7 dakikada bir</strong> rakibin tuttuğu binalara otomatik saldırıp garnizonu yıpratır. Dost rallisiyle zamanlamak çok etkilidir."}, {"title": "Çan Kulesi (🔔 0:00) & Manastırlar (4 Bina 0:00)", "body_html": "<strong>Çan Kulesi ele geçirme sayacını -50% (3:00 → 1:30)</strong> kısaltır (İlk 1,200 / +240/dk). <strong>4 Manastır</strong> ise İlk 3,000 / +600/dk ile baskın ve çok cepheli baskının temelidir."}], "ui_caps": ["Kılıç Tapınağı (Swordshrine) puan tablosu (9,000 / +1,800/dk)", "Kraliyet Ahırları etkisi (<img src=\"assets/ui/icon_teleport.png\" alt=\"Işınlanma\"> Ücretsiz Işınlanma CD -50%)", "Kılıçdiyarı bina garnizon listesi (11/15 slot ve Slot 1 kahraman kontrolü)", "Savaş haritasında ittifak kümeleşmesi ve seri yürüyüşler"], "phases": {"p1": {"desc": "<strong>Faz 1 (Kalan 60:00–45:00) Açılış</strong>: Grup ①② hemen <strong>⑦ Çan Kulesi (-%50)</strong> ve <strong>⑥ Kraliyet Ahırı (-%50)</strong> alır. Grup ③④⑤ dış alanları çevirir.", "labels": ["Grup ①② Çan Kulesi", "Grup ①② Ahır", "Grup ③ Batı", "Grup ④⑤ Manastır"]}, "p2": {"desc": "<strong>Faz 2 (Kalan 45:00–20:00) Merkez Açılışı</strong>: <strong>① Tapınak, ② Paralı Asker & ③ Reform Salonu</strong> açılır! Top-4 (+106 PCS) ve 8 TG8'i merkezde toplayın (<strong>Kalan 22:00 sonrası 12dk çıkış yasak</strong>).", "labels": ["Top-4 Çifte Ralli", "② Paralı Asker", "③ Reform +%15", "Grup ③ Doğu"]}, "p3": {"desc": "<strong>Son Oyun (Kalan 20:00–00:00) Ganimet Baskını</strong>: Grup ④⑤ sahte ralli atarken Ryo + Daryu çifte ralliyle en dolu binayı düşürür, %50 ganimet ve 4 mahzeni 00:00'a kadar süpürür!", "labels": ["Ryo Yıkım Vuruşu", "Sahte Ralli", "Grup ④⑤ Ganimet"]}}}, "timeline": {"c1_html": "<strong>Üstünlüğü Koruma & Geri Dönüş Kozu: Ganimet Baskını (50% Emanet Yağması)</strong><br>Evre 1'den itibaren bina tutma puanının <strong>50%'si her an tesis üzerinde birikir</strong>; bina düştüğünde rakipten düşülüp etrafa sandık olarak saçılır. Puanın dolduğu son bölümde sahte rallilerle rakibi dağıt, Grup 1 tek vuruşla düşürsün ve baskın grupları sandıkları süpürsün!", "c2_html": "<strong>Haritaya Düşen Ganimetler (159 / 45 / 401 vb.) & Ücretsiz Işınlanma Sayacı</strong><br>Sağ üstte <strong>kalan süre (ör. 00:47:43)</strong>, sağ altta Battle Map büyüteci (Yeraltı Mahzeni arama), sol altta ücretsiz ışınlanma beklemesi yer alır. Mahzenler <strong>1 askerle sıfır kayıpla</strong> toplanabilir!", "p1_title": "Evre 1 (Geçen 0:00–15:00 | Kalan 60:00–45:00)", "p1_html": "<strong>En Yüksek Öncelik: Çan Kulesi (-50%) & Kraliyet Ahırları (Işınlanma CD -50%).</strong><br>İlk ele geçirme bonusu yalnızca <strong>sayaç tamamen dolunca (3 dk / Çan Kulesi'nde 1 dk 30 sn)</strong> alınır, bu yüzden takviyeyi kesme! Grup 4-5 dış Kutsal Alan ve Manastırları aynı anda tutarak ücretsiz ışınlanmaları boşa harcamadan saklar.", "p2_title": "Evre 2 (Geçen 15:00–40:00 | Kalan 45:00–20:00)", "p2_html": "<strong>Merkez Açılışı & Lokal Hakimiyet.</strong><br>5 binada dağılmayın. 8 TG8'i Top-4 arkasında toplayıp Tapınak ve Reform Salonu'nu alın. <strong>Kalan 22:00 sonrası çıkış yasak!</strong>", "p3_title": "Final Evresi (Geçen 40:00–60:00 | Kalan 20:00–00:00)", "p3_html": "<strong>Sahte Ralli + %50 Ganimet Baskını + 1 Asker Mahzen.</strong><br>GOD takviyelerini şaşırtıp Ryo + Daryu çifte rallisiyle yüksek puanlı binayı yıkın ve 00:00'a kadar tüm kutuları toplayın."}, "enemy": {"top_heading": "GOD Tehdit Hattı (İlk 8)", "th": {"rank": "#", "player": "Oyuncu", "tg": "Ocak(TG)", "pcs": "PCS", "dtv": "DTV", "troop": "Tahmini Troop"}, "top_note": "*GOD #1 (PCS 802) güçlü ama Ryo (952) ve Lesser (836) ondan üstün. Asıl tehdit art arda 15 A-Sınıfı TG8 (#1–#15) ve #10 Nicky (573.7M) / #9 ~Deadpool~ (442.9M) gibi tanklardır.", "notes_heading": "🔎 GOD Detaylı Analiz & Veri Şeffaflığı", "notes_desc_html": "GOD İlk 30'un tamamı <strong>Flag A (%100 ölçülmüş, gizli balina yok)</strong>: <strong>22 TG8 + 8 TG7 (sıfır TG6-)</strong>. Geniş yıpranmadan kaçınıp SGR Top-4 farkını 1–2 binaya odaklayın.", "chips": ["#1 ᎠᎪᏔᏩᏚᎢᎽᏞᎬ (PCS 802 / TG8 / 454.9M)", "#2 Sakhazan (PCS 712 / TG8 / 418.1M)", "#9 ~Deadpool~ (PCS 658 / TG8 / 442.9M)", "#10 Nickyᶠᵘᶰ (PCS 650 / TG8 / 573.7M)", "GOD İlk 30: 22 TG8 / 8 TG7 / 0 TG6-", "GOD Sınıfları: 15 A / 15 B / 0 D", "Ölçülmemiş 300M+ (Flag D): Her iki tarafta 0"]}, "footer": {"html": "<strong>Veri Açıklaması</strong>: PCS/DTV puanları MightPulse API (<code>2026-11-22 18:00 JST</code>) ve oyun içi Lejyon 1 kadro görüntüsü (25 Aktif / 8 Yedek) ile hesaplanmıştır.<br>Son Güncelleme: 2026-11-22 JST | #898 [SGR] Strateji Masası"}}};
+    const ROSTER_DATA = [{"rank": 1, "name": "リョ〜〜〜朕", "power_M": 780.0, "stove_lv": 70, "tg": 8, "pcs": 952, "pcs_joiner": 942, "dtv": 98.8, "troop_M": 609.1, "egc_M": 609.1, "quadrant": "A", "fat_warn": false, "band_id": "band1"}, {"rank": 2, "name": "レッサー", "power_M": 797.2, "stove_lv": 70, "tg": 8, "pcs": 836, "pcs_joiner": 881, "dtv": 100.0, "troop_M": 637.9, "egc_M": 637.9, "quadrant": "A", "fat_warn": false, "band_id": "band1"}, {"rank": 3, "name": "だりゅDaryu", "power_M": 749.7, "stove_lv": 70, "tg": 8, "pcs": 776, "pcs_joiner": 838, "dtv": 99.6, "troop_M": 596.0, "egc_M": 596.0, "quadrant": "A", "fat_warn": false, "band_id": "band1"}, {"rank": 4, "name": "Hinata", "power_M": 566.9, "stove_lv": 70, "tg": 8, "pcs": 758, "pcs_joiner": 830, "dtv": 89.4, "troop_M": 413.4, "egc_M": 413.4, "quadrant": "A", "fat_warn": false, "band_id": "band1"}, {"rank": 5, "name": "ルーク", "power_M": 481.2, "stove_lv": 70, "tg": 8, "pcs": 647, "pcs_joiner": 741, "dtv": 85.3, "troop_M": 343.2, "egc_M": 343.2, "quadrant": "A", "fat_warn": false, "band_id": "band1"}, {"rank": 6, "name": "ぽんた", "power_M": 405.4, "stove_lv": 65, "tg": 7, "pcs": 598, "pcs_joiner": 677, "dtv": 76.1, "troop_M": 273.7, "egc_M": 209.5, "quadrant": "B", "fat_warn": false, "band_id": "band3"}, {"rank": 7, "name": "ROCK", "power_M": 445.5, "stove_lv": 70, "tg": 8, "pcs": 589, "pcs_joiner": 674, "dtv": 82.9, "troop_M": 312.0, "egc_M": 312.0, "quadrant": "B", "fat_warn": false, "band_id": "band2"}, {"rank": 8, "name": "ネプチューンマン", "power_M": 449.3, "stove_lv": 70, "tg": 8, "pcs": 549, "pcs_joiner": 663, "dtv": 83.1, "troop_M": 314.9, "egc_M": 314.9, "quadrant": "B", "fat_warn": false, "band_id": "band2"}, {"rank": 9, "name": "poko", "power_M": 474.0, "stove_lv": 65, "tg": 7, "pcs": 549, "pcs_joiner": 636, "dtv": 83.2, "troop_M": 347.3, "egc_M": 265.9, "quadrant": "B", "fat_warn": false, "band_id": "band3"}, {"rank": 10, "name": "Ednan エドナン", "power_M": 332.9, "stove_lv": 60, "tg": 6, "pcs": 540, "pcs_joiner": 561, "dtv": 64.9, "troop_M": 203.4, "egc_M": 114.4, "quadrant": "B", "fat_warn": true, "band_id": "band4"}, {"rank": 11, "name": "ぐるぐる", "power_M": 465.6, "stove_lv": 70, "tg": 8, "pcs": 532, "pcs_joiner": 642, "dtv": 85.3, "troop_M": 334.9, "egc_M": 334.9, "quadrant": "B", "fat_warn": false, "band_id": "band2"}, {"rank": 12, "name": "ᴳᵂᵒʳᵏˢツバキㄘᴰ౪ᴱ", "power_M": 446.4, "stove_lv": 65, "tg": 7, "pcs": 531, "pcs_joiner": 609, "dtv": 80.8, "troop_M": 319.0, "egc_M": 244.2, "quadrant": "B", "fat_warn": false, "band_id": "band3"}, {"rank": 13, "name": "ᴳᵂᵒʳᵏˢモドキㄘᴰ౪ᴱ", "power_M": 408.7, "stove_lv": 65, "tg": 7, "pcs": 508, "pcs_joiner": 596, "dtv": 77.4, "troop_M": 282.1, "egc_M": 216.0, "quadrant": "B", "fat_warn": false, "band_id": "band3"}, {"rank": 14, "name": "あかちん", "power_M": 356.0, "stove_lv": 69, "tg": 7, "pcs": 502, "pcs_joiner": 598, "dtv": 72.0, "troop_M": 231.7, "egc_M": 177.4, "quadrant": "B", "fat_warn": false, "band_id": "band3"}, {"rank": 15, "name": "kusabito", "power_M": 368.5, "stove_lv": 61, "tg": 6, "pcs": 480, "pcs_joiner": 561, "dtv": 69.7, "troop_M": 240.3, "egc_M": 135.2, "quadrant": "B", "fat_warn": true, "band_id": "band4"}, {"rank": 16, "name": "かっちかㄘƕㄘƕ ╰U╯", "power_M": 235.9, "stove_lv": 63, "tg": 6, "pcs": 470, "pcs_joiner": 510, "dtv": 49.1, "troop_M": 113.2, "egc_M": 63.7, "quadrant": "D", "fat_warn": false, "band_id": "band5"}, {"rank": 17, "name": "カピバラ", "power_M": 335.3, "stove_lv": 63, "tg": 6, "pcs": 456, "pcs_joiner": 520, "dtv": 66.9, "troop_M": 212.9, "egc_M": 119.7, "quadrant": "B", "fat_warn": true, "band_id": "band4"}, {"rank": 18, "name": "miracle TENN", "power_M": 137.6, "stove_lv": 60, "tg": 6, "pcs": 448, "pcs_joiner": 535, "dtv": 6.4, "troop_M": 14.4, "egc_M": 8.1, "quadrant": "D", "fat_warn": false, "band_id": "band5"}, {"rank": 19, "name": "ゴリサブ", "power_M": 276.6, "stove_lv": 60, "tg": 6, "pcs": 435, "pcs_joiner": 522, "dtv": 57.7, "troop_M": 153.6, "egc_M": 86.4, "quadrant": "D", "fat_warn": false, "band_id": "band5"}, {"rank": 20, "name": "メルティ", "power_M": 278.3, "stove_lv": 60, "tg": 6, "pcs": 426, "pcs_joiner": 519, "dtv": 58.7, "troop_M": 157.7, "egc_M": 88.7, "quadrant": "D", "fat_warn": false, "band_id": "band5"}, {"rank": 21, "name": "メルさぶ", "power_M": 210.3, "stove_lv": 55, "tg": 5, "pcs": 383, "pcs_joiner": 448, "dtv": 41.7, "troop_M": 91.2, "egc_M": 35.6, "quadrant": "D", "fat_warn": false, "band_id": "band5"}, {"rank": 22, "name": "Laila", "power_M": 94.3, "stove_lv": 29, "tg": 1, "pcs": 373, "pcs_joiner": 286, "dtv": 0.0, "troop_M": 0.0, "egc_M": 0.0, "quadrant": "D", "fat_warn": false, "band_id": "band5"}, {"rank": 23, "name": "ノノん", "power_M": 240.6, "stove_lv": 55, "tg": 5, "pcs": 369, "pcs_joiner": 410, "dtv": 49.6, "troop_M": 122.4, "egc_M": 47.8, "quadrant": "D", "fat_warn": false, "band_id": "band5"}, {"rank": 24, "name": "りりー", "power_M": 283.5, "stove_lv": 50, "tg": 4, "pcs": 367, "pcs_joiner": 380, "dtv": 56.3, "troop_M": 170.0, "egc_M": 42.5, "quadrant": "D", "fat_warn": false, "band_id": "band5"}, {"rank": 25, "name": "クール", "power_M": 84.5, "stove_lv": 38, "tg": 1, "pcs": 301, "pcs_joiner": 266, "dtv": 0.0, "troop_M": 0.0, "egc_M": 0.0, "quadrant": "D", "fat_warn": false, "band_id": "band5"}];
+    const OPP_TOP_DATA = [{"rank": 1, "name": "ᎠᎪᏔᏩᏚᎢᎽᏞᎬ", "power_M": 612.9, "stove_lv": 70, "tg": 8, "pcs": 802, "dtv": 91.8, "troop_M": 454.9, "fat_warn": false}, {"rank": 2, "name": "Sakhazan", "power_M": 566.6, "stove_lv": 70, "tg": 8, "pcs": 712, "dtv": 90.1, "troop_M": 418.1, "fat_warn": false}, {"rank": 3, "name": "King Ravs", "power_M": 486.9, "stove_lv": 70, "tg": 8, "pcs": 693, "dtv": 84.4, "troop_M": 340.8, "fat_warn": false}, {"rank": 4, "name": "Mommy Tyrant Leg", "power_M": 542.7, "stove_lv": 70, "tg": 8, "pcs": 691, "dtv": 88.4, "troop_M": 394.2, "fat_warn": false}, {"rank": 5, "name": "Grumpy_Bee", "power_M": 533.2, "stove_lv": 70, "tg": 8, "pcs": 667, "dtv": 88.3, "troop_M": 388.4, "fat_warn": false}, {"rank": 6, "name": "Røezaî", "power_M": 437.2, "stove_lv": 70, "tg": 8, "pcs": 667, "dtv": 80.9, "troop_M": 297.3, "fat_warn": false}, {"rank": 7, "name": "reacher", "power_M": 345.1, "stove_lv": 70, "tg": 8, "pcs": 667, "dtv": 68.8, "troop_M": 201.8, "fat_warn": false}, {"rank": 8, "name": "Lil РЗЗИ", "power_M": 475.5, "stove_lv": 70, "tg": 8, "pcs": 666, "dtv": 83.8, "troop_M": 331.7, "fat_warn": false}];
+    const PHASE_ARROWS = {"p1": [{"x1": 95, "y1": 255, "x2": 305, "y2": 82, "lx": 155, "ly": 128, "color": "#38bdf8"}, {"x1": 105, "y1": 315, "x2": 615, "y2": 488, "lx": 155, "ly": 435, "color": "#f59e0b"}, {"x1": 95, "y1": 275, "x2": 215, "y2": 232, "lx": 118, "ly": 220, "color": "#a855f7"}, {"x1": 95, "y1": 305, "x2": 185, "y2": 335, "lx": 98, "ly": 388, "color": "#10b981"}], "p2": [{"x1": 295, "y1": 240, "x2": 455, "y2": 275, "lx": 370, "ly": 295, "color": "#38bdf8"}, {"x1": 375, "y1": 80, "x2": 468, "y2": 128, "lx": 500, "ly": 42, "color": "#38bdf8"}, {"x1": 255, "y1": 355, "x2": 458, "y2": 425, "lx": 175, "ly": 465, "color": "#f59e0b"}, {"x1": 675, "y1": 460, "x2": 735, "y2": 375, "lx": 875, "ly": 395, "color": "#10b981"}], "p3": [{"x1": 540, "y1": 285, "x2": 695, "y2": 335, "lx": 595, "ly": 228, "color": "#ef4444"}, {"x1": 680, "y1": 460, "x2": 765, "y2": 275, "lx": 885, "ly": 305, "color": "#f59e0b"}, {"x1": 785, "y1": 440, "x2": 675, "y2": 405, "lx": 845, "ly": 468, "color": "#10b981"}]};
+    const CHART_CFG = {"self_label": "#898 [SGR] (25)", "opp_label": "#913 [GOD] (30)", "self_pcs": [535.0, 830.5, 578.7, 438.7], "opp_pcs": [617.4, 724.5, 662.5, 582.4], "self_troop": [6494.3, 5416.5], "opp_troop": [9233.0, 8727.2]};
+    
+    
+    let currentLang = 'ja';
+    let currentBand = 'all';
+    let currentPhase = 'p1';
+    let pcsChart = null;
+    let troopChart = null;
+
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    function getPath(obj, path) {
+      const parts = path.split('.');
+      let cur = obj;
+      for (const p of parts) {
+        if (cur === null || cur === undefined) return undefined;
+        cur = Array.isArray(cur) ? cur[Number(p)] : cur[p];
+      }
+      return cur;
+    }
+
+    function resolveMemberMission(m, D) {
+      const custom = D.roster.custom[m.name];
+      if (custom) return { bandLabel: custom[0], mission: custom[1] };
+      return {
+        bandLabel: D.roster.bands[m.band_id + '_label'],
+        mission: D.roster.bands[m.band_id + '_mission']
+      };
+    }
+
+    function renderRoster() {
+      const D = I18N_BUNDLES[currentLang];
+      const rosterBody = document.getElementById('rosterBody');
+      const searchInput = document.getElementById('rosterSearch');
+      const q = (searchInput.value || '').trim().toLowerCase();
+      const rows = ROSTER_DATA.filter(m => {
+        const matchBand = currentBand === 'all' || m.band_id === currentBand;
+        if (!matchBand) return false;
+        if (!q) return true;
+        const localized = resolveMemberMission(m, D);
+        return (
+          m.name.toLowerCase().includes(q) ||
+          localized.bandLabel.toLowerCase().includes(q) ||
+          localized.mission.toLowerCase().includes(q)
+        );
+      });
+      rosterBody.innerHTML = rows.map(m => {
+        const localized = resolveMemberMission(m, D);
+        const fatTag = m.fat_warn ? ` <span class="badge b-band5">${esc(D.roster.fat_warn_badge)}</span>` : '';
+        return `<tr>
+          <td><strong>${m.rank}</strong></td>
+          <td><strong>${esc(m.name)}</strong>${fatTag}</td>
+          <td><span class="badge b-${m.band_id}">${esc(localized.bandLabel)}</span></td>
+          <td>Stv ${m.stove_lv} (TG${m.tg})</td>
+          <td><strong>${m.pcs}</strong></td>
+          <td>${m.pcs_joiner}</td>
+          <td>${m.dtv.toFixed(1)}</td>
+          <td>${m.troop_M.toFixed(1)}M</td>
+          <td style="font-size:0.8rem;color:#e5e7eb">${esc(localized.mission)}</td>
+        </tr>`;
+      }).join('') || `<tr><td colspan="9" style="text-align:center;color:#9ca3af">${esc(D.roster.no_match)}</td></tr>`;
+    }
+
+    function renderOpp() {
+      const D = I18N_BUNDLES[currentLang];
+      document.getElementById('oppTopBody').innerHTML = OPP_TOP_DATA.map(m => {
+        const warn = m.fat_warn ? ` <span class="badge b-band5">${esc(D.roster.fat_warn_badge)}</span>` : '';
+        return `<tr>
+          <td>${m.rank}</td>
+          <td><strong>${esc(m.name)}</strong>${warn}</td>
+          <td>Stv ${m.stove_lv} (TG${m.tg})</td>
+          <td><strong>${m.pcs}</strong></td>
+          <td>${m.dtv.toFixed(1)}</td>
+          <td>${m.troop_M.toFixed(1)}M</td>
+        </tr>`;
+      }).join('');
+      document.getElementById('oppNotesList').innerHTML = D.enemy.chips.map(u =>
+        `<span class="badge b-band4">${esc(u)}</span>`
+      ).join('');
+    }
+
+    const _measureCtx = document.createElement('canvas').getContext('2d');
+    function measureSvgBoxWidth(text) {
+      if (_measureCtx) {
+        _measureCtx.font = "800 12px 'Noto Sans JP', 'Noto Sans Arabic', sans-serif";
+        return Math.max(132, Math.ceil(_measureCtx.measureText(text).width) + 28);
+      }
+      return Math.max(136, text.length * 11 + 24);
+    }
+
+    function renderPhase(key) {
+      currentPhase = key;
+      const D = I18N_BUNDLES[currentLang];
+      const specText = D.map.phases[key];
+      const arrows = PHASE_ARROWS[key];
+      const svg = document.getElementById('mapSvg');
+      let inner = `<defs>
+        <marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/></marker>
+        <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#f59e0b"/></marker>
+        <marker id="arr-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#a855f7"/></marker>
+        <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981"/></marker>
+        <marker id="arr-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 10 5 L 0 9 z" fill="#ef4444"/></marker>
+      </defs>`;
+      const markMap = {'#38bdf8':'arr-blue','#f59e0b':'arr-amber','#a855f7':'arr-purple','#10b981':'arr-green','#ef4444':'arr-red'};
+      arrows.forEach((a, idx) => {
+        const label = specText.labels[idx] || '';
+        const boxW = measureSvgBoxWidth(label);
+        let mx = a.lx !== undefined ? a.lx : (a.x1 + a.x2) / 2;
+        mx = Math.max(boxW / 2 + 8, Math.min(1000 - boxW / 2 - 8, mx));
+        const my = a.ly !== undefined ? a.ly : (a.y1 + a.y2) / 2 - 18;
+        inner += `<line x1="${a.x1}" y1="${a.y1}" x2="${a.x2}" y2="${a.y2}" stroke="${a.color}" stroke-width="4" stroke-dasharray="10,6" marker-end="url(#${markMap[a.color]})" />`;
+        inner += `<rect x="${mx - boxW / 2}" y="${my - 12}" width="${boxW}" height="24" rx="6" fill="rgba(9,13,22,0.92)" stroke="${a.color}" stroke-width="1.2"/>`;
+        inner += `<text x="${mx}" y="${my + 4}" fill="#f8fafc" font-size="11.5" font-weight="800" text-anchor="middle">${esc(label)}</text>`;
+      });
+      svg.innerHTML = inner;
+      document.getElementById('phaseDetailBox').innerHTML = specText.desc;
+    }
+
+    function initCharts() {
+      const D = I18N_BUNDLES[currentLang];
+      pcsChart = new Chart(document.getElementById('pcsChart'), {
+        type: 'bar',
+        data: {
+          labels: D.charts.pcs_labels,
+          datasets: [
+            { label: CHART_CFG.self_label, data: CHART_CFG.self_pcs, backgroundColor: 'rgba(56, 189, 248, 0.78)', borderRadius: 6 },
+            { label: CHART_CFG.opp_label, data: CHART_CFG.opp_pcs, backgroundColor: 'rgba(168, 85, 247, 0.78)', borderRadius: 6 }
+          ]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#e5e7eb' } } },
+          scales: {
+            x: { ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(255,255,255,0.06)' } },
+            y: { min: 0, max: 1000, ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(255,255,255,0.08)' } }
+          }
+        }
+      });
+
+      troopChart = new Chart(document.getElementById('troopChart'), {
+        type: 'bar',
+        data: {
+          labels: D.charts.troop_labels,
+          datasets: [
+            { label: CHART_CFG.self_label, data: CHART_CFG.self_troop, backgroundColor: 'rgba(56, 189, 248, 0.78)', borderRadius: 6 },
+            { label: CHART_CFG.opp_label, data: CHART_CFG.opp_troop, backgroundColor: 'rgba(168, 85, 247, 0.78)', borderRadius: 6 }
+          ]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#e5e7eb' } } },
+          scales: {
+            x: { ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(255,255,255,0.06)' } },
+            y: { min: 0, ticks: { color: '#cbd5e1' }, grid: { color: 'rgba(255,255,255,0.08)' } }
+          }
+        }
+      });
+    }
+
+    function setLang(lang, updateUrl) {
+      if (!I18N_BUNDLES[lang]) lang = 'ja';
+      currentLang = lang;
+      const D = I18N_BUNDLES[lang];
+
+      document.documentElement.lang = D.meta.lang;
+      document.documentElement.dir = D.meta.dir;
+      document.title = D.meta.page_title;
+
+      document.querySelectorAll('[data-t]').forEach(el => {
+        const val = getPath(D, el.dataset.t);
+        if (val !== undefined) el.textContent = val;
+      });
+      document.querySelectorAll('[data-th]').forEach(el => {
+        const val = getPath(D, el.dataset.th);
+        if (val !== undefined) el.innerHTML = val;
+      });
+      document.querySelectorAll('[data-t-ph]').forEach(el => {
+        const val = getPath(D, el.dataset.tPh);
+        if (val !== undefined) el.setAttribute('placeholder', val);
+      });
+
+      document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.langBtn === lang);
+      });
+
+      try { localStorage.setItem('swordland_lang', lang); } catch (e) {}
+      if (updateUrl) {
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set('lang', lang);
+          window.history.replaceState(null, '', url.toString());
+        } catch (e) {}
+      }
+
+      renderRoster();
+      renderOpp();
+      renderPhase(currentPhase);
+      if (pcsChart) { pcsChart.data.labels = D.charts.pcs_labels; pcsChart.update(); }
+      if (troopChart) { troopChart.data.labels = D.charts.troop_labels; troopChart.update(); }
+    }
+
+    document.querySelectorAll('[data-band]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-band]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentBand = btn.dataset.band;
+        renderRoster();
+      });
+    });
+    document.getElementById('rosterSearch').addEventListener('input', renderRoster);
+    document.querySelectorAll('[data-phase]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-phase]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderPhase(btn.dataset.phase);
+      });
+    });
+    document.querySelectorAll('[data-lang-btn]').forEach(btn => {
+      btn.addEventListener('click', () => setLang(btn.dataset.langBtn, true));
+    });
+
+    initCharts();
+    (function detectInitialLang() {
+      let target = 'ja';
+      try {
+        const qp = new URLSearchParams(window.location.search).get('lang');
+        if (qp && I18N_BUNDLES[qp]) {
+          target = qp;
+        } else {
+          const saved = localStorage.getItem('swordland_lang');
+          if (saved && I18N_BUNDLES[saved]) target = saved;
+        }
+      } catch (e) {}
+      setLang(target, false);
+    })();
+    
+  </script>
+</body>
+</html>

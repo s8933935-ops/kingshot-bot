@@ -1,0 +1,416 @@
+{
+  "meta": {
+    "lang": "en",
+    "dir": "ltr",
+    "page_title": "[#898 SGR Members Only] Swordland League Promotion Match 3: SGR vs GOD Strategy & UI Manual"
+  },
+  "nav": {
+    "brand": "⚔️ #898 [SGR] Swordland League Legion 1 Portal",
+    "summary": "Win Condition",
+    "roster": "25 Roster Search",
+    "glossary": "Metrics & Math",
+    "basic_ui": "UI & Ban Heroes",
+    "tactical_map": "Tactical Map",
+    "timeline": "Phase 1–3 Flow",
+    "enemy_risk": "Enemy & Data"
+  },
+  "hero": {
+    "pill": "Alliance Internal Only (noindex) | Block 14 Promotion Match 3 | Verified 25 Active + 8 Reserve",
+    "h1_html": "Swordland League Match 3: <span style=\"color:#38bdf8\">#898 [SGR] Legion 1</span> vs <span style=\"color:#f43f5e\">#913 [GOD] Legion 1</span>",
+    "sub_html": "GOD holds deeper mid-tier TG8 depth (22 vs 8) and 1.42x troop volume, but <strong>SGR dominates Top-4 Rally Power (Avg PCS 830.5 vs 724.5, +106.0 pts)!</strong> Anchor around #1 spear <strong>Ryo (PCS 952)</strong> and #1 shield <strong>Lesser (PCS 836 / 637.9M)</strong>, purify all 8 TG8s into core objectives, and win via <strong>Bell Tower + Royal Stables mobility & late 50% Baggage Heists</strong>.",
+    "self_lbl": "Our Team (Left / Blue / Legion 1)",
+    "self_val": "#898 [SGR] (25 Active + 8 Reserve)",
+    "self_sub": "Top-4 Avg PCS 830.5 (+106.0 lead) | 8 Elite TG8s",
+    "opp_lbl": "Opponent (Right / Red / Legion 1)",
+    "opp_val": "#913 [GOD] (Top 30)",
+    "opp_sub": "Avg PCS 617.4 | 15 Quad-A | 22 TG8s (Zero TG6-)",
+    "core_lbl": "SGR Win Core",
+    "core_val": "Top-4 Dominance × TG8 Purity × Mobility",
+    "core_sub": "Avoid 5-front attrition; crush 1–2 key objectives + steal 50% escrow loot"
+  },
+  "sec_titles": {
+    "s01": "30-Second Match Diagnosis & Win Condition",
+    "s02": "Find Your Squad & Mission (SGR Verified 25 Active + 8 Reserve)",
+    "s03": "[Beginner Friendly] Metrics, Formulas & Tactical Usage",
+    "s04": "[Basic UI] Pre-Match Checklist & Slot-1 (Leftmost) Hero Rules",
+    "s05": "[Swordland UI] Interactive Tactical Map & Facility Rules",
+    "s06": "Match Timeline (Time Remaining) & 50% Baggage Heist Guide",
+    "s07_prefix": "Opponent",
+    "s07_suffix": "Key Threats & Data Transparency"
+  },
+  "kpis": [
+    {
+      "label": "Top 1–4 Rally Leaders Avg PCS",
+      "sub": "SGR leads by +106.0 pts! (Ryo 952 / Lesser 836 / Daryu 776 / Hinata 758)"
+    },
+    {
+      "label": "Overall / #5–#10 Mid-Tier PCS",
+      "sub": "GOD has stronger mid/lower depth — avoid wide attrition, focus locally"
+    },
+    {
+      "label": "Estimated Troop Power (Troop)",
+      "sub": "GOD is ~1.42x deeper (avoid prolonged multi-front bleed)"
+    },
+    {
+      "label": "TG8-Equivalent Durability (EGC)",
+      "sub": "GOD has 22 TG8s & zero TG6-. Purifying SGR's 8 TG8s is vital"
+    }
+  ],
+  "ok_heading": "✅ DO: Winning Playbook (Asymmetric Mobile Warfare)",
+  "ng_heading": "❌ DON'T: Losing Traps to Avoid",
+  "ok_bullets": [
+    "<strong>Concentrate all 8 TG8s (Band 1 Top-5 + Band 2 3 TG8 joiners: ROCK / Neptuneman / Guruguru)</strong> on core objectives so even GOD #1 (PCS 802) cannot break SGR's Top-4 anchors.",
+    "Secure <strong>Bell Tower (Capture Time -50%)</strong> and <strong>Royal Stables (Free Teleport CD -50%)</strong> immediately in Phase 1 to out-rotate GOD's 30-player mass.",
+    "<strong>Keep all 12 TG6-or-lower players (Band 4 & Band 5) out of core TG8 garrisons</strong>; dedicate them to empty Abbey flips, decoy rallies, <strong>50% Escrow Baggage Heists</strong>, and 1-troop Undercellars."
+  ],
+  "ng_bullets": [
+    "<strong>Defending 4–6 buildings head-on simultaneously</strong> (Fatal NG: GOD's 15 Quad-A / 22 TG8 roster wins wide attrition).",
+    "<strong>Mixing TG6 large-troop accounts (Ednan / kusabito / Kapibara) or TG5- into TG8 garrisons</strong> (dilutes durability to <code>~0.5625x</code>).",
+    "Putting <strong>Long Fei / Jabel / Helga / Zoe / Sophia</strong> (or defense-only <strong>Saul / Eric / Fahd</strong>) in Slot 1 of attack rallies."
+  ],
+  "charts": {
+    "pcs_title": "Pure Combat Score (PCS) Tier Comparison",
+    "troop_title": "Troop Volume vs TG8-Equivalent Effective Power (EGC)",
+    "pcs_labels": [
+      "Overall Avg",
+      "Top 1-4 Leads",
+      "#5-#10 2nd Wave",
+      "#11+ Depth"
+    ],
+    "troop_labels": [
+      "Est. Troops (Troop M)",
+      "TG8-Equiv. (EGC M)"
+    ]
+  },
+  "roster": {
+    "search_placeholder": "Search your name (e.g. Ryo, Lesser, Daryu, Hinata, Luke, ROCK, Ponta...)",
+    "tabs": {
+      "all": "All Active (25)",
+      "band1": "Band 1 Main Cannons (5)",
+      "band2": "Band 2 TG8 Joiners (3)",
+      "band3": "Band 3 TG7 Roamers (5)",
+      "band4": "Band 4 TG6 Split (3)",
+      "band5": "Band 5 Heist & Roam (9)"
+    },
+    "glossary_hint_html": "* To see what each metric means, how it is calculated, and how to apply it in battle, check <a href=\"#glossary\" style=\"color:#7dd3fc\"><strong>03 Beginner's \"Glossary &amp; Formulas Guide\"</strong></a> below or tap any <span class=\"q-dot\">?</span> icon.",
+    "th": {
+      "rank": "#",
+      "player": "Player",
+      "band": "Squad",
+      "tg": "TG (Furnace)",
+      "pcs": "Combat PCS",
+      "join": "Joiner",
+      "dtv": "Stamina DTV",
+      "troop": "Est. Troops",
+      "mission": "Swordland Mission & Notes"
+    },
+    "no_match": "No matching members found",
+    "fat_warn_badge": "⚠TG6 Heavy",
+    "reserve_title": "🔄 Verified Reserve Roster Call-Up Priority (8 Reserves)",
+    "reserve_desc_html": "In-game check confirmed <strong>25 Active / 8 Reserves</strong> (note: Freyd & Goripon are not entered this match). If any slot opens, prioritize <strong>Bonkura (PCS 512 / TG7 / 271.3M)</strong> and <strong>Style D (PCS 470 / TG6)</strong> first:",
+    "bands": {
+      "band2_label": "Band 2 Elite TG8 Joiner",
+      "band2_mission": "Dedicated TG8 attack/defense joiners for Band 1 (Join 642–674). Core engine for pure TG8 garrisons.",
+      "band3_label": "Band 3 TG7 Roam & Sanctum",
+      "band3_mission": "Outer Sanctums/Abbeys & temporary fill while Band 1–2 recover. Dance out immediately when TG8 arrives.",
+      "band4_label": "Band 4 TG6 Split Lane",
+      "band4_mission": "[DO NOT mix into TG8 garrisons (~0.5625x dilution)] Separate Abbey flips, decoy rallies & 50% Baggage Heists.",
+      "band5_label": "Band 5 Roam & Loot Heist",
+      "band5_mission": "Stay out of core garrisons. Focus on (1) empty flips (2) 50% Baggage Heist (3) 1-troop Undercellars (4) decoys."
+    },
+    "custom": {
+      "リョ〜〜〜朕": [
+        "Band 1 #1 Ace Spear",
+        "Strongest attacker on the field (PCS 952 / Join 942 / 609.1M). Beats GOD #1 (PCS 802) by +150 pts. Key breaker for Swordshrine & high-escrow targets."
+      ],
+      "レッサー": [
+        "Band 1 #1 Defense Anchor",
+        "Strongest tank on the field (PCS 836 / 637.9M / DTV 100.0). Outclasses GOD #1 in both quality and troops. Primary anchor for Bell Tower or Swordshrine."
+      ],
+      "だりゅDaryu": [
+        "Band 1 #2 Heavy Cannon",
+        "Heavy TG8 ace (PCS 776 / Join 838 / 596.0M / DTV 99.6). Core partner for double rallies with Ryo and secondary stronghold defense."
+      ],
+      "Hinata": [
+        "Band 1 Precision Cannon",
+        "PCS 758 / Join 830 / 413.4M — stronger than GOD #2 Sakhazan (712). Leads Royal Stables / Reformation Hall pushes."
+      ],
+      "ルーク": [
+        "Band 1 #5 Cannon / Lead Joiner",
+        "PCS 647 / Join 741 / 343.2M. Backup rally leader during 12m exit rotations and top TG8 joiner for main rallies."
+      ]
+    }
+  },
+  "glossary": {
+    "intro_html": "In-game \"Power\" is easily <strong>inflated simply by hoarding troops</strong>—picking Leads or Garrisons by raw Power puts \"paper tigers\" in key buildings and melts your main holds. This portal uses <strong>MightPulse (6 Trial Towers + Migration Score + Furnace Lv)</strong> to break every player down into 5 transparent metrics measuring <strong>per-troop quality &amp; deployable troop depth</strong>.",
+    "use_prefix": "🎯 In-Battle Application:",
+    "cards": {
+      "tg": {
+        "title": "① TG (Furnace) — Truegold Tier",
+        "range": "TG1 - TG8",
+        "easy_html": "<strong>Quick Concept: Your troops' generation tier (base stats &amp; gear foundation).</strong><br>Furnace (Stove) Lv.60-70 corresponds to Truegold troops TG6-TG8. For the same 100k march, TG8 has a decisive base HP and Attack gap over TG6.",
+        "formula_html": "TG = clip(floor((Furnace Lv - 30) / 5), 1, 8)<br>· Lv.60-64 = TG6 | Lv.65-69 = TG7 | Lv.70 = TG8<br>· Dilution Risk EGC_M = Est. Troops × (TG / 8)² (TG6 ≈ 0.5625x in our model)",
+        "use_html": "Garrisons cap at 15 marches. Concentrate SGR's <strong>8 TG8s (Band 1–2)</strong> into core defenses. GOD has 22 TG8s and zero TG6-, so mixing TG6- into core garrisons causes severe durability loss. Use Band 3 (TG7) only as temporary fill and dance out when TG8 arrives."
+      },
+      "pcs": {
+        "title": "② Combat PCS — Pure Combat Score",
+        "range": "0 - 1,000 pts",
+        "easy_html": "<strong>Quick Concept: \"Pure per-troop combat strength independent of troop count (Lead readiness).\"</strong><br>Computed from Charms, Governor Gear, Heroes, Research, and Pets—it never drops when troops die and stays high even at zero troops. <strong>600+ (especially 700+) are prime Rally/Garrison Lead candidates.</strong>",
+        "formula_html": "1) Normalize 6 Trial Towers to 0-1 via CAP (removes scale bias)<br>CAP = &#123;Charms CC:400, GovGear MF:440, Research KN:320, Pets FoL:340, Hero Col:800, Total RS:840&#125;<br>2) Weighted Combat Core Q_core = 0.26×CC + 0.20×Col + 0.18×MF + 0.14×KN + 0.14×RS + 0.08×FoL<br>3) Neutralize Furnace scaling on Migration Score (TC=min(Stove,70), wps=Mig/TC+2226) at 12% weight<br>PCS = 1000 × clip(0.88 × Q_core + 0.12 × clip(wps/42000, 0, 1), 0, 1)",
+        "use_html": "Rally/garrison stats come from the leader. SGR leads <strong>Top-4 Avg PCS 830.5 vs 724.5 (+106.0)</strong>, while GOD leads #5–10 (662.5 vs 578.7) and #11+ (582.4 vs 438.7). Always force localized battles led by SGR Top-4."
+      },
+      "join": {
+        "title": "③ Joiner Score (Join) — Rally/Garrison Support",
+        "range": "0 - 1,000 pts",
+        "easy_html": "<strong>Quick Concept: \"How much value you bring when joining a Lead's Rally or Garrison.\"</strong><br>As a Joiner, your own Research and Governor Gear don't apply—only your <strong>Slot 1 (Leftmost) Hero's 1st skill &amp; sent troop TG tier</strong> affect the fight.",
+        "formula_html": "PCS_joiner = 1000 × (0.45×n_Col[Hero] + 0.15×n_RS[Total] + 0.10×n_CC + 0.05×n_MF + 0.25×(TG / 8))<br>* Evaluates Joiner value with 85% weight on Hero, Total Tower, and TG Tier",
+        "use_html": "Band 2 TG8 joiners (<code>ROCK</code> / <code>Neptuneman</code> / <code>Guruguru</code>, Join 642–674) plus Band 1 cross-joining (Join 741–942) maximize rally lethality."
+      },
+      "troop": {
+        "title": "④ Est. Troops (Troop Power)",
+        "range": "Unit: M (Million Power)",
+        "easy_html": "<strong>Quick Concept: \"Active deployable troops left after subtracting fixed Building/Research power.\"</strong><br>If a player burned troops in Kingdom Castle Battle or recent fights, their total Power may look high while their Est. Troops (Troop) are low.",
+        "formula_html": "1) Fixed Base Power (Power-law): BasePower_M = 5.79 × (wps ^ 0.318)<br>* Lower-envelope nonlinear fit prevents misreading high-power accounts as troop-starved<br>2) Est. Troops: TroopPower_M = max(Total Power M - BasePower_M, 0)<br>3) Troop Ratio phi = TroopPower_M / Total Power M",
+        "use_html": "Estimated troops: <strong>SGR 6,494.3M (25) vs GOD 9,233.0M (30) (~1.42x)</strong>. Avoid broad attrition against GOD's mid-tier tanks (<code>Nicky</code> 573.7M / <code>~Deadpool~</code> 442.9M); trade efficiently with Top-4 quality."
+      },
+      "dtv": {
+        "title": "⑤ Stamina Depth (DTV) — Sustain Index",
+        "range": "0 - 100 pts (60+ benchmark)",
+        "easy_html": "<strong>Quick Concept: \"Stamina to keep feeding troops to the front line for the full 1-hour match.\"</strong><br>Combines <strong>TG tier factor, Est. Troops, and Troop Ratio</strong> into a 0-100 score showing sustained combat endurance.",
+        "formula_html": "· Volume factor a = clip(ln(1 + TroopPower_M / 20) / ln(31), 0, 1)  [1.0 at 600M]<br>· Ratio factor s = clip((phi - 0.15) / 0.65, 0.02, 1.0)<br>· Tier floor factor qf = max(1 - 0.04 × (8 - TG), 0.60)<br>DTV = 100 × qf × (a ^ 0.6) × (s ^ 0.4)",
+        "use_html": "SGR's Top-13 (Bands 1–3) all hold strong DTV 72–100. Separate the 3 <strong>TG6 FAT_WARN</strong> accounts (<code>Ednan</code> / <code>kusabito</code> / <code>Kapibara</code>) and 9 Quad-D roamers into split lanes and late-game heists."
+      }
+    },
+    "dict_heading": "📖 Beginner's Mini-Glossary: Swordland League Rules & Key Terms",
+    "dict": [
+      {
+        "title": "🗺️ 4 Quadrants (Squad Map)",
+        "body_html": "<code>PCS≧600 &amp; DTV≧60</code> = <strong>Quad-A (Leads)</strong>, <code>DTV≧60</code> = <strong>Quad-B (Joiners/Skirmish)</strong>, <code>PCS≧600</code> w/ low troops = <strong>Quad-C (Buffers/Heal)</strong>, lower on both = <strong>Quad-D (Loot/Open Caps)</strong>."
+      },
+      {
+        "title": "🧬 Slot 1 (Leftmost Hero) & Mixed Multipliers",
+        "body_html": "Only the <strong>top 4 Joiners' leftmost Hero (1st Expedition Skill)</strong> apply to a Rally/Garrison! Mixing distinct buffs (Attack +25% × Lethality +25% × Enemy Dmg Taken Up) multiplies damage far more than stacking duplicates."
+      },
+      {
+        "title": "📦 50% Escrow Baggage Drop",
+        "body_html": "While holding a facility in Swordland, <strong>50% of earned Alliance Points are stored in Escrow on the building</strong>. Active from Phase 1: flipping a building deducts those points from the holder and scatters loot boxes around it—<strong>either alliance can pick them up</strong>."
+      },
+      {
+        "title": "⏱️ Watch the \"Remaining Time\" Clock",
+        "body_html": "The top HUD timer counts <strong>DOWN from 60:00 → 00:00</strong>. 15:00 elapsed = <strong>45:00 remaining</strong>. <strong>Never exit the battlefield after 22:00 remaining</strong>—the 12-min re-entry cooldown locks you out."
+      },
+      {
+        "title": "🏆 Point Differential Matters in League",
+        "body_html": "Seasonal promotion tiebreakers also count <strong>Point Differential (Our Points − Opponent Points)</strong>. Even if behind (or comfortably ahead), keep scooping every box and Undercellar from 10:00 remaining down to 00:00."
+      },
+      {
+        "title": "🔍 Flag B-D (Missing Telemetry Disclosure)",
+        "body_html": "Members missing partial 6-Tower or Migration data on MightPulse are mathematically imputed as \"Flag B/C\"; those missing both are disclosed as \"Flag D (Excluded / Separate Warning Table)\"."
+      }
+    ]
+  },
+  "basic_ui": {
+    "tag_gen": "Tactical Visual",
+    "tag_real": "In-Game UI",
+    "cards": [
+      "<strong>15 Mins Before Start: Clear Infirmary to \"0\"!</strong><br>If even 1 wounded troop sits in your city's <img src=\"assets/ui/icon_infirmary.png\" alt=\"Infirmary\"> Infirmary, you cannot enter Swordland. Heal everything beforehand and recall all active marches and reinforcements.",
+      "<strong>Confirm Roster Slot &amp; TG Tier</strong><br>Be punctual once Legion 1 time locks in. Know whether you are TG8 (Furnace 70), TG7 (65-69), or TG6 (60-64); TG6 and below must stay separate and never join main TG8 Garrisons.",
+      "<strong>Why Never Mix TG6 with TG8?</strong><br>When a TG6 joins a <img src=\"assets/ui/icon_truegold_crucible.png\" alt=\"Truegold Crucible\"> TG8 Garrison (15-player cap), our model estimates durability drops to <strong>~0.5625x</strong>. Use TG7s only to fill empty seats temporarily, then 'Dance' (swap out) immediately when a TG8 arrives.",
+      "<strong>Only Your Slot 1 (Leftmost) Hero's Top-Right 1st Expedition Skill Triggers!</strong><br>Just like Chenko's 'Stand of Arms Lv.5 (Lethality +25%)', the top 4 Joiner buff slots for the entire Rally/Garrison are decided solely by that leftmost Hero's 1st skill.",
+      "<strong><img src=\"assets/ui/icon_command_center.png\" alt=\"Command Center\"> Joining Rallies</strong><br>When joining Band 1 rallies (Ryo / Lesser / Daryu / Hinata / Luke), always use your saved Attack Joiner Preset (1-tap). Wrong Slot-1 heroes overwrite top-4 buffs.",
+      "<strong><img src=\"assets/ui/icon_embassy.png\" alt=\"Embassy\"> Garrison Rotation</strong><br>Core anchors are <code>Lesser (637.9M)</code> & <code>Daryu (596.0M)</code> + Band 2 TG8s with defensive Slot-1 heroes (Gordon/Howard/Saul). Band 3 (TG7) fills temporarily and dances out when TG8 lands."
+    ],
+    "hero_title": "Copy-Paste \"Slot 1 (Leftmost)\" Recommended Heroes vs Strictly Banned Traps",
+    "hero_desc_html": "For Attack Rallies, stacking <strong>mixed multipliers (Attack × Lethality × Enemy Dmg Taken Up)</strong> skyrockets Lead damage (keep Defense/Mitigation skills strictly <strong>Garrison Defense ONLY</strong> since they add zero kill power). Save Preset 1 (Attack Joiner), Preset 2 (Garrison), and Preset 3 (Fast Loot) before start.",
+    "hero_atk_title": "⚔️ Attack Rally Golden Joiners (Put ONE of these in Slot 1)",
+    "hero_def_title": "🛡️ Garrison Defense Slot 1 (Durability/Mitigation — Attack Slot-1 Banned)",
+    "hero_ban_title": "💣 Strictly BANNED in Slot 1 (Pollutes Buff Slots)",
+    "heroes": {
+      "chenko": [
+        "Chenko",
+        "Guaranteed Lethality +25%"
+      ],
+      "yeonwoo": [
+        "Yeonwoo",
+        "Guaranteed Lethality +25%"
+      ],
+      "amane": [
+        "Amane",
+        "Guaranteed Attack +25%"
+      ],
+      "margot": [
+        "Margot",
+        "Guaranteed Attack +25%"
+      ],
+      "vivian": [
+        "Vivian",
+        "Enemy Dmg Taken +25%"
+      ],
+      "hilde": [
+        "Hilde",
+        "Atk +10% / Def +15%"
+      ],
+      "petra": [
+        "Petra ⚠",
+        "Max 1 per Rally (50% chance +50% Dmg Taken)"
+      ],
+      "gordon": [
+        "Gordon",
+        "Allied Health +25%"
+      ],
+      "howard": [
+        "Howard",
+        "Dmg Taken -20%"
+      ],
+      "saul": [
+        "Saul",
+        "Def +10% / HP +15% (Garrison ONLY)"
+      ],
+      "eric": [
+        "Eric",
+        "Enemy Atk -20% (Garrison ONLY)"
+      ],
+      "fahd": [
+        "Fahd",
+        "Enemy Dmg Dealt -20% (Garrison ONLY)"
+      ],
+      "long-fei": [
+        "Long Fei",
+        "BANNED in Attack Rallies"
+      ],
+      "jabel": [
+        "Jabel",
+        "RNG Proc (Pollutes Slots)"
+      ],
+      "helga": [
+        "Helga",
+        "BANNED as Joiner"
+      ],
+      "zoe": [
+        "Zoe",
+        "RNG Proc / Wastes Slot"
+      ],
+      "sophia": [
+        "Sophia",
+        "BANNED as Joiner"
+      ]
+    }
+  },
+  "map": {
+    "board_title": "SGR Tactical Movement Map (11 Facilities + 4 Undercellars)",
+    "board_hint": "* Click buttons to toggle phase objectives",
+    "btn_p1": "Phase 1 Opening (60:00-45:00 Rem.)",
+    "btn_p2": "Phase 2 Center Opens (45:00-20:00 Rem.)",
+    "btn_p3": "Phase 3 Endgame Baggage Heist (20:00-00:00 Rem.)",
+    "pins": {
+      "swordshrine": "① Swordshrine (Opens 15:00)",
+      "mercenary": "② Mercenary Camp (15:00)",
+      "reformation": "③ Reformation (15:00/+15%)",
+      "bell": "⑦ Bell Tower (Cap -50%)★",
+      "ne_abbey": "⑪ NE Abbey",
+      "w_sanctum": "⑤ West Sanctum",
+      "ce_abbey": "⑨ CE Abbey",
+      "cw_abbey": "⑧ CW Abbey",
+      "e_sanctum": "④ East Sanctum",
+      "sw_abbey": "⑩ SW Abbey",
+      "stables": "⑥ Royal Stables (TP -50%)★",
+      "undercellar": "Undercellar"
+    },
+    "facilities": [
+      {
+        "title": "Royal Stables (Opens 0:00 ★Top Priority)",
+        "body_html": "1st Cap 1,200 / +240/m. Cuts Free Teleport CD by <strong>-50% (10m → 5m)</strong>, doubling skirmish and Baggage collection tempo (keep Advanced Teleports ready for emergencies)."
+      },
+      {
+        "title": "Swordshrine (Opens 15:00 / 45:00 Rem.)",
+        "body_html": "1st Cap <strong>9,000</strong> / <strong>+1,800/m</strong>. Use SGR's +106 PCS Top-4 lead with Double Rallies and concentrated TG8 purity to seize and hold."
+      },
+      {
+        "title": "Sanctums (Opens 0:00 · West & East)",
+        "body_html": "1st Cap <strong>6,000</strong> / <strong>+1,200/m</strong>. Core mid-game point engine—constantly flip whichever side GOD leaves thin."
+      },
+      {
+        "title": "Hall of Reformation (Opens 15:00)",
+        "body_html": "1st Cap 3,000 / +600/m. Grants battlefield-wide <strong>+15% Dmg Dealt &amp; -15% Dmg Taken</strong>. Priority capture before major Lead clashes."
+      },
+      {
+        "title": "Mercenary Camp (Opens 15:00)",
+        "body_html": "1st Cap 3,000 / +600/m. Once held, auto-attacks enemy-held buildings every <strong>~7 minutes</strong> to chip their Garrisons—lethal when synced with allied Rallies."
+      },
+      {
+        "title": "Bell Tower (🔔 0:00) & Abbeys (4 Nodes 0:00)",
+        "body_html": "<strong>Bell Tower cuts capture countdown by -50% (3:00 → 1:30)</strong>; 1st Cap 1,200 / +240/m. <strong>4 Abbeys</strong> give 3,000 / +600/m each for multi-lane pressure."
+      }
+    ],
+    "ui_caps": [
+      "Swordshrine point breakdown (9,000 / +1,800/m)",
+      "Royal Stables buff (<img src=\"assets/ui/icon_teleport.png\" alt=\"Teleport\"> Free Teleport CD -50%)",
+      "Garrison roster check (11/15 slots &amp; Slot-1 Hero alignment)",
+      "Battlefield alliance cluster positioning &amp; chained marches"
+    ],
+    "phases": {
+      "p1": {
+        "desc": "<strong>Phase 1 (0:00–15:00 | 60:00–45:00 left) Opening</strong>: Band 1–2 secure <strong>⑦ Bell Tower (-50% capture time)</strong> and <strong>⑥ Royal Stables (-50% free TP CD)</strong> through initial capture completion. Bands 3–5 roam outer Sanctums & Abbeys to disrupt GOD's 30-player formation.",
+        "labels": [
+          "Band 1–2 Bell Tower",
+          "Band 1–2 Stables",
+          "Band 3 West Sanctum",
+          "Band 4–5 Abbey Roam"
+        ]
+      },
+      "p2": {
+        "desc": "<strong>Phase 2 (15:00–40:00 | 45:00–20:00 left) Center Unlock</strong>: <strong>① Swordshrine, ② Mercenary Camp & ③ Reformation Hall</strong> open! Ignore wide multi-front brawls; concentrate SGR Top-4 (+106 PCS lead) + all 8 TG8s to dominate Swordshrine & Reformation Hall (<strong>*NO 12m exit after 22:00 remaining</strong>).",
+        "labels": [
+          "Top-4 Double Rally",
+          "② Mercenary (15:00)",
+          "③ Reformation +15%",
+          "Band 3 East Roam"
+        ]
+      },
+      "p3": {
+        "desc": "<strong>Endgame (40:00–60:00 | 20:00–00:00 left) Baggage Heist</strong>: Bands 4–5 launch decoy rallies while Band 1 (Ryo + Daryu) double-rally GOD's highest-escrow building. Sweep all dropped 50% Baggage boxes & <strong>4 Undercellars (1-troop)</strong> until 00:00!",
+        "labels": [
+          "Ryo Kill-Shot",
+          "Decoy Rally",
+          "Band 4–5 Loot Sweep"
+        ]
+      }
+    }
+  },
+  "timeline": {
+    "c1_html": "<strong>Win-More &amp; Comeback Trump Card: Baggage Heist (50% Escrow Steal)</strong><br>From Phase 1 onward, <strong>50% of points earned while holding a node stay in Escrow on that building</strong>. Flipping it subtracts that Escrow from the enemy and scatters boxes around—use Decoy Rallies late game to split defenders, crack it with Squad 1, and let skirmishers vacuum the loot!",
+    "c2_html": "<strong>Live Baggage Drops (159 / 45 / 401 etc.) &amp; Free Teleport Timer</strong><br>Top-right shows <strong>Remaining Time (e.g., 00:47:43)</strong>, bottom-right has the Battle Map magnifier (to spot Undercellars), bottom-left shows Free Teleport cooldown. Undercellars take <strong>zero losses with 1-troop marches!</strong>",
+    "p1_title": "Phase 1 (0:00-15:00 Elapsed | 60:00-45:00 Remaining)",
+    "p1_html": "<strong>Top Priority: Lock Bell Tower (-50%) &amp; Royal Stables (TP CD -50%).</strong><br>First-capture bonuses only trigger after holding the full <strong>capture timer (3:00, or 1:30 at Bell Tower)</strong>—keep reinforcements flowing! Squads 4-5 sync outer Sanctums/Abbeys and save Free Teleports.",
+    "p2_title": "Phase 2 (15:00-40:00 Elapsed | 45:00-20:00 Remaining)",
+    "p2_html": "<strong>Center Unlock & Localized Dominance.</strong><br>Do not trade across 5 buildings simultaneously. Concentrate SGR's 8 TG8s behind Ryo / Lesser / Daryu / Hinata to seize Swordshrine & Reformation Hall with our +106 PCS Top-4 lead. <strong>*No 12m healing exit after 22:00 remaining!</strong>",
+    "p3_title": "Endgame Window (40:00-60:00 Elapsed | 20:00-00:00 Remaining)",
+    "p3_html": "<strong>Decoy Rallies + 50% Baggage Heist + 1-Troop Undercellars.</strong><br>Bands 4–5 distract GOD reinforcements while Ryo + Daryu double-rally high-escrow facilities, then sweep all dropped loot and Undercellars through 00:00 for point-differential advantage."
+  },
+  "enemy": {
+    "top_heading": "GOD Key Threat Line (Top 8)",
+    "th": {
+      "rank": "#",
+      "player": "Player",
+      "tg": "Stv(TG)",
+      "pcs": "PCS",
+      "dtv": "DTV",
+      "troop": "Est. Troop"
+    },
+    "top_note": "*GOD #1 (PCS 802) is strong, yet SGR #1 Ryo (952) and #2 Lesser (836) surpass him. GOD's real strength is 15 consecutive Quad-A TG8s (#1–#15, PCS 625–802) plus heavy mid-tier tanks like #10 Nicky (573.7M) and #9 ~Deadpool~ (442.9M).",
+    "notes_heading": "🔎 GOD Tactical Breakdown & Data Transparency",
+    "notes_desc_html": "All GOD Top-30 are <strong>Flag A (100% measured, zero uncrawled 300M+)</strong>. Their profile is ultra-uniform: <strong>22 TG8 + 8 TG7 (zero TG6-, zero FAT_WARN, zero Quad-D)</strong>. Avoid wide attrition and concentrate SGR's Top-4 quality edge on 1–2 high-value objectives.",
+    "chips": [
+      "#1 ᎠᎪᏔᏩᏚᎢᎽᏞᎬ (PCS 802 / TG8 / 454.9M / Enemy Ace)",
+      "#2 Sakhazan (PCS 712 / TG8 / 418.1M)",
+      "#9 ~Deadpool~ (PCS 658 / TG8 / 442.9M / Heavy Tank)",
+      "#10 Nickyᶠᵘᶰ (PCS 650 / TG8 / 573.7M / GOD Max Troops)",
+      "GOD Top-30: 22 TG8 / 8 TG7 / 0 TG6-",
+      "GOD Quadrants: 15 Quad-A / 15 Quad-B / 0 Quad-D",
+      "Uncrawled 300M+ (Flag D): 0 on both sides (100% verified)"
+    ]
+  },
+  "footer": {
+    "html": "<strong>Data Disclosure</strong>: PCS/DTV scores are deterministically computed from MightPulse API (<code>2026-11-22 18:00 JST</code>) combined with verified in-game Legion 1 roster capture (25 Active / 8 Reserves). Always prioritize live in-game roll-call for troop recovery and buffs.<br>Updated: 2026-11-22 JST | #898 [SGR] Swordland Strategy Desk"
+  }
+}
