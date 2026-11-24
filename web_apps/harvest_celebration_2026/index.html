@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>『Kingshot（キングショット）』豊穣祝典／豊穣の主 完全攻略ガイド（2026年11月・完全日本語版）</title>
+<style>
+  :root {
+    --bg-deep: #0d0b09;
+    --bg-surface: #171310;
+    --bg-card: #1f1914;
+    --bg-card-hover: #29211a;
+    --border-subtle: rgba(216, 164, 70, 0.22);
+    --border-strong: rgba(216, 164, 70, 0.55);
+    --gold: #e4b659;
+    --gold-bright: #f7d98c;
+    --gold-dim: #9c742b;
+    --amber: #df7a35;
+    --crimson: #e05252;
+    --emerald: #44b98d;
+    --sky: #5aa9e6;
+    --text-main: #f3ece2;
+    --text-muted: #b9aa97;
+    --text-dim: #8a7b69;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(circle at 20% 0%, #261b10 0%, var(--bg-deep) 45%), var(--bg-deep);
+    color: var(--text-main);
+    line-height: 1.75;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--gold-bright); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Sticky Top Navigation */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13, 11, 9, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--gold-bright);
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .brand-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-bright), var(--amber));
+    box-shadow: 0 0 10px var(--gold);
+  }
+  .nav-links {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .nav-links a {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 6px 11px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover {
+    color: var(--gold-bright);
+    background: rgba(228, 182, 89, 0.12);
+    border-color: var(--border-subtle);
+    text-decoration: none;
+  }
+
+  /* Main Container */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 18px 80px;
+  }
+
+  /* Hero with Rich Art Background */
+  .hero {
+    background:
+      linear-gradient(125deg, rgba(16, 11, 7, 0.90) 0%, rgba(24, 16, 10, 0.78) 52%, rgba(16, 11, 7, 0.92) 100%),
+      url("images/art/hero_harvest_festival.jpg") center center / cover no-repeat;
+    border: 1px solid var(--border-strong);
+    border-radius: 20px;
+    padding: 38px 32px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .hero-top-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 26px;
+  }
+  @media (max-width: 860px) {
+    .hero-top-grid { grid-template-columns: 1fr; }
+  }
+  .hero-art-card {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.22s, box-shadow 0.22s;
+  }
+  .hero-art-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 36px rgba(228, 182, 89, 0.22);
+  }
+  .hero-art-card img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-art-cap {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 8px 12px;
+    background: linear-gradient(180deg, transparent, rgba(10, 8, 6, 0.92));
+    font-size: 12px;
+    color: var(--gold-bright);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+  }
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.03em;
+  }
+  .pill-gold { background: rgba(228, 182, 89, 0.2); color: var(--gold-bright); border: 1px solid var(--border-strong); }
+  .pill-green { background: rgba(68, 185, 141, 0.2); color: #7ee3bc; border: 1px solid rgba(68, 185, 141, 0.5); }
+  .pill-amber { background: rgba(223, 122, 53, 0.22); color: #ffb985; border: 1px solid rgba(223, 122, 53, 0.5); }
+  .pill-crimson { background: rgba(224, 82, 82, 0.22); color: #ffa3a3; border: 1px solid rgba(224, 82, 82, 0.5); }
+  .hero h1 {
+    font-size: clamp(24px, 3.5vw, 38px);
+    line-height: 1.28;
+    font-weight: 900;
+    background: linear-gradient(90deg, #fff6df 0%, var(--gold-bright) 55%, var(--amber) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+  .hero-lead {
+    color: #e2d8ca;
+    font-size: 15px;
+    margin-bottom: 0;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+    gap: 14px;
+  }
+  .kpi-card {
+    background: rgba(13, 11, 9, 0.78);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .kpi-label { font-size: 11.5px; color: var(--text-muted); font-weight: 700; letter-spacing: 0.04em; }
+  .kpi-value { font-size: 21px; font-weight: 900; color: var(--gold-bright); margin: 2px 0; }
+  .kpi-sub { font-size: 12px; color: var(--text-muted); }
+
+  /* Section Headings */
+  section {
+    margin-bottom: 58px;
+    scroll-margin-top: 72px;
+  }
+  .sec-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-subtle);
+    flex-wrap: wrap;
+  }
+  .sec-num {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--bg-deep);
+    background: linear-gradient(135deg, var(--gold-bright), var(--amber));
+    padding: 3px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.06em;
+  }
+  .sec-header h2 {
+    font-size: clamp(20px, 2.5vw, 26px);
+    font-weight: 800;
+    color: var(--text-main);
+  }
+  h3 {
+    font-size: 17.5px;
+    font-weight: 800;
+    color: var(--gold-bright);
+    margin: 26px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3::before {
+    content: "";
+    display: inline-block;
+    width: 4px; height: 18px;
+    background: linear-gradient(180deg, var(--gold-bright), var(--amber));
+    border-radius: 2px;
+  }
+  p { margin-bottom: 12px; }
+
+  /* Feature Art Banner */
+  .art-banner {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 20px;
+    background: linear-gradient(135deg, rgba(31, 25, 20, 0.96), rgba(20, 15, 11, 0.96));
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 18px 0 24px;
+    box-shadow: var(--shadow);
+  }
+  @media (max-width: 820px) {
+    .art-banner { grid-template-columns: 1fr; }
+  }
+  .art-banner-img {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    min-height: 220px;
+  }
+  .art-banner-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s;
+  }
+  .art-banner-img:hover img { transform: scale(1.03); }
+  .art-banner-badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: rgba(13, 11, 9, 0.82);
+    color: var(--gold-bright);
+    border: 1px solid var(--border-strong);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 800;
+  }
+  .art-banner-body {
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+  .art-banner-body h4 {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--gold-bright);
+    line-height: 1.4;
+  }
+  .art-banner-body p {
+    font-size: 13.8px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+  .art-key-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .art-key-list li {
+    font-size: 13.3px;
+    color: var(--text-main);
+    padding-left: 16px;
+    position: relative;
+  }
+  .art-key-list li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    color: var(--amber);
+    font-size: 10px;
+    top: 2px;
+  }
+
+  /* Callouts & Trap Cards */
+  .alert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 14px;
+    margin: 16px 0 24px;
+  }
+  .alert-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-left: 4px solid var(--crimson);
+    border-radius: var(--radius-sm);
+    padding: 16px 18px;
+  }
+  .alert-card.is-tip { border-left-color: var(--emerald); }
+  .alert-card.is-gold { border-left-color: var(--gold); }
+  .alert-title {
+    font-weight: 800;
+    font-size: 15px;
+    margin-bottom: 6px;
+    color: #fff;
+  }
+  .alert-card.is-trap .alert-title { color: #ff9c9c; }
+  .alert-card.is-tip .alert-title { color: #7ee3bc; }
+  .alert-card.is-gold .alert-title { color: var(--gold-bright); }
+  .alert-body { font-size: 13.8px; color: var(--text-muted); }
+
+  /* Tables */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    margin: 14px 0 22px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.8px;
+  }
+  th, td {
+    padding: 11px 14px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  th {
+    background: rgba(228, 182, 89, 0.12);
+    color: var(--gold-bright);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(228, 182, 89, 0.04); }
+  .num { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--gold-bright); }
+  .tag-warn {
+    display: inline-block;
+    background: rgba(224, 82, 82, 0.2);
+    color: #ff9c9c;
+    border: 1px solid rgba(224, 82, 82, 0.45);
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+  }
+  .tag-ok {
+    display: inline-block;
+    background: rgba(68, 185, 141, 0.18);
+    color: #7ee3bc;
+    border: 1px solid rgba(68, 185, 141, 0.45);
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+  }
+  .tag-info {
+    display: inline-block;
+    background: rgba(90, 169, 230, 0.18);
+    color: #9dd1fa;
+    border: 1px solid rgba(90, 169, 230, 0.45);
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+  }
+
+  /* Infographic Shell */
+  .info-box {
+    background: linear-gradient(160deg, rgba(28, 22, 16, 0.96), rgba(18, 14, 11, 0.98));
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+    padding: 22px;
+    margin: 18px 0 26px;
+    box-shadow: var(--shadow);
+  }
+  .info-box-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .info-box-title {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--gold-bright);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-tag {
+    font-size: 11px;
+    font-weight: 800;
+    color: #161007;
+    background: var(--gold);
+    padding: 2px 9px;
+    border-radius: 999px;
+  }
+
+  /* Infographic 1: 7-Day KvK Roadmap */
+  .roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .rm-day {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-top: 3px solid var(--gold);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .rm-day.is-warn { border-top-color: var(--crimson); }
+  .rm-day.is-overlap { border-top-color: var(--emerald); }
+  .rm-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4px;
+  }
+  .rm-num { font-weight: 900; font-size: 13px; color: var(--gold-bright); }
+  .rm-date { font-size: 11px; color: var(--text-dim); font-weight: 700; }
+  .rm-theme { font-size: 13.5px; font-weight: 800; color: #fff; }
+  .rm-do, .rm-save, .rm-sub {
+    font-size: 11.8px;
+    line-height: 1.45;
+    padding: 5px 7px;
+    border-radius: 6px;
+  }
+  .rm-do { background: rgba(68, 185, 141, 0.12); color: #b8f2da; border-left: 2px solid var(--emerald); }
+  .rm-save { background: rgba(224, 82, 82, 0.12); color: #ffc2c2; border-left: 2px solid var(--crimson); }
+  .rm-sub { background: rgba(228, 182, 89, 0.12); color: var(--gold-bright); border-left: 2px solid var(--gold); }
+  .rm-lbl { font-weight: 800; display: block; font-size: 10.5px; opacity: 0.9; margin-bottom: 1px; }
+
+  /* Infographic 2: Cooking Bonus Bar Chart */
+  .cook-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 760px) {
+    .cook-compare { grid-template-columns: 1fr; }
+  }
+  .cook-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .cook-panel h4 {
+    font-size: 14.5px;
+    color: var(--gold-bright);
+    margin-bottom: 12px;
+  }
+  .bar-row { margin-bottom: 12px; }
+  .bar-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.8px;
+    margin-bottom: 5px;
+    gap: 8px;
+  }
+  .bar-track {
+    height: 22px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    font-size: 11.5px;
+    font-weight: 900;
+    color: #140e07;
+  }
+  .bar-gold { background: linear-gradient(90deg, var(--amber), var(--gold-bright)); }
+  .bar-gray { background: linear-gradient(90deg, #6d6155, #9a8b7b); color: #fff; }
+  .bar-red { background: linear-gradient(90deg, #b83a3a, #ef6b6b); color: #fff; }
+  .bar-green { background: linear-gradient(90deg, #2b8a67, #56d6a6); color: #082016; }
+  .cook-note {
+    font-size: 12.6px;
+    color: var(--text-muted);
+    background: rgba(224, 82, 82, 0.12);
+    border: 1px solid rgba(224, 82, 82, 0.35);
+    border-radius: 8px;
+    padding: 9px 12px;
+    margin-top: 8px;
+  }
+
+  /* Infographic 3: 3-Step Alliance Shuffle Flow */
+  .step-flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 12px;
+    align-items: stretch;
+  }
+  @media (max-width: 820px) {
+    .step-flow { grid-template-columns: 1fr; }
+    .step-arrow { transform: rotate(90deg); justify-self: center; }
+  }
+  .step-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .step-card.is-result {
+    border-color: rgba(68, 185, 141, 0.55);
+    background: linear-gradient(155deg, rgba(24, 46, 37, 0.55), var(--bg-card));
+  }
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    font-weight: 900;
+    color: #140f08;
+    background: var(--gold-bright);
+    padding: 2px 9px;
+    border-radius: 999px;
+    width: fit-content;
+  }
+  .step-card.is-result .step-badge { background: var(--emerald); color: #051c13; }
+  .step-title { font-size: 14.5px; font-weight: 800; color: #fff; }
+  .step-desc { font-size: 13px; color: var(--text-muted); }
+  .step-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 24px;
+    font-weight: 900;
+  }
+
+  /* Infographic 4: Gantt Timeline Calendar */
+  .gantt-wrap { overflow-x: auto; }
+  .gantt-table {
+    width: 100%;
+    min-width: 680px;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+    font-size: 12.8px;
+  }
+  .gantt-table th {
+    background: rgba(228, 182, 89, 0.14);
+    text-align: center;
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+  .gantt-table th:first-child { text-align: left; padding-left: 12px; border-radius: 8px 0 0 8px; }
+  .gantt-table th:last-child { border-radius: 0 8px 8px 0; }
+  .gantt-table td {
+    background: var(--bg-card);
+    padding: 9px 6px;
+    text-align: center;
+    border-bottom: none;
+  }
+  .gantt-table td:first-child {
+    text-align: left;
+    padding-left: 12px;
+    font-weight: 800;
+    color: #fff;
+    border-radius: 8px 0 0 8px;
+    white-space: nowrap;
+  }
+  .gantt-table td:last-child { border-radius: 0 8px 8px 0; }
+  .g-bar {
+    height: 22px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 0 6px;
+    white-space: nowrap;
+  }
+  .g-gold { background: linear-gradient(90deg, rgba(228, 182, 89, 0.85), rgba(223, 122, 53, 0.85)); color: #161007; }
+  .g-green { background: rgba(68, 185, 141, 0.85); color: #071f16; }
+  .g-red { background: rgba(224, 82, 82, 0.9); color: #fff; }
+  .g-sky { background: rgba(90, 169, 230, 0.85); color: #071929; }
+  .g-dim { color: var(--text-dim); font-size: 11px; }
+
+  /* Phase Tabs */
+  .phase-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .phase-btn {
+    background: var(--bg-card);
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 9px 14px;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 122px;
+  }
+  .phase-btn span.p-date { font-size: 11px; color: var(--text-dim); font-weight: 600; }
+  .phase-btn:hover { border-color: var(--gold); color: var(--text-main); }
+  .phase-btn.active {
+    background: linear-gradient(135deg, rgba(228, 182, 89, 0.24), rgba(223, 122, 53, 0.18));
+    border-color: var(--gold-bright);
+    color: var(--gold-bright);
+    box-shadow: 0 0 18px rgba(228, 182, 89, 0.18);
+  }
+  .phase-btn.active span.p-date { color: #f7d98c; }
+  .phase-panel {
+    display: none;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+  .phase-panel.active { display: block; }
+  .phase-layout {
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .phase-layout { grid-template-columns: 1fr; }
+  }
+  .phase-badge-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .phase-strategy {
+    background: rgba(68, 185, 141, 0.08);
+    border: 1px solid rgba(68, 185, 141, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 13.5px;
+    color: #d6f5e8;
+    margin-top: 12px;
+  }
+
+  /* Media Grid & Cards */
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 16px;
+    margin: 16px 0 24px;
+  }
+  .media-grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+  .media-grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .media-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+  .media-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+  }
+  .media-thumb {
+    position: relative;
+    background: #0a0807;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .fig-bs .media-thumb {
+    aspect-ratio: 16 / 10;
+    background: radial-gradient(circle, #1e1812, #0b0907);
+  }
+  .media-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .fig-bs .media-thumb img {
+    object-fit: contain;
+  }
+  .media-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+  }
+  .badge-bs { background: rgba(68, 185, 141, 0.92); color: #071912; }
+  .badge-art { background: rgba(228, 182, 89, 0.94); color: #161007; }
+  .media-card figcaption {
+    padding: 11px 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+  }
+  .cap-title {
+    font-size: 13.3px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.45;
+  }
+  .cap-meta {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.8px;
+    color: var(--text-dim);
+    gap: 8px;
+  }
+  .zoom-hint { color: var(--gold); font-weight: 700; }
+
+  /* Pros / Cons Two Column */
+  .dual-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    margin: 16px 0 22px;
+  }
+  .opinion-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+  }
+  .opinion-box h4 {
+    font-size: 15.5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .opinion-box ul { padding-left: 18px; color: var(--text-muted); font-size: 13.8px; }
+  .opinion-box li { margin-bottom: 7px; }
+
+  /* Quick Gallery Filters */
+  .filter-panel {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .filter-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--gold);
+  }
+  .filter-btn {
+    background: var(--bg-card);
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    padding: 5px 13px;
+    font-size: 12.2px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--gold); color: var(--text-main); }
+  .filter-btn.active {
+    background: var(--gold);
+    color: #14100a;
+    border-color: var(--gold-bright);
+  }
+  .archive-count {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .archive-count strong { color: var(--gold-bright); }
+  .archive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+    gap: 14px;
+  }
+
+  /* Lightbox Modal */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(6, 5, 4, 0.92);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .lightbox.open { display: flex; }
+  .lb-box {
+    max-width: 1120px;
+    width: 100%;
+    max-height: 92vh;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.75);
+  }
+  .lb-head {
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .lb-title { font-weight: 800; font-size: 14.5px; color: var(--gold-bright); }
+  .lb-close {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .lb-close:hover { background: var(--crimson); border-color: var(--crimson); }
+  .lb-body {
+    position: relative;
+    flex: 1;
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #080706;
+    overflow: hidden;
+    padding: 12px;
+  }
+  .lb-body img {
+    max-width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 6px;
+  }
+  .lb-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(20, 16, 12, 0.85);
+    color: var(--gold-bright);
+    border: 1px solid var(--border-strong);
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lb-nav:hover { background: var(--gold); color: #14100a; }
+  .lb-prev { left: 14px; }
+  .lb-next { right: 14px; }
+  .lb-foot {
+    padding: 10px 18px;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12.8px;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  footer {
+    border-top: 1px solid var(--border-subtle);
+    padding: 28px 18px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 12.5px;
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 22px 18px; }
+    .phase-btn { min-width: 96px; padding: 7px 10px; font-size: 12.5px; }
+    .phase-panel { padding: 15px; }
+    .info-box { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="brand-dot"></span>Kingshot 豊穣祝典・豊穣の主 2026</div>
+    <div class="nav-links">
+      <a href="#summary">5大罠＆結論</a>
+      <a href="#patron">豊穣の主7日間</a>
+      <a href="#kvk-route">KvK無傷ルート</a>
+      <a href="#cooking">料理＆裏技</a>
+      <a href="#subevents">サブイベント</a>
+      <a href="#spending">課金＆都市スキン</a>
+      <a href="#gallery">日本語実画面15枚</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-top-grid">
+      <div>
+        <div class="hero-badges">
+          <span class="pill pill-gold">開催期間：2026/11/24〜11/30（毎日 09:00 JST 切替）</span>
+          <span class="pill pill-green">日本語実機 15枚 正本実測済</span>
+          <span class="pill pill-amber">完全日本語版・図解フル収録</span>
+        </div>
+        <h1>『Kingshot』豊穣祝典／豊穣の主 完全攻略ガイド</h1>
+        <p class="hero-lead">
+          日本語実機で全7フェーズの獲得ポイント・目標報酬・順位報酬を完全実測し、日本人プレイヤー向けに分かりやすく再構成した決定版ガイドです。<strong>KvK資材を無傷で温存しつつ、全目標報酬・無課金でも毎日+500pt稼げる同盟食材シャッフル裏技・サブイベント終了日ズレ対策</strong>までこれ1本で完結します。
+        </p>
+      </div>
+      <div class="hero-art-card" data-lightbox="images/art/hero_harvest_festival.jpg" data-title="豊穣祝典（Harvest Celebration）メインビジュアル" data-source="攻略ガイド 特製ビジュアル">
+        <img src="images/art/hero_harvest_festival.jpg" alt="豊穣祝典 メインビジュアル">
+        <div class="hero-art-cap">
+          <span>豊穣祝典 2026 完全攻略</span>
+          <span>クリックで拡大</span>
+        </div>
+      </div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">鉄則・最優先方針</div>
+        <div class="kpi-value">目標報酬で即撤退</div>
+        <div class="kpi-sub">順位争いは最大の罠。資材はKvKへ温存</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Day1 目標報酬上限（実測）</div>
+        <div class="kpi-value">274,000 pt</div>
+        <div class="kpi-sub">全5段階（収穫物の袋170＋ダイヤ2,000等）</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Supplies 必須回収枠</div>
+        <div class="kpi-value">1,000 袋</div>
+        <div class="kpi-sub">採集300袋＋野獣700袋（加速は聖剣治癒も対象）</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">恒久都市スキン確定</div>
+        <div class="kpi-value">125,000 pt</div>
+        <div class="kpi-sub">ボーナス料理のみで食材約10,000個（$300〜$500目安）</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SECTION 1: SUMMARY & 5 TRAPS -->
+  <section id="summary">
+    <div class="sec-header">
+      <span class="sec-num">01</span>
+      <h2>最重要結論 ＆ 絶対回避すべき5大罠</h2>
+    </div>
+    <p>
+      豊穣祝典（Thanksgiving / Harvest Celebration）は複数のイベントが同時並行する大型祝祭ですが、<strong>仕様を知らずに動くとKvK用の重要資材や料理ポイントを大量に損失</strong>します。開始直後に必ず押さえるべき5つのポイントは以下の通りです。
+    </p>
+    <div class="alert-grid">
+      <div class="alert-card is-trap">
+        <div class="alert-title">罠①：豊穣の主の「ランキング争い」は極悪コスパ</div>
+        <div class="alert-body">総ランキング1位でも報酬は<strong>レジェンド汎用欠片×100</strong>のみ（KvKの300〜400個に比べ大幅に見劣り）。さらに<strong>チャーム・ペット・ミスリル・純金（Truegold）は対象外</strong>。全フェーズ「目標報酬だけ取って撤退」が鉄則です。</div>
+      </div>
+      <div class="alert-card is-trap">
+        <div class="alert-title">罠②：料理イベント「Day7はボーナス料理なし」</div>
+        <div class="alert-body">Day1〜6は毎日2種のボーナス料理（+25%、40pt→50pt）が出ますが、<strong>Day7（11/30）はボーナス料理が消滅</strong>します。最終日まとめ出しは20%丸損！また未消費食材は終了後に<strong>Lv.2資源箱へ劣化変換</strong>されます。</div>
+      </div>
+      <div class="alert-card is-trap">
+        <div class="alert-title">罠③：Pumpkin Smashだけ「11/29」で1日早く終了</div>
+        <div class="alert-body">メインイベントやLucky Cabinは11/30までですが、<strong>Pumpkin Smash（かぼちゃ割り）は11/25〜11/29</strong>と1日早く終了します。また上位10同盟の宴会（豊穣の宴会）は<strong>12/1に1時間限定開催</strong>でオンライン参加必須です。</div>
+      </div>
+      <div class="alert-card is-trap">
+        <div class="alert-title">罠④：開始後の「同盟移籍」でポイント＆宴会資格喪失</div>
+        <div class="alert-body">イベント開始時点で所属していた同盟に忠誠ロックがかかります。途中で別同盟へ移籍すると、新同盟への料理ポイントが加算されず、<strong>12/1の宴会参加資格も失います</strong>。移籍予定がある場合は必ず開始前に済ませましょう。</div>
+      </div>
+      <div class="alert-card is-tip">
+        <div class="alert-title">最重要Tips：無課金でも毎日+500pt「同盟食材シャッフル」</div>
+        <div class="alert-body">同盟食材リクエスト（上限50個・1寄付10pt）を同盟員同士で送り合い・返し合いするだけで、<strong>元手ゼロのまま毎日+500pt＆300ptごとの宝箱</strong>を回収できます。</div>
+      </div>
+    </div>
+
+    <div class="media-grid cols-2">
+      <figure class="media-card fig-bs" data-lightbox="images/bs/01_initial.png" data-title="豊穣の主 トップ画面（2026/11/24〜11/30・毎日09:00 JST切替）" data-source="日本語実機 正本スクリーンショット">
+        <div class="media-thumb">
+          <img src="images/bs/01_initial.png" alt="豊穣の主 トップ画面（2026/11/24〜11/30・毎日09:00 JST切替）" loading="lazy">
+          <span class="media-badge badge-bs">BS01 実機</span>
+        </div>
+        <figcaption>
+          <div class="cap-title">豊穣の主 トップ画面（2026/11/24〜11/30・毎日09:00 JST切替）</div>
+          <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+        </figcaption>
+      </figure>
+      <figure class="media-card fig-bs" data-lightbox="images/bs/02_help.png" data-title="豊穣の主 公式ルール・基本仕様（日本語実画面）" data-source="日本語実機 正本スクリーンショット">
+        <div class="media-thumb">
+          <img src="images/bs/02_help.png" alt="豊穣の主 公式ルール・基本仕様（日本語実画面）" loading="lazy">
+          <span class="media-badge badge-bs">BS02 実機</span>
+        </div>
+        <figcaption>
+          <div class="cap-title">豊穣の主 公式ルール・基本仕様（日本語実画面）</div>
+          <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- SECTION 2: PATRON OF PLENTY 7 PHASES -->
+  <section id="patron">
+    <div class="sec-header">
+      <span class="sec-num">02</span>
+      <h2>「豊穣の主」全7フェーズ実測データ ＆ 攻略タブ</h2>
+    </div>
+    <p>
+      日本語実機で全7フェーズのポイント獲得条件を完全実測しました。下のタブから各日の実測テーブル・日本語実画面スクショ・KvK温存ムーブを切り替えられます。画像はすべてクリックで拡大表示できます。
+    </p>
+
+    <div class="phase-tabs" role="tablist">
+      <button class="phase-btn active" data-phase="day1">Day1 実力向上<span class="p-date">11/24 (火)</span></button>
+      <button class="phase-btn" data-phase="day2">Day2 野獣討伐<span class="p-date">11/25 (水)</span></button>
+      <button class="phase-btn" data-phase="day3">Day3 英雄成長<span class="p-date">11/26 (木)</span></button>
+      <button class="phase-btn" data-phase="day4">Day4 兵士訓練<span class="p-date">11/27 (金)</span></button>
+      <button class="phase-btn" data-phase="day5">Day5 英雄装備<span class="p-date">11/28 (土)</span></button>
+      <button class="phase-btn" data-phase="day6">Day6 資源採集<span class="p-date">11/29 (日)</span></button>
+      <button class="phase-btn" data-phase="day7">Day7 領主装備<span class="p-date">11/30 (月)</span></button>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="phase-panel active" id="phase-day1">
+      <div class="phase-badge-row">
+        <span class="pill pill-gold">Day 1：実力向上（11/24 09:00 JST〜）</span>
+        <span class="pill pill-green">推奨ムーブ：鍵をDay3と半分ずつ分割使用</span>
+      </div>
+      <div class="phase-layout">
+        <div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>獲得アクション</th><th>ポイント</th><th>備考・効率</th></tr></thead>
+              <tbody>
+                <tr><td>建造・研究・訓練／昇格で総力 +1</td><td class="num">1 pt</td><td>純金（Truegold）・チャーム等は対象外</td></tr>
+                <tr><td>エピック募集 ×1</td><td class="num">11,000 pt</td><td>Day3と鍵を分割して温存</td></tr>
+                <tr><td>上級募集 ×1</td><td class="num">3,300 pt</td><td>無料分＋手持ち鍵で目標調整</td></tr>
+                <tr><td>レア英雄の欠片 ×1</td><td class="num">500 pt</td><td>余剰欠片で微調整に有効</td></tr>
+                <tr><td>エピック英雄の欠片 ×1</td><td class="num">2,200 pt</td><td>同上</td></tr>
+                <tr><td>レジェンド英雄の欠片 ×1</td><td class="num">6,000 pt</td><td><span class="tag-warn">KvK温存推奨</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="phase-strategy">
+            <strong>KvK無傷ムーブ：</strong>レジェンド欠片や大量加速は使わず、<strong>手持ちの募集鍵をDay1とDay3で半分ずつ分割</strong>して274,000pt目標（あるいは最低20,000ptの順位参加ライン）だけ回収して即撤退します。
+          </div>
+        </div>
+        <div class="media-grid" style="margin:0; grid-template-columns: 1fr;">
+          <figure class="media-card fig-bs" data-lightbox="images/bs/03_phase1_points.png" data-title="Day1「実力向上」ポイント条件（実機正本）" data-source="日本語実機 正本スクリーンショット">
+            <div class="media-thumb">
+              <img src="images/bs/03_phase1_points.png" alt="Day1「実力向上」ポイント条件（実機正本）" loading="lazy">
+              <span class="media-badge badge-bs">BS03 Day1</span>
+            </div>
+            <figcaption>
+              <div class="cap-title">Day1「実力向上」ポイント条件（実機正本）</div>
+              <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+            </figcaption>
+          </figure>
+          <figure class="media-card fig-bs" data-lightbox="images/bs/04_phase1_rewards_bottom.png" data-title="Day1 目標報酬 5段階上限 274,000pt（実機正本）" data-source="日本語実機 正本スクリーンショット">
+            <div class="media-thumb">
+              <img src="images/bs/04_phase1_rewards_bottom.png" alt="Day1 目標報酬 5段階上限 274,000pt（実機正本）" loading="lazy">
+              <span class="media-badge badge-bs">BS04 目標報酬</span>
+            </div>
+            <figcaption>
+              <div class="cap-title">Day1 目標報酬 5段階上限 274,000pt（実機正本）</div>
+              <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="phase-panel" id="phase-day2">
+      <div class="phase-badge-row">
+        <span class="pill pill-gold">Day 2：野獣討伐（11/25 09:00 JST〜）</span>
+        <span class="pill pill-green">推奨ムーブ：野獣優先＋Supplies700袋と同時消化</span>
+      </div>
+      <div class="phase-layout">
+        <div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>獲得アクション</th><th>ポイント</th><th>スタミナ効率（実測計算）</th></tr></thead>
+              <tbody>
+                <tr><td>集結発起で巨獣討伐（25スタミナ）</td><td class="num">30,000 pt</td><td><strong>1,200 pt / スタミナ</strong></td></tr>
+                <tr><td>Lv.1〜30 野獣討伐（通常10スタミナ）</td><td class="num">9,900 pt</td><td>990 pt / スタミナ</td></tr>
+                <tr><td>Lv.1〜30 野獣討伐（軽減英雄 8スタミナ）</td><td class="num">9,900 pt</td><td><span class="tag-ok">1,237.5 pt / スタミナ（最高効率）</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="phase-strategy">
+            <strong>KvK無傷ムーブ：</strong>スタミナ軽減英雄を入れて野獣を狩れば<strong>1,237.5pt/スタミナ</strong>で巨獣を上回ります。さらに『Supplies of Plenty』の<strong>野獣討伐上限700袋</strong>をこの日に集中消化すれば一石二鳥です。
+          </div>
+        </div>
+        <div class="media-grid" style="margin:0; grid-template-columns: 1fr;">
+          <figure class="media-card fig-bs" data-lightbox="images/bs/08_phase2_check.png" data-title="Day2「野獣討伐」ポイント条件（巨獣30,000 / 野獣9,900）" data-source="日本語実機 正本スクリーンショット">
+            <div class="media-thumb">
+              <img src="images/bs/08_phase2_check.png" alt="Day2「野獣討伐」ポイント条件（巨獣30,000 / 野獣9,900）" loading="lazy">
+              <span class="media-badge badge-bs">BS08 Day2</span>
+            </div>
+            <figcaption>
+              <div class="cap-title">Day2「野獣討伐」ポイント条件（巨獣30,000 / 野獣9,900）</div>
+              <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="phase-panel" id="phase-day3">
+      <div class="phase-badge-row">
+        <span class="pill pill-gold">Day 3：英雄成長（11/26 09:00 JST〜）</span>
+        <span class="pill pill-green">推奨ムーブ：残り半分の鍵＋小口加速で目標到達</span>
+      </div>
+      <div class="phase-layout">
+        <div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>獲得アクション</th><th>ポイント</th><th>備考</th></tr></thead>
+              <tbody>
+                <tr><td>エピック募集 ×1 / 上級募集 ×1</td><td class="num">11,000 / 3,300 pt</td><td>Day1と同値（残り半分の鍵を投入）</td></tr>
+                <tr><td>欠片（レア / エピック / レジェンド）</td><td class="num">500 / 2,200 / 6,000 pt</td><td>Day1と同値</td></tr>
+                <tr><td>建造・研究・訓練／昇格・マスタースキル加速 1分</td><td class="num">60 pt</td><td>1時間 = <strong>3,600 pt</strong>（<span class="tag-warn">ダイヤ加速対象外</span>）</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="phase-strategy">
+            <strong>KvK無傷ムーブ：</strong>Day1から温存した残り半分の募集鍵で目標を達成します。加速アイテムは1時間=3,600ptと控えめなため、不足分の微調整にとどめKvKへ温存しましょう。
+          </div>
+        </div>
+        <div class="media-grid" style="margin:0; grid-template-columns: 1fr;">
+          <figure class="media-card fig-bs" data-lightbox="images/bs/09_phase3.png" data-title="Day3「英雄成長」募集・欠片条件（実機正本）" data-source="日本語実機 正本スクリーンショット">
+            <div class="media-thumb">
+              <img src="images/bs/09_phase3.png" alt="Day3「英雄成長」募集・欠片条件（実機正本）" loading="lazy">
+              <span class="media-badge badge-bs">BS09 Day3</span>
+            </div>
+            <figcaption>
+              <div class="cap-title">Day3「英雄成長」募集・欠片条件（実機正本）</div>
+              <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+            </figcaption>
+          </figure>
+          <figure class="media-card fig-bs" data-lightbox="images/bs/09b_phase3_bottom.png" data-title="Day3 加速条件詳細（1分=60pt・ダイヤ加速対象外）" data-source="日本語実機 正本スクリーンショット">
+            <div class="media-thumb">
+              <img src="images/bs/09b_phase3_bottom.png" alt="Day3 加速条件詳細（1分=60pt・ダイヤ加速対象外）" loading="lazy">
+              <span class="media-badge badge-bs">BS10 Day3加速</span>
+            </div>
+            <figcaption>
+              <div class="cap-title">Day3 加速条件詳細（1分=60pt・ダイヤ加速対象外）</div>
+              <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 4 -->
+    <div class="phase-panel" id="phase-day4">
+      <div class="phase-badge-row">
+        <span class="pill pill-gold">Day 4：兵士訓練（11/27 09:00 JST〜）</span>
+        <span class="pill pill-green">推奨ムーブ：事前仕込みの自然完了で無傷達成</span>
+      </div>
+      <div class="phase-layout">
+        <div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>兵士レベル（訓練1人あたり）</th><th>ポイント</th><th>昇格ポイント（レベル差）</th></tr></thead>
+              <tbody>
+                <tr><td>Lv.1 / Lv.2 / Lv.3 / Lv.4</td><td class="num">5 / 7 / 10 / 16 pt</td><td>昇格は「昇格後 − 昇格前」の差分</td></tr>
+                <tr><td>Lv.5 / Lv.6 / Lv.7 / Lv.8</td><td class="num">23 / 36 / 50 / 68 pt</td><td>例：Lv.8 → Lv.9 = <strong>22 pt</strong></td></tr>
+                <tr><td>Lv.9 / Lv.10 / Lv.11</td><td class="num">90 / 118 / 140 pt</td><td>Lv.9→10 = <strong>28 pt</strong> / Lv.10→11 = <strong>22 pt</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="phase-strategy">
+            <strong>KvK無傷ムーブ：</strong>前日から訓練を仕込んでおき、Day4に切り替わった直後に回収するだけで加速ゼロでも大きく稼げます。訓練加速はKvK訓練日に温存するのが基本です。
+          </div>
+        </div>
+        <div class="media-grid" style="margin:0; grid-template-columns: 1fr;">
+          <figure class="media-card fig-bs" data-lightbox="images/bs/10_phase4.png" data-title="Day4「兵士訓練」Lv.1〜Lv.7ポイント（実機正本）" data-source="日本語実機 正本スクリーンショット">
+            <div class="media-thumb">
+              <img src="images/bs/10_phase4.png" alt="Day4「兵士訓練」Lv.1〜Lv.7ポイント（実機正本）" loading="lazy">
+              <span class="media-badge badge-bs">BS11 Day4</span>
+            </div>
+            <figcaption>
+              <div class="cap-title">Day4「兵士訓練」Lv.1〜Lv.7ポイント（実機正本）</div>
+              <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+            </figcaption>
+          </figure>
+          <figure class="media-card fig-bs" data-lightbox="images/bs/10b_phase4_bottom.png" data-title="Day4「兵士訓練」Lv.8〜Lv.11・昇格差（実機正本）" data-source="日本語実機 正本スクリーンショット">
+            <div class="media-thumb">
+              <img src="images/bs/10b_phase4_bottom.png" alt="Day4「兵士訓練」Lv.8〜Lv.11・昇格差（実機正本）" loading="lazy">
+              <span class="media-badge badge-bs">BS12 Day4高Lv</span>
+            </div>
+            <figcaption>
+              <div class="cap-title">Day4「兵士訓練」Lv.8〜Lv.11・昇格差（実機正本）</div>
+              <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 5 -->
+    <div class="phase-panel" id="phase-day5">
+      <div class="phase-badge-row">
+        <span class="pill pill-gold">Day 5：英雄装備（11/28 09:00 JST〜）</span>
+        <span class="pill pill-green">推奨ムーブ：VIPショップ等のダイヤ消費を集約＋ハンマー</span>
+      </div>
+      <div class="phase-layout">
+        <div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>獲得アクション</th><th>ポイント</th><th>274,000pt達成の目安</th></tr></thead>
+              <tbody>
+                <tr><td>鍛造ハンマー ×1 消費</td><td class="num">25,000 pt</td><td><strong>11個</strong>で 275,000 pt（目標達成）</td></tr>
+                <tr><td>専用装備対応パーツ ×1 消費</td><td class="num">50,000 pt</td><td><strong>6個</strong>で 300,000 pt（目標達成）</td></tr>
+                <tr><td>ダイヤ ×1 消費</td><td class="num">10 pt</td><td>27,400ダイヤで 274,000 pt</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="phase-strategy">
+            <strong>KvK無傷ムーブ：</strong>VIPショップでの定期購入・VIPポイント・英雄ルーレット等の<strong>どうせ使うダイヤ消費をDay5に集約</strong>すれば、鍛造ハンマーや専用装備パーツを温存しながら目標報酬を回収できます。
+          </div>
+        </div>
+        <div class="media-grid" style="margin:0; grid-template-columns: 1fr;">
+          <figure class="media-card fig-bs" data-lightbox="images/bs/11_phase5.png" data-title="Day5「英雄装備」ハンマー25,000 / 専用パーツ50,000 / ダイヤ10" data-source="日本語実機 正本スクリーンショット">
+            <div class="media-thumb">
+              <img src="images/bs/11_phase5.png" alt="Day5「英雄装備」ハンマー25,000 / 専用パーツ50,000 / ダイヤ10" loading="lazy">
+              <span class="media-badge badge-bs">BS13 Day5</span>
+            </div>
+            <figcaption>
+              <div class="cap-title">Day5「英雄装備」ハンマー25,000 / 専用パーツ50,000 / ダイヤ10</div>
+              <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 6 -->
+    <div class="phase-panel" id="phase-day6">
+      <div class="phase-badge-row">
+        <span class="pill pill-gold">Day 6：資源採集（11/29 09:00 JST〜）</span>
+        <span class="pill pill-green">推奨ムーブ：前夜採集スタート＋通常訓練の自然回収</span>
+      </div>
+      <div class="phase-layout">
+        <div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>獲得アクション</th><th>ポイント</th><th>備考</th></tr></thead>
+              <tbody>
+                <tr><td>パン 1,000 / 木材 1,000 採集</td><td class="num">各 10 pt</td><td>前夜に高Lv資源タイルへ派遣し09:00以降に帰還</td></tr>
+                <tr><td>石材 200 / 鉄鉱 50 採集</td><td class="num">各 10 pt</td><td>採集バフ併用で一気に稼げる</td></tr>
+                <tr><td>建造・研究・訓練／昇格で総力 +1</td><td class="num">1 pt</td><td>通常訓練の回収だけで最低ライン自然達成</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="phase-strategy">
+            <strong>KvK無傷ムーブ：</strong>Day5の夜に全行軍を資源タイルへ送り、Day6（11/29 09:00 JST）以降に帰還させます。通常訓練の回収分と合わせて資材消費ゼロで完走可能です。<strong>※この日の終了時点でPumpkin Smashも終了する点に注意！</strong>
+          </div>
+        </div>
+        <div class="media-grid" style="margin:0; grid-template-columns: 1fr;">
+          <figure class="media-card fig-bs" data-lightbox="images/bs/12_phase6.png" data-title="Day6「資源採集」ポイント条件（実機正本）" data-source="日本語実機 正本スクリーンショット">
+            <div class="media-thumb">
+              <img src="images/bs/12_phase6.png" alt="Day6「資源採集」ポイント条件（実機正本）" loading="lazy">
+              <span class="media-badge badge-bs">BS14 Day6</span>
+            </div>
+            <figcaption>
+              <div class="cap-title">Day6「資源採集」ポイント条件（実機正本）</div>
+              <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 7 -->
+    <div class="phase-panel" id="phase-day7">
+      <div class="phase-badge-row">
+        <span class="pill pill-gold">Day 7：領主装備（11/30 09:00 JST〜）</span>
+        <span class="pill pill-amber">要確認：KvK準備Day1と重複するサーバー多数</span>
+      </div>
+      <div class="phase-layout">
+        <div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>獲得アクション</th><th>ポイント</th><th>備考</th></tr></thead>
+              <tbody>
+                <tr><td>領主装備評価スコア +1</td><td class="num">50 pt</td><td>強化1回で大きく伸びる</td></tr>
+                <tr><td>建造・研究・訓練／昇格・マスタースキル加速 1分</td><td class="num">60 pt</td><td>1時間 = <strong>3,600 pt</strong>（<span class="tag-warn">ダイヤ加速対象外</span>）</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="phase-strategy">
+            <strong>KvKダブル取りチャンス：</strong>多くのサーバーで<strong>Day7（11/30）がKvK準備Day1と重複</strong>するため、加速・領主装備をダブル取りできます（※自サーバーのイベントカレンダーおよびDay7目標上限のサーバー差を必ず事前確認してください）。<strong>また料理のボーナスはDay7に消滅するため要注意！</strong>
+          </div>
+        </div>
+        <div class="media-grid" style="margin:0; grid-template-columns: 1fr;">
+          <figure class="media-card fig-bs" data-lightbox="images/bs/13_phase7.png" data-title="Day7「領主装備」スコア+1=50pt＆加速1分=60pt（実機正本）" data-source="日本語実機 正本スクリーンショット">
+            <div class="media-thumb">
+              <img src="images/bs/13_phase7.png" alt="Day7「領主装備」スコア+1=50pt＆加速1分=60pt（実機正本）" loading="lazy">
+              <span class="media-badge badge-bs">BS15 Day7</span>
+            </div>
+            <figcaption>
+              <div class="cap-title">Day7「領主装備」スコア+1=50pt＆加速1分=60pt（実機正本）</div>
+              <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <!-- REWARDS TABLES -->
+    <h3>目標報酬 ＆ ランキング報酬（日本語実機 正本）</h3>
+    <div class="dual-grid">
+      <div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th colspan="2">Day1 目標報酬（全5段階・実測）</th></tr></thead>
+            <tbody>
+              <tr><td>必要ポイント段階</td><td class="num">26,000 / 55,000 / 98,000 / 169,000 / 274,000 pt</td></tr>
+              <tr><td>5段階 合計報酬</td><td><strong>収穫物の袋 ×170</strong>、ダイヤ 2,000、黄金の鍵 ×1、スキルブック 等</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>フェーズ順位（毎日・上位500名＆20,000pt以上）</th><th>報酬内容</th></tr></thead>
+            <tbody>
+              <tr><td><strong>1位</strong></td><td>ダイヤ <span class="num">14,000</span> ＋ 建造/研究/訓練 1h加速 <strong>各8</strong></td></tr>
+              <tr><td><strong>2位</strong></td><td>ダイヤ <span class="num">8,500</span> ＋ 1h加速 <strong>各7</strong></td></tr>
+              <tr><td><strong>3位</strong></td><td>ダイヤ <span class="num">5,000</span> ＋ 1h加速 <strong>各6</strong></td></tr>
+              <tr><td><strong>4〜10位</strong></td><td>ダイヤ <span class="num">3,000</span> ＋ 1h加速 <strong>各5</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>総ランキング（終了後・上位500名）</th><th>報酬内容</th></tr></thead>
+            <tbody>
+              <tr><td><strong>1位</strong></td><td>レジェンド汎用欠片 <span class="num">100</span> ＋ ダイヤ <span class="num">40,000</span> ＋ 1h加速 各15</td></tr>
+              <tr><td><strong>2位</strong></td><td>汎用欠片 <span class="num">50</span> ＋ ダイヤ <span class="num">24,000</span> ＋ 1h加速 各12</td></tr>
+              <tr><td><strong>3位</strong></td><td>汎用欠片 <span class="num">30</span> ＋ ダイヤ <span class="num">14,400</span> ＋ 1h加速 各10</td></tr>
+              <tr><td><strong>4〜10位</strong></td><td>汎用欠片 <span class="num">20</span> ＋ ダイヤ <span class="num">9,000</span> ＋ 1h加速 各8</td></tr>
+              <tr><td><strong>11〜20位</strong></td><td>汎用欠片 <span class="num">15</span> ＋ ダイヤ <span class="num">5,000</span> ＋ 1h加速 各7</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="media-grid cols-3">
+      <figure class="media-card fig-bs" data-lightbox="images/bs/05_ranking.png" data-title="ランキング画面（フェーズ順位・総順位）" data-source="日本語実機 正本スクリーンショット">
+        <div class="media-thumb">
+          <img src="images/bs/05_ranking.png" alt="ランキング画面（フェーズ順位・総順位）" loading="lazy">
+          <span class="media-badge badge-bs">BS05 順位</span>
+        </div>
+        <figcaption>
+          <div class="cap-title">ランキング画面（フェーズ順位・総順位）</div>
+          <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+        </figcaption>
+      </figure>
+      <figure class="media-card fig-bs" data-lightbox="images/bs/06_phase_rank_rewards.png" data-title="フェーズランキング報酬（1位ダイヤ14,000＋1h加速各8）" data-source="日本語実機 正本スクリーンショット">
+        <div class="media-thumb">
+          <img src="images/bs/06_phase_rank_rewards.png" alt="フェーズランキング報酬（1位ダイヤ14,000＋1h加速各8）" loading="lazy">
+          <span class="media-badge badge-bs">BS06 毎日順位</span>
+        </div>
+        <figcaption>
+          <div class="cap-title">フェーズランキング報酬（1位ダイヤ14,000＋1h加速各8）</div>
+          <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+        </figcaption>
+      </figure>
+      <figure class="media-card fig-bs" data-lightbox="images/bs/07_total_rank_rewards.png" data-title="総ランキング報酬（1位汎用欠片100＋ダイヤ40,000）" data-source="日本語実機 正本スクリーンショット">
+        <div class="media-thumb">
+          <img src="images/bs/07_total_rank_rewards.png" alt="総ランキング報酬（1位汎用欠片100＋ダイヤ40,000）" loading="lazy">
+          <span class="media-badge badge-bs">BS07 総順位</span>
+        </div>
+        <figcaption>
+          <div class="cap-title">総ランキング報酬（1位汎用欠片100＋ダイヤ40,000）</div>
+          <div class="cap-meta"><span>日本語実画面</span><span class="zoom-hint">クリックで拡大</span></div>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- SECTION 3: KVK UNSCATHED ROUTE -->
+  <section id="kvk-route">
+    <div class="sec-header">
+      <span class="sec-num">03</span>
+      <h2>KvK無傷7日間ルート ＆ 重複カレンダー戦略</h2>
+    </div>
+    <p>
+      豊穣の主は「チャーム・ペット・ミスリル・純金（Truegold）」が一切ポイントにならないため、無理に上位を狙うと直後に控えるKvK準備フェーズで完全に息切れします。以下の実践ロードマップなら<strong>KvK資材をほぼ無傷で温存しつつ、毎日170袋の収穫物の袋と目標報酬を全回収</strong>できます。
+    </p>
+
+    <!-- INFOGRAPHIC 1: 7-DAY KVK ROADMAP -->
+    <div class="info-box">
+      <div class="info-box-head">
+        <div class="info-box-title">図解①：7日間「KvK無傷クリア」実践ロードマップ</div>
+        <span class="info-tag">やること ／ 温存 ／ 重複イベント</span>
+      </div>
+      <div class="roadmap-grid">
+        <div class="rm-day">
+          <div class="rm-head"><span class="rm-num">Day 1</span><span class="rm-date">11/24 (火)</span></div>
+          <div class="rm-theme">実力向上</div>
+          <div class="rm-do"><span class="rm-lbl">やること</span>募集鍵の<strong>半分</strong>＋日常建造/研究完了</div>
+          <div class="rm-save"><span class="rm-lbl">温存</span>レジェンド欠片・大量加速</div>
+          <div class="rm-sub"><span class="rm-lbl">重複・補足</span>料理ボーナス開始／パズル開始</div>
+        </div>
+        <div class="rm-day is-overlap">
+          <div class="rm-head"><span class="rm-num">Day 2</span><span class="rm-date">11/25 (水)</span></div>
+          <div class="rm-theme">野獣討伐</div>
+          <div class="rm-do"><span class="rm-lbl">やること</span>軽減英雄で野獣狩り（最高効率1,237.5pt/スタ）</div>
+          <div class="rm-save"><span class="rm-lbl">温存</span>スタミナ缶の過剰消費</div>
+          <div class="rm-sub"><span class="rm-lbl">重複・補足</span>Supplies700袋と同時消化／Pumpkin＆Cabin開始</div>
+        </div>
+        <div class="rm-day">
+          <div class="rm-head"><span class="rm-num">Day 3</span><span class="rm-date">11/26 (木)</span></div>
+          <div class="rm-theme">英雄成長</div>
+          <div class="rm-do"><span class="rm-lbl">やること</span>募集鍵の<strong>残り半分</strong>＋小口加速で微調整</div>
+          <div class="rm-save"><span class="rm-lbl">温存</span>レジェンド欠片・汎用加速</div>
+          <div class="rm-sub"><span class="rm-lbl">重複・補足</span>ダイヤ加速は対象外に注意</div>
+        </div>
+        <div class="rm-day">
+          <div class="rm-head"><span class="rm-num">Day 4</span><span class="rm-date">11/27 (金)</span></div>
+          <div class="rm-theme">兵士訓練</div>
+          <div class="rm-do"><span class="rm-lbl">やること</span>前日仕込みの自然完了＋通常訓練</div>
+          <div class="rm-save"><span class="rm-lbl">温存</span>訓練加速（KvK訓練日へ）</div>
+          <div class="rm-sub"><span class="rm-lbl">重複・補足</span>同盟動員・武装競争との併用◎</div>
+        </div>
+        <div class="rm-day">
+          <div class="rm-head"><span class="rm-num">Day 5</span><span class="rm-date">11/28 (土)</span></div>
+          <div class="rm-theme">英雄装備</div>
+          <div class="rm-do"><span class="rm-lbl">やること</span>VIPショップ等の<strong>定期ダイヤ消費集約</strong>＋ハンマー</div>
+          <div class="rm-save"><span class="rm-lbl">温存</span>専用装備パーツの過剰消費</div>
+          <div class="rm-sub"><span class="rm-lbl">重複・補足</span>夜にDay6用の資源採集を出発</div>
+        </div>
+        <div class="rm-day is-warn">
+          <div class="rm-head"><span class="rm-num">Day 6</span><span class="rm-date">11/29 (日)</span></div>
+          <div class="rm-theme">資源採集</div>
+          <div class="rm-do"><span class="rm-lbl">やること</span>前夜採集帰還＋通常訓練回収＋<strong>ボーナス料理消化</strong></div>
+          <div class="rm-save"><span class="rm-lbl">温存</span>加速全般</div>
+          <div class="rm-sub"><span class="rm-lbl">重要期限</span><strong>Pumpkin Smash終了／ボーナス料理最終日！</strong></div>
+        </div>
+        <div class="rm-day is-overlap">
+          <div class="rm-head"><span class="rm-num">Day 7</span><span class="rm-date">11/30 (月)</span></div>
+          <div class="rm-theme">領主装備</div>
+          <div class="rm-do"><span class="rm-lbl">やること</span>KvK準備Day1重複鯖は<strong>加速＆領主装備ダブル取り</strong></div>
+          <div class="rm-save"><span class="rm-lbl">注意</span>料理ボーナス消滅（端数消化のみ）</div>
+          <div class="rm-sub"><span class="rm-lbl">重複・補足</span>KvK準備Day1重複確認／Cabin最終日</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>日程</th><th>フェーズ</th><th>KvK無傷ムーブ（やること）</th><th>温存すべき資材</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>11/24 (Day1)</strong></td><td>実力向上</td><td>募集鍵の<strong>半分</strong>を使用＋日常建造/研究完了</td><td>レジェンド欠片・大量加速</td></tr>
+          <tr><td><strong>11/25 (Day2)</strong></td><td>野獣討伐</td><td>軽減英雄で野獣狩り（<strong>Supplies700袋と同時消化</strong>）</td><td>スタミナ缶の過剰消費</td></tr>
+          <tr><td><strong>11/26 (Day3)</strong></td><td>英雄成長</td><td>募集鍵の<strong>残り半分</strong>を使用＋必要最小限の小口加速</td><td>レジェンド欠片・汎用加速</td></tr>
+          <tr><td><strong>11/27 (Day4)</strong></td><td>兵士訓練</td><td>前日仕込みの自然完了＋通常訓練</td><td>訓練加速（KvK訓練日へ）</td></tr>
+          <tr><td><strong>11/28 (Day5)</strong></td><td>英雄装備</td><td>VIPショップ等の<strong>定期ダイヤ消費を集約</strong>＋必要分の鍛造ハンマー</td><td>専用装備パーツの過剰消費</td></tr>
+          <tr><td><strong>11/29 (Day6)</strong></td><td>資源採集</td><td>前夜採集帰還＋通常訓練回収（<strong>※Pumpkin Smash最終日</strong>）</td><td>加速全般</td></tr>
+          <tr><td><strong>11/30 (Day7)</strong></td><td>領主装備</td><td><strong>KvK準備Day1と重複するサーバーは加速ダブル取り</strong>（※要カレンダー確認）</td><td>※Day7目標上限の鯖差に注意</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 4: COOKING, SUPPLIES & F2P TRICK -->
+  <section id="cooking">
+    <div class="sec-header">
+      <span class="sec-num">04</span>
+      <h2>料理イベント（豊穣大集結）＆ Supplies ＆ 無課金最強裏技</h2>
+    </div>
+
+    <!-- ART BANNER 1: FEAST COOKING BONUS -->
+    <div class="art-banner">
+      <div class="art-banner-img" data-lightbox="images/art/feast_cooking_bonus.jpg" data-title="豊穣大集結（料理イベント）Day1〜6ボーナス集中戦略" data-source="攻略ガイド 特製ビジュアル">
+        <img src="images/art/feast_cooking_bonus.jpg" alt="豊穣大集結 料理ボーナスイメージ" loading="lazy">
+        <span class="art-banner-badge">料理ボーナス戦略 · 拡大可</span>
+      </div>
+      <div class="art-banner-body">
+        <h4>① 料理の鉄則：Day1〜6のボーナス料理のみ提出（Day7はボーナスなし！）</h4>
+        <p>
+          食材4個で料理1品を作り提出します。通常料理は<strong>40pt</strong>ですが、Day1〜6は毎日2種類が<strong>ボーナス料理（+25%、40pt→50pt）</strong>に指定されます。
+          <strong>Day7（11/30）はボーナス料理が存在しない</strong>ため、最終日にまとめて料理するのは大損です。
+        </p>
+        <ul class="art-key-list">
+          <li>Day1〜6の間に、その日のボーナス対象2品に絞って食材を集中消費</li>
+          <li>イベント終了時に余った食材や袋は<strong>Lv.2資源箱へ劣化変換</strong>される</li>
+          <li>Day6までに主力食材を消化し、Day7は端数処理だけに留めるのが最適解</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- INFOGRAPHIC 2: COOKING BONUS COMPARISON CHART -->
+    <div class="info-box">
+      <div class="info-box-head">
+        <div class="info-box-title">図解②：Day1〜6 ボーナス料理（+25%） vs Day7 ボーナスなしの罠</div>
+        <span class="info-tag">効率＆必要食材数 視覚比較</span>
+      </div>
+      <div class="cook-compare">
+        <div class="cook-panel">
+          <h4>料理1品（食材4個）あたりの獲得ポイント</h4>
+          <div class="bar-row">
+            <div class="bar-meta"><span><strong>Day 1〜6 ボーナス対象（2品/日）</strong></span><span class="num">50 pt（+25%）</span></div>
+            <div class="bar-track"><div class="bar-fill bar-gold" style="width: 100%;">50 pt</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>通常料理 ／ <strong>Day 7（ボーナス消滅）</strong></span><span style="color:#ff9c9c;font-weight:700;">40 pt（-20%損）</span></div>
+            <div class="bar-track"><div class="bar-fill bar-gray" style="width: 80%;">40 pt</div></div>
+          </div>
+          <div class="cook-note">
+            <strong>結論：</strong>Day7まで溜め込んで一括提出すると、ボーナス+10ptをすべて取りこぼし<strong>ポイント効率が20%低下</strong>します。必ずDay6までに主力食材をボーナス料理へ投入してください。
+          </div>
+        </div>
+        <div class="cook-panel">
+          <h4>恒久都市スキン（125,000pt）到達に必要な食材数</h4>
+          <div class="bar-row">
+            <div class="bar-meta"><span><strong>ボーナス料理のみ（2,500品）</strong></span><span style="color:#7ee3bc;font-weight:800;">約 10,000 個</span></div>
+            <div class="bar-track"><div class="bar-fill bar-green" style="width: 80%;">10,000個</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-meta"><span>通常料理のみ（3,125品）</span><span style="color:#ff9c9c;font-weight:800;">約 12,500 個（+2,500個損！）</span></div>
+            <div class="bar-track"><div class="bar-fill bar-red" style="width: 100%;">12,500個</div></div>
+          </div>
+          <div class="cook-note">
+            <strong>2,500個の差：</strong>同じ125,000ptを目指す場合、ボーナス料理を逃すだけで<strong>食材2,500個（料理625品分）ものムダ</strong>が発生します。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ART BANNER 2: ALLIANCE COOPERATION & SUPPLIES -->
+    <div class="art-banner">
+      <div class="art-banner-img" data-lightbox="images/art/alliance_cooperation_gift.jpg" data-title="同盟食材リクエスト往復シャッフル＆Supplies of Plenty" data-source="攻略ガイド 特製ビジュアル">
+        <img src="images/art/alliance_cooperation_gift.jpg" alt="同盟協力 食材リクエストイメージ" loading="lazy">
+        <span class="art-banner-badge">同盟協力＆必須1,000袋 · 拡大可</span>
+      </div>
+      <div class="art-banner-body">
+        <h4>② Supplies of Plenty：採集300袋＋野獣700袋＝1,000袋は必須回収</h4>
+        <p>
+          料理用の食材袋は『Supplies of Plenty』の4ルート（採集・野獣・ダイヤ消費・加速消費）から手に入ります。このうち<strong>資源採集（上限300袋）と野獣討伐（上限700袋）の計1,000袋</strong>は無課金でも必ず上限まで回収すべき必須枠です。
+        </p>
+        <ul class="art-key-list">
+          <li><strong>採集300袋＋野獣700袋＝計1,000袋</strong>はDay2野獣日＆Day6採集日と合わせて効率回収</li>
+          <li>加速枠には<strong>聖剣（Swordland）での治癒加速もカウント</strong>されるため、開催が重なる場合は治癒加速で袋を大量確保可能</li>
+          <li>初回無料配布の食材袋10袋も忘れずに毎日チェック</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>③ 無課金最強裏技：「同盟食材リクエスト・シャッフル」で毎日+500pt</h3>
+
+    <!-- INFOGRAPHIC 3: 3-STEP ALLIANCE SHUFFLE -->
+    <div class="info-box">
+      <div class="info-box-head">
+        <div class="info-box-title">図解③：元手ゼロで毎日+500pt＆300pt宝箱を稼ぐ「往復シャッフル」3ステップ</div>
+        <span class="info-tag">無課金・微課金 必須テク</span>
+      </div>
+      <div class="step-flow">
+        <div class="step-card">
+          <span class="step-badge">STEP 1 · リクエスト＆寄付</span>
+          <div class="step-title">同盟員とペアで余剰食材をリクエスト</div>
+          <div class="step-desc">同盟メンバーと2人1組（または同盟チャット全体）で、手持ちの余剰食材（例：20個）をリクエストし合います。</div>
+        </div>
+        <div class="step-arrow">➜</div>
+        <div class="step-card">
+          <span class="step-badge">STEP 2 · 送り合い＆返し合い</span>
+          <div class="step-title">1個寄付＝10pt（1日上限50個）</div>
+          <div class="step-desc">相手に食材を寄付して<strong>+10pt/個</strong>を獲得。続いて相手からも同じ食材をリクエストしてもらい、受け取った分をそのまま返し合います。</div>
+        </div>
+        <div class="step-arrow">➜</div>
+        <div class="step-card is-result">
+          <span class="step-badge">STEP 3 · 元手0で純増</span>
+          <div class="step-title">毎日 +500pt ＆ 300pt宝箱を無料回収！</div>
+          <div class="step-desc"><strong>手持ち食材を1個も減らさず</strong>毎日+500ptが純増。さらに<strong>300ptごとの宝箱（ダイヤ1万〜3万やチャーム素材等の抽選）</strong>を無料で回収できます！</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: SUB-EVENTS & SCHEDULE -->
+  <section id="subevents">
+    <div class="sec-header">
+      <span class="sec-num">05</span>
+      <h2>サブイベント終了日ズレ ＆ 12/1 豊穣の宴会（Harvest Festival）</h2>
+    </div>
+    <p>
+      豊穣祝典は全コンテンツが同じ日程ではありません。特に<strong>Pumpkin Smash（かぼちゃ割り）の1日早期終了</strong>と、<strong>12/1の1時間限定宴会</strong>は見落としやすいため、以下のタイムラインカレンダーと一覧表を必ず確認してください。
+    </p>
+
+    <!-- INFOGRAPHIC 4: SUB-EVENT TIMELINE CALENDAR -->
+    <div class="info-box">
+      <div class="info-box-head">
+        <div class="info-box-title">図解④：サブイベント終了日ズレ注意カレンダー（11/24 〜 12/1）</div>
+        <span class="info-tag">期限見落とし防止タイムライン</span>
+      </div>
+      <div class="gantt-wrap">
+        <table class="gantt-table">
+          <thead>
+            <tr>
+              <th>イベント名</th>
+              <th>11/24<br>(火)</th>
+              <th>11/25<br>(水)</th>
+              <th>11/26<br>(木)</th>
+              <th>11/27<br>(金)</th>
+              <th>11/28<br>(土)</th>
+              <th>11/29<br>(日)</th>
+              <th>11/30<br>(月)</th>
+              <th>12/1<br>(火)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>豊穣の主（7フェーズ）</td>
+              <td colspan="7"><div class="g-bar g-gold">11/24 〜 11/30（毎日 09:00 JST 切替）</div></td>
+              <td><span class="g-dim">終了</span></td>
+            </tr>
+            <tr>
+              <td>豊穣大集結（料理）</td>
+              <td colspan="6"><div class="g-bar g-green">Day1〜6：ボーナス料理 +25%（50pt）</div></td>
+              <td><div class="g-bar g-red">ボーナスなし</div></td>
+              <td><span class="g-dim">終了</span></td>
+            </tr>
+            <tr>
+              <td>秋の楽章パズル</td>
+              <td colspan="7"><div class="g-bar g-gold">11/24 〜 11/30（$5パックが全制覇トリガー）</div></td>
+              <td><span class="g-dim">終了</span></td>
+            </tr>
+            <tr>
+              <td>Pumpkin Smash</td>
+              <td><span class="g-dim">開始前</span></td>
+              <td colspan="5"><div class="g-bar g-red">11/25 〜 11/29【メインより1日早く終了！】</div></td>
+              <td><span class="g-dim">終了済</span></td>
+              <td><span class="g-dim">終了済</span></td>
+            </tr>
+            <tr>
+              <td>Lucky Cabin（幸運の小屋）</td>
+              <td><span class="g-dim">開始前</span></td>
+              <td colspan="6"><div class="g-bar g-sky">11/25 〜 11/30（ラッキーマーク交換忘れ厳禁）</div></td>
+              <td><span class="g-dim">終了</span></td>
+            </tr>
+            <tr>
+              <td>豊穣の宴会（Top10同盟）</td>
+              <td colspan="7"><span class="g-dim">同盟ランキング集計期間（途中移籍は参加資格喪失）</span></td>
+              <td><div class="g-bar g-red">1時間限定</div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ART BANNER 3: ROYAL BANQUET DEC 1 -->
+    <div class="art-banner">
+      <div class="art-banner-img" data-lightbox="images/art/royal_banquet_dec1.jpg" data-title="12/1 豊穣の宴会（Harvest Festival）1時間限定・オンライン参加必須" data-source="攻略ガイド 特製ビジュアル">
+        <img src="images/art/royal_banquet_dec1.jpg" alt="12/1 豊穣の宴会イメージ" loading="lazy">
+        <span class="art-banner-badge">12/1 1時間限定宴会 · 拡大可</span>
+      </div>
+      <div class="art-banner-body">
+        <h4>12/1「豊穣の宴会」は上位10同盟限定＆オンライン参加必須</h4>
+        <p>
+          同盟ランキング上位10同盟のみが獲得できる特別イベントです。1位は「大宴会」、2〜3位は「中宴会」、4〜10位は「小宴会」を12/1に<strong>1時間限定</strong>で開催でき、宴会テーブルへ部隊を派遣して豪華報酬を受け取ります。
+        </p>
+        <ul class="art-key-list">
+          <li><strong>オンライン参加必須：</strong>開催時刻を逃すと報酬を取り損ねるため同盟チャットで事前共有必須</li>
+          <li><strong>同盟忠誠ロック：</strong>イベント途中で別同盟へ移籍すると、新同盟への料理ポイントが加算されず宴会参加資格も失う</li>
+          <li><strong>Pumpkin Smash（11/29終了）</strong>と<strong>Lucky Cabin交換所（11/30終了）</strong>の消化忘れにも要注意</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>イベント名</th><th>開催期間</th><th>重要仕様・注意点</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>豊穣の主 / 豊穣大集結（料理）</strong></td><td class="num">11/24 〜 11/30</td><td>毎日09:00 JST切替。料理ボーナスはDay1〜6のみ。同盟忠誠ロックあり。</td></tr>
+          <tr><td><strong>秋の楽章パズル（Autumn Anthem）</strong></td><td class="num">11/24 〜 11/30</td><td>縦横ライン達成で宝箱、全制覇で豪華報酬。<strong>$5パック購入が全達成トリガー</strong>。</td></tr>
+          <tr><td><strong>Pumpkin Smash（かぼちゃ割り）</strong></td><td class="num"><span class="tag-warn">11/25 〜 11/29</span></td><td><strong>メインより1日早く終了！</strong> 矢・チャレンジの消化忘れ厳禁。</td></tr>
+          <tr><td><strong>Lucky Cabin（幸運の小屋）</strong></td><td class="num">11/25 〜 11/30</td><td>願いの券で抽選＆ラッキーマーク交換所。最終日までに交換完了。</td></tr>
+          <tr><td><strong>豊穣の宴会（Harvest Festival）</strong></td><td class="num"><span class="tag-warn">12/1（1時間限定）</span></td><td>同盟順位<strong>上位10同盟</strong>のみ開催（1位大宴会 / 2-3位中宴会 / 4-10位小宴会）。<strong>オンライン参加必須</strong>・途中移籍者は資格喪失。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 6: SPENDING & CITY SKIN -->
+  <section id="spending">
+    <div class="sec-header">
+      <span class="sec-num">06</span>
+      <h2>課金パック評価比較 ＆ 永久都市スキン 125,000pt 計算</h2>
+    </div>
+
+    <!-- ART BANNER 4: AUTUMN CITY SKIN -->
+    <div class="art-banner">
+      <div class="art-banner-img" data-lightbox="images/art/autumn_city_skin_showcase.jpg" data-title="恒久都市スキン（125,000pt確定）＆課金パック評価ガイド" data-source="攻略ガイド 特製ビジュアル">
+        <img src="images/art/autumn_city_skin_showcase.jpg" alt="秋の永久都市スキン イメージ" loading="lazy">
+        <span class="art-banner-badge">永久都市スキン 125,000pt · 拡大可</span>
+      </div>
+      <div class="art-banner-body">
+        <h4>① 迷ったらこれ一択の最強コスパ：「$5パック」</h4>
+        <p>
+          無課金〜微課金から重課金まで一致して最優先に挙げられるのが<strong>$5パック</strong>です。パック自体の食材・選択箱に加え、<strong>「秋の楽章（Autumn Anthem）」パズルの課金マスを解放して盤面全制覇トリガー</strong>になるため、純金（Truegold）・食材袋・スキン交換トークン等の総合リターンが突出しています。
+        </p>
+        <ul class="art-key-list">
+          <li><strong>微課金の最適解：</strong>$5パック1点買いでパズル全制覇の豪華報酬を丸ごと回収</li>
+          <li><strong>永久都市スキン確定：</strong>125,000pt（または個人ランキング上位10位）がゴール</li>
+          <li>ボーナス料理（50pt）に絞れば必要食材を<strong>12,500個→約10,000個</strong>へ圧縮可能</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>② 恒久都市スキン（125,000pt）の必要食材数と課金目安</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>項目</th><th>実測数値・計算根拠</th></tr></thead>
+        <tbody>
+          <tr><td><strong>恒久都市スキン 確定ライン</strong></td><td class="num">125,000 pt（または個人ランキング上位10位）</td></tr>
+          <tr><td>ボーナス料理のみ（50pt/4食材）</td><td><strong>2,500品 ＝ 食材 約10,000個</strong></td></tr>
+          <tr><td>通常料理のみ（40pt/4食材）</td><td>3,125品 ＝ 食材 約12,500個（2,500個も損！）</td></tr>
+          <tr><td>課金総額の目安</td><td class="num">約 $300 〜 $500（無料回収分・Supplies・同盟シャッフル併用前提）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>③ 高額パック評価の視点比較（プレイスタイル別）</h3>
+    <div class="dual-grid">
+      <div class="opinion-box" style="border-top: 3px solid var(--crimson);">
+        <h4 style="color: #ff9c9c;">慎重派（無課金・微課金目線）</h4>
+        <ul>
+          <li>永久都市スキン確定（125,000pt）は<strong>完全な重課金（ホエール）向け</strong>。中途半端に数万円入れてもスキンには届かず、達成感が薄くなりやすい。</li>
+          <li>純粋な育成効率だけで見れば他の大型イベントに譲る側面もあるため、無理な追い課金は避けるのが無難。</li>
+          <li>買うならパズル全達成トリガーになる<strong>$5パック1点買い</strong>で止めるのが最も堅実で高コスパ。</li>
+        </ul>
+      </div>
+      <div class="opinion-box" style="border-top: 3px solid var(--emerald);">
+        <h4 style="color: #7ee3bc;">積極派（純金・チャーム育成重視・中課金以上目線）</h4>
+        <ul>
+          <li>段階パックに含まれる<strong>カスタム選択箱（Harvest Custom Chest）</strong>で、最優先素材の<strong>純金（Truegold）やチャーム設計図・ガイド</strong>をピンポイント補強できる点が優秀。</li>
+          <li>料理提出で大量に開く<strong>300ptごとの宝箱からダイヤ還元</strong>が返ってくるため、実質コストは見た目より軽い。</li>
+          <li>永久都市スキンを狙う層や、純金・チャームを一気に伸ばしたい中〜重課金層には十分検討価値のある良イベント。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: JAPANESE REAL SCREENSHOTS QUICK GALLERY (15 IMAGES) -->
+  <section id="gallery">
+    <div class="sec-header">
+      <span class="sec-num">07</span>
+      <h2>日本語実画面クイック一覧（全15枚）</h2>
+    </div>
+    <p>
+      本攻略ガイドの正本データ根拠となっている<strong>日本語実機スクリーンショット全15枚</strong>を一覧で素早く確認できます。カテゴリで絞り込み、任意のカードをクリックすると高解像度ライトボックスで拡大・前後送り閲覧が可能です。
+    </p>
+
+    <div class="filter-panel" id="catFilters">
+      <span class="filter-label">絞り込み</span>
+      <button class="filter-btn active" data-cat="ALL">すべて (15)</button>
+      <button class="filter-btn" data-cat="基本・順位">基本仕様・ランキング報酬 (5)</button>
+      <button class="filter-btn" data-cat="前半フェーズ">Day1〜Day3 条件＆目標 (5)</button>
+      <button class="filter-btn" data-cat="後半フェーズ">Day4〜Day7 条件 (5)</button>
+    </div>
+
+    <div class="archive-count">表示中：<strong id="archiveCount">15</strong> / 15 枚（すべて日本語実機正本）</div>
+    <div class="archive-grid" id="archiveGrid"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div>『Kingshot（キングショット）』豊穣祝典／豊穣の主 完全攻略ガイド（2026年11月・完全日本語版）</div>
+  <div style="margin-top:4px;">正本データ：日本語実機 15枚完全実測 ／ 特製ビジュアル5枚・日本語インフォグラフィック図解フル収録</div>
+</footer>
+
+<!-- LIGHTBOX MODAL -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lb-box">
+    <div class="lb-head">
+      <div class="lb-title" id="lbTitle"></div>
+      <button class="lb-close" id="lbClose">✕ 閉じる (ESC)</button>
+    </div>
+    <div class="lb-body">
+      <button class="lb-nav lb-prev" id="lbPrev" aria-label="前へ">‹</button>
+      <img id="lbImg" src="" alt="">
+      <button class="lb-nav lb-next" id="lbNext" aria-label="次へ">›</button>
+    </div>
+    <div class="lb-foot">
+      <span id="lbSource"></span>
+      <span>左右キー（← / →）で画像切替 ・ ESCまたは背景クリックで閉じる</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // 1. Phase Tabs
+  const phaseBtns = document.querySelectorAll('.phase-btn');
+  const phasePanels = document.querySelectorAll('.phase-panel');
+  phaseBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-phase');
+      phaseBtns.forEach(b => b.classList.remove('active'));
+      phasePanels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const panel = document.getElementById('phase-' + target);
+      if (panel) panel.classList.add('active');
+    });
+  });
+
+  // 2. Japanese Real Screenshots Quick Gallery (15 images)
+  const GALLERY_DATA = [
+    { id: "BS01", src: "images/bs/01_initial.png", cat: "基本・順位", title: "豊穣の主 トップ画面（開催期間 11/24〜11/30）" },
+    { id: "BS02", src: "images/bs/02_help.png", cat: "基本・順位", title: "豊穣の主 イベントルール・基本仕様" },
+    { id: "BS03", src: "images/bs/03_phase1_points.png", cat: "前半フェーズ", title: "Day1「実力向上」ポイント獲得条件（総力・募集・欠片）" },
+    { id: "BS04", src: "images/bs/04_phase1_rewards_bottom.png", cat: "前半フェーズ", title: "Day1 目標報酬（全5段階・上限274,000pt）" },
+    { id: "BS05", src: "images/bs/05_ranking.png", cat: "基本・順位", title: "ランキング画面（フェーズ順位・総順位タブ）" },
+    { id: "BS06", src: "images/bs/06_phase_rank_rewards.png", cat: "基本・順位", title: "フェーズランキング報酬（毎日・上位500名＆20,000pt以上）" },
+    { id: "BS07", src: "images/bs/07_total_rank_rewards.png", cat: "基本・順位", title: "総ランキング報酬（1位レジェンド汎用欠片100＋ダイヤ40,000）" },
+    { id: "BS08", src: "images/bs/08_phase2_check.png", cat: "前半フェーズ", title: "Day2「野獣討伐」ポイント獲得条件（巨獣30,000 / 野獣9,900）" },
+    { id: "BS09", src: "images/bs/09_phase3.png", cat: "前半フェーズ", title: "Day3「英雄成長」ポイント獲得条件（募集・欠片・加速）" },
+    { id: "BS10", src: "images/bs/09b_phase3_bottom.png", cat: "前半フェーズ", title: "Day3「英雄成長」加速条件詳細（1分=60pt・ダイヤ加速対象外）" },
+    { id: "BS11", src: "images/bs/10_phase4.png", cat: "後半フェーズ", title: "Day4「兵士訓練」ポイント獲得条件（Lv.1〜Lv.7）" },
+    { id: "BS12", src: "images/bs/10b_phase4_bottom.png", cat: "後半フェーズ", title: "Day4「兵士訓練」ポイント獲得条件（Lv.8〜Lv.11・昇格差）" },
+    { id: "BS13", src: "images/bs/11_phase5.png", cat: "後半フェーズ", title: "Day5「英雄装備」ポイント獲得条件（ハンマー25,000 / 専用パーツ50,000 / ダイヤ10）" },
+    { id: "BS14", src: "images/bs/12_phase6.png", cat: "後半フェーズ", title: "Day6「資源採集」ポイント獲得条件（資源採集＋総力+1）" },
+    { id: "BS15", src: "images/bs/13_phase7.png", cat: "後半フェーズ", title: "Day7「領主装備」ポイント獲得条件（領主装備スコア+1=50pt＋加速1分=60pt）" }
+  ];
+
+  const archiveGrid = document.getElementById('archiveGrid');
+  const archiveCount = document.getElementById('archiveCount');
+  let curCat = 'ALL';
+
+  function renderGallery() {
+    const filtered = GALLERY_DATA.filter(item => curCat === 'ALL' || item.cat === curCat);
+    archiveCount.textContent = filtered.length;
+    archiveGrid.innerHTML = filtered.map(item => `
+      <figure class="media-card fig-bs" data-lightbox="${item.src}" data-title="[${item.id}] ${item.title}" data-source="日本語実機 正本 · ${item.cat}">
+        <div class="media-thumb">
+          <img src="${item.src}" alt="${item.title}" loading="lazy">
+          <span class="media-badge badge-bs">${item.id}</span>
+        </div>
+        <figcaption>
+          <div class="cap-title">${item.title}</div>
+          <div class="cap-meta"><span>${item.cat}</span><span class="zoom-hint">クリックで拡大</span></div>
+        </figcaption>
+      </figure>
+    `).join('');
+  }
+
+  document.querySelectorAll('#catFilters .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#catFilters .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      curCat = btn.getAttribute('data-cat');
+      renderGallery();
+    });
+  });
+
+  renderGallery();
+
+  // 3. Universal Lightbox
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbTitle = document.getElementById('lbTitle');
+  const lbSource = document.getElementById('lbSource');
+  const lbClose = document.getElementById('lbClose');
+  const lbPrev = document.getElementById('lbPrev');
+  const lbNext = document.getElementById('lbNext');
+
+  let lbList = [];
+  let lbIdx = 0;
+
+  function showLightboxItem(idx) {
+    if (!lbList.length) return;
+    lbIdx = (idx + lbList.length) % lbList.length;
+    const el = lbList[lbIdx];
+    lbImg.src = el.getAttribute('data-lightbox');
+    lbTitle.textContent = el.getAttribute('data-title') || '';
+    lbSource.textContent = (el.getAttribute('data-source') || '') + ` (${lbIdx + 1} / ${lbList.length})`;
+  }
+
+  document.addEventListener('click', e => {
+    const card = e.target.closest('[data-lightbox]');
+    if (!card) return;
+    const parentGrid = card.closest('.media-grid, .archive-grid') || document;
+    lbList = Array.from(parentGrid.querySelectorAll('[data-lightbox]'));
+    const idx = lbList.indexOf(card);
+    showLightboxItem(idx >= 0 ? idx : 0);
+    lb.classList.add('open');
+  });
+
+  function closeLb() { lb.classList.remove('open'); }
+  lbClose.addEventListener('click', closeLb);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+  lbPrev.addEventListener('click', () => showLightboxItem(lbIdx - 1));
+  lbNext.addEventListener('click', () => showLightboxItem(lbIdx + 1));
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowLeft') showLightboxItem(lbIdx - 1);
+    if (e.key === 'ArrowRight') showLightboxItem(lbIdx + 1);
+  });
+})();
+</script>
+</body>
+</html>
