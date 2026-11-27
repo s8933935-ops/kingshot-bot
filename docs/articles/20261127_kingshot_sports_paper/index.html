@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>キンショスポーツ 特別号外｜日本語キングショットYouTube界隈「8大勢力」総力特集！</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Yuji+Boku&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper-bg: #f5f2eb;
+      --paper-card: #fffdf8;
+      --paper-line: #d4cdbd;
+      --ink-black: #121212;
+      --ink-muted: #444038;
+      --news-red: #c9171e;
+      --news-red-dark: #8e0d12;
+      --news-blue: #0f4c81;
+      --news-gold: #c59b27;
+      --news-yellow: #ffe600;
+      --news-green: #1b5e20;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #1a1917;
+      font-family: 'Shippori Mincho', 'Yu Mincho', serif;
+      color: var(--ink-black);
+      padding: 20px 10px 48px;
+      line-height: 1.65;
+    }
+
+    a { color: inherit; }
+
+    .newspaper-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      background-color: var(--paper-bg);
+      background-image:
+        radial-gradient(#e5ded0 14%, transparent 15%),
+        radial-gradient(#e5ded0 14%, transparent 15%);
+      background-size: 56px 56px;
+      background-position: 0 0, 28px 28px;
+      padding: 28px 38px 42px;
+      box-shadow: 0 14px 55px rgba(0,0,0,0.75), 0 0 0 1px #666;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ===== 題字ヘッダー ===== */
+    .header-bar {
+      border-bottom: 4px double var(--ink-black);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      border-bottom: 1px solid var(--paper-line);
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+      color: var(--ink-muted);
+    }
+    .masthead {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .masthead-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .official-logo-mini {
+      height: 54px;
+      width: auto;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+    }
+    .paper-title {
+      font-family: 'Yuji Boku', 'Shippori Mincho', serif;
+      font-size: 54px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1;
+      color: var(--ink-black);
+    }
+    .paper-title .sub-kicker {
+      font-size: 15px;
+      color: var(--news-red);
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 900;
+      letter-spacing: 3px;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .gogai-badge {
+      background: var(--news-red);
+      color: #fff;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 900;
+      font-size: 26px;
+      padding: 8px 22px;
+      border-radius: 4px;
+      letter-spacing: 6px;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px var(--news-red), 0 4px 12px rgba(0,0,0,0.25);
+      transform: rotate(-2deg);
+      white-space: nowrap;
+    }
+
+    /* ===== 一面ヒーロー（公式キービジュアル＋袋文字大見出し） ===== */
+    .front-hero {
+      position: relative;
+      border: 3px solid var(--ink-black);
+      background: #141822;
+      overflow: hidden;
+      margin-bottom: 24px;
+      min-height: 360px;
+      display: flex;
+      align-items: stretch;
+    }
+    .front-hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.42;
+      filter: contrast(1.08) saturate(1.1);
+    }
+    .front-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(12,14,20,0.9) 0%, rgba(12,14,20,0.72) 52%, rgba(12,14,20,0.88) 100%);
+    }
+    .hero-char-left, .hero-char-right {
+      position: relative;
+      z-index: 2;
+      width: 240px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .hero-char-left img, .hero-char-right img {
+      max-height: 350px;
+      max-width: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.75));
+    }
+    .hero-center {
+      position: relative;
+      z-index: 3;
+      flex: 1;
+      padding: 26px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .scoop-ribbon {
+      display: inline-block;
+      background: var(--news-yellow);
+      color: var(--ink-black);
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+      padding: 4px 16px;
+      letter-spacing: 2px;
+      border: 2px solid var(--ink-black);
+      margin-bottom: 12px;
+    }
+    .main-headline {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 900;
+      font-size: clamp(28px, 3.5vw, 44px);
+      line-height: 1.22;
+      color: #ffffff;
+      text-shadow:
+        -2px -2px 0 var(--news-red-dark),
+         2px -2px 0 var(--news-red-dark),
+        -2px  2px 0 var(--news-red-dark),
+         2px  2px 0 var(--news-red-dark),
+         0 5px 14px rgba(0,0,0,0.9);
+      margin-bottom: 12px;
+    }
+    .main-headline .accent-y {
+      color: var(--news-yellow);
+    }
+    .sub-headline {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #f3efe6;
+      background: rgba(201, 23, 30, 0.92);
+      padding: 6px 18px;
+      border: 1px solid rgba(255,255,255,0.4);
+      margin-bottom: 14px;
+      text-wrap: balance;
+    }
+    .hero-lead {
+      font-size: 15px;
+      color: #f0ece2;
+      max-width: 660px;
+      line-height: 1.72;
+    }
+
+    /* ===== セクション見出し（新聞帯） ===== */
+    .section-band {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--ink-black);
+      color: #fff;
+      padding: 8px 16px;
+      margin: 30px 0 16px;
+      border-left: 8px solid var(--news-red);
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+    }
+    .section-band .page-num {
+      background: var(--news-red);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 2px 8px;
+      letter-spacing: 1px;
+    }
+    .section-band h2 {
+      font-size: 21px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== 第2面：2025 vs 2026 スクープボックス ===== */
+    .scoop-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .paper-box {
+      background: var(--paper-card);
+      border: 2px solid var(--ink-black);
+      padding: 18px 20px;
+      position: relative;
+    }
+    .paper-box h3 {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--news-red);
+      border-bottom: 2px solid var(--ink-black);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+    .bar-chart {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+    }
+    .bar-row-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .bar-track {
+      background: #e5dfd2;
+      height: 22px;
+      border: 1px solid #999;
+      position: relative;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .bar-red { background: linear-gradient(90deg, #b71c1c, #e53935); }
+    .bar-blue { background: linear-gradient(90deg, #0d47a1, #1976d2); }
+    .bar-gold { background: linear-gradient(90deg, #8d6e10, #c59b27); }
+    .bar-green { background: linear-gradient(90deg, #1b5e20, #388e3c); }
+    .bar-gray { background: linear-gradient(90deg, #455a64, #78909c); }
+
+    .official-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .official-strip figure {
+      border: 1px solid var(--ink-black);
+      background: #111;
+      overflow: hidden;
+    }
+    .official-strip img {
+      width: 100%;
+      height: 108px;
+      object-fit: cover;
+      display: block;
+    }
+    .official-strip figcaption {
+      background: var(--ink-black);
+      color: #eee;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 11px;
+      padding: 4px 6px;
+      text-align: center;
+    }
+
+    /* ===== ゴリポン特大フィーチャー帯 ===== */
+    .goripon-feature-banner {
+      border: 3px solid var(--news-blue);
+      background: #0d1b2a;
+      color: #fff;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .goripon-banner-img {
+      width: 100%;
+      max-height: 185px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 3px solid var(--news-gold);
+    }
+    .goripon-banner-body {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 20px;
+      flex-wrap: wrap;
+    }
+    .goripon-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 3px solid var(--news-yellow);
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .goripon-banner-text h4 {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 18px;
+      color: var(--news-yellow);
+      margin-bottom: 4px;
+    }
+    .goripon-banner-text p {
+      font-size: 13px;
+      color: #e0e6ed;
+    }
+
+    /* ===== 第3・4面：8大勢力 選手名鑑カード ===== */
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .player-card {
+      background: var(--paper-card);
+      border: 2px solid var(--ink-black);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 4px 4px 0 rgba(18,18,18,0.12);
+    }
+    .player-card.featured-king {
+      border: 3px solid var(--news-red);
+      box-shadow: 5px 5px 0 rgba(201,23,30,0.22);
+    }
+    .player-header {
+      background: var(--ink-black);
+      color: #fff;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+    }
+    .player-card.featured-king .player-header {
+      background: linear-gradient(90deg, var(--news-red-dark), var(--news-red));
+    }
+    .player-card.featured-blue .player-header {
+      background: linear-gradient(90deg, #0a345a, var(--news-blue));
+    }
+    .player-rank {
+      background: var(--news-yellow);
+      color: var(--ink-black);
+      font-weight: 900;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+    .player-name {
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+    .player-epithet {
+      font-size: 12px;
+      color: #f3e8c0;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+    .hero-emblem {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      background: rgba(255,255,255,0.12);
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.35);
+      flex-shrink: 0;
+    }
+    .player-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: #ebe6da;
+      border-bottom: 1px solid var(--paper-line);
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      text-align: center;
+    }
+    .stat-cell {
+      padding: 6px 4px;
+      border-right: 1px solid var(--paper-line);
+    }
+    .stat-cell:last-child { border-right: none; }
+    .stat-label {
+      display: block;
+      font-size: 10px;
+      color: var(--ink-muted);
+      font-weight: 700;
+    }
+    .stat-val {
+      display: block;
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--ink-black);
+    }
+    .thumb-pair {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      padding: 12px 14px 6px;
+    }
+    .thumb-item {
+      text-decoration: none;
+      display: block;
+      border: 1px solid #bbb;
+      background: #111;
+      overflow: hidden;
+      transition: transform 0.15s ease;
+    }
+    .thumb-item:hover { transform: translateY(-2px); }
+    .thumb-item img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+    .thumb-cap {
+      background: #1c1c1c;
+      color: #eee;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 11px;
+      padding: 4px 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .player-body {
+      padding: 12px 15px 15px;
+      font-size: 14.5px;
+      line-height: 1.72;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .tag-strength {
+      display: inline-block;
+      background: var(--news-green);
+      color: #fff;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 1px 7px;
+      margin-right: 6px;
+      border-radius: 2px;
+    }
+    .tag-growth {
+      display: inline-block;
+      background: var(--news-blue);
+      color: #fff;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 1px 7px;
+      margin-right: 6px;
+      border-radius: 2px;
+    }
+    .recommend-line {
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px dashed var(--paper-line);
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 12px;
+      color: var(--ink-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ch-link-btn {
+      background: var(--news-red);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 2px;
+    }
+
+    /* ===== ゴリポン攻略アーカイブ帯 ===== */
+    .goripon-gallery {
+      background: #fdfaf2;
+      border: 2px solid var(--ink-black);
+      padding: 14px 16px;
+      margin-top: 18px;
+    }
+    .goripon-gallery h4 {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      color: var(--news-blue);
+    }
+    .mini-thumb-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+    }
+    .mini-thumb-row a {
+      text-decoration: none;
+      border: 1px solid #aaa;
+      background: #111;
+      display: block;
+    }
+    .mini-thumb-row img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+    }
+    .mini-thumb-row span {
+      display: block;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 10px;
+      color: #fff;
+      padding: 3px 4px;
+      text-align: center;
+    }
+
+    /* ===== 第5面：サムネ査定コラム＆タイプ別診断 ===== */
+    .thumb-eval-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .thumb-eval-card {
+      background: var(--paper-card);
+      border: 2px solid var(--ink-black);
+      padding: 12px;
+    }
+    .thumb-eval-card .pattern-badge {
+      display: inline-block;
+      background: var(--ink-black);
+      color: var(--news-yellow);
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 2px 8px;
+      margin-bottom: 8px;
+    }
+    .thumb-eval-card img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border: 1px solid #999;
+      margin-bottom: 8px;
+    }
+    .thumb-eval-card h4 {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      margin-bottom: 4px;
+    }
+    .thumb-eval-card p {
+      font-size: 12.5px;
+      color: var(--ink-muted);
+    }
+
+    .diagnosis-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .diag-card {
+      background: #fff9e6;
+      border: 2px solid var(--news-gold);
+      padding: 12px;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+    }
+    .diag-card .diag-type {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--news-red);
+      margin-bottom: 4px;
+    }
+    .diag-card .diag-pick {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--ink-black);
+      margin-bottom: 6px;
+    }
+    .diag-card p {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 12.5px;
+      color: var(--ink-muted);
+    }
+
+    /* ===== 第6面：公式記録室（成績表） ===== */
+    .table-wrap {
+      overflow-x: auto;
+      background: var(--paper-card);
+      border: 2px solid var(--ink-black);
+      margin-bottom: 18px;
+    }
+    table.news-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 12.5px;
+    }
+    table.news-table th {
+      background: var(--ink-black);
+      color: #fff;
+      padding: 8px 8px;
+      text-align: center;
+      font-weight: 900;
+      white-space: nowrap;
+      border-right: 1px solid #333;
+    }
+    table.news-table td {
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--paper-line);
+      border-right: 1px solid var(--paper-line);
+      text-align: right;
+      white-space: nowrap;
+    }
+    table.news-table td:first-child,
+    table.news-table td:nth-child(2) {
+      text-align: left;
+      font-weight: 700;
+    }
+    table.news-table tr.row-highlight {
+      background: #fff4d6;
+    }
+    table.news-table tr:nth-child(even):not(.row-highlight) {
+      background: #f8f5ee;
+    }
+    .num-strong { color: var(--news-red); font-weight: 900; }
+
+    /* ===== 巻末・編集後記＆クレジット ===== */
+    .finale-box {
+      background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
+      color: #f5f2eb;
+      border: 3px solid var(--news-gold);
+      padding: 22px 26px;
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 20px;
+      align-items: center;
+      margin-top: 24px;
+    }
+    .finale-box h3 {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 22px;
+      color: var(--news-yellow);
+      margin-bottom: 10px;
+    }
+    .finale-box p {
+      font-size: 14px;
+      line-height: 1.75;
+      margin-bottom: 8px;
+    }
+    .finale-img-wrap {
+      text-align: center;
+    }
+    .finale-img-wrap img {
+      max-width: 100%;
+      max-height: 190px;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.6));
+    }
+
+    .credits-footer {
+      margin-top: 22px;
+      padding-top: 12px;
+      border-top: 2px solid var(--ink-black);
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-size: 11.5px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+
+    @media (max-width: 960px) {
+      .newspaper-container { padding: 18px 16px 32px; }
+      .hero-char-left, .hero-char-right { display: none; }
+      .scoop-grid, .roster-grid, .thumb-eval-grid, .finale-box { grid-template-columns: 1fr; }
+      .diagnosis-grid { grid-template-columns: repeat(2, 1fr); }
+      .mini-thumb-row { grid-template-columns: repeat(3, 1fr); }
+      .paper-title { font-size: 38px; }
+    }
+    @media (max-width: 560px) {
+      .diagnosis-grid { grid-template-columns: 1fr; }
+      .player-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <main class="newspaper-container">
+
+    <!-- ===== 題字ヘッダー ===== -->
+    <header class="header-bar">
+      <div class="header-meta">
+        <span>2026年（令和8年）11月27日（金）発行｜データ観測：2026-11-27 19:52〜20:30 JST</span>
+        <span>日本語 KingShot YouTube 界隈・全9チャンネル同時点実測スペシャル</span>
+      </div>
+      <div class="masthead">
+        <div class="masthead-left">
+          <img src="assets/official/03_logo_ja.png" alt="キングショット公式ロゴ" class="official-logo-mini">
+          <div class="paper-title">
+            <span class="sub-kicker">KINGSHOT YOUTUBE SPECIAL EDITION</span>
+            キンショスポーツ
+          </div>
+        </div>
+        <div class="gogai-badge">特別号外</div>
+      </div>
+    </header>
+
+    <!-- ===== 一面トップヒーロー ===== -->
+    <section class="front-hero">
+      <img src="assets/official/32_cg_backgrd_h2.jpg" alt="KingShot公式キービジュアル背景" class="front-hero-bg">
+      <div class="front-hero-overlay"></div>
+      <div class="hero-char-left">
+        <img src="assets/official/31_cg_lord_char.png" alt="KingShot公式ロード">
+      </div>
+      <div class="hero-center">
+        <span class="scoop-ribbon">★ 8大勢力・公開データ完全実測＆サムネ視覚査定 ★</span>
+        <h1 class="main-headline">
+          日本語キングショット界隈<br>
+          <span class="accent-y">「8大勢力」</span>総力大解剖!!
+        </h1>
+        <div class="sub-headline">
+          5万再生の絶対王者 × 2026年無双の数理スナイパー × 不屈の三刀流＆個性派職人たち
+        </div>
+        <p class="hero-lead">
+          攻略・検証・速報・Shorts・替え歌・ラジオ・VTuber生配信——。<br>
+          いま日本語のキングショットYouTube界隈がかつてないほど熱い！全公開データと編集部の徹底サムネイル分析をもとに、8大チャンネルそれぞれの「必殺技（強み）」と「今後の伸びしろ」をリスペクト満載でお届けする完全保存版!!
+        </p>
+      </div>
+      <div class="hero-char-right">
+        <img src="assets/official/30_cg_amadeus.png" alt="KingShot公式アマデウス">
+      </div>
+    </section>
+
+    <!-- ===== 第2面：巻頭スクープ（2025 vs 2026） ===== -->
+    <div class="section-band">
+      <span class="page-num">第2面</span>
+      <h2>巻頭スクープ：2025年の「先行伝説」から、2026年は群雄割拠の新時代へ！</h2>
+    </div>
+
+    <section class="scoop-grid">
+      <div class="paper-box">
+        <h3>【2026年 同期間対決】通常動画・再生中央値ランキング（上位6勢力）</h3>
+        <p style="font-size:13.5px; margin-bottom:10px;">
+          2025年5月のリリース初期から戦線を切り拓いた <strong>ヨッピー</strong> さんは、2025年の27本だけで <strong>54.1万再生（中央値19,100回・最大53,325回）</strong> を叩き出した通算66.1万再生の絶対的先駆者。一方、2026年1月以降の同期間比較では、数理攻略特化の <strong>ゴリポン</strong> が中央値 <strong>12,852回</strong> で首位に躍り出た。先行者の切り拓いた土壌に、個性豊かな専門チャンネルが花開いているのが2026年の現在地だ！
+        </p>
+        <div class="bar-chart">
+          <div>
+            <div class="bar-row-label"><span>1位 ゴリポン（2026年 23本・1万超14本）</span><span>中央値 12,852回</span></div>
+            <div class="bar-track"><div class="bar-fill bar-red" style="width: 100%;">12,852回（累計 313,523）</div></div>
+          </div>
+          <div>
+            <div class="bar-row-label"><span>2位 ヨッピー（2026年 18本 ※通算45本は10,586回）</span><span>中央値 5,554回</span></div>
+            <div class="bar-track"><div class="bar-fill bar-blue" style="width: 43.2%;">5,554回（通算累計 660,967）</div></div>
+          </div>
+          <div>
+            <div class="bar-row-label"><span>3位 三毛猫のたまこさん（2026年 標本25本・最多更新）</span><span>中央値 3,398回</span></div>
+            <div class="bar-track"><div class="bar-fill bar-gold" style="width: 26.4%;">3,398回</div></div>
+          </div>
+          <div>
+            <div class="bar-row-label"><span>4位 ひよこひょこひょこ（2026年 3本・最大13,993回）</span><span>中央値 2,929回</span></div>
+            <div class="bar-track"><div class="bar-fill bar-green" style="width: 22.8%;">2,929回</div></div>
+          </div>
+          <div>
+            <div class="bar-row-label"><span>5位 おちゃ（2026年 3本＋Shorts最大11,587回）</span><span>中央値 2,768回</span></div>
+            <div class="bar-track"><div class="bar-fill bar-gray" style="width: 21.5%;">2,768回</div></div>
+          </div>
+          <div>
+            <div class="bar-row-label"><span>6位 マニマニKINGSHOT（2026年 28本・高評価率2.08%）</span><span>中央値 680.5回</span></div>
+            <div class="bar-track"><div class="bar-fill bar-gray" style="width: 9%;">680.5</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paper-box">
+        <h3>KingShot 界隈が盛り上がる「3つの理由」</h3>
+        <p style="font-size:13.5px; margin-bottom:10px;">
+          中世サバイバル×ストラテジーの奥深さゆえに、プレイヤーの知りたいことは「英雄育成」「熊狩り」「聖剣・KVK」「同盟ドラマ」まで多岐にわたる。だからこそ、<strong>攻略専門・速報トーク・三刀流・ラジオ・生配信</strong>のすべてに居場所があり、互いに食い合うのではなく<strong>界隈全体のパイを広げ合っている</strong>のが最大の魅力だ。
+        </p>
+        <div class="official-strip">
+          <figure>
+            <img src="assets/official/09_feature1.png" alt="KingShot公式特徴1">
+            <figcaption>王国建設＆資源戦略</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/official/10_feature2.png" alt="KingShot公式特徴2">
+            <figcaption>英雄育成＆編成の妙</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/official/11_feature3.png" alt="KingShot公式特徴3">
+            <figcaption>同盟戦＆イベント共闘</figcaption>
+          </figure>
+        </div>
+        <p style="font-size:12px; color:#555; margin-top:8px; font-family:'Zen Kaku Gothic New',sans-serif;">
+          ※公式ビジュアル出典：KingShot 日本公式サイト（kingshot.com/ja）
+        </p>
+      </div>
+    </section>
+
+    <!-- ゴリポンチャンネル公式バナー帯 -->
+    <div class="goripon-feature-banner">
+      <img src="assets/goripon/goripon_banner.jpg" alt="ゴリポンチャンネル公式バナー" class="goripon-banner-img">
+      <div class="goripon-banner-body">
+        <img src="assets/goripon/goripon_avatar.jpg" alt="ゴリポンアイコン" class="goripon-avatar">
+        <div class="goripon-banner-text">
+          <h4>【本号企画・編集】ゴリポンチャンネル（@ゴリポン-x1t）より読者の皆さまへ</h4>
+          <p>「同じキングショットを愛する配信者仲間だからこそ、数字とリスペクトで互いの強みを学び合いたい！」——そんな想いから、自チャンネルの弱点も包み隠さず公開し、界隈8大勢力の魅力を全力紹介します！</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 第3・4面：8大勢力 選手名鑑 ===== -->
+    <div class="section-band">
+      <span class="page-num">第3・4面</span>
+      <h2>完全保存版：日本語キングショット「8大勢力」選手名鑑（強み＆伸びしろ）</h2>
+    </div>
+
+    <section class="roster-grid">
+
+      <!-- 1. ヨッピー -->
+      <article class="player-card featured-king">
+        <div class="player-header">
+          <div>
+            <span class="player-rank">通算累計 王者</span>
+            <div class="player-name">① ヨッピー</div>
+            <div class="player-epithet">通算66万再生の絶対的先駆者・総合ゲーム界の重鎮</div>
+          </div>
+          <img src="assets/official/12_hero_jebel.png" alt="英雄ジェベル" class="hero-emblem">
+        </div>
+        <div class="player-stats">
+          <div class="stat-cell"><span class="stat-label">登録者数</span><span class="stat-val">1.89万人</span></div>
+          <div class="stat-cell"><span class="stat-label">KS全本数</span><span class="stat-val">45本</span></div>
+          <div class="stat-cell"><span class="stat-label">KS累計再生</span><span class="stat-val">660,967</span></div>
+          <div class="stat-cell"><span class="stat-label">最大再生</span><span class="stat-val">53,325</span></div>
+        </div>
+        <div class="thumb-pair">
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=o-_pqACpvLE" target="_blank" rel="noopener">
+            <img src="assets/competitors/yoppy_01_o-_pqACpvLE.jpg" alt="ヨッピー1位動画サムネ">
+            <div class="thumb-cap">53,325回｜聖剣争奪！連携が大事！！</div>
+          </a>
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=SrLSDD7uBT4" target="_blank" rel="noopener">
+            <img src="assets/competitors/yoppy_02_SrLSDD7uBT4.jpg" alt="ヨッピー2位動画サムネ">
+            <div class="thumb-cap">47,212回｜この英雄を育てよう！！！</div>
+          </a>
+        </div>
+        <div class="player-body">
+          <p><span class="tag-strength">必殺技（強み）</span><strong>界隈随一のメガヒット製造力と親しみやすさ。</strong>2025年5月から参戦し、3万再生超4本・1万再生超23本を樹立。12分超の長尺を軽快なトークで飽きさせず、専用再生リストやメンバーシップまで基盤も盤石。キャラ顔アップ＋太字サムネの華やかさも抜群。</p>
+          <p><span class="tag-growth">今後の伸びしろ</span>概要欄（中央値29字）とチャプター（0%）が未活用なため、長尺動画に目次を足すだけで検索からのロングテール再生がさらに伸びる余地あり。他タイトルとの掛け持ちゆえ2026年は18本（中央値5,554回）とやや緩やかだが、本気を出せば再爆発の筆頭。</p>
+          <div class="recommend-line">
+            <span>推しポイント：イベントの熱気と王道解説を楽しく追いたい人に！</span>
+            <a class="ch-link-btn" href="https://www.youtube.com/channel/UCfhHmnzbEH1VMmF0hg0fweg" target="_blank" rel="noopener">チャンネルへ →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2. ゴリポン -->
+      <article class="player-card featured-blue">
+        <div class="player-header">
+          <div>
+            <span class="player-rank">2026年 首位</span>
+            <div class="player-name">② ゴリポン</div>
+            <div class="player-epithet">2026年無双の数理スナイパー・外れゼロの精密攻略機</div>
+          </div>
+          <img src="assets/goripon/goripon_avatar.jpg" alt="ゴリポン" class="hero-emblem">
+        </div>
+        <div class="player-stats">
+          <div class="stat-cell"><span class="stat-label">登録者数</span><span class="stat-val">2,590人</span></div>
+          <div class="stat-cell"><span class="stat-label">通常本数</span><span class="stat-val">23本(+S2)</span></div>
+          <div class="stat-cell"><span class="stat-label">通常中央値</span><span class="stat-val">12,852</span></div>
+          <div class="stat-cell"><span class="stat-label">1万再生超</span><span class="stat-val">14本(61%)</span></div>
+        </div>
+        <div class="thumb-pair">
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=TwNqPxmra4g" target="_blank" rel="noopener">
+            <img src="assets/goripon/goripon_01_TwNqPxmra4g.jpg" alt="ゴリポン1位動画サムネ">
+            <div class="thumb-cap">32,827回｜戦闘メカニズム「5つの真実」</div>
+          </a>
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=lSNh4jWUvyw" target="_blank" rel="noopener">
+            <img src="assets/goripon/goripon_02_lSNh4jWUvyw.jpg" alt="ゴリポン2位動画サムネ">
+            <div class="thumb-cap">29,503回｜熊罠1位への数学的戦略</div>
+          </a>
+        </div>
+        <div class="player-body">
+          <p><span class="tag-strength">必殺技（強み）</span><strong>圧倒的な「外さない打率」と界隈唯一のチャプター整備。</strong>通常23本中14本が1万超・最低でも3,114回。3〜8分帯の中央値は14,978回に達し、概要欄541字＆チャプター率56.5%（他7勢力すべて0%）で検索資産を築いた。専業トップの登録効率を誇る。</p>
+          <p><span class="tag-growth">今後の伸びしろ</span>攻略が充実しているぶん「見て満足して閉じる」傾向もあり、コメント交流のさらなる活性化に余地あり。サムネ面では「画面いっぱいの文字設計」「熊系同構図の差別化」、さらにShorts（試作2本・最大9,678回）の本格展開やシリーズ回遊の強化で一段上へ！</p>
+          <div class="recommend-line">
+            <span>推しポイント：数字と検証で確実に強くなりたいガチ攻略派に！</span>
+            <a class="ch-link-btn" href="https://www.youtube.com/channel/UCF1Mn0a3qo0kdVGMYWomU3A" target="_blank" rel="noopener">チャンネルへ →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3. 三毛猫のたまこさん -->
+      <article class="player-card">
+        <div class="player-header">
+          <div>
+            <span class="player-rank">専業最多更新</span>
+            <div class="player-name">③ 三毛猫のたまこさん</div>
+            <div class="player-epithet">不屈の三刀流・通常×Shorts×ライブの専業鉄人</div>
+          </div>
+          <img src="assets/official/20_hero_diana.png" alt="英雄ダイアナ" class="hero-emblem">
+        </div>
+        <div class="player-stats">
+          <div class="stat-cell"><span class="stat-label">登録者数</span><span class="stat-val">1,780人</span></div>
+          <div class="stat-cell"><span class="stat-label">KS専業総数</span><span class="stat-val">127本</span></div>
+          <div class="stat-cell"><span class="stat-label">通常中央値</span><span class="stat-val">3,398*</span></div>
+          <div class="stat-cell"><span class="stat-label">Shorts最大</span><span class="stat-val">11,793</span></div>
+        </div>
+        <div class="thumb-pair">
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=T2SBkEQ7PKg" target="_blank" rel="noopener">
+            <img src="assets/competitors/tamako_01_T2SBkEQ7PKg.jpg" alt="たまこ1位動画サムネ">
+            <div class="thumb-cap">9,796回｜「失われた遺跡」無課金1位</div>
+          </a>
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=h56n8p0mLx8" target="_blank" rel="noopener">
+            <img src="assets/competitors/tamako_02_h56n8p0mLx8.jpg" alt="たまこ2位動画サムネ">
+            <div class="thumb-cap">9,772回｜第8世代の英雄ってどんなもん?</div>
+          </a>
+        </div>
+        <div class="player-body">
+          <p><span class="tag-strength">必殺技（強み）</span><strong>通常59本・Shorts37本・ライブ31本の完全三刀流。</strong>直近30日でも6本投稿と、専業勢の中でダントツの継続力と速報性を誇る。新イベントのShortsで1.1万超を叩き出し、ホーム・再生リスト・X連携も丁寧に整えられている。</p>
+          <p><span class="tag-growth">今後の伸びしろ</span>通常動画は尺中央値16分36秒とボリューム満点な一方、サムネがゲーム画面そのままのことが多く縮小時の引きが控えめ。通常最大9,796回と1万の壁は目の前なので、太文字サムネ＋チャプター導入で大台突破が目前だ。</p>
+          <div class="recommend-line">
+            <span>推しポイント：最新イベントや第8世代情報を毎日追いかけたい人に！</span>
+            <a class="ch-link-btn" href="https://www.youtube.com/channel/UCji01f2ekFEIR1IA9uAuFPA" target="_blank" rel="noopener">チャンネルへ →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 4. オールマイティー -->
+      <article class="player-card">
+        <div class="player-header">
+          <div>
+            <span class="player-rank">エンタメ遊撃</span>
+            <div class="player-name">④ オールマイティー</div>
+            <div class="player-epithet">一撃必殺のエンタメ嗅覚・裏技と事件のストーリーテラー</div>
+          </div>
+          <img src="assets/official/18_hero_chenko.png" alt="英雄チェンコ" class="hero-emblem">
+        </div>
+        <div class="player-stats">
+          <div class="stat-cell"><span class="stat-label">登録者数</span><span class="stat-val">1,820人</span></div>
+          <div class="stat-cell"><span class="stat-label">スキャンKS</span><span class="stat-val">38本</span></div>
+          <div class="stat-cell"><span class="stat-label">最大再生</span><span class="stat-val">15,210</span></div>
+          <div class="stat-cell"><span class="stat-label">コメント率</span><span class="stat-val">0.108%</span></div>
+        </div>
+        <div class="thumb-pair">
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=-M1Don66W4Y" target="_blank" rel="noopener">
+            <img src="assets/competitors/almighty_01_-M1Don66W4Y.jpg" alt="オールマイティー1位">
+            <div class="thumb-cap">15,210回｜まさかの裏技で簡単レベル上げ</div>
+          </a>
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=twFOHUhWON8" target="_blank" rel="noopener">
+            <img src="assets/competitors/almighty_02_twFOHUhWON8.jpg" alt="オールマイティー2位">
+            <div class="thumb-cap">10,109回｜同盟に総攻撃され城が燃やされた</div>
+          </a>
+        </div>
+        <div class="player-body">
+          <p><span class="tag-strength">必殺技（強み）</span><strong>「思わずクリックしたくなる」企画の嗅覚。</strong>裏技や「城が燃やされた」事件系など、数字攻略とは別角度のドラマ性で1万再生超を2本獲得。赤・黄・緑の力強い縁取りサムネと、ツッコミやすい雰囲気でコメント率も高め。</p>
+          <p><span class="tag-growth">今後の伸びしろ</span>2026年分は中央値652回とヒットに波があり、概要欄（31字）・チャプター（0%）のSEO強化や、サムネ内の要素整理が進むと安定打率が大きく向上するポテンシャルあり。</p>
+          <div class="recommend-line">
+            <span>推しポイント：裏技やゲーム内ドラマをエンタメとして楽しみたい人に！</span>
+            <a class="ch-link-btn" href="https://www.youtube.com/channel/UCtaXdbPHHC0ccSXuKYBouQw" target="_blank" rel="noopener">チャンネルへ →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 5. ひよこひょこひょこ -->
+      <article class="player-card">
+        <div class="player-header">
+          <div>
+            <span class="player-rank">注目の怪童</span>
+            <div class="player-name">⑤ ひよこひょこひょこ</div>
+            <div class="player-epithet">登録145人で1.4万再生！最小規模から放つ本格攻略ルーキー</div>
+          </div>
+          <img src="assets/official/21_hero_amane.png" alt="英雄あまね" class="hero-emblem">
+        </div>
+        <div class="player-stats">
+          <div class="stat-cell"><span class="stat-label">登録者数</span><span class="stat-val">145人</span></div>
+          <div class="stat-cell"><span class="stat-label">総動画数</span><span class="stat-val">16本</span></div>
+          <div class="stat-cell"><span class="stat-label">通常最大</span><span class="stat-val">13,993</span></div>
+          <div class="stat-cell"><span class="stat-label">Shorts中央</span><span class="stat-val">7,504</span></div>
+        </div>
+        <div class="thumb-pair">
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=qhR8VQihNYk" target="_blank" rel="noopener">
+            <img src="assets/competitors/hiyoko_01_qhR8VQihNYk.jpg" alt="ひよこ1位">
+            <div class="thumb-cap">13,993回｜英雄装備の強化1軍集中管理術</div>
+          </a>
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=iSJpukGufzE" target="_blank" rel="noopener">
+            <img src="assets/competitors/hiyoko_02_iSJpukGufzE.jpg" alt="ひよこ2位">
+            <div class="thumb-cap">2,929回｜「英雄特訓キャンプ」完全ガイド</div>
+          </a>
+        </div>
+        <div class="player-body">
+          <p><span class="tag-strength">必殺技（強み）</span><strong>登録者比96倍の再生を叩き出す洗練された構成力。</strong>概要欄575字（界隈最長クラス）×タイトル40字×編集部も絶賛した<strong>「NG／OK」左右比較サムネ</strong>という勝ちパターンを初期から確立。Shortsも7,500〜8,600再生と高水準。</p>
+          <p><span class="tag-growth">今後の伸びしろ</span>2026年8月以降は更新が止まっており、チャンネル説明文・ホーム・再生リストも未設定。もし投稿を再開すれば、一気に上位戦線へ食い込む実力派ルーキーだ。</p>
+          <div class="recommend-line">
+            <span>推しポイント：テンポよく要点整理された装備・育成攻略が好きな人に！</span>
+            <a class="ch-link-btn" href="https://www.youtube.com/channel/UCKfXRiMFHZwIRc9jg_Idxjg" target="_blank" rel="noopener">チャンネルへ →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 6. マニマニKINGSHOT -->
+      <article class="player-card">
+        <div class="player-header">
+          <div>
+            <span class="player-rank">熱量 No.1</span>
+            <div class="player-name">⑥ マニマニKINGSHOT</div>
+            <div class="player-epithet">高評価率2.08%・コメント率0.219%の吟遊詩人＆ラジオ職人</div>
+          </div>
+          <img src="assets/official/27_hero_smith.png" alt="英雄スミス" class="hero-emblem">
+        </div>
+        <div class="player-stats">
+          <div class="stat-cell"><span class="stat-label">登録者数</span><span class="stat-val">346人</span></div>
+          <div class="stat-cell"><span class="stat-label">KS全本数</span><span class="stat-val">28本</span></div>
+          <div class="stat-cell"><span class="stat-label">高評価率</span><span class="stat-val">2.08%</span></div>
+          <div class="stat-cell"><span class="stat-label">コメント率</span><span class="stat-val">0.219%</span></div>
+        </div>
+        <div class="thumb-pair">
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=XGKYVghQ48I" target="_blank" rel="noopener">
+            <img src="assets/competitors/manimani_01_XGKYVghQ48I.jpg" alt="マニマニ1位">
+            <div class="thumb-cap">6,848回｜マニマニラジオ②</div>
+          </a>
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=d9RGNpGINY8" target="_blank" rel="noopener">
+            <img src="assets/competitors/manimani_03_d9RGNpGINY8.jpg" alt="マニマニ3位">
+            <div class="thumb-cap">3,058回｜マニマニラジオ③</div>
+          </a>
+        </div>
+        <div class="player-body">
+          <p><span class="tag-strength">必殺技（強み）</span><strong>界隈トップの反応率を生む「歌ネタ×本音ラジオ」の独自路線。</strong>高評価率・コメント率ともに攻略勢の約3倍。黒地＋赤白大文字＋中央の巻物など、一目で感情フックを届けるサムネの思い切りも一流。</p>
+          <p><span class="tag-growth">今後の伸びしろ</span>タイトルが中央値7.5文字と超短文のため新規検索に届きにくい点と、7月以降の更新停止が惜しまれる。ラジオの話題をタイトルに少し添えて復活すれば、界隈のムードメーカーとして再燃必至！</p>
+          <div class="recommend-line">
+            <span>推しポイント：攻略の合間に笑って共感したい・ラジオ好きの人に！</span>
+            <a class="ch-link-btn" href="https://www.youtube.com/channel/UCH9kvRf9FxDJZVW4k_Ib23g" target="_blank" rel="noopener">チャンネルへ →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 7. おちゃ -->
+      <article class="player-card">
+        <div class="player-header">
+          <div>
+            <span class="player-rank">Shorts職人</span>
+            <div class="player-name">⑦ おちゃ</div>
+            <div class="player-epithet">登録100人でShorts1.1万超！実務小ネタのピンポイント職人</div>
+          </div>
+          <img src="assets/official/16_hero_quinn.png" alt="英雄クイン" class="hero-emblem">
+        </div>
+        <div class="player-stats">
+          <div class="stat-cell"><span class="stat-label">登録者数</span><span class="stat-val">100人</span></div>
+          <div class="stat-cell"><span class="stat-label">総動画数</span><span class="stat-val">14本</span></div>
+          <div class="stat-cell"><span class="stat-label">通常中央値</span><span class="stat-val">2,768</span></div>
+          <div class="stat-cell"><span class="stat-label">Shorts最大</span><span class="stat-val">11,587</span></div>
+        </div>
+        <div class="thumb-pair">
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=pWXVYEXYZAE" target="_blank" rel="noopener">
+            <img src="assets/competitors/ocha_01_pWXVYEXYZAE.jpg" alt="おちゃ1位">
+            <div class="thumb-cap">5,422回｜兵士の差し込み（補充）</div>
+          </a>
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=EXgHmbGkB28" target="_blank" rel="noopener">
+            <img src="assets/competitors/ocha_02_EXgHmbGkB28.jpg" alt="おちゃ2位">
+            <div class="thumb-cap">2,768回｜駐屯の差し替え①</div>
+          </a>
+        </div>
+        <div class="player-body">
+          <p><span class="tag-strength">必殺技（強み）</span><strong>「現場で本当に役立つ実務小ネタ」の着眼点。</strong>「集結画面でのUTC表示（11,587回）」「駐屯の差し替え」「兵士の差し込み」など、中級者以上が唸る実践テクを短尺でサクッと届け、14本で総視聴4.7万回を稼ぐ高効率。</p>
+          <p><span class="tag-growth">今後の伸びしろ</span>再生リスト未整備・説明文1行のみのため、小ネタで来た視聴者を登録へ繋ぐ受け皿づくりと、7月末以降の再始動に大きな伸びしろあり。</p>
+          <div class="recommend-line">
+            <span>推しポイント：実戦の細かい操作テクを1分で学びたい人に！</span>
+            <a class="ch-link-btn" href="https://www.youtube.com/channel/UCEQ1T-XG_vMlIpM06NyHd3w" target="_blank" rel="noopener">チャンネルへ →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 8. はちみつ -->
+      <article class="player-card">
+        <div class="player-header">
+          <div>
+            <span class="player-rank">ライブ共闘</span>
+            <div class="player-name">⑧ はちみつ</div>
+            <div class="player-epithet">戦場に響くVTuber生配信・参加型リアルタイム共闘の旗手</div>
+          </div>
+          <img src="assets/official/25_hero_olive.png" alt="英雄オリーブ" class="hero-emblem">
+        </div>
+        <div class="player-stats">
+          <div class="stat-cell"><span class="stat-label">登録者数</span><span class="stat-val">1.02万人</span></div>
+          <div class="stat-cell"><span class="stat-label">KSライブ</span><span class="stat-val">直近8本</span></div>
+          <div class="stat-cell"><span class="stat-label">配信中央値</span><span class="stat-val">555回</span></div>
+          <div class="stat-cell"><span class="stat-label">配信最大</span><span class="stat-val">3,333回</span></div>
+        </div>
+        <div class="thumb-pair">
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=t29Hm5Gv8_I" target="_blank" rel="noopener">
+            <img src="assets/competitors/hachimitsu_01_t29Hm5Gv8_I.jpg" alt="はちみつ1位">
+            <div class="thumb-cap">3,333回｜お試し配信！はちみつVT</div>
+          </a>
+          <a class="thumb-item" href="https://www.youtube.com/watch?v=Fr1AU8EHf34" target="_blank" rel="noopener">
+            <img src="assets/competitors/hachimitsu_02_Fr1AU8EHf34.jpg" alt="はちみつ2位">
+            <div class="thumb-cap">602回｜KVK準備フェーズ最終日…！</div>
+          </a>
+        </div>
+        <div class="player-body">
+          <p><span class="tag-strength">必殺技（強み）</span><strong>攻略動画勢と一切被らない「一緒に戦う生配信」ポジション。</strong>KVK準備や聖剣をリアルタイムでリスナーと盛り上がるVTuberスタイル。Twitch・X・グッズ・メンバーシップまで外部導線の充実度は界隈トップ級。</p>
+          <p><span class="tag-growth">今後の伸びしろ</span>通常動画・Shorts枠がKSでは未展開のため、配信中の名場面や激戦ハイライトをShorts切り抜きにするだけで、配信外の新規プレイヤーとの接点が一気に広がる。</p>
+          <div class="recommend-line">
+            <span>推しポイント：イベントをリアルタイムでワイワイ一緒に楽しみたい人に！</span>
+            <a class="ch-link-btn" href="https://www.youtube.com/channel/UCdXr_3nma8oZDGi85_F3S8w" target="_blank" rel="noopener">チャンネルへ →</a>
+          </div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ゴリポン高再生アーカイブ帯（自チャンネル素材をリッチ活用） -->
+    <div class="goripon-gallery">
+      <h4>★ ゴリポンチャンネル「1万再生超え」人気攻略ギャラリー（一部抜粋・クリックで視聴）</h4>
+      <div class="mini-thumb-row">
+        <a href="https://www.youtube.com/watch?v=EjabrbWRGvY" target="_blank" rel="noopener">
+          <img src="assets/goripon/goripon_03_EjabrbWRGvY.jpg" alt="熊狩りNG行動">
+          <span>21,139回｜熊狩りNG</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=hWwcl9XbPI4" target="_blank" rel="noopener">
+          <img src="assets/goripon/goripon_04_hWwcl9XbPI4.jpg" alt="TG5必要資源">
+          <span>20,988回｜TG5資源</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=hhmt-gXG5zs" target="_blank" rel="noopener">
+          <img src="assets/goripon/goripon_05_hhmt-gXG5zs.jpg" alt="秘境の試練">
+          <span>19,017回｜秘境の試練</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=PE-CgGVYvQU" target="_blank" rel="noopener">
+          <img src="assets/goripon/goripon_06_PE-CgGVYvQU.jpg" alt="釣りイベント">
+          <span>16,772回｜釣り7秘策</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=mVyWDwDnKH8" target="_blank" rel="noopener">
+          <img src="assets/goripon/goripon_07_mVyWDwDnKH8.jpg" alt="三盟争覇戦">
+          <span>16,525回｜三盟争覇戦</span>
+        </a>
+        <a href="https://www.youtube.com/watch?v=teLZQKWMzJI" target="_blank" rel="noopener">
+          <img src="assets/goripon/goripon_08_teLZQKWMzJI.jpg" alt="金の鍵は貯めるな">
+          <span>16,364回｜金の鍵検証</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ===== 第5面：サムネ査定コラム＆タイプ別推し診断 ===== -->
+    <div class="section-band">
+      <span class="page-num">第5面</span>
+      <h2>特別コラム：『編集部のサムネ査定眼』＆ あなたに合う推し配信者診断</h2>
+    </div>
+
+    <div class="thumb-eval-grid">
+      <div class="thumb-eval-card">
+        <span class="pattern-badge">勝利パターン①｜数字×常識否定</span>
+        <img src="assets/goripon/goripon_01_TwNqPxmra4g.jpg" alt="ゴリポン1本目サムネ">
+        <h4>ゴリポン型「具体的な数字と矢印」</h4>
+        <p>「20万兵の絶望」のように大きな数字＋赤い矢印＋結論ワードで問題提起が一瞬で伝わる攻略勢の王道。同系構図を避け余白を詰めればさらに最強へ。</p>
+      </div>
+      <div class="thumb-eval-card">
+        <span class="pattern-badge">勝利パターン②｜NG／OK 左右比較</span>
+        <img src="assets/competitors/hiyoko_01_qhR8VQihNYk.jpg" alt="ひよこ1本目サムネ">
+        <h4>ひよこ型「0.5秒で伝わる比較構造」</h4>
+        <p>画面を左右に割って「ダメな強化 vs 正解」を見せる構造が秀逸。登録145人で1.4万再生を引き寄せた、全攻略勢が参考にしたい視覚設計。</p>
+      </div>
+      <div class="thumb-eval-card">
+        <span class="pattern-badge">勝利パターン③｜要素極小・大文字集中</span>
+        <img src="assets/competitors/manimani_03_d9RGNpGINY8.jpg" alt="マニマニ3本目サムネ">
+        <h4>マニマニ＆ヨッピー型「感情の一点突破」</h4>
+        <p>黒地に赤白の大文字＋中央モチーフ（マニマニ）や、キャラ顔アップ＋短い感嘆詞（ヨッピー）は、スマホ一覧で縮小されても視線を奪う力が抜群。</p>
+      </div>
+    </div>
+
+    <div class="diagnosis-grid">
+      <div class="diag-card">
+        <div class="diag-type">TYPE A｜ガチ攻略・効率重視</div>
+        <div class="diag-pick">ゴリポン ／ ひよこ ／ おちゃ</div>
+        <p>計算された編成・資源効率・実戦の細かいテクをムダなく吸収して同盟のエースになりたいあなたへ！</p>
+      </div>
+      <div class="diag-card">
+        <div class="diag-type">TYPE B｜最新イベント・毎日追いたい</div>
+        <div class="diag-pick">三毛猫のたまこさん</div>
+        <p>通常・Shorts・ライブの三刀流で、新世代英雄やイベントの旬を逃さず追いかけたいあなたへ！</p>
+      </div>
+      <div class="diag-card">
+        <div class="diag-type">TYPE C｜王道トーク＆エンタメ重視</div>
+        <div class="diag-pick">ヨッピー ／ オールマイティー</div>
+        <p>親しみやすい語り口や裏技・事件ネタで、キングショットの熱気を楽しく味わいたいあなたへ！</p>
+      </div>
+      <div class="diag-card">
+        <div class="diag-type">TYPE D｜笑い・共感・ライブ共闘</div>
+        <div class="diag-pick">マニマニ ／ はちみつ</div>
+        <p>替え歌やラジオで笑い合いたい人も、VTuber生配信でKVKを一緒に盛り上がりたい人も大満足！</p>
+      </div>
+    </div>
+
+    <!-- ===== 第6面：公式記録室（成績表） ===== -->
+    <div class="section-band">
+      <span class="page-num">第6面</span>
+      <h2>公式記録室：日本語 KingShot 界隈「横断成績表」（2026-11-27 時点）</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table class="news-table">
+        <thead>
+          <tr>
+            <th>チャンネル</th>
+            <th>立ち位置</th>
+            <th>登録者数</th>
+            <th>KS通常(標本)</th>
+            <th>全期間中央値</th>
+            <th>全期間最大</th>
+            <th>2026年中央値</th>
+            <th>1万超(通算)</th>
+            <th>高評価率</th>
+            <th>コメント率</th>
+            <th>尺(中央)</th>
+            <th>チャプター</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-highlight">
+            <td>ゴリポン</td>
+            <td>KS専業（数理攻略）</td>
+            <td>2,590</td>
+            <td>23本(全)</td>
+            <td class="num-strong">12,852</td>
+            <td>32,827</td>
+            <td class="num-strong">12,852</td>
+            <td>14本(61%)</td>
+            <td>0.76%</td>
+            <td>0.081%</td>
+            <td>6:06</td>
+            <td class="num-strong">56.5%</td>
+          </tr>
+          <tr>
+            <td>ヨッピー</td>
+            <td>総合ゲーム（先駆者）</td>
+            <td class="num-strong">18,900</td>
+            <td>45本(全)</td>
+            <td>10,586</td>
+            <td class="num-strong">53,325</td>
+            <td>5,554</td>
+            <td class="num-strong">23本(51%)</td>
+            <td>0.57%</td>
+            <td>0.097%</td>
+            <td>12:23</td>
+            <td>0.0%</td>
+          </tr>
+          <tr>
+            <td>三毛猫のたまこさん</td>
+            <td>KS専業（三刀流）</td>
+            <td>1,780</td>
+            <td>25本(※1)</td>
+            <td>3,398</td>
+            <td>9,796</td>
+            <td>3,398</td>
+            <td>0本</td>
+            <td>0.63%</td>
+            <td>0.064%</td>
+            <td>16:36</td>
+            <td>0.0%</td>
+          </tr>
+          <tr>
+            <td>ひよこひょこひょこ</td>
+            <td>KS中心（新鋭攻略）</td>
+            <td>145</td>
+            <td>3本</td>
+            <td>2,929</td>
+            <td>13,993</td>
+            <td>2,929</td>
+            <td>1本</td>
+            <td>0.51%</td>
+            <td>0.012%</td>
+            <td>1:55</td>
+            <td>0.0%</td>
+          </tr>
+          <tr>
+            <td>おちゃ</td>
+            <td>KS解説（Shorts多め）</td>
+            <td>100</td>
+            <td>3本</td>
+            <td>2,768</td>
+            <td>5,422</td>
+            <td>2,768</td>
+            <td>0本</td>
+            <td>0.47%</td>
+            <td>未取得</td>
+            <td>4:00</td>
+            <td>0.0%</td>
+          </tr>
+          <tr>
+            <td>オールマイティー</td>
+            <td>総合ゲーム/エンタメ</td>
+            <td>1,820</td>
+            <td>21本(※2)</td>
+            <td>981</td>
+            <td>15,210</td>
+            <td>652</td>
+            <td>2本</td>
+            <td>0.40%</td>
+            <td>0.108%</td>
+            <td>5:59</td>
+            <td>0.0%</td>
+          </tr>
+          <tr>
+            <td>マニマニKINGSHOT</td>
+            <td>KS専業（歌+ラジオ）</td>
+            <td>346</td>
+            <td>28本(全)</td>
+            <td>680.5</td>
+            <td>6,848</td>
+            <td>680.5</td>
+            <td>0本</td>
+            <td class="num-strong">2.08%</td>
+            <td class="num-strong">0.219%</td>
+            <td>1:39</td>
+            <td>0.0%</td>
+          </tr>
+          <tr>
+            <td>はちみつ</td>
+            <td>VTuber（KSライブ専門）</td>
+            <td>10,200</td>
+            <td>配信8本</td>
+            <td>555(配信)</td>
+            <td>3,333(配信)</td>
+            <td>555(配信)</td>
+            <td>0本</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px; color:#444; font-family:'Zen Kaku Gothic New',sans-serif; margin-bottom:14px;">
+      ※1：三毛猫のたまこさんは通常全59本中の最新＋上位25本標本（全59本フラット中央値は2,448.5回、Shorts37本・ライブ31本を別途展開）。※2：オールマイティーはKS38本中の通常21本標本（全フラット通常中央値827回）。※参考枠：Kozy Games（登録者31.8万人）はHero Wars主軸のため表外記載。
+    </p>
+
+    <!-- ===== 巻末・編集後記 ===== -->
+    <section class="finale-box">
+      <div>
+        <h3>編集後記：みんなで日本語キングショット界隈を盛り上げよう！</h3>
+        <p>
+          今回8大勢力を並べて改めて感じたのは、<strong>「誰か一人の独壇場ではなく、それぞれの得意技が噛み合って界隈が面白くなっている」</strong>という事実です。
+        </p>
+        <p>
+          先駆者・ヨッピーさんの熱い開拓があり、たまこさんの毎日の三刀流があり、マニマニさんの笑いとラジオ、はちみつさんのライブ共闘、ひよこさん・おちゃさん・オールマイティーさんの鋭い切り口がある。そしてゴリポンも、サムネ強化・Shorts展開・コメント交流をさらにアップデートして、皆さんと一緒にキングショットをもっともっと盛り上げていきます！ぜひ気になる配信者のチャンネルを覗いてみてください！
+        </p>
+      </div>
+      <div class="finale-img-wrap">
+        <img src="assets/official/05_news_char.png" alt="KingShot公式キャラクター">
+      </div>
+    </section>
+
+    <footer class="credits-footer">
+      <strong>【データ出典・権利表記】</strong><br>
+      ・本記事の数値データは 2026-11-27 19:52〜20:30 JST 時点のYouTube公開ページおよびメタデータ実測値に基づきます。非公開指標（CTR・視聴維持率・インプレッション・収益）は対象外であり、推測による断定は一切行っていません。<br>
+      ・ゲーム画像・ロゴ・英雄イラストの権利は Century Games（KingShot 公式サイト：https://www.kingshot.com/ja / https://www.centurygames.com/games/kingshot/）に帰属します。<br>
+      ・各YouTubeチャンネルのサムネイル画像は、チャンネル紹介および視覚設計の分析を目的として出典リンクを明記のうえ引用しています。
+    </footer>
+
+  </main>
+</body>
+</html>

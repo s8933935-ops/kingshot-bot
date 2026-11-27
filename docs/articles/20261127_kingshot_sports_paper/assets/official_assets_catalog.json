@@ -1,0 +1,362 @@
+[
+  {
+    "file": "01_main_kv_bg.png",
+    "rel_path": "assets/official/01_main_kv_bg.png",
+    "desc": "日本公式サイト メインキービジュアル背景",
+    "width": 750,
+    "height": 1334,
+    "bytes": 274270,
+    "url": "https://www.kingshot.com/_nuxt/bg_1_m.CJ3t51Lf.png",
+    "ok": true
+  },
+  {
+    "file": "02_hero_title_ja.png",
+    "rel_path": "assets/official/02_hero_title_ja.png",
+    "desc": "日本公式サイト ヒーロータイトルビジュアル",
+    "width": 329,
+    "height": 185,
+    "bytes": 59324,
+    "url": "https://www.kingshot.com/_nuxt/ja.DNhqRkm6.png",
+    "ok": true
+  },
+  {
+    "file": "03_logo_ja.png",
+    "rel_path": "assets/official/03_logo_ja.png",
+    "desc": "キングショット 日本語版公式ロゴ",
+    "width": 267,
+    "height": 68,
+    "bytes": 31004,
+    "url": "https://www.kingshot.com/_nuxt/logo-JA.9UbvPKCl.png",
+    "ok": true
+  },
+  {
+    "file": "04_news_pic.png",
+    "rel_path": "assets/official/04_news_pic.png",
+    "desc": "ニュースセクション メインビジュアル",
+    "width": 725,
+    "height": 431,
+    "bytes": 448822,
+    "url": "https://www.kingshot.com/_nuxt/news_pic.B5xwIW9p.png",
+    "ok": true
+  },
+  {
+    "file": "05_news_char.png",
+    "rel_path": "assets/official/05_news_char.png",
+    "desc": "ニュースセクション キャラクターイラスト",
+    "width": 446,
+    "height": 495,
+    "bytes": 238339,
+    "url": "https://www.kingshot.com/_nuxt/news_img1.FAFSBRhX.png",
+    "ok": true
+  },
+  {
+    "file": "06_news_bg.png",
+    "rel_path": "assets/official/06_news_bg.png",
+    "desc": "ニュースセクション 背景画像",
+    "width": 781,
+    "height": 397,
+    "bytes": 19789,
+    "url": "https://www.kingshot.com/_nuxt/news_bg.BNx-ACQt.png",
+    "ok": true
+  },
+  {
+    "file": "07_bg_p3.png",
+    "rel_path": "assets/official/07_bg_p3.png",
+    "desc": "公式サイト セクション3背景",
+    "width": 750,
+    "height": 1334,
+    "bytes": 524420,
+    "url": "https://www.kingshot.com/_nuxt/bg_p3_m.DcZnARP1.png",
+    "ok": true
+  },
+  {
+    "file": "08_bg_p4_orange.jpg",
+    "rel_path": "assets/official/08_bg_p4_orange.jpg",
+    "desc": "SSR英雄プレビュー用 オレンジ背景",
+    "width": 750,
+    "height": 1334,
+    "bytes": 177213,
+    "url": "https://www.kingshot.com/_nuxt/bg_p4_orange_m.B9pu-6Fq.jpg",
+    "ok": true
+  },
+  {
+    "file": "09_feature1.png",
+    "rel_path": "assets/official/09_feature1.png",
+    "desc": "ゲームの特徴 スクショ1",
+    "width": 1031,
+    "height": 606,
+    "bytes": 189722,
+    "url": "https://www.kingshot.com/_nuxt/feature1.DmoRAWnN.png",
+    "ok": true
+  },
+  {
+    "file": "10_feature2.png",
+    "rel_path": "assets/official/10_feature2.png",
+    "desc": "ゲームの特徴 スクショ2",
+    "width": 1031,
+    "height": 606,
+    "bytes": 170517,
+    "url": "https://www.kingshot.com/_nuxt/feature2.UttadvAH.png",
+    "ok": true
+  },
+  {
+    "file": "11_feature3.png",
+    "rel_path": "assets/official/11_feature3.png",
+    "desc": "ゲームの特徴 スクショ3",
+    "width": 1031,
+    "height": 606,
+    "bytes": 157319,
+    "url": "https://www.kingshot.com/_nuxt/feature3.DJnFpG9o.png",
+    "ok": true
+  },
+  {
+    "file": "12_hero_jebel.png",
+    "rel_path": "assets/official/12_hero_jebel.png",
+    "desc": "英雄立ち絵：ジェベル",
+    "width": 912,
+    "height": 896,
+    "bytes": 574423,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.dc-IbvZz.png",
+    "ok": true
+  },
+  {
+    "file": "13_hero_ssr1.png",
+    "rel_path": "assets/official/13_hero_ssr1.png",
+    "desc": "英雄立ち絵：SSR1",
+    "width": 912,
+    "height": 896,
+    "bytes": 388127,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.BnAgk3oD.png",
+    "ok": true
+  },
+  {
+    "file": "14_hero_ssr2.png",
+    "rel_path": "assets/official/14_hero_ssr2.png",
+    "desc": "英雄立ち絵：SSR2",
+    "width": 912,
+    "height": 896,
+    "bytes": 573560,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.Bnn9Nkwm.png",
+    "ok": true
+  },
+  {
+    "file": "15_hero_ssr3.png",
+    "rel_path": "assets/official/15_hero_ssr3.png",
+    "desc": "英雄立ち絵：SSR3",
+    "width": 912,
+    "height": 896,
+    "bytes": 537062,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.VgfCUoSe.png",
+    "ok": true
+  },
+  {
+    "file": "16_hero_quinn.png",
+    "rel_path": "assets/official/16_hero_quinn.png",
+    "desc": "英雄立ち絵：クイン",
+    "width": 912,
+    "height": 896,
+    "bytes": 509317,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.twswOMgs.png",
+    "ok": true
+  },
+  {
+    "file": "17_hero_gordon.png",
+    "rel_path": "assets/official/17_hero_gordon.png",
+    "desc": "英雄立ち絵：ゴードン",
+    "width": 912,
+    "height": 896,
+    "bytes": 601751,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.DFhfQ0R9.png",
+    "ok": true
+  },
+  {
+    "file": "18_hero_chenko.png",
+    "rel_path": "assets/official/18_hero_chenko.png",
+    "desc": "英雄立ち絵：チェンコ",
+    "width": 912,
+    "height": 896,
+    "bytes": 355440,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.BnBnlgBI.png",
+    "ok": true
+  },
+  {
+    "file": "19_hero_howard.png",
+    "rel_path": "assets/official/19_hero_howard.png",
+    "desc": "英雄立ち絵：ハワード",
+    "width": 900,
+    "height": 900,
+    "bytes": 146078,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.vXnDGNWa.png",
+    "ok": true
+  },
+  {
+    "file": "20_hero_diana.png",
+    "rel_path": "assets/official/20_hero_diana.png",
+    "desc": "英雄立ち絵：ダイアナ",
+    "width": 912,
+    "height": 896,
+    "bytes": 434960,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.2ZtZPveH.png",
+    "ok": true
+  },
+  {
+    "file": "21_hero_amane.png",
+    "rel_path": "assets/official/21_hero_amane.png",
+    "desc": "英雄立ち絵：あまね",
+    "width": 912,
+    "height": 896,
+    "bytes": 605024,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.BzxrDn1s.png",
+    "ok": true
+  },
+  {
+    "file": "22_hero_inwu.png",
+    "rel_path": "assets/official/22_hero_inwu.png",
+    "desc": "英雄立ち絵：インウー",
+    "width": 912,
+    "height": 896,
+    "bytes": 565927,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.DbrwlUb2.png",
+    "ok": true
+  },
+  {
+    "file": "23_hero_fahad.png",
+    "rel_path": "assets/official/23_hero_fahad.png",
+    "desc": "英雄立ち絵：ファハド",
+    "width": 912,
+    "height": 896,
+    "bytes": 658523,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.DL43CCBC.png",
+    "ok": true
+  },
+  {
+    "file": "24_hero_edwin.png",
+    "rel_path": "assets/official/24_hero_edwin.png",
+    "desc": "英雄立ち絵：エドウィン",
+    "width": 912,
+    "height": 896,
+    "bytes": 542364,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.sDPnxe0j.png",
+    "ok": true
+  },
+  {
+    "file": "25_hero_olive.png",
+    "rel_path": "assets/official/25_hero_olive.png",
+    "desc": "英雄立ち絵：オリーブ",
+    "width": 912,
+    "height": 896,
+    "bytes": 399790,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.Cy18vhDx.png",
+    "ok": true
+  },
+  {
+    "file": "26_hero_forst.png",
+    "rel_path": "assets/official/26_hero_forst.png",
+    "desc": "英雄立ち絵：フォルスト",
+    "width": 912,
+    "height": 896,
+    "bytes": 591009,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.D-74rvsn.png",
+    "ok": true
+  },
+  {
+    "file": "27_hero_smith.png",
+    "rel_path": "assets/official/27_hero_smith.png",
+    "desc": "英雄立ち絵：スミス",
+    "width": 912,
+    "height": 896,
+    "bytes": 662756,
+    "url": "https://www.kingshot.com/_nuxt/hero_full_pic.BmgJ9pXj.png",
+    "ok": true
+  },
+  {
+    "file": "28_cg_logo_en.png",
+    "rel_path": "assets/official/28_cg_logo_en.png",
+    "desc": "Century Games 英語ロゴ",
+    "width": 2304,
+    "height": 738,
+    "bytes": 791905,
+    "url": "https://www.centurygames.com/wp-content/uploads/2025/04/kingshot-logo.png",
+    "ok": true
+  },
+  {
+    "file": "29_cg_app_icon.jpg",
+    "rel_path": "assets/official/29_cg_app_icon.jpg",
+    "desc": "公式アプリアイコン",
+    "width": 512,
+    "height": 512,
+    "bytes": 105178,
+    "url": "https://www.centurygames.com/wp-content/uploads/2025/04/game-app-icon.jpg",
+    "ok": true
+  },
+  {
+    "file": "30_cg_amadeus.png",
+    "rel_path": "assets/official/30_cg_amadeus.png",
+    "desc": "アマデウス メインアート",
+    "width": 636,
+    "height": 864,
+    "bytes": 351617,
+    "url": "https://www.centurygames.com/wp-content/uploads/2025/04/amadeus.png",
+    "ok": true
+  },
+  {
+    "file": "31_cg_lord_char.png",
+    "rel_path": "assets/official/31_cg_lord_char.png",
+    "desc": "ロード（領主）イラスト",
+    "width": 1048,
+    "height": 833,
+    "bytes": 552379,
+    "url": "https://www.centurygames.com/wp-content/uploads/2025/04/lord-imagerightchar-e1744859561730.png",
+    "ok": true
+  },
+  {
+    "file": "32_cg_backgrd_h2.jpg",
+    "rel_path": "assets/official/32_cg_backgrd_h2.jpg",
+    "desc": "公式キービジュアル背景2",
+    "width": 1920,
+    "height": 1080,
+    "bytes": 466396,
+    "url": "https://www.centurygames.com/wp-content/uploads/2025/04/backgrd-h2.jpg",
+    "ok": true
+  },
+  {
+    "file": "33_cg_backgrd_h3.jpg",
+    "rel_path": "assets/official/33_cg_backgrd_h3.jpg",
+    "desc": "公式イベント背景3",
+    "width": 1920,
+    "height": 1080,
+    "bytes": 371808,
+    "url": "https://www.centurygames.com/wp-content/uploads/2025/04/backgrd-h3-childrens-day.jpg",
+    "ok": true
+  },
+  {
+    "file": "34_appstore_event_banner.webp",
+    "rel_path": "assets/official/34_appstore_event_banner.webp",
+    "desc": "App Store イベントバナー",
+    "width": 900,
+    "height": 506,
+    "bytes": 47678,
+    "url": "https://is1-ssl.mzstatic.com/image/thumb/YIw4GOVxR_iFj68w2FsYgg/900x506sr.webp",
+    "ok": true
+  },
+  {
+    "file": "goripon_avatar.jpg",
+    "rel_path": "assets/goripon/goripon_avatar.jpg",
+    "desc": "ゴリポン チャンネルアイコン",
+    "width": 900,
+    "height": 900,
+    "bytes": 157456,
+    "url": "https://yt3.googleusercontent.com/ORcqRFyiBvsbkX9WkummmkAz6dYa0ibvmW9jaNuc1D1e0uxnccorwpeaf9W96rYy_DqrYAEN1Rs=s900-c-k-c0x00ffffff-no-rj",
+    "ok": true
+  },
+  {
+    "file": "goripon_banner.jpg",
+    "rel_path": "assets/goripon/goripon_banner.jpg",
+    "desc": "ゴリポン チャンネルバナー",
+    "width": 1707,
+    "height": 283,
+    "bytes": 99404,
+    "url": "https://yt3.googleusercontent.com/8Z7rvGEat0z19iuTUKJzVUed8RMwivaZc9TAfBtS0az-4BEqroovOixelUOn002XxCEtO4ehFg=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj",
+    "ok": true
+  }
+]
